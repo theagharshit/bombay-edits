@@ -1,26 +1,329 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ─── Design Token Layer ─────────────────────────────────────────── */
+
+@theme {
+  /* Surfaces */
+  --color-ivory: #FAF7F1;
+  --color-cream: #F1EBE0;
+  --color-sand: #EDE6DA;
+
+  /* Borders / Dividers */
+  --color-beige-line: #D9CDBC;
+
+  /* Accents / Text */
+  --color-espresso: #2E241D;
+  --color-cocoa: #5A4A3E;
+  --color-muted: #8B7B6D;
+  --color-on-image: #FFFFFF;
+
+  /* Derived aliases (mapping existing classes to new tokens to avoid breaking other pages) */
+  --color-champagne: #D9CDBC; /* Map to beige-line */
+  --color-chocolate: #2E241D; /* Map to espresso */
+  --color-deep-brown: #5A4A3E; /* Map to cocoa */
+  --color-ink: #2E241D; /* Map to espresso */
+  --color-border: #D9CDBC; /* Map to beige-line */
+  --color-border-light: #F1EBE0; /* Map to cream */
+  --color-text-muted: #8B7B6D; /* Map to muted */
+  --color-overlay: rgba(46, 36, 29, 0.45); /* Espresso based */
+  --color-focus-ring: #2E241D;
+
+  /* Typography */
+  --font-display: 'Cormorant Garamond', 'Georgia', serif;
+  --font-body: 'Jost', 'Helvetica Neue', sans-serif;
+
+  /* Spacing */
+  --spacing-3xs: 4px;
+  --spacing-1-5: 6px;
+  --spacing-2xs: 8px;
+  --spacing-xs: 12px;
+  --spacing-sm: 16px;
+  --spacing-5: 20px;
+  --spacing-md: 24px;
+  --spacing-8: 32px;
+  --spacing-lg: 40px;
+  --spacing-12: 48px;
+  --spacing-xl: 56px;
+  --spacing-16: 64px;
+  --spacing-18: 72px;
+  --spacing-20: 80px;
+  --spacing-2xl: 88px;
+  --spacing-24: 96px;
+  --spacing-30: 120px;
+  --spacing-3xl: 140px;
+  --spacing-4xl: 200px;
+
+  /* Shadows (Removed as per requirements, set to transparent) */
+  --shadow-sm: 0 0 0 transparent;
+  --shadow-md: 0 0 0 transparent;
+  --shadow-lg: 0 0 0 transparent;
+  --shadow-drawer: -4px 0 24px rgba(46, 36, 29, 0.15);
+
+  /* Radii (Removed as per requirements, set to 0) */
+  --radius-xs: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-pill: 0px;
+
+  /* Motion */
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+  --duration-slower: 600ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Content */
+  --max-content: 90rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ─── Base Styles ─────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-ivory);
+  color: var(--color-deep-brown);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* ─── Typography ─────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  color: var(--color-ink);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  font-weight: 400;
+}
+
+h1 { font-size: clamp(2.25rem, 5vw, 3.75rem); }
+h2 { font-size: clamp(1.75rem, 3.5vw, 2.25rem); }
+h3 { font-size: clamp(1.375rem, 2.5vw, 1.875rem); }
+h4 { font-size: clamp(1.125rem, 2vw, 1.5rem); }
+
+p {
+  max-width: 65ch;
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ─── Focus Styles ─────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* ─── Selection ─────────────────────────────────────────── */
+
+::selection {
+  background-color: var(--color-champagne);
+  color: var(--color-ink);
+}
+
+/* ─── Scrollbar ─────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-ivory);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-beige);
+  border-radius: var(--radius-pill);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-champagne);
+}
+
+/* ─── Reduced Motion ─────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ─── Utility Classes ─────────────────────────────────────── */
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+.container-site {
+  width: 100%;
+  max-width: var(--max-content); /* 1440px */
+  margin-inline: auto;
+  padding-inline: 1.5rem; /* 24px */
+}
+
+@media (min-width: 768px) {
+  .container-site {
+    padding-inline: 2.5rem; /* 40px */
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-site {
+    padding-inline: 4rem; /* 64px */
+  }
+}
+
+@media (min-width: 1600px) {
+  .container-site {
+    padding-inline: 5rem; /* 80px */
+  }
+}
+
+.section-padding {
+  padding-block: 4rem;
+}
+
+@media (min-width: 768px) {
+  .section-padding {
+    padding-block: 5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-padding {
+    padding-block: 6rem;
+  }
+}
+
+/* ─── Product Image Hover ─────────────────────────────────── */
+
+.product-image-hover {
+  position: relative;
+  overflow: hidden;
+}
+
+.product-image-hover img:nth-child(2) {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-out);
+}
+
+.product-image-hover:hover img:nth-child(2) {
+  opacity: 1;
+}
+
+/* ─── Horizontal Scroll Rail ─────────────────────────────── */
+
+.scroll-rail {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 1rem;
+}
+
+.scroll-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-rail > * {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+/* ─── Accordion ─────────────────────────────────────────── */
+
+.accordion-content {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--duration-slow) var(--ease-out);
+}
+
+.accordion-content[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+
+.accordion-content > div {
+  overflow: hidden;
+}
+
+/* ─── Skeleton Loading ─────────────────────────────────── */
+
+@keyframes skeleton-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-cream) 25%,
+    var(--color-beige) 50%,
+    var(--color-cream) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+/* ─── Hero Reveal ─────────────────────────────────────── */
+
+@keyframes hero-reveal {
+  from {
+    opacity: 0;
+    transform: scale(1.02);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.hero-animate {
+  animation: hero-reveal var(--duration-slower) var(--ease-out) forwards;
+}
+
+/* ─── Image Zoom on Hover ─────────────────────────────── */
+
+.image-zoom {
+  overflow: hidden;
+}
+
+.image-zoom img {
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.image-zoom:hover img {
+  transform: scale(1.04);
 }

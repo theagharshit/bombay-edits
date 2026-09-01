@@ -19,9 +19,9 @@ export interface Cart {
 }
 
 export type ShippingZone =
-  | 'kathmandu-valley'
-  | 'outside-valley'
-  | 'india'
+  | 'mumbai'
+  | 'rest-of-india'
+  | 'nepal'
   | 'rest-of-world';
 
 export interface ShippingRate {
