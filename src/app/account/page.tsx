@@ -81,15 +81,16 @@ export default function AccountPage() {
           <div className="lg:w-5/12">
             
             {/* Nav Links */}
-            <ul className="space-y-6 mb-24 font-display text-2xl text-chocolate">
-              <li><Link href="#" className="hover:opacity-70 transition-opacity">Purchased History</Link></li>
-              <li><Link href="#" className="hover:opacity-70 transition-opacity">Wishlist Archives</Link></li>
-              <li><Link href="#" className="hover:opacity-70 transition-opacity">Consultations</Link></li>
+            <ul className="space-y-6 mb-24 font-display text-2xl text-dark-espresso">
+              <li><Link href="/account/orders" className="hover:text-champagne-gold transition-colors">Purchased History</Link></li>
+              <li><Link href="/account/addresses" className="hover:text-champagne-gold transition-colors">Saved Addresses</Link></li>
+              <li><Link href="/wishlist" className="hover:text-champagne-gold transition-colors">Wishlist Archives</Link></li>
+              <li><Link href="/the-craft" className="hover:text-champagne-gold transition-colors">The Craft Atelier</Link></li>
             </ul>
 
             {/* Recent Acquisitions */}
             <div className="mb-24">
-              <h3 className="text-[10px] uppercase tracking-[0.2em] text-text-muted border-b border-border pb-4 mb-8">
+              <h3 className="text-[10px] uppercase tracking-[0.2em] text-muted-taupe border-b border-beige-line pb-4 mb-8">
                 Recent Acquisitions
               </h3>
               
@@ -97,51 +98,69 @@ export default function AccountPage() {
                 {/* Item 1 */}
                 <div className="flex gap-6">
                   <div className="relative w-24 aspect-[4/5] bg-cream flex-shrink-0">
-                    <Image src={generatePlaceholderImage(200, 250, 'malabar-blouse')} alt="Malabar Silk Blouse" fill className="object-cover sepia-[0.2]" />
+                    <Image 
+                      src={generatePlaceholderImage(200, 250, 'malabar-blouse')} 
+                      alt="Malabar Silk Blouse" 
+                      fill 
+                      className="object-cover sepia-[0.2]" 
+                      sizes="96px"
+                    />
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase tracking-widest text-text-muted mb-2">Delivered: Oct 12</p>
-                    <p className="font-display text-lg text-chocolate mb-1">The Malabar Silk Blouse</p>
-                    <p className="text-xs text-text-muted font-body">Ivory / Size 2 / Bespoke Fit</p>
+                    <p className="text-[10px] uppercase tracking-widest text-muted-taupe mb-2">Delivered: Oct 12</p>
+                    <p className="font-display text-lg text-dark-espresso mb-1">The Malabar Silk Blouse</p>
+                    <p className="text-xs text-chocolate-brown font-body">Ivory / Size 2 / Bespoke Fit</p>
                   </div>
                 </div>
 
                 {/* Item 2 */}
                 <div className="flex gap-6">
                   <div className="relative w-24 aspect-[4/5] bg-cream flex-shrink-0">
-                    <Image src={generatePlaceholderImage(200, 250, 'heritage-scarf')} alt="Heritage Zari Scarf" fill className="object-cover sepia-[0.2]" />
+                    <Image 
+                      src={generatePlaceholderImage(200, 250, 'heritage-scarf')} 
+                      alt="Heritage Zari Scarf" 
+                      fill 
+                      className="object-cover sepia-[0.2]" 
+                      sizes="96px"
+                    />
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase tracking-widest text-text-muted mb-2">Delivered: Aug 04</p>
-                    <p className="font-display text-lg text-chocolate mb-1">Heritage Zari Scarf</p>
-                    <p className="text-xs text-text-muted font-body">Umber / Free Size</p>
+                    <p className="text-[10px] uppercase tracking-widest text-muted-taupe mb-2">Delivered: Aug 04</p>
+                    <p className="font-display text-lg text-dark-espresso mb-1">Heritage Zari Scarf</p>
+                    <p className="text-xs text-chocolate-brown font-body">Umber / Free Size</p>
                   </div>
                 </div>
               </div>
               
-              <button className="mt-12 bg-chocolate text-ivory px-8 py-3 text-[10px] uppercase tracking-[0.2em] hover:bg-deep-brown transition-colors">
+              <Link href="/account/orders" className="inline-block mt-12 bg-dark-espresso text-cream px-8 py-3 text-[10px] uppercase tracking-[0.2em] hover:bg-chocolate-brown transition-colors">
                 View Full Archive
-              </button>
+              </Link>
             </div>
 
             {/* Curated For You */}
             <div>
-              <h3 className="text-[10px] uppercase tracking-[0.2em] text-text-muted border-b border-border pb-4 mb-8">
+              <h3 className="text-[10px] uppercase tracking-[0.2em] text-muted-taupe border-b border-beige-line pb-4 mb-8">
                 Curated For You
               </h3>
-              <div className="relative aspect-video w-full border border-border group overflow-hidden cursor-pointer">
-                <Image src={generatePlaceholderImage(800, 450, 'winter-edit-coat')} alt="The Viceroy Coat" fill className="object-cover grayscale transition-transform duration-700 group-hover:scale-105" />
+              <Link href="/shop" className="block relative aspect-video w-full border border-beige-line group overflow-hidden cursor-pointer">
+                <Image 
+                  src={generatePlaceholderImage(800, 450, 'winter-edit-coat')} 
+                  alt="The Viceroy Coat" 
+                  fill 
+                  className="object-cover grayscale transition-transform duration-700 group-hover:scale-105" 
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                 <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
-                  <div className="text-ivory">
-                    <p className="text-[10px] uppercase tracking-[0.2em] mb-1">The Winter Edit</p>
+                  <div className="text-cream">
+                    <p className="text-[10px] uppercase tracking-[0.2em] mb-1">The Festive Edit</p>
                     <p className="font-display text-3xl">The Viceroy Coat</p>
                   </div>
-                  <div className="w-8 h-8 bg-ivory text-chocolate flex items-center justify-center text-lg leading-none shrink-0 rounded-sm">
+                  <div className="w-8 h-8 bg-cream text-dark-espresso flex items-center justify-center text-lg leading-none shrink-0 rounded-none">
                     +
                   </div>
                 </div>
-              </div>
+              </Link>
             </div>
 
           </div>

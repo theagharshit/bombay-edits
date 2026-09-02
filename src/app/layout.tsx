@@ -41,10 +41,11 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://thebombayedit.com'),
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       className={`${cormorantGaramond.variable} ${inter.variable} h-full`}
     >
       <body className="min-h-full w-full flex flex-col antialiased overflow-x-hidden">
