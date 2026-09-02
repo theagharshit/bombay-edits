@@ -63,9 +63,10 @@ export class GatewayMetrics {
       topEndpoints[k] = v;
     });
 
-    const avgDurationMs = this.durations.length > 0
-      ? Math.round(this.durations.reduce((a, b) => a + b, 0) / this.durations.length)
-      : 0;
+    const avgDurationMs =
+      this.durations.length > 0
+        ? Math.round(this.durations.reduce((a, b) => a + b, 0) / this.durations.length)
+        : 0;
 
     return {
       totalRequests: this.totalRequests,

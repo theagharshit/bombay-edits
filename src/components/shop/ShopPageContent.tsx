@@ -7,8 +7,29 @@ import { products } from '@/data/products';
 import { categories, occasions } from '@/data/collections';
 import { Product, Category, Occasion, Fabric, EmbroideryType } from '@/types/product';
 
-const fabrics: Fabric[] = ['Chanderi silk', 'Organza', 'Tissue', 'Cotton silk', 'Georgette', 'Raw silk', 'Linen', 'Velvet', 'Chiffon', 'Mashru silk'];
-const embroideryTypes: EmbroideryType[] = ['Hand embroidery', 'Zardozi', 'Thread work', 'Sequin work', 'Mirror work', 'Cutwork', 'Chikankari', 'Aari work', 'Gota patti'];
+const fabrics: Fabric[] = [
+  'Chanderi silk',
+  'Organza',
+  'Tissue',
+  'Cotton silk',
+  'Georgette',
+  'Raw silk',
+  'Linen',
+  'Velvet',
+  'Chiffon',
+  'Mashru silk',
+];
+const embroideryTypes: EmbroideryType[] = [
+  'Hand embroidery',
+  'Zardozi',
+  'Thread work',
+  'Sequin work',
+  'Mirror work',
+  'Cutwork',
+  'Chikankari',
+  'Aari work',
+  'Gota patti',
+];
 const sortOptions = [
   { value: 'featured', label: 'Featured' },
   { value: 'newest', label: 'Newest' },
@@ -23,7 +44,12 @@ interface ShopPageContentProps {
   filterType?: 'all' | 'bestseller' | 'new-arrival' | `collection:${string}`;
 }
 
-export function ShopPageContent({ initialCategory, title = 'Heritage Archive', description = 'From the studio to your closet. Discover our newest additions.', filterType = 'all' }: ShopPageContentProps) {
+export function ShopPageContent({
+  initialCategory,
+  title = 'Heritage Archive',
+  description = 'From the studio to your closet. Discover our newest additions.',
+  filterType = 'all',
+}: ShopPageContentProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -52,24 +78,30 @@ export function ShopPageContent({ initialCategory, title = 'Heritage Archive', d
     let result = [...products];
 
     if (filterType === 'bestseller') {
-      result = result.filter(p => p.isBestseller);
+      result = result.filter((p) => p.isBestseller);
     } else if (filterType === 'new-arrival') {
-      result = result.filter(p => p.isNewArrival);
+      result = result.filter((p) => p.isNewArrival);
     } else if (filterType.startsWith('collection:')) {
       const collectionSlug = filterType.split(':')[1];
-      result = result.filter(p => p.collections.includes(collectionSlug as any));
+      result = result.filter((p) => p.collections.includes(collectionSlug as any));
     }
 
-    if (activeCategory) result = result.filter(p => p.category === activeCategory);
-    if (activeOccasion) result = result.filter(p => p.occasions.includes(activeOccasion));
-    if (activeFabric) result = result.filter(p => p.fabric === activeFabric);
-    if (activeEmbroidery) result = result.filter(p => p.embroideryType === activeEmbroidery);
+    if (activeCategory) result = result.filter((p) => p.category === activeCategory);
+    if (activeOccasion) result = result.filter((p) => p.occasions.includes(activeOccasion));
+    if (activeFabric) result = result.filter((p) => p.fabric === activeFabric);
+    if (activeEmbroidery) result = result.filter((p) => p.embroideryType === activeEmbroidery);
 
     // Sort
     switch (activeSort) {
-      case 'newest': result.sort((a, b) => (b.isNewArrival ? 1 : 0) - (a.isNewArrival ? 1 : 0)); break;
-      case 'price-asc': result.sort((a, b) => a.price - b.price); break;
-      case 'price-desc': result.sort((a, b) => b.price - a.price); break;
+      case 'newest':
+        result.sort((a, b) => (b.isNewArrival ? 1 : 0) - (a.isNewArrival ? 1 : 0));
+        break;
+      case 'price-asc':
+        result.sort((a, b) => a.price - b.price);
+        break;
+      case 'price-desc':
+        result.sort((a, b) => b.price - a.price);
+        break;
     }
 
     return result;
@@ -81,7 +113,9 @@ export function ShopPageContent({ initialCategory, title = 'Heritage Archive', d
   const hasActiveFilters = activeCategory || activeOccasion || activeFabric || activeEmbroidery;
 
   // Reset visible count on filter change
-  useEffect(() => { setVisibleCount(12); }, [activeCategory, activeOccasion, activeFabric, activeEmbroidery, activeSort]);
+  useEffect(() => {
+    setVisibleCount(12);
+  }, [activeCategory, activeOccasion, activeFabric, activeEmbroidery, activeSort]);
 
   return (
     <div className="bg-ivory text-deep-brown font-body">
@@ -90,8 +124,12 @@ export function ShopPageContent({ initialCategory, title = 'Heritage Archive', d
         <span className="text-[10px] uppercase tracking-[0.2em] text-text-muted mb-4 block">
           Bombay Edits / The Collections
         </span>
-        <h1 className="font-display text-3xl md:text-4xl text-chocolate mb-4 uppercase tracking-widest">{title}</h1>
-        {description && <p className="text-xs uppercase tracking-widest text-text-muted">{description}</p>}
+        <h1 className="font-display text-3xl md:text-4xl text-chocolate mb-4 uppercase tracking-widest">
+          {title}
+        </h1>
+        {description && (
+          <p className="text-xs uppercase tracking-widest text-text-muted">{description}</p>
+        )}
       </div>
 
       <div className="px-6 md:px-12 lg:px-24 max-w-[1200px] mx-auto">
@@ -102,7 +140,9 @@ export function ShopPageContent({ initialCategory, title = 'Heritage Archive', d
             className="flex items-center gap-2 text-xs uppercase tracking-widest text-chocolate hover:text-ink transition-colors"
           >
             {filtersOpen ? 'Hide Filters' : 'Filters'}
-            {hasActiveFilters && <span className="w-1.5 h-1.5 bg-chocolate rounded-full inline-block ml-1"></span>}
+            {hasActiveFilters && (
+              <span className="w-1.5 h-1.5 bg-chocolate rounded-full inline-block ml-1"></span>
+            )}
           </button>
 
           <div className="flex items-center gap-4">
@@ -110,14 +150,18 @@ export function ShopPageContent({ initialCategory, title = 'Heritage Archive', d
               {filtered.length} {filtered.length === 1 ? 'Result' : 'Results'}
             </span>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] uppercase tracking-widest text-text-muted">Sort By:</span>
+              <span className="text-[10px] uppercase tracking-widest text-text-muted">
+                Sort By:
+              </span>
               <select
                 value={activeSort}
-                onChange={e => updateParam('sort', e.target.value)}
+                onChange={(e) => updateParam('sort', e.target.value)}
                 className="text-xs uppercase tracking-widest bg-transparent text-chocolate cursor-pointer focus:outline-none appearance-none border-b border-transparent hover:border-chocolate pb-1"
               >
-                {sortOptions.map(opt => (
-                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                {sortOptions.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
                 ))}
               </select>
             </div>
@@ -131,21 +175,30 @@ export function ShopPageContent({ initialCategory, title = 'Heritage Archive', d
               w-full md:w-64 flex-shrink-0 animate-in fade-in duration-300`}
           >
             {hasActiveFilters && (
-              <button onClick={clearFilters} className="text-[10px] uppercase tracking-widest text-wine mb-8 border-b border-wine pb-0.5">
+              <button
+                onClick={clearFilters}
+                className="text-[10px] uppercase tracking-widest text-wine mb-8 border-b border-wine pb-0.5"
+              >
                 Clear all
               </button>
             )}
 
             {!initialCategory && (
               <div className="mb-10">
-                <h3 className="text-[10px] uppercase tracking-[0.15em] text-text-muted border-b border-border pb-2 mb-4">Category</h3>
+                <h3 className="text-[10px] uppercase tracking-[0.15em] text-text-muted border-b border-border pb-2 mb-4">
+                  Category
+                </h3>
                 <div className="space-y-3">
-                  {categories.map(cat => (
+                  {categories.map((cat) => (
                     <button
                       key={cat.slug}
-                      onClick={() => updateParam('category', activeCategory === cat.slug ? null : cat.slug)}
+                      onClick={() =>
+                        updateParam('category', activeCategory === cat.slug ? null : cat.slug)
+                      }
                       className={`block text-xs uppercase tracking-widest w-full text-left transition-colors ${
-                        activeCategory === cat.slug ? 'text-chocolate font-medium' : 'text-text-muted hover:text-chocolate'
+                        activeCategory === cat.slug
+                          ? 'text-chocolate font-medium'
+                          : 'text-text-muted hover:text-chocolate'
                       }`}
                     >
                       {cat.name}
@@ -156,14 +209,20 @@ export function ShopPageContent({ initialCategory, title = 'Heritage Archive', d
             )}
 
             <div className="mb-10">
-              <h3 className="text-[10px] uppercase tracking-[0.15em] text-text-muted border-b border-border pb-2 mb-4">Occasion</h3>
+              <h3 className="text-[10px] uppercase tracking-[0.15em] text-text-muted border-b border-border pb-2 mb-4">
+                Occasion
+              </h3>
               <div className="space-y-3">
-                {occasions.map(occ => (
+                {occasions.map((occ) => (
                   <button
                     key={occ.slug}
-                    onClick={() => updateParam('occasion', activeOccasion === occ.slug ? null : occ.slug)}
+                    onClick={() =>
+                      updateParam('occasion', activeOccasion === occ.slug ? null : occ.slug)
+                    }
                     className={`block text-xs uppercase tracking-widest w-full text-left transition-colors ${
-                      activeOccasion === occ.slug ? 'text-chocolate font-medium' : 'text-text-muted hover:text-chocolate'
+                      activeOccasion === occ.slug
+                        ? 'text-chocolate font-medium'
+                        : 'text-text-muted hover:text-chocolate'
                     }`}
                   >
                     {occ.name}
@@ -173,14 +232,18 @@ export function ShopPageContent({ initialCategory, title = 'Heritage Archive', d
             </div>
 
             <div className="mb-10">
-              <h3 className="text-[10px] uppercase tracking-[0.15em] text-text-muted border-b border-border pb-2 mb-4">Fabric</h3>
+              <h3 className="text-[10px] uppercase tracking-[0.15em] text-text-muted border-b border-border pb-2 mb-4">
+                Fabric
+              </h3>
               <div className="space-y-3">
-                {fabrics.map(fab => (
+                {fabrics.map((fab) => (
                   <button
                     key={fab}
                     onClick={() => updateParam('fabric', activeFabric === fab ? null : fab)}
                     className={`block text-xs uppercase tracking-widest w-full text-left transition-colors ${
-                      activeFabric === fab ? 'text-chocolate font-medium' : 'text-text-muted hover:text-chocolate'
+                      activeFabric === fab
+                        ? 'text-chocolate font-medium'
+                        : 'text-text-muted hover:text-chocolate'
                     }`}
                   >
                     {fab}
@@ -188,16 +251,20 @@ export function ShopPageContent({ initialCategory, title = 'Heritage Archive', d
                 ))}
               </div>
             </div>
-            
+
             <div className="mb-10">
-              <h3 className="text-[10px] uppercase tracking-[0.15em] text-text-muted border-b border-border pb-2 mb-4">Embroidery</h3>
+              <h3 className="text-[10px] uppercase tracking-[0.15em] text-text-muted border-b border-border pb-2 mb-4">
+                Embroidery
+              </h3>
               <div className="space-y-3">
-                {embroideryTypes.map(emb => (
+                {embroideryTypes.map((emb) => (
                   <button
                     key={emb}
                     onClick={() => updateParam('embroidery', activeEmbroidery === emb ? null : emb)}
                     className={`block text-xs uppercase tracking-widest w-full text-left transition-colors ${
-                      activeEmbroidery === emb ? 'text-chocolate font-medium' : 'text-text-muted hover:text-chocolate'
+                      activeEmbroidery === emb
+                        ? 'text-chocolate font-medium'
+                        : 'text-text-muted hover:text-chocolate'
                     }`}
                   >
                     {emb}
@@ -211,19 +278,28 @@ export function ShopPageContent({ initialCategory, title = 'Heritage Archive', d
           <div className="flex-1">
             {visibleProducts.length === 0 ? (
               <div className="text-center py-32 border border-border">
-                <p className="text-sm uppercase tracking-widest text-chocolate mb-4">No products found</p>
-                <button onClick={clearFilters} className="text-xs uppercase tracking-widest border-b border-ink text-ink pb-0.5">
+                <p className="text-sm uppercase tracking-widest text-chocolate mb-4">
+                  No products found
+                </p>
+                <button
+                  onClick={clearFilters}
+                  className="text-xs uppercase tracking-widest border-b border-ink text-ink pb-0.5"
+                >
                   Clear all filters
                 </button>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
                 {visibleProducts.map((product, i) => (
-                  <div key={product.id} className={i === 4 ? "col-span-1 md:col-span-2 lg:col-span-3 my-8" : ""}>
+                  <div
+                    key={product.id}
+                    className={i === 4 ? 'col-span-1 md:col-span-2 lg:col-span-3 my-8' : ''}
+                  >
                     {i === 4 && (
                       <div className="bg-chocolate text-ivory p-16 md:p-24 text-center mb-16">
                         <p className="font-display text-2xl md:text-3xl uppercase tracking-widest leading-relaxed max-w-3xl mx-auto mb-8">
-                          "Elevating the everyday with thoughtful design and meticulous craftsmanship. Each piece is a testament to the art of dressing well."
+                          "Elevating the everyday with thoughtful design and meticulous
+                          craftsmanship. Each piece is a testament to the art of dressing well."
                         </p>
                         <span className="text-xs uppercase tracking-[0.2em]">— The Founder</span>
                       </div>
@@ -237,7 +313,7 @@ export function ShopPageContent({ initialCategory, title = 'Heritage Archive', d
             {hasMore && (
               <div className="text-center mt-24">
                 <button
-                  onClick={() => setVisibleCount(prev => prev + 12)}
+                  onClick={() => setVisibleCount((prev) => prev + 12)}
                   className="inline-block border border-chocolate text-chocolate px-12 py-4 text-xs uppercase tracking-widest font-medium hover:bg-chocolate hover:text-ivory transition-colors"
                 >
                   Load More

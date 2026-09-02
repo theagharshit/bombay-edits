@@ -1,11 +1,8 @@
 import { Currency } from '@/types/cart';
 import { currencies } from '@/backend/models/shippingModel';
 
-export function formatPrice(
-  amount: number,
-  currency: Currency = 'NPR'
-): string {
-  const config = currencies.find(c => c.code === currency);
+export function formatPrice(amount: number, currency: Currency = 'NPR'): string {
+  const config = currencies.find((c) => c.code === currency);
   if (!config) return `Rs. ${amount.toLocaleString()}`;
 
   const converted = Math.round(amount * config.rate);

@@ -31,33 +31,35 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
   }, [items]);
 
   const isWishlisted = useCallback(
-    (productId: string) => items.some(i => i.productId === productId),
+    (productId: string) => items.some((i) => i.productId === productId),
     [items]
   );
 
   const toggleWishlist = useCallback((productId: string) => {
-    setItems(prev => {
-      const exists = prev.find(i => i.productId === productId);
-      if (exists) return prev.filter(i => i.productId !== productId);
+    setItems((prev) => {
+      const exists = prev.find((i) => i.productId === productId);
+      if (exists) return prev.filter((i) => i.productId !== productId);
       return [...prev, { productId, addedAt: new Date().toISOString() }];
     });
   }, []);
 
   const removeFromWishlist = useCallback((productId: string) => {
-    setItems(prev => prev.filter(i => i.productId !== productId));
+    setItems((prev) => prev.filter((i) => i.productId !== productId));
   }, []);
 
   const clearWishlist = useCallback(() => setItems([]), []);
 
   return (
-    <WishlistContext.Provider value={{
-      items,
-      isWishlisted,
-      toggleWishlist,
-      removeFromWishlist,
-      clearWishlist,
-      count: items.length,
-    }}>
+    <WishlistContext.Provider
+      value={{
+        items,
+        isWishlisted,
+        toggleWishlist,
+        removeFromWishlist,
+        clearWishlist,
+        count: items.length,
+      }}
+    >
       {children}
     </WishlistContext.Provider>
   );

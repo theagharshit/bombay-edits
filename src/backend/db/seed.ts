@@ -128,7 +128,14 @@ export async function runSeed() {
                rate = EXCLUDED.rate,
                free_above = EXCLUDED.free_above,
                estimated_days = EXCLUDED.estimated_days`,
-          [rate.zone, rate.label, rate.description, rate.rate, rate.freeAbove || null, rate.estimatedDays]
+          [
+            rate.zone,
+            rate.label,
+            rate.description,
+            rate.rate,
+            rate.freeAbove || null,
+            rate.estimatedDays,
+          ]
         );
       }
       logger.info(`✓ Seeded ${shippingRates.length} shipping rates.`);

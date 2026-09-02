@@ -11,7 +11,9 @@ export interface NewsletterSubscribeResponse {
 }
 
 export class NewsletterService {
-  public static async subscribe(payload: NewsletterSubscribePayload): Promise<NewsletterSubscribeResponse> {
+  public static async subscribe(
+    payload: NewsletterSubscribePayload
+  ): Promise<NewsletterSubscribeResponse> {
     return ApiClient.post<NewsletterSubscribeResponse>('/api/newsletter', payload);
   }
 }

@@ -32,8 +32,7 @@ export class GatewaySecurity {
   ): NextResponse {
     // CORS Headers
     const isAllowedOrigin =
-      config.allowedOrigins.includes('*') ||
-      (origin && config.allowedOrigins.includes(origin));
+      config.allowedOrigins.includes('*') || (origin && config.allowedOrigins.includes(origin));
 
     if (isAllowedOrigin) {
       res.headers.set('Access-Control-Allow-Origin', origin || '*');
@@ -48,10 +47,7 @@ export class GatewaySecurity {
     res.headers.set('X-Frame-Options', 'DENY');
     res.headers.set('X-XSS-Protection', '1; mode=block');
     res.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
-    res.headers.set(
-      'Permissions-Policy',
-      'camera=(), microphone=(), geolocation=(), payment=()'
-    );
+    res.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=()');
 
     return res;
   }

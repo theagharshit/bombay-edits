@@ -20,7 +20,7 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     try {
       const saved = localStorage.getItem('tbe-currency') as Currency | null;
-      if (saved && currencies.find(c => c.code === saved)) {
+      if (saved && currencies.find((c) => c.code === saved)) {
         setCurrencyState(saved);
       }
     } catch {
@@ -28,7 +28,7 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const config = currencies.find(c => c.code === currency) || currencies[0];
+  const config = currencies.find((c) => c.code === currency) || currencies[0];
 
   const setCurrency = useCallback((c: Currency) => {
     setCurrencyState(c);

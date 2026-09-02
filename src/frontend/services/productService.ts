@@ -31,7 +31,11 @@ export class ProductService {
     return ApiClient.get<Product>(`/api/products/${slug}`);
   }
 
-  public static async checkStock(productId: string, size: string, quantity = 1): Promise<{
+  public static async checkStock(
+    productId: string,
+    size: string,
+    quantity = 1
+  ): Promise<{
     inStock: boolean;
     availableQuantity: number;
     isMadeToOrder: boolean;

@@ -36,7 +36,7 @@ export function NewsletterSignup() {
             <input
               type="email"
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Your email address"
               required
               className="flex-1 bg-transparent border-b border-beige-line text-dark-espresso placeholder:text-muted-taupe py-2.5 text-sm font-body focus:outline-none focus:border-dark-espresso"
@@ -52,11 +52,7 @@ export function NewsletterSignup() {
           </form>
         )}
 
-        {error && (
-          <p className="text-sm text-red-700 mt-3 font-body">
-            {error}
-          </p>
-        )}
+        {error && <p className="text-sm text-red-700 mt-3 font-body">{error}</p>}
       </div>
     </section>
   );

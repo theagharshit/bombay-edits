@@ -41,7 +41,7 @@ export class RateLimiter {
     }
 
     // Filter out timestamps outside the sliding window
-    bucket.timestamps = bucket.timestamps.filter(t => t > windowStart);
+    bucket.timestamps = bucket.timestamps.filter((t) => t > windowStart);
 
     const currentCount = bucket.timestamps.length;
     const allowed = currentCount < config.maxRequests;

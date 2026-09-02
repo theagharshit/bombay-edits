@@ -78,7 +78,7 @@ export async function query<R extends QueryResultRow = QueryResultRow>(
   try {
     const result = await pool.query<R>(sqlText, params);
     const duration = Math.round(performance.now() - start);
-    
+
     logger.debug(`[SQL] Executed query in ${duration}ms`, {
       rows: result.rowCount,
       sql: sqlText.replace(/\s+/g, ' ').trim().slice(0, 120),
@@ -95,9 +95,7 @@ export async function query<R extends QueryResultRow = QueryResultRow>(
 /**
  * Execute operations within a database transaction
  */
-export async function transaction<T>(
-  callback: (client: PoolClient) => Promise<T>
-): Promise<T> {
+export async function transaction<T>(callback: (client: PoolClient) => Promise<T>): Promise<T> {
   const pool = getDbPool();
   const client = await pool.connect();
 

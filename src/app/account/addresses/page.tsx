@@ -58,8 +58,8 @@ export default function AddressesPage() {
   });
 
   const handleSetDefault = (id: string) => {
-    setAddresses(prev =>
-      prev.map(a => ({
+    setAddresses((prev) =>
+      prev.map((a) => ({
         ...a,
         isDefault: a.id === id,
       }))
@@ -67,7 +67,7 @@ export default function AddressesPage() {
   };
 
   const handleDelete = (id: string) => {
-    setAddresses(prev => prev.filter(a => a.id !== id));
+    setAddresses((prev) => prev.filter((a) => a.id !== id));
   };
 
   const handleAddAddress = (e: React.FormEvent) => {
@@ -80,9 +80,9 @@ export default function AddressesPage() {
     };
 
     if (item.isDefault) {
-      setAddresses(prev => [item, ...prev.map(a => ({ ...a, isDefault: false }))]);
+      setAddresses((prev) => [item, ...prev.map((a) => ({ ...a, isDefault: false }))]);
     } else {
-      setAddresses(prev => [...prev, item]);
+      setAddresses((prev) => [...prev, item]);
     }
 
     setShowAddModal(false);
@@ -135,7 +135,7 @@ export default function AddressesPage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {addresses.map(addr => (
+          {addresses.map((addr) => (
             <div
               key={addr.id}
               className={`p-6 border transition-colors flex flex-col justify-between ${
@@ -209,21 +209,21 @@ export default function AddressesPage() {
               <Input
                 label="Full Name"
                 value={newAddr.name}
-                onChange={e => setNewAddr({ ...newAddr, name: e.target.value })}
+                onChange={(e) => setNewAddr({ ...newAddr, name: e.target.value })}
                 required
                 placeholder="Recipient name"
               />
               <Input
                 label="Phone Number"
                 value={newAddr.phone}
-                onChange={e => setNewAddr({ ...newAddr, phone: e.target.value })}
+                onChange={(e) => setNewAddr({ ...newAddr, phone: e.target.value })}
                 required
                 placeholder="+91 XXXXX XXXXX"
               />
               <Input
                 label="Street Address"
                 value={newAddr.addressLine1}
-                onChange={e => setNewAddr({ ...newAddr, addressLine1: e.target.value })}
+                onChange={(e) => setNewAddr({ ...newAddr, addressLine1: e.target.value })}
                 required
                 placeholder="Apartment, suite, street name"
               />
@@ -231,14 +231,14 @@ export default function AddressesPage() {
                 <Input
                   label="City"
                   value={newAddr.city}
-                  onChange={e => setNewAddr({ ...newAddr, city: e.target.value })}
+                  onChange={(e) => setNewAddr({ ...newAddr, city: e.target.value })}
                   required
                   placeholder="e.g. Mumbai"
                 />
                 <Input
                   label="State / Province"
                   value={newAddr.state}
-                  onChange={e => setNewAddr({ ...newAddr, state: e.target.value })}
+                  onChange={(e) => setNewAddr({ ...newAddr, state: e.target.value })}
                   required
                   placeholder="e.g. Maharashtra"
                 />
@@ -247,14 +247,14 @@ export default function AddressesPage() {
                 <Input
                   label="Postal / PIN Code"
                   value={newAddr.postalCode}
-                  onChange={e => setNewAddr({ ...newAddr, postalCode: e.target.value })}
+                  onChange={(e) => setNewAddr({ ...newAddr, postalCode: e.target.value })}
                   required
                   placeholder="e.g. 400001"
                 />
                 <Input
                   label="Country"
                   value={newAddr.country}
-                  onChange={e => setNewAddr({ ...newAddr, country: e.target.value })}
+                  onChange={(e) => setNewAddr({ ...newAddr, country: e.target.value })}
                   required
                 />
               </div>
@@ -264,7 +264,7 @@ export default function AddressesPage() {
                   <input
                     type="checkbox"
                     checked={newAddr.isDefault}
-                    onChange={e => setNewAddr({ ...newAddr, isDefault: e.target.checked })}
+                    onChange={(e) => setNewAddr({ ...newAddr, isDefault: e.target.checked })}
                     className="accent-dark-espresso"
                   />
                   Set as default shipping address

@@ -26,31 +26,34 @@ export function useNewsletter(): UseNewsletterReturn {
     setMessage(null);
   }, []);
 
-  const subscribe = useCallback(async (payload: string | NewsletterSubscribePayload): Promise<boolean> => {
-    setIsLoading(true);
-    setError(null);
-    setMessage(null);
+  const subscribe = useCallback(
+    async (payload: string | NewsletterSubscribePayload): Promise<boolean> => {
+      setIsLoading(true);
+      setError(null);
+      setMessage(null);
 
-    const data = typeof payload === 'string' ? { email: payload } : payload;
+      const data = typeof payload === 'string' ? { email: payload } : payload;
 
-    try {
-      const response = await NewsletterService.subscribe(data);
-      setIsSuccess(true);
-      if (!response.isNew) {
-        setIsAlreadySubscribed(true);
-        setMessage('You are already subscribed to our newsletter.');
-      } else {
-        setMessage('Thank you for subscribing to The Bombay Edit.');
+      try {
+        const response = await NewsletterService.subscribe(data);
+        setIsSuccess(true);
+        if (!response.isNew) {
+          setIsAlreadySubscribed(true);
+          setMessage('You are already subscribed to our newsletter.');
+        } else {
+          setMessage('Thank you for subscribing to The Bombay Edit.');
+        }
+        return true;
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : 'Failed to subscribe. Please try again.';
+        setError(msg);
+        return false;
+      } finally {
+        setIsLoading(false);
       }
-      return true;
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Failed to subscribe. Please try again.';
-      setError(msg);
-      return false;
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+    },
+    []
+  );
 
   return {
     isLoading,

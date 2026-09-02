@@ -35,7 +35,10 @@ export class ContactController {
 
     return ApiResponse.success(
       { submissionId: submission.id },
-      { message: 'Your message has been received. Our team will get back to you shortly.', status: 200 }
+      {
+        message: 'Your message has been received. Our team will get back to you shortly.',
+        status: 200,
+      }
     );
   }
 

@@ -96,9 +96,7 @@ export default function OrdersPage() {
       </div>
 
       <div className="border-b border-beige-line pb-6 mb-8">
-        <h1 className="font-display text-3xl md:text-4xl text-dark-espresso mb-1">
-          Order History
-        </h1>
+        <h1 className="font-display text-3xl md:text-4xl text-dark-espresso mb-1">Order History</h1>
         <p className="text-[13px] text-chocolate-brown">
           Review past couture acquisitions, track consignments, and access invoices.
         </p>
@@ -118,7 +116,7 @@ export default function OrdersPage() {
         </div>
       ) : (
         <div className="space-y-8">
-          {orders.map(order => (
+          {orders.map((order) => (
             <div
               key={order.orderNumber}
               className="border border-beige-line bg-cream/40 p-6 md:p-8"
@@ -151,7 +149,7 @@ export default function OrdersPage() {
 
               {/* Order Items */}
               <div className="space-y-4">
-                {order.items.map(item => (
+                {order.items.map((item) => (
                   <div
                     key={item.id}
                     className="flex items-center gap-4 bg-cream/60 border border-beige-line/50 p-4"

@@ -17,15 +17,16 @@ export function withMiddlewares<T = unknown>(
 ) {
   return async function routeHandler(
     req: NextRequest | Request,
-    routeProps?: { params?: Promise<Record<string, string | string[]>> | Record<string, string | string[]> }
+    routeProps?: {
+      params?: Promise<Record<string, string | string[]>> | Record<string, string | string[]>;
+    }
   ): Promise<NextResponse | Response> {
     const nextReq = req instanceof NextRequest ? req : new NextRequest(req.url, req);
 
     let resolvedParams: Record<string, string | string[]> = {};
     if (routeProps?.params) {
-      resolvedParams = routeProps.params instanceof Promise 
-        ? await routeProps.params 
-        : routeProps.params;
+      resolvedParams =
+        routeProps.params instanceof Promise ? await routeProps.params : routeProps.params;
     }
 
     const context: RequestContext = {

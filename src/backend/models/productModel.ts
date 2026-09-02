@@ -6,8 +6,16 @@ function makeImages(slug: string): Product['images'] {
   return [
     { src: getProductPlaceholder('front', slug), alt: `${slug} front view`, type: 'front' },
     { src: getProductPlaceholder('back', slug), alt: `${slug} back view`, type: 'back' },
-    { src: getProductPlaceholder('detail', slug), alt: `${slug} embroidery detail`, type: 'detail' },
-    { src: getProductPlaceholder('lifestyle', slug), alt: `${slug} styled look`, type: 'lifestyle' },
+    {
+      src: getProductPlaceholder('detail', slug),
+      alt: `${slug} embroidery detail`,
+      type: 'detail',
+    },
+    {
+      src: getProductPlaceholder('lifestyle', slug),
+      alt: `${slug} styled look`,
+      type: 'lifestyle',
+    },
   ];
 }
 
@@ -22,8 +30,10 @@ export const products: Product[] = [
     id: 'ks-001',
     slug: 'chandni-chanderi-set',
     name: 'Chandni Chanderi set',
-    shortDescription: 'Hand-embroidered Chanderi silk kurta with tonal thread work, paired with silk-cotton pants and a sheer dupatta.',
-    longDescription: 'The Chandni set is cut from lightweight Chanderi silk with a subtle handloom sheen. Tonal thread work traces delicate floral motifs across the yoke and sleeves. The relaxed silhouette falls to mid-calf, paired with straight-cut silk-cotton pants and a sheer organza dupatta with hand-finished edges.',
+    shortDescription:
+      'Hand-embroidered Chanderi silk kurta with tonal thread work, paired with silk-cotton pants and a sheer dupatta.',
+    longDescription:
+      'The Chandni set is cut from lightweight Chanderi silk with a subtle handloom sheen. Tonal thread work traces delicate floral motifs across the yoke and sleeves. The relaxed silhouette falls to mid-calf, paired with straight-cut silk-cotton pants and a sheer organza dupatta with hand-finished edges.',
     category: 'kurta-sets',
     collections: ['signature', 'festive-edit'],
     occasions: ['festive', 'brunch-day'],
@@ -50,8 +60,10 @@ export const products: Product[] = [
     id: 'ks-002',
     slug: 'roshni-silk-set',
     name: 'Roshni silk set',
-    shortDescription: 'Raw silk kurta in dusty rose with aari work along the neckline, paired with flared palazzos.',
-    longDescription: 'The Roshni set brings together the richness of raw silk with the delicacy of aari work. A dusty rose kurta features intricate floral aari embroidery cascading from the neckline across the front panel. Paired with flared raw silk palazzos and a contrast dupatta in soft blush organza.',
+    shortDescription:
+      'Raw silk kurta in dusty rose with aari work along the neckline, paired with flared palazzos.',
+    longDescription:
+      'The Roshni set brings together the richness of raw silk with the delicacy of aari work. A dusty rose kurta features intricate floral aari embroidery cascading from the neckline across the front panel. Paired with flared raw silk palazzos and a contrast dupatta in soft blush organza.',
     category: 'kurta-sets',
     collections: ['festive-edit'],
     occasions: ['festive', 'wedding-guest'],
@@ -77,8 +89,10 @@ export const products: Product[] = [
     id: 'ks-003',
     slug: 'noor-cotton-silk-set',
     name: 'Noor cotton silk set',
-    shortDescription: 'Lightweight cotton silk kurta in sage green with chikankari detailing and matching churidar.',
-    longDescription: 'The Noor set is crafted in breathable cotton silk with a cool sage green finish. Fine chikankari detailing traces the yoke, hemline and sleeves in white thread. A relaxed A-line silhouette makes this equally suited to the office and weekend brunches. Comes with a matching churidar and a cotton dupatta.',
+    shortDescription:
+      'Lightweight cotton silk kurta in sage green with chikankari detailing and matching churidar.',
+    longDescription:
+      'The Noor set is crafted in breathable cotton silk with a cool sage green finish. Fine chikankari detailing traces the yoke, hemline and sleeves in white thread. A relaxed A-line silhouette makes this equally suited to the office and weekend brunches. Comes with a matching churidar and a cotton dupatta.',
     category: 'kurta-sets',
     collections: ['everyday-luxe'],
     occasions: ['everyday', 'brunch-day'],
@@ -104,8 +118,10 @@ export const products: Product[] = [
     id: 'ks-004',
     slug: 'pari-organza-set',
     name: 'Pari organza set',
-    shortDescription: 'Sheer organza kurta layered over a silk slip, with scattered sequin work and a tissue dupatta.',
-    longDescription: 'The Pari set plays with transparency and light. A sheer organza kurta with scattered sequin work is layered over a tonal silk slip for a look that catches light without overpowering. The straight-cut silhouette falls to knee length, paired with slim trousers and a tissue dupatta with sequin-trimmed edges.',
+    shortDescription:
+      'Sheer organza kurta layered over a silk slip, with scattered sequin work and a tissue dupatta.',
+    longDescription:
+      'The Pari set plays with transparency and light. A sheer organza kurta with scattered sequin work is layered over a tonal silk slip for a look that catches light without overpowering. The straight-cut silhouette falls to knee length, paired with slim trousers and a tissue dupatta with sequin-trimmed edges.',
     category: 'kurta-sets',
     collections: ['festive-edit', 'monsoon-edit'],
     occasions: ['festive', 'mehendi-haldi'],
@@ -133,8 +149,10 @@ export const products: Product[] = [
     id: 'cs-001',
     slug: 'meher-linen-set',
     name: 'Meher linen set',
-    shortDescription: 'Handloom linen top with mirror-work detailing and matching wide-leg pants in natural ecru.',
-    longDescription: 'The Meher set is crafted in handloom linen with a soft, lived-in texture. Mirror-work detailing is scattered sparingly across the front panel and cuffs, catching light without excess. The boxy crop top pairs with relaxed wide-leg pants for a silhouette that moves easily from a day event to an evening out.',
+    shortDescription:
+      'Handloom linen top with mirror-work detailing and matching wide-leg pants in natural ecru.',
+    longDescription:
+      'The Meher set is crafted in handloom linen with a soft, lived-in texture. Mirror-work detailing is scattered sparingly across the front panel and cuffs, catching light without excess. The boxy crop top pairs with relaxed wide-leg pants for a silhouette that moves easily from a day event to an evening out.',
     category: 'co-ord-sets',
     collections: ['everyday-luxe'],
     occasions: ['everyday', 'brunch-day'],
@@ -160,8 +178,10 @@ export const products: Product[] = [
     id: 'cs-002',
     slug: 'zara-threadwork-set',
     name: 'Zara thread-work set',
-    shortDescription: 'Georgette peplum top and culottes with tonal thread-work borders in midnight blue.',
-    longDescription: 'The Zara set pairs a structured peplum top with flowing culottes, both in midnight blue georgette. Tonal thread-work borders run along the hemlines, adding texture without breaking the colour story. The fitted waist and flared peplum create a flattering proportion that works across sizes.',
+    shortDescription:
+      'Georgette peplum top and culottes with tonal thread-work borders in midnight blue.',
+    longDescription:
+      'The Zara set pairs a structured peplum top with flowing culottes, both in midnight blue georgette. Tonal thread-work borders run along the hemlines, adding texture without breaking the colour story. The fitted waist and flared peplum create a flattering proportion that works across sizes.',
     category: 'co-ord-sets',
     collections: ['monsoon-edit'],
     occasions: ['brunch-day', 'festive'],
@@ -188,7 +208,8 @@ export const products: Product[] = [
     slug: 'ira-georgette-set',
     name: 'Ira georgette set',
     shortDescription: 'Soft georgette blouse and palazzo set in blush pink with gota patti trim.',
-    longDescription: 'The Ira set is cut from flowing georgette in a delicate blush pink. Gota patti trim lines the neckline, sleeve edges and palazzo hemline, adding a festive gleam without heaviness. The relaxed blouse and fluid palazzos make this ideal for haldi ceremonies or daytime celebrations.',
+    longDescription:
+      'The Ira set is cut from flowing georgette in a delicate blush pink. Gota patti trim lines the neckline, sleeve edges and palazzo hemline, adding a festive gleam without heaviness. The relaxed blouse and fluid palazzos make this ideal for haldi ceremonies or daytime celebrations.',
     category: 'co-ord-sets',
     collections: ['festive-edit'],
     occasions: ['mehendi-haldi', 'brunch-day'],
@@ -214,8 +235,10 @@ export const products: Product[] = [
     id: 'cs-004',
     slug: 'priya-tissue-set',
     name: 'Priya tissue set',
-    shortDescription: 'Tissue silk jacket and pants set in warm gold with hand-embroidered floral motifs.',
-    longDescription: 'The Priya set brings quiet drama in warm gold tissue silk. A structured jacket with hand-embroidered floral motifs at the shoulders and hemline layers over a simple silk camisole and high-waisted tapered pants. The metallic sheen of the tissue gives it a ceremonial quality without being heavy-handed.',
+    shortDescription:
+      'Tissue silk jacket and pants set in warm gold with hand-embroidered floral motifs.',
+    longDescription:
+      'The Priya set brings quiet drama in warm gold tissue silk. A structured jacket with hand-embroidered floral motifs at the shoulders and hemline layers over a simple silk camisole and high-waisted tapered pants. The metallic sheen of the tissue gives it a ceremonial quality without being heavy-handed.',
     category: 'co-ord-sets',
     collections: ['signature', 'festive-edit'],
     occasions: ['festive', 'wedding-guest'],
@@ -243,8 +266,10 @@ export const products: Product[] = [
     id: 'es-001',
     slug: 'aisha-zardozi-shirt',
     name: 'Aisha zardozi shirt',
-    shortDescription: 'Cotton silk shirt with zardozi embroidery along the placket and collar in off-white.',
-    longDescription: 'The Aisha shirt is a modern staple with a traditional soul. Cut in crisp cotton silk, it features fine zardozi embroidery tracing the placket and collar — metallic thread and tiny sequins catching light as you move. Pair with jeans for brunch or layer under a blazer for evening.',
+    shortDescription:
+      'Cotton silk shirt with zardozi embroidery along the placket and collar in off-white.',
+    longDescription:
+      'The Aisha shirt is a modern staple with a traditional soul. Cut in crisp cotton silk, it features fine zardozi embroidery tracing the placket and collar — metallic thread and tiny sequins catching light as you move. Pair with jeans for brunch or layer under a blazer for evening.',
     category: 'embroidered-shirts',
     collections: ['everyday-luxe'],
     occasions: ['everyday', 'brunch-day'],
@@ -270,8 +295,10 @@ export const products: Product[] = [
     id: 'es-002',
     slug: 'kavya-mirror-shirt',
     name: 'Kavya mirror-work shirt',
-    shortDescription: 'Handloom cotton shirt with scattered mirror-work and contrast stitch detailing in earthy brown.',
-    longDescription: 'The Kavya shirt takes the classic relaxed silhouette and adds playful mirror-work accents scattered across the front and sleeves. Contrast stitching in cream thread traces the seams and pockets. Handloom cotton in a warm earthy brown gives it a textured, artisanal feel that softens with every wash.',
+    shortDescription:
+      'Handloom cotton shirt with scattered mirror-work and contrast stitch detailing in earthy brown.',
+    longDescription:
+      'The Kavya shirt takes the classic relaxed silhouette and adds playful mirror-work accents scattered across the front and sleeves. Contrast stitching in cream thread traces the seams and pockets. Handloom cotton in a warm earthy brown gives it a textured, artisanal feel that softens with every wash.',
     category: 'embroidered-shirts',
     collections: ['everyday-luxe', 'monsoon-edit'],
     occasions: ['everyday'],
@@ -284,7 +311,11 @@ export const products: Product[] = [
     embroideryType: 'Mirror work',
     work: 'Scattered mirror-work accents with contrast cream stitching on seams and pockets.',
     components: ['Shirt'],
-    care: ['Hand wash in cold water', 'Iron on medium heat', 'Mirrors may need re-securing after multiple washes'],
+    care: [
+      'Hand wash in cold water',
+      'Iron on medium heat',
+      'Mirrors may need re-securing after multiple washes',
+    ],
     fit: 'Relaxed',
     modelHeightAndSize: 'Model is 5\'6" wearing size M',
     deliveryEstimate: '3–5 business days within Kathmandu Valley',
@@ -298,7 +329,8 @@ export const products: Product[] = [
     slug: 'diya-cutwork-shirt',
     name: 'Diya cutwork shirt',
     shortDescription: 'Organza-panelled cutwork shirt in powder blue with scalloped hemline.',
-    longDescription: 'The Diya shirt introduces cutwork panels along the yoke and sleeves, backed with sheer organza for a play of opacity and transparency. A scalloped hemline adds a feminine finish. Cut in powder blue cotton silk, this is a piece that dresses up basics without trying too hard.',
+    longDescription:
+      'The Diya shirt introduces cutwork panels along the yoke and sleeves, backed with sheer organza for a play of opacity and transparency. A scalloped hemline adds a feminine finish. Cut in powder blue cotton silk, this is a piece that dresses up basics without trying too hard.',
     category: 'embroidered-shirts',
     collections: ['monsoon-edit'],
     occasions: ['brunch-day', 'everyday'],
@@ -324,8 +356,10 @@ export const products: Product[] = [
     id: 'es-004',
     slug: 'naina-sequin-shirt',
     name: 'Naina sequin shirt',
-    shortDescription: 'Georgette shirt with hand-applied sequin clusters at the shoulders and cuffs in deep wine.',
-    longDescription: 'The Naina shirt is evening-ready without being overdressed. Hand-applied sequin clusters at the shoulders and cuffs create points of light against deep wine georgette. The fabric drapes with a fluid, almost liquid quality. Tuck into tailored trousers or wear with a lehenga skirt for festive occasions.',
+    shortDescription:
+      'Georgette shirt with hand-applied sequin clusters at the shoulders and cuffs in deep wine.',
+    longDescription:
+      'The Naina shirt is evening-ready without being overdressed. Hand-applied sequin clusters at the shoulders and cuffs create points of light against deep wine georgette. The fabric drapes with a fluid, almost liquid quality. Tuck into tailored trousers or wear with a lehenga skirt for festive occasions.',
     category: 'embroidered-shirts',
     collections: ['festive-edit'],
     occasions: ['festive', 'wedding-guest'],
@@ -353,8 +387,10 @@ export const products: Product[] = [
     id: 'sh-001',
     slug: 'gulnaar-sharara-set',
     name: 'Gulnaar sharara set',
-    shortDescription: 'Chanderi silk sharara set in lilac with hand-embroidered floral borders and a sheer dupatta.',
-    longDescription: 'The Gulnaar sharara set is festive dressing at its most effortless. A short kurta in lilac Chanderi silk with hand-embroidered floral borders sits above wide-flared sharara pants that move beautifully. The sheer dupatta is finished with matching floral border embroidery. A piece that photographs exceptionally well.',
+    shortDescription:
+      'Chanderi silk sharara set in lilac with hand-embroidered floral borders and a sheer dupatta.',
+    longDescription:
+      'The Gulnaar sharara set is festive dressing at its most effortless. A short kurta in lilac Chanderi silk with hand-embroidered floral borders sits above wide-flared sharara pants that move beautifully. The sheer dupatta is finished with matching floral border embroidery. A piece that photographs exceptionally well.',
     category: 'shararas',
     collections: ['festive-edit'],
     occasions: ['mehendi-haldi', 'festive'],
@@ -380,8 +416,10 @@ export const products: Product[] = [
     id: 'sh-002',
     slug: 'laila-embroidered-sharara',
     name: 'Laila embroidered sharara',
-    shortDescription: 'Organza sharara set in ivory with zardozi and pearl detailing for wedding celebrations.',
-    longDescription: 'The Laila sharara set is crafted for the woman who wants to shine without shouting. Ivory organza layered over satin lining, with fine zardozi work and hand-applied seed pearls tracing botanical motifs across the bodice and sharara hem. Every detail is considered — this is heirloom dressing made wearable.',
+    shortDescription:
+      'Organza sharara set in ivory with zardozi and pearl detailing for wedding celebrations.',
+    longDescription:
+      'The Laila sharara set is crafted for the woman who wants to shine without shouting. Ivory organza layered over satin lining, with fine zardozi work and hand-applied seed pearls tracing botanical motifs across the bodice and sharara hem. Every detail is considered — this is heirloom dressing made wearable.',
     category: 'shararas',
     collections: ['bridal-edit', 'signature'],
     occasions: ['wedding-guest', 'festive'],
@@ -407,8 +445,10 @@ export const products: Product[] = [
     id: 'sh-003',
     slug: 'zoya-organza-sharara',
     name: 'Zoya organza sharara',
-    shortDescription: 'Pastel mint organza sharara set with scattered sequin and thread-work embroidery.',
-    longDescription: 'The Zoya set captures a garden-party lightness in pastel mint organza. Scattered sequin and thread-work embroidery across the kurta creates a subtle shimmer without heaviness. The flared sharara pants have embroidered borders at the hem. An organza dupatta with sequin edging completes the set.',
+    shortDescription:
+      'Pastel mint organza sharara set with scattered sequin and thread-work embroidery.',
+    longDescription:
+      'The Zoya set captures a garden-party lightness in pastel mint organza. Scattered sequin and thread-work embroidery across the kurta creates a subtle shimmer without heaviness. The flared sharara pants have embroidered borders at the hem. An organza dupatta with sequin edging completes the set.',
     category: 'shararas',
     collections: ['monsoon-edit'],
     occasions: ['mehendi-haldi', 'brunch-day'],
@@ -434,8 +474,10 @@ export const products: Product[] = [
     id: 'sh-004',
     slug: 'rumi-georgette-sharara',
     name: 'Rumi georgette sharara',
-    shortDescription: 'Flowing georgette sharara in deep teal with contrast thread-work borders and a ruffle dupatta.',
-    longDescription: 'The Rumi sharara brings colour and movement together. Deep teal georgette flows into wide sharara flares, anchored by contrast cream thread-work borders at every hem. The short peplum kurta nips at the waist for structure. A ruffle-edged dupatta in matching teal adds drama without weight.',
+    shortDescription:
+      'Flowing georgette sharara in deep teal with contrast thread-work borders and a ruffle dupatta.',
+    longDescription:
+      'The Rumi sharara brings colour and movement together. Deep teal georgette flows into wide sharara flares, anchored by contrast cream thread-work borders at every hem. The short peplum kurta nips at the waist for structure. A ruffle-edged dupatta in matching teal adds drama without weight.',
     category: 'shararas',
     collections: ['festive-edit'],
     occasions: ['festive', 'wedding-guest'],
@@ -463,8 +505,10 @@ export const products: Product[] = [
     id: 'iw-001',
     slug: 'anaya-cape-set',
     name: 'Anaya cape set',
-    shortDescription: 'Raw silk cape with zardozi shoulder embellishment layered over a silk column dress in charcoal.',
-    longDescription: 'The Anaya cape set reimagines Indian occasion dressing with a contemporary eye. A structured cape in charcoal raw silk features zardozi embellishment at the shoulders, falling to mid-thigh over a sleek silk column dress. The silhouette is minimal and dramatic — perfect for the woman who prefers modern lines with artisanal detail.',
+    shortDescription:
+      'Raw silk cape with zardozi shoulder embellishment layered over a silk column dress in charcoal.',
+    longDescription:
+      'The Anaya cape set reimagines Indian occasion dressing with a contemporary eye. A structured cape in charcoal raw silk features zardozi embellishment at the shoulders, falling to mid-thigh over a sleek silk column dress. The silhouette is minimal and dramatic — perfect for the woman who prefers modern lines with artisanal detail.',
     category: 'indo-western',
     collections: ['signature'],
     occasions: ['wedding-guest', 'festive'],
@@ -490,8 +534,10 @@ export const products: Product[] = [
     id: 'iw-002',
     slug: 'kiara-jacket-kurta',
     name: 'Kiara jacket kurta',
-    shortDescription: 'Chanderi jacket with mirror-work motifs over a cotton silk kurta and cropped pants in off-white.',
-    longDescription: 'The Kiara set layers a Chanderi silk jacket with mirror-work motifs over a simple cotton silk kurta and cropped straight-leg pants. The jacket works as the statement piece — mirror work in geometric patterns traces the front panels and hemline. Wear the jacket over western pieces too, or the kurta set on its own for quieter days.',
+    shortDescription:
+      'Chanderi jacket with mirror-work motifs over a cotton silk kurta and cropped pants in off-white.',
+    longDescription:
+      'The Kiara set layers a Chanderi silk jacket with mirror-work motifs over a simple cotton silk kurta and cropped straight-leg pants. The jacket works as the statement piece — mirror work in geometric patterns traces the front panels and hemline. Wear the jacket over western pieces too, or the kurta set on its own for quieter days.',
     category: 'indo-western',
     collections: ['everyday-luxe'],
     occasions: ['everyday', 'brunch-day'],
@@ -517,8 +563,10 @@ export const products: Product[] = [
     id: 'iw-003',
     slug: 'tara-dhoti-set',
     name: 'Tara dhoti set',
-    shortDescription: 'Georgette dhoti pants with thread-work borders and a structured crop blouse in dusty mauve.',
-    longDescription: 'The Tara set takes the traditional dhoti and reframes it for modern wear. Fluid georgette dhoti pants with thread-work borders at the cuffs pair with a structured crop blouse featuring the same thread-work motifs at the neckline. In dusty mauve, it walks the line between traditional and contemporary with ease.',
+    shortDescription:
+      'Georgette dhoti pants with thread-work borders and a structured crop blouse in dusty mauve.',
+    longDescription:
+      'The Tara set takes the traditional dhoti and reframes it for modern wear. Fluid georgette dhoti pants with thread-work borders at the cuffs pair with a structured crop blouse featuring the same thread-work motifs at the neckline. In dusty mauve, it walks the line between traditional and contemporary with ease.',
     category: 'indo-western',
     collections: ['festive-edit'],
     occasions: ['mehendi-haldi', 'brunch-day'],
@@ -544,8 +592,10 @@ export const products: Product[] = [
     id: 'iw-004',
     slug: 'maya-palazzo-set',
     name: 'Maya palazzo set',
-    shortDescription: 'Mashru silk tunic with cutwork hem detail and flowing palazzo pants in forest green.',
-    longDescription: 'The Maya set brings together the lustrous sheen of Mashru silk with relaxed, wearable proportions. A knee-length tunic in forest green features cutwork detailing along the hem, revealing a sliver of skin. Paired with wide palazzo pants in the same fabric. The look is polished but effortless — from office to dinner without a change.',
+    shortDescription:
+      'Mashru silk tunic with cutwork hem detail and flowing palazzo pants in forest green.',
+    longDescription:
+      'The Maya set brings together the lustrous sheen of Mashru silk with relaxed, wearable proportions. A knee-length tunic in forest green features cutwork detailing along the hem, revealing a sliver of skin. Paired with wide palazzo pants in the same fabric. The look is polished but effortless — from office to dinner without a change.',
     category: 'indo-western',
     collections: ['everyday-luxe', 'monsoon-edit'],
     occasions: ['everyday', 'brunch-day'],
@@ -573,8 +623,10 @@ export const products: Product[] = [
     id: 'ow-001',
     slug: 'sonali-bridal-set',
     name: 'Sonali bridal set',
-    shortDescription: 'Velvet lehenga set in deep wine with all-over zardozi and sequin work. Made to order.',
-    longDescription: 'The Sonali bridal set is the centrepiece of our bridal collection. Deep wine velvet provides a rich, luminous base for all-over zardozi and sequin work in gold — floral motifs cascading from the blouse across the lehenga panels. The heavy organza dupatta carries matching border work. This is made-to-order and can be customised for fit and embroidery density.',
+    shortDescription:
+      'Velvet lehenga set in deep wine with all-over zardozi and sequin work. Made to order.',
+    longDescription:
+      'The Sonali bridal set is the centrepiece of our bridal collection. Deep wine velvet provides a rich, luminous base for all-over zardozi and sequin work in gold — floral motifs cascading from the blouse across the lehenga panels. The heavy organza dupatta carries matching border work. This is made-to-order and can be customised for fit and embroidery density.',
     category: 'occasionwear',
     collections: ['bridal-edit', 'signature'],
     occasions: ['wedding-guest'],
@@ -587,7 +639,11 @@ export const products: Product[] = [
     embroideryType: 'Zardozi',
     work: 'All-over zardozi and sequin work in gold with cascading floral motifs from blouse to lehenga panels.',
     components: ['Blouse', 'Lehenga skirt', 'Dupatta'],
-    care: ['Professional dry clean only', 'Store in provided garment box', 'Do not fold — hang on padded hanger'],
+    care: [
+      'Professional dry clean only',
+      'Store in provided garment box',
+      'Do not fold — hang on padded hanger',
+    ],
     fit: 'Fitted',
     modelHeightAndSize: 'Model is 5\'8" wearing custom size',
     deliveryEstimate: '21–28 business days (made to order)',
@@ -600,8 +656,10 @@ export const products: Product[] = [
     id: 'ow-002',
     slug: 'ishani-lehenga-set',
     name: 'Ishani lehenga set',
-    shortDescription: 'Raw silk lehenga in champagne gold with hand-embroidered paisley motifs and a contrast dupatta.',
-    longDescription: 'The Ishani lehenga set brings festive glamour without excess. Champagne gold raw silk serves as the canvas for hand-embroidered paisley motifs that trace the lehenga borders and blouse neckline. A contrast deep teal dupatta in organza provides colour balance. Ideal for reception evenings or major festive occasions.',
+    shortDescription:
+      'Raw silk lehenga in champagne gold with hand-embroidered paisley motifs and a contrast dupatta.',
+    longDescription:
+      'The Ishani lehenga set brings festive glamour without excess. Champagne gold raw silk serves as the canvas for hand-embroidered paisley motifs that trace the lehenga borders and blouse neckline. A contrast deep teal dupatta in organza provides colour balance. Ideal for reception evenings or major festive occasions.',
     category: 'occasionwear',
     collections: ['festive-edit', 'signature'],
     occasions: ['wedding-guest', 'festive'],
@@ -627,8 +685,10 @@ export const products: Product[] = [
     id: 'ow-003',
     slug: 'ruhi-reception-set',
     name: 'Ruhi reception set',
-    shortDescription: 'Tissue silk gown-style anarkali in blush with aari work across the bodice and layered dupatta.',
-    longDescription: 'The Ruhi set reimagines the anarkali as a gown. Cut in blush tissue silk, it falls from a fitted bodice — covered in delicate aari work — into fluid, floor-sweeping panels. The layered dupatta drapes like a stole. For the woman who wants Indian ceremony dressing with a modern, elongated silhouette.',
+    shortDescription:
+      'Tissue silk gown-style anarkali in blush with aari work across the bodice and layered dupatta.',
+    longDescription:
+      'The Ruhi set reimagines the anarkali as a gown. Cut in blush tissue silk, it falls from a fitted bodice — covered in delicate aari work — into fluid, floor-sweeping panels. The layered dupatta drapes like a stole. For the woman who wants Indian ceremony dressing with a modern, elongated silhouette.',
     category: 'occasionwear',
     collections: ['bridal-edit'],
     occasions: ['wedding-guest', 'festive'],
@@ -641,7 +701,11 @@ export const products: Product[] = [
     embroideryType: 'Aari work',
     work: 'Delicate aari work covering the fitted bodice.',
     components: ['Gown-style anarkali', 'Layered dupatta'],
-    care: ['Professional dry clean only', 'Hang on padded hanger', 'Steam gently to remove creases'],
+    care: [
+      'Professional dry clean only',
+      'Hang on padded hanger',
+      'Steam gently to remove creases',
+    ],
     fit: 'Flared',
     modelHeightAndSize: 'Model is 5\'8" wearing size S',
     deliveryEstimate: '14–21 business days (made to order)',
@@ -654,8 +718,10 @@ export const products: Product[] = [
     id: 'ow-004',
     slug: 'mehr-sangeet-set',
     name: 'Mehr sangeet set',
-    shortDescription: 'Georgette sharara set in emerald with all-over sequin spray and a ruffled dupatta.',
-    longDescription: 'The Mehr set is designed for the night of the sangeet. Emerald georgette catches light through an all-over spray of hand-applied sequins that shimmer without being heavy. A short kurta with a defined waist sits above wide flared sharara pants. The ruffled dupatta in matching georgette adds movement and drama on the dance floor.',
+    shortDescription:
+      'Georgette sharara set in emerald with all-over sequin spray and a ruffled dupatta.',
+    longDescription:
+      'The Mehr set is designed for the night of the sangeet. Emerald georgette catches light through an all-over spray of hand-applied sequins that shimmer without being heavy. A short kurta with a defined waist sits above wide flared sharara pants. The ruffled dupatta in matching georgette adds movement and drama on the dance floor.',
     category: 'occasionwear',
     collections: ['festive-edit', 'bridal-edit'],
     occasions: ['mehendi-haldi', 'wedding-guest'],
@@ -680,38 +746,41 @@ export const products: Product[] = [
 ];
 
 export function getProductBySlug(slug: string): Product | undefined {
-  return products.find(p => p.slug === slug);
+  return products.find((p) => p.slug === slug);
 }
 
 export function getProductsByCategory(category: string): Product[] {
-  return products.filter(p => p.category === category);
+  return products.filter((p) => p.category === category);
 }
 
 export function getProductsByCollection(collection: string): Product[] {
-  return products.filter(p => p.collections.includes(collection as Product['collections'][number]));
+  return products.filter((p) =>
+    p.collections.includes(collection as Product['collections'][number])
+  );
 }
 
 export function getProductsByOccasion(occasion: string): Product[] {
-  return products.filter(p => p.occasions.includes(occasion as Product['occasions'][number]));
+  return products.filter((p) => p.occasions.includes(occasion as Product['occasions'][number]));
 }
 
 export function getNewArrivals(): Product[] {
-  return products.filter(p => p.isNewArrival);
+  return products.filter((p) => p.isNewArrival);
 }
 
 export function getBestsellers(): Product[] {
-  return products.filter(p => p.isBestseller);
+  return products.filter((p) => p.isBestseller);
 }
 
 export function searchProducts(query: string): Product[] {
   const q = query.toLowerCase();
-  return products.filter(p =>
-    p.name.toLowerCase().includes(q) ||
-    p.shortDescription.toLowerCase().includes(q) ||
-    p.fabric.toLowerCase().includes(q) ||
-    p.embroideryType.toLowerCase().includes(q) ||
-    p.colour.name.toLowerCase().includes(q) ||
-    p.category.toLowerCase().includes(q)
+  return products.filter(
+    (p) =>
+      p.name.toLowerCase().includes(q) ||
+      p.shortDescription.toLowerCase().includes(q) ||
+      p.fabric.toLowerCase().includes(q) ||
+      p.embroideryType.toLowerCase().includes(q) ||
+      p.colour.name.toLowerCase().includes(q) ||
+      p.category.toLowerCase().includes(q)
   );
 }
 
@@ -742,7 +811,7 @@ export class ProductModel {
   }
 
   public static findById(id: string): Product | undefined {
-    return products.find(p => p.id === id);
+    return products.find((p) => p.id === id);
   }
 
   public static findByCategory(category: string): Product[] {
@@ -780,54 +849,57 @@ export class ProductModel {
 
     if (options.search) {
       const q = options.search.toLowerCase();
-      result = result.filter(p =>
-        p.name.toLowerCase().includes(q) ||
-        p.shortDescription.toLowerCase().includes(q) ||
-        p.fabric.toLowerCase().includes(q) ||
-        p.embroideryType.toLowerCase().includes(q) ||
-        p.colour.name.toLowerCase().includes(q) ||
-        p.category.toLowerCase().includes(q)
+      result = result.filter(
+        (p) =>
+          p.name.toLowerCase().includes(q) ||
+          p.shortDescription.toLowerCase().includes(q) ||
+          p.fabric.toLowerCase().includes(q) ||
+          p.embroideryType.toLowerCase().includes(q) ||
+          p.colour.name.toLowerCase().includes(q) ||
+          p.category.toLowerCase().includes(q)
       );
     }
 
     if (options.category) {
-      result = result.filter(p => p.category === options.category);
+      result = result.filter((p) => p.category === options.category);
     }
 
     if (options.collection) {
-      result = result.filter(p => p.collections.includes(options.collection as any));
+      result = result.filter((p) => p.collections.includes(options.collection as any));
     }
 
     if (options.occasion) {
-      result = result.filter(p => p.occasions.includes(options.occasion as any));
+      result = result.filter((p) => p.occasions.includes(options.occasion as any));
     }
 
     if (options.isNewArrival !== undefined) {
-      result = result.filter(p => p.isNewArrival === options.isNewArrival);
+      result = result.filter((p) => p.isNewArrival === options.isNewArrival);
     }
 
     if (options.isBestseller !== undefined) {
-      result = result.filter(p => p.isBestseller === options.isBestseller);
+      result = result.filter((p) => p.isBestseller === options.isBestseller);
     }
 
     if (options.minPrice !== undefined) {
-      result = result.filter(p => p.price >= options.minPrice!);
+      result = result.filter((p) => p.price >= options.minPrice!);
     }
 
     if (options.maxPrice !== undefined) {
-      result = result.filter(p => p.price <= options.maxPrice!);
+      result = result.filter((p) => p.price <= options.maxPrice!);
     }
 
     if (options.fabric) {
-      result = result.filter(p => p.fabric.toLowerCase() === options.fabric!.toLowerCase());
+      result = result.filter((p) => p.fabric.toLowerCase() === options.fabric!.toLowerCase());
     }
 
     if (options.embroideryType) {
-      result = result.filter(p => p.embroideryType.toLowerCase() === options.embroideryType!.toLowerCase());
+      result = result.filter(
+        (p) => p.embroideryType.toLowerCase() === options.embroideryType!.toLowerCase()
+      );
     }
 
     if (options.size) {
-      result = result.filter(p => p.availableSizes.includes(options.size as any));
+      result = result.filter((p) => p.availableSizes.includes(options.size as any));
     }
 
     // Sorting
@@ -877,7 +949,11 @@ export class ProductModel {
     return this.query(options);
   }
 
-  public static checkStock(productId: string, size: string, quantity = 1): {
+  public static checkStock(
+    productId: string,
+    size: string,
+    quantity = 1
+  ): {
     inStock: boolean;
     availableQuantity: number;
     isMadeToOrder: boolean;
@@ -899,5 +975,3 @@ export class ProductModel {
     };
   }
 }
-
-

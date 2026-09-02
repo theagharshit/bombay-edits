@@ -15,14 +15,11 @@ export class ApiError extends Error {
 }
 
 export class ApiClient {
-  private static async request<T>(
-    endpoint: string,
-    options: RequestInit = {}
-  ): Promise<T> {
+  private static async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const url = endpoint.startsWith('http') ? endpoint : endpoint;
     const defaultHeaders: Record<string, string> = {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
+      Accept: 'application/json',
     };
 
     const res = await fetch(url, {

@@ -15,7 +15,8 @@ export const API_CATALOG: ApiEndpointDoc[] = [
     path: '/api/v1/products',
     method: 'GET',
     summary: 'List & Filter Products',
-    description: 'Query products with filters (category, collection, occasion, price, search, sort, pagination).',
+    description:
+      'Query products with filters (category, collection, occasion, price, search, sort, pagination).',
     rateLimit: '120 req/min',
     authenticated: false,
     parameters: {
@@ -37,7 +38,8 @@ export const API_CATALOG: ApiEndpointDoc[] = [
     path: '/api/v1/products/{slug}',
     method: 'GET',
     summary: 'Get Product Detail',
-    description: 'Fetch detailed product specification, images, and sizing information by unique slug.',
+    description:
+      'Fetch detailed product specification, images, and sizing information by unique slug.',
     rateLimit: '120 req/min',
     authenticated: false,
     parameters: {

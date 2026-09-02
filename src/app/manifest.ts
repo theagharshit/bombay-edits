@@ -4,7 +4,8 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'The Bombay Edit — Luxury Indian Couture & Handcrafted Ready-to-Wear',
     short_name: 'The Bombay Edit',
-    description: 'Bespoke hand-embroidered kurta sets, lehengas, and contemporary silhouettes crafted by master artisans.',
+    description:
+      'Bespoke hand-embroidered kurta sets, lehengas, and contemporary silhouettes crafted by master artisans.',
     start_url: '/',
     display: 'standalone',
     background_color: '#F6EDE6',

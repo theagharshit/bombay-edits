@@ -15,7 +15,9 @@ export const ApiRouter = {
     get: withMiddlewares(contactController.getSubmissions.bind(contactController)),
   },
   newsletter: {
-    post: withMiddlewares(newsletterController.handleNewsletterSubscription.bind(newsletterController)),
+    post: withMiddlewares(
+      newsletterController.handleNewsletterSubscription.bind(newsletterController)
+    ),
     get: withMiddlewares(newsletterController.getSubscribers.bind(newsletterController)),
   },
   products: {
@@ -26,7 +28,9 @@ export const ApiRouter = {
   collections: {
     list: withMiddlewares(collectionController.getAllCollections.bind(collectionController)),
     bySlug: withMiddlewares(collectionController.getCollectionBySlug.bind(collectionController)),
-    categoryBySlug: withMiddlewares(collectionController.getCategoryBySlug.bind(collectionController)),
+    categoryBySlug: withMiddlewares(
+      collectionController.getCategoryBySlug.bind(collectionController)
+    ),
   },
   shipping: {
     get: withMiddlewares(shippingController.getShippingRates.bind(shippingController)),

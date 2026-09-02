@@ -20,7 +20,7 @@ const orderStore: OrderRecord[] = [];
 export class OrderModel {
   public static async createOrder(orderData: CreateOrderDTO): Promise<OrderRecord> {
     let subtotal = 0;
-    const verifiedItems = orderData.items.map(item => {
+    const verifiedItems = orderData.items.map((item) => {
       const product = ProductModel.findById(item.productId) || ProductModel.findBySlug(item.slug);
       const unitPrice = product ? product.price : item.price;
       const itemTotal = unitPrice * item.quantity;
@@ -95,7 +95,7 @@ export class OrderModel {
             notes: orderData.notes || null,
             status: 'confirmed',
             items: {
-              create: verifiedItems.map(item => ({
+              create: verifiedItems.map((item) => ({
                 productId: item.productId,
                 productSlug: item.slug,
                 productName: item.name,
@@ -108,7 +108,9 @@ export class OrderModel {
           },
         });
 
-        logger.info(`✓ Persisted relational order ${createdOrder.orderNumber} with ${verifiedItems.length} items to Prisma`);
+        logger.info(
+          `✓ Persisted relational order ${createdOrder.orderNumber} with ${verifiedItems.length} items to Prisma`
+        );
       } catch (err) {
         logger.warn('Failed to persist order via Prisma, stored in-memory', { error: err });
       }
@@ -134,7 +136,7 @@ export class OrderModel {
           return {
             orderId: order.id,
             orderNumber: order.orderNumber,
-            items: order.items.map(i => ({
+            items: order.items.map((i) => ({
               productId: i.productId || '',
               slug: i.productSlug,
               name: i.productName,
@@ -170,7 +172,7 @@ export class OrderModel {
       }
     }
 
-    return orderStore.find(o => o.orderId === orderId || o.orderNumber === orderId);
+    return orderStore.find((o) => o.orderId === orderId || o.orderNumber === orderId);
   }
 
   public static async getAll(): Promise<OrderRecord[]> {
@@ -181,10 +183,10 @@ export class OrderModel {
           include: { items: true },
         });
 
-        return orders.map(order => ({
+        return orders.map((order) => ({
           orderId: order.id,
           orderNumber: order.orderNumber,
-          items: order.items.map(i => ({
+          items: order.items.map((i) => ({
             productId: i.productId || '',
             slug: i.productSlug,
             name: i.productName,

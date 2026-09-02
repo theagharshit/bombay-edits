@@ -8,9 +8,7 @@ export function middleware(request: NextRequest) {
 
   // Ignore static assets, next internal files, and favicons from logging noise
   const isStaticOrInternal =
-    pathname.startsWith('/_next') ||
-    pathname.startsWith('/favicon.ico') ||
-    pathname.includes('.');
+    pathname.startsWith('/_next') || pathname.startsWith('/favicon.ico') || pathname.includes('.');
 
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set('x-request-id', requestId);
@@ -28,7 +26,9 @@ export function middleware(request: NextRequest) {
     const method = request.method;
     const time = new Date().toISOString();
     // Structured Edge log
-    console.log(`\x1b[2m[${time}]\x1b[0m \x1b[36m[EDGE]\x1b[0m \x1b[32m${method}\x1b[0m ${pathname} \x1b[2m(id: ${requestId})\x1b[0m`);
+    console.log(
+      `\x1b[2m[${time}]\x1b[0m \x1b[36m[EDGE]\x1b[0m \x1b[32m${method}\x1b[0m ${pathname} \x1b[2m(id: ${requestId})\x1b[0m`
+    );
   }
 
   return response;

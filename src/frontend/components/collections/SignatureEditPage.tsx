@@ -13,11 +13,10 @@ interface SignatureEditPageProps {
 
 export function SignatureEditPage({ collection }: SignatureEditPageProps) {
   // Get products for the current collection
-  const signatureProducts = products.filter(p => p.collections?.includes(collection.slug));
+  const signatureProducts = products.filter((p) => p.collections?.includes(collection.slug));
 
   return (
     <div className="bg-[#FAF7F2] text-[#7A6E64] font-body w-full overflow-hidden">
-      
       {/* 1. Cinematic Hero */}
       <section className="relative w-full h-[90vh] min-h-[600px] flex items-center justify-center">
         <div className="absolute inset-0 z-0">
@@ -32,9 +31,14 @@ export function SignatureEditPage({ collection }: SignatureEditPageProps) {
           {/* Subtle gradient overlay to ensure text readability */}
           <div className="absolute inset-0 bg-gradient-to-b from-[#2E241D]/40 via-[#2E241D]/10 to-[#FAF7F2]" />
         </div>
-        
-        <div className="relative z-10 text-center px-6 flex flex-col items-center" style={{ marginTop: '5vh' }}>
-          <span className="text-[11px] tracking-[0.2em] uppercase text-white/80 mb-6">Archive 01</span>
+
+        <div
+          className="relative z-10 text-center px-6 flex flex-col items-center"
+          style={{ marginTop: '5vh' }}
+        >
+          <span className="text-[11px] tracking-[0.2em] uppercase text-white/80 mb-6">
+            Archive 01
+          </span>
           <h1 className="font-display text-[48px] md:text-[80px] text-white leading-none tracking-tight shadow-sm drop-shadow-lg">
             {collection.name}
           </h1>
@@ -45,19 +49,28 @@ export function SignatureEditPage({ collection }: SignatureEditPageProps) {
       </section>
 
       {/* 2. Editorial Narrative Block */}
-      <section className="w-full" style={{ padding: '160px 24px', maxWidth: '1440px', margin: '0 auto' }}>
+      <section
+        className="w-full"
+        style={{ padding: '160px 24px', maxWidth: '1440px', margin: '0 auto' }}
+      >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           <div className="order-2 lg:order-1 flex flex-col justify-center">
-            <span className="text-[11px] tracking-[0.2em] uppercase text-[#8B7B6D] mb-4">The Inspiration</span>
+            <span className="text-[11px] tracking-[0.2em] uppercase text-[#8B7B6D] mb-4">
+              The Inspiration
+            </span>
             <h2 className="font-display text-[36px] md:text-[48px] text-[#2E241D] leading-tight mb-8">
               A masterclass in restraint and refinement.
             </h2>
             <div className="text-[15px] leading-[1.8] text-[#5A4A3E] space-y-6">
               <p>
-                The Signature Edit represents the absolute pinnacle of our atelier's capabilities. These are not merely garments; they are heirloom artifacts designed to transcend seasons and fleeting trends.
+                The Signature Edit represents the absolute pinnacle of our atelier's capabilities.
+                These are not merely garments; they are heirloom artifacts designed to transcend
+                seasons and fleeting trends.
               </p>
               <p>
-                We spend months sourcing the rarest silks and partnering with master artisans whose lineages of craftsmanship stretch back generations. The result is a collection defined by architectural silhouettes and impossibly intricate Zardozi work.
+                We spend months sourcing the rarest silks and partnering with master artisans whose
+                lineages of craftsmanship stretch back generations. The result is a collection
+                defined by architectural silhouettes and impossibly intricate Zardozi work.
               </p>
             </div>
           </div>
@@ -81,7 +94,7 @@ export function SignatureEditPage({ collection }: SignatureEditPageProps) {
           <div className="text-center" style={{ marginBottom: '100px' }}>
             <h2 className="font-display text-[36px] md:text-[48px] text-[#2E241D]">The Lookbook</h2>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-12">
             {/* Image 1: Tall */}
             <div className="md:col-span-5 md:mt-24">
@@ -95,7 +108,7 @@ export function SignatureEditPage({ collection }: SignatureEditPageProps) {
                 />
               </div>
             </div>
-            
+
             {/* Image 2: Wide */}
             <div className="md:col-span-7">
               <div className="relative w-full bg-white" style={{ aspectRatio: '16/10' }}>
@@ -107,9 +120,12 @@ export function SignatureEditPage({ collection }: SignatureEditPageProps) {
                   className="object-cover"
                 />
               </div>
-              
+
               {/* Image 3: Square */}
-              <div className="relative w-full bg-white mt-6 md:mt-12 md:w-3/4 md:ml-auto" style={{ aspectRatio: '1/1' }}>
+              <div
+                className="relative w-full bg-white mt-6 md:mt-12 md:w-3/4 md:ml-auto"
+                style={{ aspectRatio: '1/1' }}
+              >
                 <Image
                   src={generatePlaceholderImage(800, 800, 'lookbook-3')}
                   alt="Lookbook 3"
@@ -124,26 +140,31 @@ export function SignatureEditPage({ collection }: SignatureEditPageProps) {
       </section>
 
       {/* 4. Curated Product Showcase */}
-      <section className="w-full" style={{ padding: '160px 24px', maxWidth: '1440px', margin: '0 auto' }}>
-        <div className="flex flex-col md:flex-row md:items-end justify-between" style={{ marginBottom: '80px' }}>
+      <section
+        className="w-full"
+        style={{ padding: '160px 24px', maxWidth: '1440px', margin: '0 auto' }}
+      >
+        <div
+          className="flex flex-col md:flex-row md:items-end justify-between"
+          style={{ marginBottom: '80px' }}
+        >
           <div className="max-w-[500px]">
             <h2 className="font-display text-[36px] md:text-[48px] text-[#2E241D] leading-none mb-4">
               Shop The Edit
             </h2>
             <p className="text-[14px] text-[#8B7B6D] leading-[1.6]">
-              Explore the individual pieces that make up the signature collection. 
-              Each item is made to order and can be tailored to your precise measurements.
+              Explore the individual pieces that make up the signature collection. Each item is made
+              to order and can be tailored to your precise measurements.
             </p>
           </div>
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-12">
-          {signatureProducts.map(product => (
+          {signatureProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
       </section>
-
     </div>
   );
 }

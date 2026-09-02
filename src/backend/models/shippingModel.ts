@@ -58,7 +58,7 @@ export const FREE_SHIPPING_THRESHOLD_MUMBAI = 5000;
 export const FREE_SHIPPING_THRESHOLD_INDIA = 8000;
 
 export function getShippingRate(zone: string): ShippingRate | undefined {
-  return shippingRates.find(r => r.zone === zone);
+  return shippingRates.find((r) => r.zone === zone);
 }
 
 export function calculateShipping(zone: string, subtotal: number): number {
@@ -86,7 +86,6 @@ export class ShippingModel {
   }
 
   public static getCurrencyByCode(code: string): CurrencyConfig | undefined {
-    return currencies.find(c => c.code === code);
+    return currencies.find((c) => c.code === code);
   }
 }
-

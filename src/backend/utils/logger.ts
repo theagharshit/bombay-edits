@@ -19,7 +19,11 @@ class Logger {
     return new Date().toISOString();
   }
 
-  private formatMessage(level: LogLevel, message: string, context?: Record<string, unknown>): string {
+  private formatMessage(
+    level: LogLevel,
+    message: string,
+    context?: Record<string, unknown>
+  ): string {
     const timestamp = `${LOG_COLORS.dim}[${this.formatTime()}]${LOG_COLORS.reset}`;
     let levelBadge = '';
 
@@ -41,7 +45,9 @@ class Logger {
         break;
     }
 
-    const contextStr = context ? ` ${LOG_COLORS.dim}${JSON.stringify(context)}${LOG_COLORS.reset}` : '';
+    const contextStr = context
+      ? ` ${LOG_COLORS.dim}${JSON.stringify(context)}${LOG_COLORS.reset}`
+      : '';
     return `${timestamp} ${levelBadge} ${message}${contextStr}`;
   }
 
@@ -54,9 +60,10 @@ class Logger {
   }
 
   public error(message: string, error?: unknown, context?: Record<string, unknown>): void {
-    const errorDetails = error instanceof Error 
-      ? { message: error.message, stack: error.stack, ...context }
-      : { rawError: error, ...context };
+    const errorDetails =
+      error instanceof Error
+        ? { message: error.message, stack: error.stack, ...context }
+        : { rawError: error, ...context };
     console.error(this.formatMessage('error', message, errorDetails));
   }
 
@@ -73,17 +80,11 @@ class Logger {
     durationMs: number,
     requestId?: string
   ): void {
-    const methodColor = method === 'GET' 
-      ? LOG_COLORS.green 
-      : method === 'POST' 
-      ? LOG_COLORS.cyan 
-      : LOG_COLORS.yellow;
-    
-    const statusColor = status >= 500 
-      ? LOG_COLORS.red 
-      : status >= 400 
-      ? LOG_COLORS.yellow 
-      : LOG_COLORS.green;
+    const methodColor =
+      method === 'GET' ? LOG_COLORS.green : method === 'POST' ? LOG_COLORS.cyan : LOG_COLORS.yellow;
+
+    const statusColor =
+      status >= 500 ? LOG_COLORS.red : status >= 400 ? LOG_COLORS.yellow : LOG_COLORS.green;
 
     const reqIdTag = requestId ? ` ${LOG_COLORS.dim}(req: ${requestId})${LOG_COLORS.reset}` : '';
     const durationTag = `${LOG_COLORS.dim}+${durationMs}ms${LOG_COLORS.reset}`;

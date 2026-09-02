@@ -1,6 +1,13 @@
 'use client';
 
-import { createContext, useContext, useReducer, useEffect, useCallback, type ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useReducer,
+  useEffect,
+  useCallback,
+  type ReactNode,
+} from 'react';
 import { CartItem } from '@/types/cart';
 
 interface CartState {
@@ -22,13 +29,13 @@ function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
     case 'ADD_ITEM': {
       const existing = state.items.find(
-        i => i.productId === action.payload.productId && i.size === action.payload.size
+        (i) => i.productId === action.payload.productId && i.size === action.payload.size
       );
       if (existing) {
         return {
           ...state,
           isOpen: true,
-          items: state.items.map(i =>
+          items: state.items.map((i) =>
             i.productId === action.payload.productId && i.size === action.payload.size
               ? { ...i, quantity: Math.min(i.quantity + action.payload.quantity, i.maxQuantity) }
               : i
@@ -41,17 +48,19 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       return {
         ...state,
         items: state.items.filter(
-          i => !(i.productId === action.payload.productId && i.size === action.payload.size)
+          (i) => !(i.productId === action.payload.productId && i.size === action.payload.size)
         ),
       };
     case 'UPDATE_QUANTITY':
       return {
         ...state,
-        items: state.items.map(i =>
-          i.productId === action.payload.productId && i.size === action.payload.size
-            ? { ...i, quantity: Math.max(0, Math.min(action.payload.quantity, i.maxQuantity)) }
-            : i
-        ).filter(i => i.quantity > 0),
+        items: state.items
+          .map((i) =>
+            i.productId === action.payload.productId && i.size === action.payload.size
+              ? { ...i, quantity: Math.max(0, Math.min(action.payload.quantity, i.maxQuantity)) }
+              : i
+          )
+          .filter((i) => i.quantity > 0),
       };
     case 'CLEAR_CART':
       return { ...state, items: [] };
@@ -108,28 +117,41 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const itemCount = state.items.reduce((sum, i) => sum + i.quantity, 0);
   const subtotal = state.items.reduce((sum, i) => sum + i.price * i.quantity, 0);
 
-  const addItem = useCallback((item: CartItem) => dispatch({ type: 'ADD_ITEM', payload: item }), []);
-  const removeItem = useCallback((productId: string, size: string) => dispatch({ type: 'REMOVE_ITEM', payload: { productId, size } }), []);
-  const updateQuantity = useCallback((productId: string, size: string, quantity: number) => dispatch({ type: 'UPDATE_QUANTITY', payload: { productId, size, quantity } }), []);
+  const addItem = useCallback(
+    (item: CartItem) => dispatch({ type: 'ADD_ITEM', payload: item }),
+    []
+  );
+  const removeItem = useCallback(
+    (productId: string, size: string) =>
+      dispatch({ type: 'REMOVE_ITEM', payload: { productId, size } }),
+    []
+  );
+  const updateQuantity = useCallback(
+    (productId: string, size: string, quantity: number) =>
+      dispatch({ type: 'UPDATE_QUANTITY', payload: { productId, size, quantity } }),
+    []
+  );
   const clearCart = useCallback(() => dispatch({ type: 'CLEAR_CART' }), []);
   const toggleCart = useCallback(() => dispatch({ type: 'TOGGLE_CART' }), []);
   const openCart = useCallback(() => dispatch({ type: 'OPEN_CART' }), []);
   const closeCart = useCallback(() => dispatch({ type: 'CLOSE_CART' }), []);
 
   return (
-    <CartContext.Provider value={{
-      items: state.items,
-      isOpen: state.isOpen,
-      itemCount,
-      subtotal,
-      addItem,
-      removeItem,
-      updateQuantity,
-      clearCart,
-      toggleCart,
-      openCart,
-      closeCart,
-    }}>
+    <CartContext.Provider
+      value={{
+        items: state.items,
+        isOpen: state.isOpen,
+        itemCount,
+        subtotal,
+        addItem,
+        removeItem,
+        updateQuantity,
+        clearCart,
+        toggleCart,
+        openCart,
+        closeCart,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

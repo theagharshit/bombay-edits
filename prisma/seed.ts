@@ -255,7 +255,7 @@ export async function main() {
     await prisma.productComponent.deleteMany({ where: { productId: productRecord.id } });
     if (prod.components && prod.components.length > 0) {
       await prisma.productComponent.createMany({
-        data: prod.components.map(name => ({
+        data: prod.components.map((name) => ({
           productId: productRecord.id,
           name,
         })),
@@ -266,7 +266,7 @@ export async function main() {
     await prisma.productCareInstruction.deleteMany({ where: { productId: productRecord.id } });
     if (prod.care && prod.care.length > 0) {
       await prisma.productCareInstruction.createMany({
-        data: prod.care.map(instruction => ({
+        data: prod.care.map((instruction) => ({
           productId: productRecord.id,
           instruction,
         })),

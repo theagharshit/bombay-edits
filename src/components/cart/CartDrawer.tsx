@@ -33,11 +33,7 @@ export function CartDrawer() {
     <>
       {/* Backdrop */}
       {isOpen && (
-        <div
-          className="fixed inset-0 bg-ink/30 z-[80]"
-          onClick={closeCart}
-          aria-hidden="true"
-        />
+        <div className="fixed inset-0 bg-ink/30 z-[80]" onClick={closeCart} aria-hidden="true" />
       )}
 
       {/* Drawer */}
@@ -57,15 +53,20 @@ export function CartDrawer() {
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-5 border-b border-border">
-            <h2 className="font-display text-xl text-ink">
-              Your bag ({itemCount})
-            </h2>
+            <h2 className="font-display text-xl text-ink">Your bag ({itemCount})</h2>
             <button
               onClick={closeCart}
               className="p-2 text-deep-brown hover:text-ink"
               aria-label="Close bag"
             >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
                 <path d="M18 6L6 18M6 6l12 12" />
               </svg>
             </button>
@@ -95,7 +96,15 @@ export function CartDrawer() {
           <div className="flex-1 overflow-y-auto">
             {items.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full text-center px-8">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-beige mb-4">
+                <svg
+                  width="48"
+                  height="48"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1"
+                  className="text-beige mb-4"
+                >
                   <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
                   <line x1="3" y1="6" x2="21" y2="6" />
                   <path d="M16 10a4 4 0 01-8 0" />
@@ -115,7 +124,7 @@ export function CartDrawer() {
               </div>
             ) : (
               <div className="divide-y divide-border-light">
-                {items.map(item => (
+                {items.map((item) => (
                   <div key={`${item.productId}-${item.size}`} className="p-5 flex gap-4">
                     <Link
                       href={`/shop/${item.slug}`}
@@ -146,7 +155,9 @@ export function CartDrawer() {
                       <div className="flex items-center justify-between mt-3">
                         <div className="flex items-center border border-border rounded-sm">
                           <button
-                            onClick={() => updateQuantity(item.productId, item.size, item.quantity - 1)}
+                            onClick={() =>
+                              updateQuantity(item.productId, item.size, item.quantity - 1)
+                            }
                             className="w-7 h-7 flex items-center justify-center text-text-muted hover:text-ink text-sm"
                             aria-label="Decrease quantity"
                           >
@@ -156,7 +167,9 @@ export function CartDrawer() {
                             {item.quantity}
                           </span>
                           <button
-                            onClick={() => updateQuantity(item.productId, item.size, item.quantity + 1)}
+                            onClick={() =>
+                              updateQuantity(item.productId, item.size, item.quantity + 1)
+                            }
                             className="w-7 h-7 flex items-center justify-center text-text-muted hover:text-ink text-sm"
                             aria-label="Increase quantity"
                           >
@@ -185,9 +198,7 @@ export function CartDrawer() {
                 <span className="text-sm text-deep-brown font-body">Subtotal</span>
                 <span className="text-base text-ink font-display">{format(subtotal)}</span>
               </div>
-              <p className="text-xs text-text-muted">
-                Shipping and taxes calculated at checkout
-              </p>
+              <p className="text-xs text-text-muted">Shipping and taxes calculated at checkout</p>
               <Link
                 href="/checkout"
                 onClick={closeCart}

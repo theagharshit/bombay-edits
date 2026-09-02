@@ -70,7 +70,10 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
         aria-label="Navigation menu"
         className={`fixed top-0 left-0 h-full w-[85vw] max-w-sm bg-ivory z-[70] lg:hidden
           transform transition-transform ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
-        style={{ transitionDuration: 'var(--duration-slow)', transitionTimingFunction: 'var(--ease-out)' }}
+        style={{
+          transitionDuration: 'var(--duration-slow)',
+          transitionTimingFunction: 'var(--ease-out)',
+        }}
       >
         <div className="flex flex-col h-full">
           {/* Close button */}
@@ -81,7 +84,14 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
               className="p-2 text-deep-brown hover:text-ink"
               aria-label="Close menu"
             >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
                 <path d="M18 6L6 18M6 6l12 12" />
               </svg>
             </button>
@@ -90,7 +100,7 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
           {/* Main nav */}
           <nav className="flex-1 overflow-y-auto py-4">
             <div className="px-5">
-              {navLinks.map(link => (
+              {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
@@ -104,7 +114,7 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
             </div>
 
             <div className="px-5 mt-6 pt-6 border-t border-border">
-              {secondaryLinks.map(link => (
+              {secondaryLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
@@ -122,7 +132,7 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
           <div className="p-5 border-t border-border">
             <label className="text-xs text-text-muted font-body block mb-2">Currency</label>
             <div className="flex gap-2">
-              {(['NPR', 'INR', 'USD'] as Currency[]).map(c => (
+              {(['NPR', 'INR', 'USD'] as Currency[]).map((c) => (
                 <button
                   key={c}
                   onClick={() => setCurrency(c)}

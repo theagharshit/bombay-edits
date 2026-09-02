@@ -43,7 +43,9 @@ export class ContactModel {
         });
         logger.info(`✓ Saved contact message to PostgreSQL via Prisma (id: ${created.id})`);
       } catch (err) {
-        logger.warn('Failed to persist contact message via Prisma, saved in-memory', { error: err });
+        logger.warn('Failed to persist contact message via Prisma, saved in-memory', {
+          error: err,
+        });
       }
     }
 
@@ -56,7 +58,7 @@ export class ContactModel {
         const submissions = await prisma.contactSubmission.findMany({
           orderBy: { createdAt: 'desc' },
         });
-        return submissions.map(s => ({
+        return submissions.map((s) => ({
           id: s.id,
           name: s.name,
           email: s.email,
@@ -68,7 +70,9 @@ export class ContactModel {
           createdAt: s.createdAt.toISOString(),
         }));
       } catch (err) {
-        logger.warn('Failed to fetch contact submissions from Prisma, falling back to in-memory', { error: err });
+        logger.warn('Failed to fetch contact submissions from Prisma, falling back to in-memory', {
+          error: err,
+        });
       }
     }
 
@@ -99,6 +103,6 @@ export class ContactModel {
       }
     }
 
-    return contactStore.find(msg => msg.id === id);
+    return contactStore.find((msg) => msg.id === id);
   }
 }

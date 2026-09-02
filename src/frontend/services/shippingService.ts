@@ -6,7 +6,10 @@ export class ShippingService {
     return ApiClient.get<{ rates: ShippingRate[]; currencies: CurrencyConfig[] }>('/api/shipping');
   }
 
-  public static async calculateShipping(zone: string, subtotal: number): Promise<{
+  public static async calculateShipping(
+    zone: string,
+    subtotal: number
+  ): Promise<{
     zone: string;
     subtotal: number;
     shippingCost: number;

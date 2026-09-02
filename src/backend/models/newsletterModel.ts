@@ -11,7 +11,10 @@ export interface NewsletterSubscriber {
 const subscriberStore: Map<string, NewsletterSubscriber> = new Map();
 
 export class NewsletterModel {
-  public static async subscribe(email: string, source = 'website'): Promise<{ subscriber: NewsletterSubscriber; isNew: boolean }> {
+  public static async subscribe(
+    email: string,
+    source = 'website'
+  ): Promise<{ subscriber: NewsletterSubscriber; isNew: boolean }> {
     const normalizedEmail = email.toLowerCase().trim();
     const existing = subscriberStore.get(normalizedEmail);
 
@@ -47,9 +50,13 @@ export class NewsletterModel {
             },
           });
         }
-        logger.info(`✓ Persisted newsletter subscriber via Prisma (${normalizedEmail}, isNew: ${isNew})`);
+        logger.info(
+          `✓ Persisted newsletter subscriber via Prisma (${normalizedEmail}, isNew: ${isNew})`
+        );
       } catch (err) {
-        logger.warn('Failed to persist newsletter subscriber to Prisma, stored in-memory', { error: err });
+        logger.warn('Failed to persist newsletter subscriber to Prisma, stored in-memory', {
+          error: err,
+        });
       }
     }
 
@@ -83,7 +90,7 @@ export class NewsletterModel {
         const subscribers = await prisma.newsletterSubscriber.findMany({
           orderBy: { subscribedAt: 'desc' },
         });
-        return subscribers.map(s => ({
+        return subscribers.map((s) => ({
           email: s.email,
           source: s.source,
           isActive: s.isActive,

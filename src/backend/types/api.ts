@@ -39,7 +39,9 @@ export interface RequestContext {
 
 export type NextRouteHandler = (
   req: NextRequest | Request,
-  context?: { params?: Promise<Record<string, string | string[]>> | Record<string, string | string[]> }
+  context?: {
+    params?: Promise<Record<string, string | string[]>> | Record<string, string | string[]>;
+  }
 ) => Promise<NextResponse | Response> | NextResponse | Response;
 
 export type MiddlewareFunction = (

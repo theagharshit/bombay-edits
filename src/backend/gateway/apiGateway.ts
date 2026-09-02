@@ -32,12 +32,17 @@ export class ApiGateway {
    * Execute Gateway pipeline around any controller handler
    */
   public static handle<T = unknown>(
-    handler: (req: NextRequest, context: RequestContext) => Promise<NextResponse | Response> | NextResponse | Response,
+    handler: (
+      req: NextRequest,
+      context: RequestContext
+    ) => Promise<NextResponse | Response> | NextResponse | Response,
     options: GatewayRouteOptions = {}
   ) {
     return async function gatewayHandler(
       req: NextRequest | Request,
-      routeProps?: { params?: Promise<Record<string, string | string[]>> | Record<string, string | string[]> }
+      routeProps?: {
+        params?: Promise<Record<string, string | string[]>> | Record<string, string | string[]>;
+      }
     ): Promise<NextResponse | Response> {
       const nextReq = req instanceof NextRequest ? req : new NextRequest(req.url, req);
       const origin = nextReq.headers.get('origin');
@@ -70,7 +75,9 @@ export class ApiGateway {
 
       if (!rateCheck.allowed) {
         finishTracking();
-        logger.warn(`[GATEWAY 429] Rate limit exceeded for IP ${clientIp} on ${method} ${pathname}`);
+        logger.warn(
+          `[GATEWAY 429] Rate limit exceeded for IP ${clientIp} on ${method} ${pathname}`
+        );
         const res = ApiResponse.error(
           `Too many requests. Please retry in ${Math.ceil(rateCheck.resetMs / 1000)} seconds.`,
           {
@@ -94,9 +101,8 @@ export class ApiGateway {
       // 4. Resolve route params
       let resolvedParams: Record<string, string | string[]> = {};
       if (routeProps?.params) {
-        resolvedParams = routeProps.params instanceof Promise
-          ? await routeProps.params
-          : routeProps.params;
+        resolvedParams =
+          routeProps.params instanceof Promise ? await routeProps.params : routeProps.params;
       }
 
       const context: RequestContext = {

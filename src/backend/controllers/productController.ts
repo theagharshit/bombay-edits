@@ -11,7 +11,7 @@ export class ProductController {
    */
   public async getProducts(req: NextRequest) {
     const { searchParams } = req.nextUrl;
-    
+
     const options: ProductQueryOptions = {
       category: searchParams.get('category') || undefined,
       collection: searchParams.get('collection') || undefined,
@@ -21,8 +21,12 @@ export class ProductController {
       embroideryType: searchParams.get('embroideryType') || undefined,
       size: searchParams.get('size') || undefined,
       sort: (searchParams.get('sort') as ProductQueryOptions['sort']) || undefined,
-      isNewArrival: searchParams.has('newArrival') ? searchParams.get('newArrival') === 'true' : undefined,
-      isBestseller: searchParams.has('bestseller') ? searchParams.get('bestseller') === 'true' : undefined,
+      isNewArrival: searchParams.has('newArrival')
+        ? searchParams.get('newArrival') === 'true'
+        : undefined,
+      isBestseller: searchParams.has('bestseller')
+        ? searchParams.get('bestseller') === 'true'
+        : undefined,
       minPrice: searchParams.has('minPrice') ? Number(searchParams.get('minPrice')) : undefined,
       maxPrice: searchParams.has('maxPrice') ? Number(searchParams.get('maxPrice')) : undefined,
       page: searchParams.has('page') ? Number(searchParams.get('page')) : 1,

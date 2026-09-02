@@ -87,14 +87,23 @@ async function dispatch(req: NextRequest, context: RequestContext) {
     return healthController.getHealth(req);
   }
 
-  return ApiResponse.error(`Route /api/v1/${pathArray.join('/')} [${method}] not found in Gateway.`, {
-    status: 404,
-    code: 'GATEWAY_ROUTE_NOT_FOUND',
-  });
+  return ApiResponse.error(
+    `Route /api/v1/${pathArray.join('/')} [${method}] not found in Gateway.`,
+    {
+      status: 404,
+      code: 'GATEWAY_ROUTE_NOT_FOUND',
+    }
+  );
 }
 
-export const GET = ApiGateway.handle(dispatch, { rateLimit: { windowMs: 60000, maxRequests: 180 } });
-export const POST = ApiGateway.handle(dispatch, { rateLimit: { windowMs: 60000, maxRequests: 60 } });
+export const GET = ApiGateway.handle(dispatch, {
+  rateLimit: { windowMs: 60000, maxRequests: 180 },
+});
+export const POST = ApiGateway.handle(dispatch, {
+  rateLimit: { windowMs: 60000, maxRequests: 60 },
+});
 export const PUT = ApiGateway.handle(dispatch, { rateLimit: { windowMs: 60000, maxRequests: 60 } });
-export const DELETE = ApiGateway.handle(dispatch, { rateLimit: { windowMs: 60000, maxRequests: 60 } });
+export const DELETE = ApiGateway.handle(dispatch, {
+  rateLimit: { windowMs: 60000, maxRequests: 60 },
+});
 export const OPTIONS = ApiGateway.handle(dispatch);

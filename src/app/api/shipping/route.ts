@@ -6,4 +6,6 @@ import { withMiddlewares } from '@/backend/middlewares';
  * POST /api/shipping - Calculate shipping for zone & subtotal
  */
 export const GET = withMiddlewares(shippingController.getShippingRates.bind(shippingController));
-export const POST = withMiddlewares(shippingController.calculateShippingCost.bind(shippingController));
+export const POST = withMiddlewares(
+  shippingController.calculateShippingCost.bind(shippingController)
+);

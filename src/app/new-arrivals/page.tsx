@@ -4,12 +4,19 @@ import { ShopPageContent } from '@/components/shop/ShopPageContent';
 
 export const metadata: Metadata = {
   title: 'New arrivals',
-  description: 'The latest additions to The Bombay Edit. Freshly crafted kurta sets, co-ord sets and embroidered pieces.',
+  description:
+    'The latest additions to The Bombay Edit. Freshly crafted kurta sets, co-ord sets and embroidered pieces.',
 };
 
 export default function NewArrivalsPage() {
   return (
-    <Suspense fallback={<div className="container-site section-padding"><div className="h-96 skeleton rounded" /></div>}>
+    <Suspense
+      fallback={
+        <div className="container-site section-padding">
+          <div className="h-96 skeleton rounded" />
+        </div>
+      }
+    >
       <ShopPageContent
         title="New arrivals"
         description="The latest additions to our collection."

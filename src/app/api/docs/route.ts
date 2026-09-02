@@ -12,7 +12,8 @@ export const GET = withMiddlewares(async () => {
   return ApiResponse.success({
     title: 'The Bombay Edit - API Gateway Specification',
     version: '1.0.0',
-    description: 'Unified RESTful & Normalised Relational E-Commerce API Gateway with Rate Limiting and PostgreSQL/Prisma Integration.',
+    description:
+      'Unified RESTful & Normalised Relational E-Commerce API Gateway with Rate Limiting and PostgreSQL/Prisma Integration.',
     gateway: {
       status: 'operational',
       uptimeSeconds: metrics.uptimeSeconds,
