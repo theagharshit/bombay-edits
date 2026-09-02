@@ -8,6 +8,7 @@ import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import { getProductPlaceholder } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   product: Product;
@@ -21,6 +22,7 @@ export function ProductDetailContent({ product }: Props) {
   const { isWishlisted, toggleWishlist } = useWishlist();
   const { format } = useCurrency();
   const wishlisted = isWishlisted(product.id);
+  const router = useRouter();
 
   const images =
     product.images.length > 0
@@ -61,7 +63,10 @@ export function ProductDetailContent({ product }: Props) {
       maxQuantity: 5,
     });
     setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
+    setTimeout(() => {
+      setAdded(false);
+      router.push('/cart');
+    }, 500);
   };
 
   return (

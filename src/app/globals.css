@@ -1,76 +1,46 @@
 @import 'tailwindcss';
+@source "../";
 
 /* ─── Design Token Layer ─────────────────────────────────────────── */
 
 @theme {
-  /* Surfaces - User Color Palette */
-  --color-cream: #f6ede6;
-  --color-ivory: #faf6f2;
-  --color-sand: #ece1d6;
-
+  /* Surfaces - Art Deco Palette */
+  --color-chalk: #FAF7F2; /* Ivory / Cream */
+  
   /* Accents & Primary Brand Colors */
-  --color-dark-espresso: #2a1c15;
-  --color-espresso: #2a1c15;
-  --color-chocolate-brown: #5b3721;
-  --color-chocolate: #5b3721;
-  --color-cocoa: #5b3721;
-  --color-deep-brown: #5b3721;
-  --color-champagne-gold: #cba86e;
-  --color-champagne: #cba86e;
-  --color-gold: #cba86e;
-  --color-muted-taupe: #b7a28d;
-  --color-taupe: #b7a28d;
-  --color-muted: #b7a28d;
+  --color-ink: #2C2421; /* Deep Brown / Soft Black */
+  --color-brass: #C1A68D; /* Champagne / Muted Beige */
+  --color-bottle: #526154; /* Muted Green */
+  --color-sindoor: #722F37; /* Wine / Deep Earthy Red */
+  --color-rose: #D1B8B4; /* Soft Pink */
+  --color-sand: #D9D0C5; /* Earthy Beige */
 
   /* Borders / Dividers */
-  --color-beige-line: #d6c4b4;
-  --color-border: #d6c4b4;
-  --color-border-light: #f6ede6;
+  --color-border: #E5E5E5;
+  --color-border-light: #F5F5F5;
 
   /* Text & Overlays */
-  --color-ink: #2a1c15;
-  --color-text-muted: #b7a28d;
+  --color-text-muted: #666666;
   --color-on-image: #ffffff;
-  --color-overlay: rgba(42, 28, 21, 0.45);
-  --color-focus-ring: #cba86e;
+  --color-overlay: rgba(22, 35, 58, 0.45);
+  --color-focus-ring: #B98B3C;
 
   /* Typography */
-  --font-display: 'Cormorant Garamond', 'Georgia', serif;
+  --font-display: 'Bodoni Moda', 'Georgia', serif;
   --font-body: 'Jost', 'Helvetica Neue', sans-serif;
-
-  /* Spacing */
-  --spacing-3xs: 4px;
-  --spacing-1-5: 6px;
-  --spacing-2xs: 8px;
-  --spacing-xs: 12px;
-  --spacing-sm: 16px;
-  --spacing-5: 20px;
-  --spacing-md: 24px;
-  --spacing-8: 32px;
-  --spacing-lg: 40px;
-  --spacing-12: 48px;
-  --spacing-xl: 56px;
-  --spacing-16: 64px;
-  --spacing-18: 72px;
-  --spacing-20: 80px;
-  --spacing-2xl: 88px;
-  --spacing-24: 96px;
-  --spacing-30: 120px;
-  --spacing-3xl: 140px;
-  --spacing-4xl: 200px;
 
   /* Shadows (Removed as per requirements, set to transparent) */
   --shadow-sm: 0 0 0 transparent;
   --shadow-md: 0 0 0 transparent;
   --shadow-lg: 0 0 0 transparent;
-  --shadow-drawer: -4px 0 24px rgba(46, 36, 29, 0.15);
+  --shadow-drawer: -4px 0 24px rgba(22, 35, 58, 0.15);
 
   /* Radii (Removed as per requirements, set to 0) */
   --radius-xs: 0px;
   --radius-sm: 0px;
   --radius-md: 0px;
   --radius-lg: 0px;
-  --radius-pill: 0px;
+  --radius-pill: 9999px; /* explicitly kept for pills/badges */
 
   /* Motion */
   --duration-fast: 150ms;
@@ -101,8 +71,8 @@ html {
 }
 
 body {
-  background-color: var(--color-ivory);
-  color: var(--color-deep-brown);
+  background-color: var(--color-chalk);
+  color: var(--color-ink);
   font-family: var(--font-body);
   font-size: 1rem;
   line-height: 1.6;
@@ -110,31 +80,18 @@ body {
 
 /* ─── Typography ─────────────────────────────────────────── */
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   color: var(--color-ink);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   line-height: 1.15;
   font-weight: 400;
 }
 
-h1 {
-  font-size: clamp(2.25rem, 5vw, 3.75rem);
-}
-h2 {
-  font-size: clamp(1.75rem, 3.5vw, 2.25rem);
-}
-h3 {
-  font-size: clamp(1.375rem, 2.5vw, 1.875rem);
-}
-h4 {
-  font-size: clamp(1.125rem, 2vw, 1.5rem);
-}
+h1 { font-size: clamp(2.25rem, 5vw, 3.75rem); }
+h2 { font-size: clamp(1.75rem, 3.5vw, 2.25rem); }
+h3 { font-size: clamp(1.375rem, 2.5vw, 1.875rem); }
+h4 { font-size: clamp(1.125rem, 2vw, 1.5rem); }
 
 p {
   max-width: 65ch;
@@ -156,8 +113,8 @@ a {
 /* ─── Selection ─────────────────────────────────────────── */
 
 ::selection {
-  background-color: var(--color-champagne);
-  color: var(--color-ink);
+  background-color: var(--color-brass);
+  color: var(--color-chalk);
 }
 
 /* ─── Scrollbar ─────────────────────────────────────────── */
@@ -165,26 +122,21 @@ a {
 ::-webkit-scrollbar {
   width: 6px;
 }
-
 ::-webkit-scrollbar-track {
-  background: var(--color-ivory);
+  background: var(--color-chalk);
 }
-
 ::-webkit-scrollbar-thumb {
-  background: var(--color-beige);
+  background: var(--color-border);
   border-radius: var(--radius-pill);
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-champagne);
+  background: var(--color-brass);
 }
 
 /* ─── Reduced Motion ─────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -194,54 +146,22 @@ a {
 
 /* ─── Utility Classes ─────────────────────────────────────── */
 
-.font-display {
-  font-family: var(--font-display);
-}
-
-.font-body {
-  font-family: var(--font-body);
-}
+.font-display { font-family: var(--font-display); }
+.font-body { font-family: var(--font-body); }
 
 .container-site {
   width: 100%;
-  max-width: var(--max-content); /* 1440px */
+  max-width: var(--max-content);
   margin-inline: auto;
-  padding-inline: 1.5rem; /* 24px */
+  padding-inline: 1.5rem;
 }
+@media (min-width: 768px) { .container-site { padding-inline: 2.5rem; } }
+@media (min-width: 1024px) { .container-site { padding-inline: 4rem; } }
+@media (min-width: 1600px) { .container-site { padding-inline: 5rem; } }
 
-@media (min-width: 768px) {
-  .container-site {
-    padding-inline: 2.5rem; /* 40px */
-  }
-}
-
-@media (min-width: 1024px) {
-  .container-site {
-    padding-inline: 4rem; /* 64px */
-  }
-}
-
-@media (min-width: 1600px) {
-  .container-site {
-    padding-inline: 5rem; /* 80px */
-  }
-}
-
-.section-padding {
-  padding-block: 4rem;
-}
-
-@media (min-width: 768px) {
-  .section-padding {
-    padding-block: 5rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .section-padding {
-    padding-block: 6rem;
-  }
-}
+.section-padding { padding-block: 4rem; }
+@media (min-width: 768px) { .section-padding { padding-block: 5rem; } }
+@media (min-width: 1024px) { .section-padding { padding-block: 6rem; } }
 
 /* ─── Product Image Hover ─────────────────────────────────── */
 
@@ -249,14 +169,12 @@ a {
   position: relative;
   overflow: hidden;
 }
-
 .product-image-hover img:nth-child(2) {
   position: absolute;
   inset: 0;
   opacity: 0;
   transition: opacity var(--duration-normal) var(--ease-out);
 }
-
 .product-image-hover:hover img:nth-child(2) {
   opacity: 1;
 }
@@ -272,81 +190,21 @@ a {
   scrollbar-width: none;
   padding-bottom: 1rem;
 }
-
-.scroll-rail::-webkit-scrollbar {
-  display: none;
-}
-
+.scroll-rail::-webkit-scrollbar { display: none; }
 .scroll-rail > * {
   scroll-snap-align: start;
   flex-shrink: 0;
 }
 
-/* ─── Accordion ─────────────────────────────────────────── */
-
-.accordion-content {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows var(--duration-slow) var(--ease-out);
-}
-
-.accordion-content[data-open='true'] {
-  grid-template-rows: 1fr;
-}
-
-.accordion-content > div {
-  overflow: hidden;
-}
-
 /* ─── Skeleton Loading ─────────────────────────────────── */
 
 @keyframes skeleton-shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 
 .skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--color-cream) 25%,
-    var(--color-beige) 50%,
-    var(--color-cream) 75%
-  );
+  background: linear-gradient(90deg, #F5F5F5 25%, #E5E5E5 50%, #F5F5F5 75%);
   background-size: 200% 100%;
   animation: skeleton-shimmer 1.5s ease-in-out infinite;
-}
-
-/* ─── Hero Reveal ─────────────────────────────────────── */
-
-@keyframes hero-reveal {
-  from {
-    opacity: 0;
-    transform: scale(1.02);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.hero-animate {
-  animation: hero-reveal var(--duration-slower) var(--ease-out) forwards;
-}
-
-/* ─── Image Zoom on Hover ─────────────────────────────── */
-
-.image-zoom {
-  overflow: hidden;
-}
-
-.image-zoom img {
-  transition: transform var(--duration-slow) var(--ease-out);
-}
-
-.image-zoom:hover img {
-  transform: scale(1.04);
 }

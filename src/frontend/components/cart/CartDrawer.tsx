@@ -33,7 +33,12 @@ export function CartDrawer() {
     <>
       {/* Backdrop */}
       {isOpen && (
-        <div className="fixed inset-0 bg-ink/30 z-[80]" onClick={closeCart} aria-hidden="true" />
+        <div 
+          className="fixed inset-0 z-[80]" 
+          style={{ backgroundColor: 'rgba(74, 48, 37, 0.4)' }}
+          onClick={closeCart} 
+          aria-hidden="true" 
+        />
       )}
 
       {/* Drawer */}
@@ -42,21 +47,26 @@ export function CartDrawer() {
         role="dialog"
         aria-modal="true"
         aria-label="Shopping bag"
-        className={`fixed top-0 right-0 h-full w-[90vw] max-w-md bg-ivory z-[90]
+        className={`fixed top-0 right-0 h-full w-[90vw] max-w-md z-[90]
           transform transition-transform ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
         style={{
+          backgroundColor: '#FAF6F0',
           transitionDuration: 'var(--duration-slow)',
           transitionTimingFunction: 'var(--ease-out)',
-          boxShadow: isOpen ? 'var(--shadow-drawer)' : 'none',
+          boxShadow: isOpen ? '-10px 0 30px rgba(0,0,0,0.05)' : 'none',
         }}
       >
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full font-body">
           {/* Header */}
-          <div className="flex items-center justify-between p-5 border-b border-border">
-            <h2 className="font-display text-xl text-ink">Your bag ({itemCount})</h2>
+          <div 
+            className="flex items-center justify-between p-6"
+            style={{ borderBottom: '1px solid #E5DFD5' }}
+          >
+            <h2 className="font-display text-2xl" style={{ color: '#4A3025' }}>Your Archives ({itemCount})</h2>
             <button
               onClick={closeCart}
-              className="p-2 text-deep-brown hover:text-ink"
+              className="p-2 transition-opacity hover:opacity-70"
+              style={{ color: '#4A3025' }}
               aria-label="Close bag"
             >
               <svg
@@ -74,20 +84,21 @@ export function CartDrawer() {
 
           {/* Free shipping progress */}
           {items.length > 0 && (
-            <div className="px-5 py-3 bg-cream">
-              <div className="w-full h-1 bg-beige rounded-full overflow-hidden">
+            <div className="px-6 py-4" style={{ backgroundColor: '#FAF8F5', borderBottom: '1px solid #E5DFD5' }}>
+              <div className="w-full h-1 rounded-full overflow-hidden" style={{ backgroundColor: '#E5DFD5' }}>
                 <div
-                  className="h-full bg-muted-green rounded-full transition-all"
+                  className="h-full rounded-full transition-all"
                   style={{
+                    backgroundColor: '#4A3025',
                     width: `${freeShippingProgress}%`,
                     transitionDuration: 'var(--duration-slow)',
                   }}
                 />
               </div>
-              <p className="text-xs text-text-muted mt-2 font-body">
+              <p className="text-[11px] uppercase tracking-[0.1em] mt-3" style={{ color: '#8A817C' }}>
                 {remainingForFreeShipping > 0
-                  ? `Add ${format(remainingForFreeShipping)} more for free shipping within Mumbai`
-                  : 'You qualify for free shipping within Mumbai'}
+                  ? `Add ${format(remainingForFreeShipping)} more for complimentary shipping`
+                  : 'You qualify for complimentary shipping'}
               </p>
             </div>
           )}
@@ -96,93 +107,90 @@ export function CartDrawer() {
           <div className="flex-1 overflow-y-auto">
             {items.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full text-center px-8">
-                <svg
-                  width="48"
-                  height="48"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1"
-                  className="text-beige mb-4"
-                >
-                  <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-                  <line x1="3" y1="6" x2="21" y2="6" />
-                  <path d="M16 10a4 4 0 01-8 0" />
-                </svg>
-                <p className="font-display text-lg text-ink mb-2">Your bag is empty</p>
-                <p className="text-sm text-text-muted mb-6">
+                <p className="font-display text-2xl mb-2" style={{ color: '#4A3025' }}>Your bag is empty</p>
+                <p className="text-sm mb-8" style={{ color: '#8A817C' }}>
                   Discover our collection of handcrafted Indian ethnic wear.
                 </p>
                 <Link
                   href="/shop"
                   onClick={closeCart}
-                  className="inline-block bg-ink text-ivory px-6 py-3 text-sm font-body rounded-sm hover:bg-deep-brown transition-colors"
-                  style={{ transitionDuration: 'var(--duration-fast)' }}
+                  className="inline-block px-8 py-3 text-[10px] uppercase tracking-[0.2em] transition-colors"
+                  style={{ backgroundColor: '#4A3025', color: '#FAF6F0' }}
                 >
-                  Continue shopping
+                  Explore The Edit
                 </Link>
               </div>
             ) : (
-              <div className="divide-y divide-border-light">
+              <div>
                 {items.map((item) => (
-                  <div key={`${item.productId}-${item.size}`} className="p-5 flex gap-4">
+                  <div 
+                    key={`${item.productId}-${item.size}`} 
+                    className="p-6 flex gap-6"
+                    style={{ borderBottom: '1px solid #E5DFD5' }}
+                  >
                     <Link
                       href={`/shop/${item.slug}`}
                       onClick={closeCart}
-                      className="relative w-20 h-26 flex-shrink-0 bg-cream"
+                      className="relative w-24 aspect-[4/5] flex-shrink-0 p-1"
+                      style={{ border: '1px solid #E5DFD5', backgroundColor: '#FAF8F5' }}
                     >
                       <Image
                         src={item.image || generatePlaceholderImage(160, 213, item.productId)}
                         alt={item.name}
-                        width={80}
-                        height={107}
-                        className="w-full h-full object-cover"
+                        fill
+                        className="object-cover"
                       />
                     </Link>
-                    <div className="flex-1 min-w-0">
-                      <Link
-                        href={`/shop/${item.slug}`}
-                        onClick={closeCart}
-                        className="text-sm font-body text-ink hover:text-deep-brown block truncate"
-                      >
-                        {item.name}
-                      </Link>
-                      <p className="text-xs text-text-muted mt-1">
-                        {item.colour} · {item.size}
-                      </p>
-                      <p className="text-sm text-ink mt-1 font-body">{format(item.price)}</p>
+                    <div className="flex flex-col justify-between flex-1 min-w-0">
+                      <div>
+                        <Link
+                          href={`/shop/${item.slug}`}
+                          onClick={closeCart}
+                          className="font-display text-xl block truncate hover:opacity-70 transition-opacity"
+                          style={{ color: '#4A3025' }}
+                        >
+                          {item.name}
+                        </Link>
+                        <p className="text-[10px] uppercase tracking-[0.1em] mt-2" style={{ color: '#8A817C' }}>
+                          Color: {item.colour}
+                        </p>
+                        <p className="text-[10px] uppercase tracking-[0.1em] mt-1" style={{ color: '#8A817C' }}>
+                          Size: {item.size}
+                        </p>
+                      </div>
 
-                      <div className="flex items-center justify-between mt-3">
-                        <div className="flex items-center border border-border rounded-sm">
+                      <div className="flex items-end justify-between mt-4">
+                        <div className="flex items-center gap-3 text-xs pb-1" style={{ borderBottom: '1px solid #E5DFD5', color: '#8A817C' }}>
                           <button
                             onClick={() =>
                               updateQuantity(item.productId, item.size, item.quantity - 1)
                             }
-                            className="w-7 h-7 flex items-center justify-center text-text-muted hover:text-ink text-sm"
+                            className="hover:opacity-70 transition-opacity"
                             aria-label="Decrease quantity"
                           >
                             −
                           </button>
-                          <span className="w-7 h-7 flex items-center justify-center text-xs text-ink font-body">
-                            {item.quantity}
-                          </span>
+                          <span style={{ color: '#4A3025' }}>{item.quantity}</span>
                           <button
                             onClick={() =>
                               updateQuantity(item.productId, item.size, item.quantity + 1)
                             }
-                            className="w-7 h-7 flex items-center justify-center text-text-muted hover:text-ink text-sm"
+                            className="hover:opacity-70 transition-opacity"
                             aria-label="Increase quantity"
                           >
                             +
                           </button>
                         </div>
-                        <button
-                          onClick={() => removeItem(item.productId, item.size)}
-                          className="text-xs text-text-muted hover:text-wine transition-colors underline"
-                          style={{ transitionDuration: 'var(--duration-fast)' }}
-                        >
-                          Remove
-                        </button>
+                        <div className="flex flex-col items-end gap-2">
+                          <span className="font-display text-lg" style={{ color: '#4A3025' }}>{format(item.price * item.quantity)}</span>
+                          <button
+                            onClick={() => removeItem(item.productId, item.size)}
+                            className="text-[10px] uppercase tracking-widest hover:opacity-70 transition-opacity"
+                            style={{ color: '#7d3f3f' }}
+                          >
+                            Remove
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -193,28 +201,31 @@ export function CartDrawer() {
 
           {/* Footer */}
           {items.length > 0 && (
-            <div className="border-t border-border p-5 space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-deep-brown font-body">Subtotal</span>
-                <span className="text-base text-ink font-display">{format(subtotal)}</span>
+            <div className="p-6 space-y-6" style={{ backgroundColor: '#FAF8F5', borderTop: '1px solid #E5DFD5' }}>
+              <div className="flex items-end justify-between">
+                <span className="text-[10px] uppercase tracking-[0.2em]" style={{ color: '#8A817C' }}>Subtotal</span>
+                <span className="text-3xl font-display" style={{ color: '#4A3025' }}>{format(subtotal)}</span>
               </div>
-              <p className="text-xs text-text-muted">Shipping and taxes calculated at checkout</p>
-              <Link
-                href="/checkout"
-                onClick={closeCart}
-                className="block w-full bg-ink text-ivory text-center py-3.5 text-sm font-body rounded-sm hover:bg-deep-brown transition-colors"
-                style={{ transitionDuration: 'var(--duration-fast)' }}
-              >
-                Checkout
-              </Link>
-              <Link
-                href="/cart"
-                onClick={closeCart}
-                className="block w-full text-center py-2 text-sm font-body text-deep-brown hover:text-ink transition-colors underline"
-                style={{ transitionDuration: 'var(--duration-fast)' }}
-              >
-                View full bag
-              </Link>
+              <p className="text-[10px] uppercase tracking-[0.1em] text-center" style={{ color: '#8A817C' }}>Shipping and taxes calculated at checkout</p>
+              
+              <div className="flex flex-col gap-3">
+                <Link
+                  href="/cart"
+                  onClick={closeCart}
+                  className="block w-full text-center py-4 text-[10px] uppercase tracking-[0.2em] transition-colors"
+                  style={{ border: '1px solid #4A3025', color: '#4A3025', backgroundColor: 'transparent' }}
+                >
+                  View full bag
+                </Link>
+                <Link
+                  href="/checkout"
+                  onClick={closeCart}
+                  className="block w-full text-center py-4 text-[10px] uppercase tracking-[0.2em] transition-colors"
+                  style={{ backgroundColor: '#4A3025', color: '#FAF6F0' }}
+                >
+                  Proceed to Checkout
+                </Link>
+              </div>
             </div>
           )}
         </div>

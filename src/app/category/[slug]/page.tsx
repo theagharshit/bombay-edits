@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { Metadata } from 'next';
 import { categories } from '@/data/collections';
-import { ShopPageContent } from '@/components/shop/ShopPageContent';
+import { CategoryPageContent } from '@/frontend/components/category/CategoryPageContent';
 import { Category } from '@/types/product';
 import { notFound } from 'next/navigation';
 
@@ -33,8 +33,8 @@ export default async function CategoryPage({ params }: PageProps) {
         </div>
       }
     >
-      <ShopPageContent
-        initialCategory={slug as Category}
+      <CategoryPageContent
+        categorySlug={slug as Category}
         title={cat.name}
         description={cat.description}
       />

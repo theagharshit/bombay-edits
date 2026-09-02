@@ -7,8 +7,6 @@ import { Heart } from 'lucide-react';
 import { Product } from '@/types/product';
 import { formatPrice } from '@/frontend/utils/formatters';
 import { useWishlist } from '@/context/WishlistContext';
-import { useCart } from '@/context/CartContext';
-import { useRouter } from 'next/navigation';
 
 interface ProductCardProps {
   product: Product;
@@ -20,8 +18,6 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
   const [showQuickAdd, setShowQuickAdd] = useState(false);
   
   const { isWishlisted, toggleWishlist } = useWishlist();
-  const { addItem, openCart } = useCart();
-  const router = useRouter();
   const wishlisted = isWishlisted(product.id);
 
   // Format badge text
@@ -30,22 +26,6 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
     : product.isBestseller
     ? 'Bestseller'
     : null;
-
-  const handleQuickAdd = (size: string) => {
-    addItem({
-      productId: product.id,
-      slug: product.slug,
-      name: product.name,
-      price: product.price,
-      image: product.images[0]?.src || '',
-      colour: product.colour?.name || 'Standard',
-      size: size,
-      quantity: 1,
-      maxQuantity: 5,
-    });
-    openCart();
-    setShowQuickAdd(false);
-  };
 
   return (
     <div
@@ -202,7 +182,6 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                 <button
                   key={size}
                   disabled={!isAvailable}
-                  onClick={() => handleQuickAdd(size)}
                   className={`flex-1 min-w-[36px] h-8 text-[11px] font-medium uppercase border flex items-center justify-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass ${
                     isAvailable 
                       ? 'border-ink/20 text-ink hover:border-ink hover:bg-ink hover:text-chalk cursor-pointer' 

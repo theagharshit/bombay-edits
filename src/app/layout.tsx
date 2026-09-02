@@ -1,19 +1,19 @@
 import type { Metadata } from 'next';
-import { Cormorant_Garamond, Inter } from 'next/font/google';
+import { Bodoni_Moda, Jost } from 'next/font/google';
 import './globals.css';
-import { Header } from '@/components/layout/Header';
+import { Header } from '@/components/v2/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/cart/CartDrawer';
 import { Providers } from './providers';
 
-const cormorantGaramond = Cormorant_Garamond({
+const bodoniModa = Bodoni_Moda({
   variable: '--font-display',
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
+  weight: ['400', '500', '600', '700'],
   display: 'swap',
 });
 
-const inter = Inter({
+const jost = Jost({
   variable: '--font-body',
   subsets: ['latin'],
   display: 'swap',
@@ -57,7 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={`${cormorantGaramond.variable} ${inter.variable} h-full`}
+      className={`${bodoniModa.variable} ${jost.variable} h-full`}
     >
       <body className="min-h-full w-full flex flex-col antialiased overflow-x-hidden">
         <Providers>
