@@ -13,7 +13,7 @@ export class OrderController {
    */
   public async createOrder(req: NextRequest, context: RequestContext) {
     const body = await req.json();
-    const { items, customer, shippingZone, paymentMethod } = body;
+    const { items, customer, shippingZone } = body;
 
     Validator.requireFields(body, ['items', 'customer', 'shippingZone', 'paymentMethod']);
 

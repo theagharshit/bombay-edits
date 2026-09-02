@@ -26,7 +26,7 @@ export function useProducts(initialParams: ProductFilterParams = {}) {
 
   useEffect(() => {
     fetchProducts(initialParams);
-  }, []);
+  }, [fetchProducts, initialParams]);
 
   return {
     products,

@@ -20,7 +20,7 @@ export class ShippingController {
    * Calculate shipping for a given zone and subtotal
    * POST /api/shipping/calculate or POST /api/shipping
    */
-  public async calculateShippingCost(req: NextRequest, context: RequestContext) {
+  public async calculateShippingCost(req: NextRequest, _context?: RequestContext) {
     const body = await req.json();
     const { zone, subtotal } = body;
 

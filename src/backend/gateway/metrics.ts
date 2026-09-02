@@ -25,7 +25,6 @@ export class GatewayMetrics {
   public static startRequest(): () => void {
     this.totalRequests++;
     this.activeRequests++;
-    const start = performance.now();
 
     return () => {
       this.activeRequests = Math.max(0, this.activeRequests - 1);

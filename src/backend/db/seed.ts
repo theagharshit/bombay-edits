@@ -1,4 +1,4 @@
-import { query, transaction, getDbPool } from './connection';
+import { transaction, getDbPool } from './connection';
 import { products } from '../models/productModel';
 import { categories, collections, occasions } from '../models/collectionModel';
 import { shippingRates } from '../models/shippingModel';

@@ -2,12 +2,8 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { ProductCard } from '@/components/product/ProductCard';
 import { SectionWrapper } from '@/components/layout/SectionWrapper';
-import { getNewArrivals } from '@/data/products';
 import { generatePlaceholderImage } from '@/lib/utils';
-
-const newArrivals = getNewArrivals();
 
 export default function HomePage() {
   return (

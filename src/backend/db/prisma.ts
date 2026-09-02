@@ -2,7 +2,6 @@ import { PrismaClient } from '@prisma/client';
 import { logger } from '../utils/logger';
 
 declare global {
-  // eslint-disable-next-line no-var
   var prismaGlobal: PrismaClient | undefined;
 }
 
@@ -15,12 +14,15 @@ function createPrismaClient(): PrismaClient {
     ],
   });
 
+  // Attach structured event listeners
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (client as any).$on('query', (e: { query: string; params: string; duration: number }) => {
     if (process.env.NODE_ENV === 'development') {
       logger.debug(`[PRISMA] ${e.duration}ms: ${e.query.slice(0, 100)}`);
     }
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (client as any).$on('error', (e: { message: string; target?: string }) => {
     logger.error(`[PRISMA ERROR] ${e.message}`, undefined, { target: e.target });
   });

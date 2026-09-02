@@ -58,7 +58,7 @@ export async function isDatabaseConnected(): Promise<boolean> {
     } finally {
       client.release();
     }
-  } catch (err: unknown) {
+  } catch {
     isConnectedCache = false;
     lastCheckTime = now;
     return false;
