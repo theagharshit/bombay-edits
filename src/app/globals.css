@@ -3,30 +3,36 @@
 /* ─── Design Token Layer ─────────────────────────────────────────── */
 
 @theme {
-  /* Surfaces */
-  --color-ivory: #FAF7F1;
-  --color-cream: #F1EBE0;
-  --color-sand: #EDE6DA;
+  /* Surfaces - User Color Palette */
+  --color-cream: #F6EDE6;
+  --color-ivory: #FAF6F2;
+  --color-sand: #ECE1D6;
+
+  /* Accents & Primary Brand Colors */
+  --color-dark-espresso: #2A1C15;
+  --color-espresso: #2A1C15;
+  --color-chocolate-brown: #5B3721;
+  --color-chocolate: #5B3721;
+  --color-cocoa: #5B3721;
+  --color-deep-brown: #5B3721;
+  --color-champagne-gold: #CBA86E;
+  --color-champagne: #CBA86E;
+  --color-gold: #CBA86E;
+  --color-muted-taupe: #B7A28D;
+  --color-taupe: #B7A28D;
+  --color-muted: #B7A28D;
 
   /* Borders / Dividers */
-  --color-beige-line: #D9CDBC;
+  --color-beige-line: #D6C4B4;
+  --color-border: #D6C4B4;
+  --color-border-light: #F6EDE6;
 
-  /* Accents / Text */
-  --color-espresso: #2E241D;
-  --color-cocoa: #5A4A3E;
-  --color-muted: #8B7B6D;
+  /* Text & Overlays */
+  --color-ink: #2A1C15;
+  --color-text-muted: #B7A28D;
   --color-on-image: #FFFFFF;
-
-  /* Derived aliases (mapping existing classes to new tokens to avoid breaking other pages) */
-  --color-champagne: #D9CDBC; /* Map to beige-line */
-  --color-chocolate: #2E241D; /* Map to espresso */
-  --color-deep-brown: #5A4A3E; /* Map to cocoa */
-  --color-ink: #2E241D; /* Map to espresso */
-  --color-border: #D9CDBC; /* Map to beige-line */
-  --color-border-light: #F1EBE0; /* Map to cream */
-  --color-text-muted: #8B7B6D; /* Map to muted */
-  --color-overlay: rgba(46, 36, 29, 0.45); /* Espresso based */
-  --color-focus-ring: #2E241D;
+  --color-overlay: rgba(42, 28, 21, 0.45);
+  --color-focus-ring: #CBA86E;
 
   /* Typography */
   --font-display: 'Cormorant Garamond', 'Georgia', serif;

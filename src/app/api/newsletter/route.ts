@@ -1,28 +1,9 @@
-import { NextResponse } from 'next/server';
+import { newsletterController } from '@/backend/controllers';
+import { withMiddlewares } from '@/backend/middlewares';
 
-export async function POST(request: Request) {
-  try {
-    const body = await request.json();
-    const { email } = body;
-
-    if (!email || !email.includes('@')) {
-      return NextResponse.json(
-        { error: 'A valid email address is required.' },
-        { status: 400 }
-      );
-    }
-
-    // Stubbed integration — replace with actual newsletter service
-    console.log(`Newsletter signup: ${email}`);
-
-    return NextResponse.json(
-      { message: 'Successfully subscribed.' },
-      { status: 200 }
-    );
-  } catch {
-    return NextResponse.json(
-      { error: 'Something went wrong.' },
-      { status: 500 }
-    );
-  }
-}
+/**
+ * POST /api/newsletter - Subscribe email to newsletter
+ * GET  /api/newsletter - List subscribers (admin)
+ */
+export const POST = withMiddlewares(newsletterController.handleNewsletterSubscription.bind(newsletterController));
+export const GET = withMiddlewares(newsletterController.getSubscribers.bind(newsletterController));

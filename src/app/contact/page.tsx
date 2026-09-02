@@ -1,24 +1,18 @@
 'use client';
 
 import { useState } from 'react';
-import { Metadata } from 'next';
+import { useContact } from '@/frontend/hooks/useContact';
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const { isLoading, isSuccess, error, submitContact } = useContact();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStatus('loading');
-    try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-      setStatus(res.ok ? 'success' : 'error');
-      if (res.ok) setForm({ name: '', email: '', subject: '', message: '' });
-    } catch { setStatus('error'); }
+    const success = await submitContact(form);
+    if (success) {
+      setForm({ name: '', email: '', subject: '', message: '' });
+    }
   };
 
   return (
@@ -28,33 +22,33 @@ export default function ContactPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         <div>
-          {status === 'success' ? (
-            <div className="bg-cream p-8 rounded-sm text-center">
-              <p className="font-display text-xl text-ink mb-2">Message sent</p>
-              <p className="text-sm text-text-muted">We will get back to you within 24 hours.</p>
+          {isSuccess ? (
+            <div className="bg-cream p-8 rounded-none border border-beige-line text-center">
+              <p className="font-display text-xl text-dark-espresso mb-2">Message sent</p>
+              <p className="text-sm text-chocolate-brown">We will get back to you within 24 hours.</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label className="text-xs font-body text-text-muted block mb-1">Name</label>
-                <input type="text" value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} required className="w-full border-b border-border bg-transparent py-2.5 text-sm font-body text-ink focus:outline-none focus:border-ink" />
+                <label className="text-xs font-body text-chocolate-brown block mb-1">Name</label>
+                <input type="text" value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} required className="w-full border-b border-beige-line bg-transparent py-2.5 text-sm font-body text-dark-espresso focus:outline-none focus:border-dark-espresso" />
               </div>
               <div>
-                <label className="text-xs font-body text-text-muted block mb-1">Email</label>
-                <input type="email" value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} required className="w-full border-b border-border bg-transparent py-2.5 text-sm font-body text-ink focus:outline-none focus:border-ink" />
+                <label className="text-xs font-body text-chocolate-brown block mb-1">Email</label>
+                <input type="email" value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} required className="w-full border-b border-beige-line bg-transparent py-2.5 text-sm font-body text-dark-espresso focus:outline-none focus:border-dark-espresso" />
               </div>
               <div>
-                <label className="text-xs font-body text-text-muted block mb-1">Subject</label>
-                <input type="text" value={form.subject} onChange={e => setForm(p => ({ ...p, subject: e.target.value }))} className="w-full border-b border-border bg-transparent py-2.5 text-sm font-body text-ink focus:outline-none focus:border-ink" />
+                <label className="text-xs font-body text-chocolate-brown block mb-1">Subject</label>
+                <input type="text" value={form.subject} onChange={e => setForm(p => ({ ...p, subject: e.target.value }))} className="w-full border-b border-beige-line bg-transparent py-2.5 text-sm font-body text-dark-espresso focus:outline-none focus:border-dark-espresso" />
               </div>
               <div>
-                <label className="text-xs font-body text-text-muted block mb-1">Message</label>
-                <textarea value={form.message} onChange={e => setForm(p => ({ ...p, message: e.target.value }))} required rows={5} className="w-full border border-border bg-transparent py-2.5 px-3 text-sm font-body text-ink focus:outline-none focus:border-ink rounded-sm resize-none" />
+                <label className="text-xs font-body text-chocolate-brown block mb-1">Message</label>
+                <textarea value={form.message} onChange={e => setForm(p => ({ ...p, message: e.target.value }))} required rows={5} className="w-full border border-beige-line bg-transparent py-2.5 px-3 text-sm font-body text-dark-espresso focus:outline-none focus:border-dark-espresso rounded-none resize-none" />
               </div>
-              <button type="submit" disabled={status === 'loading'} className="bg-ink text-ivory px-8 py-3 text-sm font-body rounded-sm hover:bg-deep-brown transition-colors disabled:opacity-50" style={{ transitionDuration: 'var(--duration-fast)' }}>
-                {status === 'loading' ? 'Sending...' : 'Send message'}
+              <button type="submit" disabled={isLoading} className="bg-dark-espresso text-cream px-8 py-3 text-[11px] uppercase tracking-[0.18em] rounded-none hover:bg-chocolate-brown transition-colors disabled:opacity-50 cursor-pointer">
+                {isLoading ? 'Sending...' : 'Send message'}
               </button>
-              {status === 'error' && <p className="text-xs text-wine">Something went wrong. Please try again.</p>}
+              {error && <p className="text-xs text-red-700">{error}</p>}
             </form>
           )}
         </div>

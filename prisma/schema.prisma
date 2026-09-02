@@ -1,0 +1,334 @@
+// ==============================================================================
+// The Bombay Edit - Highly Normalised Prisma Relational Schema
+// ==============================================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── 1. Lookups & Taxonomies ───────────────────────────────────
+
+model Category {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  name        String
+  description String?
+  image       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  products    Product[]
+
+  @@map("categories")
+}
+
+model Collection {
+  id                 String              @id @default(cuid())
+  slug               String              @unique
+  name               String
+  description        String?
+  image              String?
+  heroImage          String?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  productCollections ProductCollection[]
+
+  @@map("collections")
+}
+
+model Occasion {
+  id               String            @id @default(cuid())
+  slug             String            @unique
+  name             String
+  description      String?
+  image            String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  productOccasions ProductOccasion[]
+
+  @@map("occasions")
+}
+
+model Colour {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  hex       String
+  createdAt DateTime  @default(now())
+  products  Product[]
+
+  @@map("colours")
+}
+
+model Fabric {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  description String?
+  createdAt   DateTime  @default(now())
+  products    Product[]
+
+  @@map("fabrics")
+}
+
+model EmbroideryType {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  description String?
+  createdAt   DateTime  @default(now())
+  products    Product[]
+
+  @@map("embroidery_types")
+}
+
+// ── 2. Products & Child Relations ─────────────────────────────
+
+model Product {
+  id                  String                   @id
+  slug                String                   @unique
+  name                String
+  shortDescription    String
+  longDescription     String
+  categoryId          String
+  category            Category                 @relation(fields: [categoryId], references: [id])
+  colourId            String
+  colour              Colour                   @relation(fields: [colourId], references: [id])
+  fabricId            String
+  fabric              Fabric                   @relation(fields: [fabricId], references: [id])
+  embroideryTypeId    String
+  embroideryType      EmbroideryType           @relation(fields: [embroideryTypeId], references: [id])
+  price               Decimal                  @db.Decimal(12, 2)
+  compareAtPrice      Decimal?                 @db.Decimal(12, 2)
+  currency            String                   @default("NPR")
+  work                String?
+  fit                 String?
+  modelHeightAndSize  String?
+  deliveryEstimate    String?
+  isNewArrival        Boolean                  @default(false)
+  isBestseller        Boolean                  @default(false)
+  isMadeToOrder       Boolean                  @default(false)
+  createdAt           DateTime                 @default(now())
+  updatedAt           DateTime                 @updatedAt
+  images              ProductImage[]
+  sizeStock           ProductSizeStock[]
+  components          ProductComponent[]
+  careInstructions    ProductCareInstruction[]
+  collections         ProductCollection[]
+  occasions           ProductOccasion[]
+  orderItems          OrderItem[]
+
+  @@index([categoryId])
+  @@index([colourId])
+  @@index([fabricId])
+  @@index([embroideryTypeId])
+  @@index([isNewArrival])
+  @@index([isBestseller])
+  @@map("products")
+}
+
+model ProductImage {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  src       String
+  alt       String
+  type      String  // 'front' | 'back' | 'detail' | 'lifestyle'
+  sortOrder Int     @default(0)
+
+  @@index([productId])
+  @@map("product_images")
+}
+
+model ProductSizeStock {
+  id            String  @id @default(cuid())
+  productId     String
+  product       Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  size          String  // 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL'
+  stockQuantity Int     @default(0)
+
+  @@unique([productId, size])
+  @@index([productId])
+  @@map("product_size_stock")
+}
+
+model ProductComponent {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name      String
+
+  @@index([productId])
+  @@map("product_components")
+}
+
+model ProductCareInstruction {
+  id          String  @id @default(cuid())
+  productId   String
+  product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  instruction String
+
+  @@index([productId])
+  @@map("product_care_instructions")
+}
+
+model ProductCollection {
+  productId    String
+  product      Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  collectionId String
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+
+  @@id([productId, collectionId])
+  @@map("product_collections")
+}
+
+model ProductOccasion {
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  occasionId String
+  occasion   Occasion @relation(fields: [occasionId], references: [id], onDelete: Cascade)
+
+  @@id([productId, occasionId])
+  @@map("product_occasions")
+}
+
+// ── 3. Shipping & Currencies ──────────────────────────────────
+
+model ShippingZone {
+  id            String   @id @default(cuid())
+  zone          String   @unique
+  label         String
+  description   String?
+  rate          Decimal  @db.Decimal(10, 2)
+  freeAbove     Decimal? @db.Decimal(10, 2)
+  estimatedDays String
+  createdAt     DateTime @default(now())
+  orders        Order[]
+
+  @@map("shipping_zones")
+}
+
+model Currency {
+  id     String  @id @default(cuid())
+  code   String  @unique
+  symbol String
+  rate   Decimal @db.Decimal(10, 4)
+  locale String
+
+  @@map("currencies")
+}
+
+// ── 4. Customers & Addresses ──────────────────────────────────
+
+model Customer {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  firstName String
+  lastName  String
+  phone     String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  addresses Address[]
+  orders    Order[]
+
+  @@map("customers")
+}
+
+model Address {
+  id           String   @id @default(cuid())
+  customerId   String
+  customer     Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  addressLine1 String
+  addressLine2 String?
+  city         String
+  state        String?
+  postalCode   String?
+  country      String
+  isDefault    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  @@index([customerId])
+  @@map("addresses")
+}
+
+// ── 5. Orders & Order Items ───────────────────────────────────
+
+model Order {
+  id                 String        @id @default(cuid())
+  orderNumber        String        @unique
+  customerId         String?
+  customer           Customer?     @relation(fields: [customerId], references: [id])
+  customerEmail      String
+  customerFirstName  String
+  customerLastName   String
+  customerPhone      String
+  shippingAddress    String
+  shippingCity       String
+  shippingState      String?
+  shippingPostalCode String?
+  shippingCountry    String
+  shippingZoneId     String?
+  shippingZone       ShippingZone? @relation(fields: [shippingZoneId], references: [id])
+  shippingZoneName   String
+  subtotal           Decimal       @db.Decimal(12, 2)
+  shippingCost       Decimal       @db.Decimal(10, 2)
+  total              Decimal       @db.Decimal(12, 2)
+  currency           String        @default("NPR")
+  paymentMethod      String
+  notes              String?
+  status             String        @default("confirmed")
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  items              OrderItem[]
+
+  @@index([customerEmail])
+  @@index([orderNumber])
+  @@map("orders")
+}
+
+model OrderItem {
+  id          String   @id @default(cuid())
+  orderId     String
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId   String?
+  product     Product? @relation(fields: [productId], references: [id])
+  productSlug String
+  productName String
+  unitPrice   Decimal  @db.Decimal(12, 2)
+  quantity    Int      @default(1)
+  size        String
+  colour      String
+  createdAt   DateTime @default(now())
+
+  @@index([orderId])
+  @@index([productId])
+  @@map("order_items")
+}
+
+// ── 6. Inquiries & Subscribers ────────────────────────────────
+
+model ContactSubmission {
+  id          String   @id @default(cuid())
+  name        String
+  email       String
+  subject     String?
+  message     String
+  phone       String?
+  orderNumber String?
+  status      String   @default("new")
+  createdAt   DateTime @default(now())
+
+  @@index([email])
+  @@map("contact_submissions")
+}
+
+model NewsletterSubscriber {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  source       String   @default("website")
+  isActive     Boolean  @default(true)
+  subscribedAt DateTime @default(now())
+
+  @@map("newsletter_subscribers")
+}
