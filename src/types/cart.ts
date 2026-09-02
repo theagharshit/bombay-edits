@@ -18,11 +18,7 @@ export interface Cart {
   total: number;
 }
 
-export type ShippingZone =
-  | 'mumbai'
-  | 'rest-of-india'
-  | 'nepal'
-  | 'rest-of-world';
+export type ShippingZone = 'mumbai' | 'rest-of-india' | 'nepal' | 'rest-of-world';
 
 export interface ShippingRate {
   zone: ShippingZone;

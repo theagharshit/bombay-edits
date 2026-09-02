@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+echo "🔍 Running pre-commit hooks (lint-staged & typecheck)..."
+
+# 1. Run lint-staged (ESLint + Prettier)
+npx lint-staged
+
+# 2. Run TypeScript typecheck to guarantee zero compilation errors
+npx tsc --noEmit
+
+echo "✅ Pre-commit verification passed!"

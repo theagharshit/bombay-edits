@@ -44,19 +44,10 @@ export type Category =
   | 'indo-western'
   | 'occasionwear';
 
-export type Occasion =
-  | 'wedding-guest'
-  | 'mehendi-haldi'
-  | 'festive'
-  | 'everyday'
-  | 'brunch-day';
+export type Occasion = 'wedding-guest' | 'mehendi-haldi' | 'festive' | 'everyday' | 'brunch-day';
 
 export type Collection =
-  | 'signature'
-  | 'monsoon-edit'
-  | 'festive-edit'
-  | 'bridal-edit'
-  | 'everyday-luxe';
+  'signature' | 'monsoon-edit' | 'festive-edit' | 'bridal-edit' | 'everyday-luxe';
 
 export interface Product {
   id: string;

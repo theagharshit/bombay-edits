@@ -1,0 +1,9 @@
+/**
+ * Frontend Architecture Entrypoint
+ */
+export * from './components';
+export * from './context';
+export * from './hooks';
+export * from './services';
+export * from './utils';
+export * from './types';

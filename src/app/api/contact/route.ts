@@ -1,35 +1,11 @@
-import { NextResponse } from 'next/server';
+import { contactController } from '@/backend/controllers';
+import { withMiddlewares } from '@/backend/middlewares';
 
-export async function POST(request: Request) {
-  try {
-    const body = await request.json();
-    const { name, email, subject, message } = body;
-
-    if (!name || !email || !message) {
-      return NextResponse.json(
-        { error: 'Name, email, and message are required.' },
-        { status: 400 }
-      );
-    }
-
-    if (!email.includes('@')) {
-      return NextResponse.json(
-        { error: 'A valid email address is required.' },
-        { status: 400 }
-      );
-    }
-
-    // Stubbed integration — replace with actual email service
-    console.log(`Contact form: ${name} (${email}) — ${subject}: ${message}`);
-
-    return NextResponse.json(
-      { message: 'Message sent successfully.' },
-      { status: 200 }
-    );
-  } catch {
-    return NextResponse.json(
-      { error: 'Something went wrong.' },
-      { status: 500 }
-    );
-  }
-}
+/**
+ * POST /api/contact - Submit contact inquiry
+ * GET  /api/contact - List submissions (admin)
+ */
+export const POST = withMiddlewares(
+  contactController.handleContactSubmission.bind(contactController)
+);
+export const GET = withMiddlewares(contactController.getSubmissions.bind(contactController));

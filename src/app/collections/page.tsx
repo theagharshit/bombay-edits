@@ -13,10 +13,11 @@ export default function CollectionsPage() {
     <div className="container-site section-padding">
       <h1 className="font-display text-3xl md:text-4xl text-ink mb-4">Our collections</h1>
       <p className="text-sm text-text-muted mb-12 max-w-xl">
-        Each collection tells a story — of a season, an occasion, or a way of dressing. Browse the edits below.
+        Each collection tells a story — of a season, an occasion, or a way of dressing. Browse the
+        edits below.
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {collections.map(collection => (
+        {collections.map((collection) => (
           <Link
             key={collection.slug}
             href={`/collections/${collection.slug}`}
@@ -35,7 +36,9 @@ export default function CollectionsPage() {
             <div className="absolute inset-0 bg-gradient-to-t from-ink/60 via-transparent to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 p-8">
               <h2 className="font-display text-2xl text-ivory">{collection.name}</h2>
-              <p className="text-sm text-ivory/70 mt-1 max-w-md font-body">{collection.description}</p>
+              <p className="text-sm text-ivory/70 mt-1 max-w-md font-body">
+                {collection.description}
+              </p>
             </div>
           </Link>
         ))}

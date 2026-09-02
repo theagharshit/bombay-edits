@@ -19,7 +19,15 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/backend/*": ["./src/backend/*"],
+      "@/frontend/*": ["./src/frontend/*"],
+      "@/components/*": ["./src/frontend/components/*", "./src/components/*"],
+      "@/context/*": ["./src/frontend/context/*", "./src/context/*"],
+      "@/hooks/*": ["./src/frontend/hooks/*"],
+      "@/services/*": ["./src/frontend/services/*"],
+      "@/types/*": ["./src/types/*", "./src/backend/types/*", "./src/frontend/types/*"],
+      "@/data/*": ["./src/backend/models/*", "./src/data/*"]
     }
   },
   "include": [

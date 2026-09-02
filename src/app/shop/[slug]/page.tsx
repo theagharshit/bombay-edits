@@ -8,7 +8,7 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  return products.map(p => ({ slug: p.slug }));
+  return products.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -32,7 +32,7 @@ export default async function ProductPage({ params }: PageProps) {
   if (!product) notFound();
 
   const related = getProductsByCategory(product.category)
-    .filter(p => p.id !== product.id)
+    .filter((p) => p.id !== product.id)
     .slice(0, 4);
 
   return (

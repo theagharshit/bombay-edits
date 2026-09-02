@@ -9,7 +9,13 @@ export const metadata: Metadata = {
 
 export default function BestsellersPage() {
   return (
-    <Suspense fallback={<div className="container-site section-padding"><div className="h-96 skeleton rounded" /></div>}>
+    <Suspense
+      fallback={
+        <div className="container-site section-padding">
+          <div className="h-96 skeleton rounded" />
+        </div>
+      }
+    >
       <ShopPageContent
         title="Bestsellers"
         description="Our most loved pieces, chosen by our customers."
