@@ -314,32 +314,33 @@ export default function AddressesPage() {
         )}
       </div>
 
-      {/* Modern Luxury Add Address Modal - Generous Architectural Dialog */}
+      {/* Modern Luxury Add Address Modal - Grand Architectural Pavilion */}
       {showAddModal && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10 overflow-y-auto bg-black/60 backdrop-blur-md animate-fade-in"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-8 lg:p-12 overflow-y-auto bg-black/65 backdrop-blur-md animate-fade-in"
           onClick={() => setShowAddModal(false)}
         >
           <div
-            className="relative w-full max-w-4xl bg-ivory border border-beige-line shadow-2xl overflow-hidden my-auto rounded-none"
+            className="relative w-full max-w-5xl bg-ivory border border-beige-line shadow-2xl overflow-hidden my-auto rounded-none"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="flex items-center justify-between px-8 sm:px-12 py-7 border-b border-beige-line bg-cream/60">
+            <div className="flex items-center justify-between px-8 sm:px-14 py-8 border-b border-beige-line bg-cream/70">
               <div>
-                <span className="text-[10px] uppercase tracking-[0.25em] text-muted-taupe block font-medium">
+                <span className="text-[11px] uppercase tracking-[0.28em] text-champagne-gold block font-semibold">
                   Atelier Address Book
                 </span>
                 <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl text-dark-espresso tracking-tight mt-1">
                   Add Delivery Address
                 </h2>
-                <p className="text-[12px] text-chocolate-brown mt-1">
-                  Enter your residential or atelier destination for bespoke couture dispatches.
+                <p className="text-[13px] text-chocolate-brown mt-1.5 leading-relaxed">
+                  Enter your residential, suite, or atelier destination for bespoke couture
+                  dispatches.
                 </p>
               </div>
               <button
                 onClick={() => setShowAddModal(false)}
-                className="w-11 h-11 flex items-center justify-center text-dark-espresso hover:bg-cream border border-beige-line/60 hover:border-dark-espresso transition-colors cursor-pointer text-xl rounded-none shrink-0"
+                className="w-12 h-12 flex items-center justify-center text-dark-espresso hover:bg-cream border border-beige-line/70 hover:border-dark-espresso transition-colors cursor-pointer text-2xl rounded-none shrink-0"
                 aria-label="Close modal"
               >
                 ✕
@@ -347,13 +348,13 @@ export default function AddressesPage() {
             </div>
 
             {/* Modal Form */}
-            <form onSubmit={handleAddAddress} className="p-8 sm:p-12 space-y-6">
+            <form onSubmit={handleAddAddress} className="p-8 sm:p-14 space-y-8">
               {/* Section 1: Contact Details */}
               <div>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-champagne-gold font-semibold block mb-4">
+                <span className="text-[11px] uppercase tracking-[0.22em] text-chocolate-brown font-semibold block mb-4">
                   01. Recipient Information
                 </span>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
                   <Input
                     label="Full Name / Attention"
                     value={newAddr.name}
@@ -371,13 +372,14 @@ export default function AddressesPage() {
                 </div>
               </div>
 
-              <div className="border-t border-beige-line/60 pt-6">
-                <span className="text-[10px] uppercase tracking-[0.2em] text-champagne-gold font-semibold block mb-4">
+              {/* Section 2: Location & Street Details */}
+              <div className="border-t border-beige-line/70 pt-8">
+                <span className="text-[11px] uppercase tracking-[0.22em] text-chocolate-brown font-semibold block mb-4">
                   02. Location & Street Details
                 </span>
 
-                <div className="space-y-5">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
                     <Input
                       label="Street Address / Residence"
                       value={newAddr.addressLine1}
@@ -393,7 +395,7 @@ export default function AddressesPage() {
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-8">
                     <Input
                       label="City"
                       value={newAddr.city}
@@ -417,7 +419,7 @@ export default function AddressesPage() {
                     />
                   </div>
 
-                  <div className="max-w-xs">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-8">
                     <Input
                       label="Country"
                       value={newAddr.country}
@@ -429,8 +431,9 @@ export default function AddressesPage() {
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-beige-line/60">
-                <label className="flex items-center gap-3.5 text-[13px] text-dark-espresso cursor-pointer select-none">
+              {/* Default Address Option */}
+              <div className="pt-2 border-t border-beige-line/70">
+                <label className="flex items-center gap-3.5 text-[13px] text-dark-espresso cursor-pointer select-none py-1">
                   <input
                     type="checkbox"
                     checked={newAddr.isDefault}
@@ -444,18 +447,18 @@ export default function AddressesPage() {
               </div>
 
               {/* Modal Actions */}
-              <div className="flex flex-col sm:flex-row items-center justify-end gap-4 pt-6 border-t border-beige-line">
+              <div className="flex flex-col sm:flex-row items-center justify-end gap-4 pt-8 border-t border-beige-line">
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="w-full sm:w-auto px-8 py-3.5 text-[11px] uppercase tracking-[0.2em] text-dark-espresso hover:bg-cream border border-beige-line transition-colors cursor-pointer rounded-none"
+                  className="w-full sm:w-auto px-10 py-4 text-[11px] uppercase tracking-[0.22em] text-dark-espresso hover:bg-cream border border-beige-line transition-colors cursor-pointer rounded-none font-medium"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full sm:w-auto px-10 py-3.5 bg-dark-espresso text-cream text-[11px] uppercase tracking-[0.2em] font-medium hover:bg-chocolate-brown disabled:opacity-50 transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer rounded-none"
+                  className="w-full sm:w-auto px-12 py-4 bg-dark-espresso text-cream text-[11px] uppercase tracking-[0.22em] font-medium hover:bg-chocolate-brown disabled:opacity-50 transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer rounded-none"
                 >
                   {submitting ? 'Saving Address...' : 'Save Address'}
                 </button>
