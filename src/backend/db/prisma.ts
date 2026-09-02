@@ -43,6 +43,11 @@ let lastCheckTime = 0;
  * Check if Prisma can connect to the PostgreSQL database
  */
 export async function isPrismaConnected(): Promise<boolean> {
+  // If DATABASE_URL environment variable is not defined, avoid Prisma invocation
+  if (!process.env.DATABASE_URL) {
+    return false;
+  }
+
   const now = Date.now();
   if (isConnectedCache !== null && now - lastCheckTime < 5000) {
     return isConnectedCache;
