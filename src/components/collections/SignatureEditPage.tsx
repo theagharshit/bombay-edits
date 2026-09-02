@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { CollectionInfo } from '@/types/product';
 import { products } from '@/data/products';
 import { ProductCard } from '@/components/product/ProductCard';

@@ -1,4 +1,4 @@
-import { Product } from '@/types/product';
+import { Product, Collection, Occasion, Size } from '@/types/product';
 
 import { getProductPlaceholder } from '@/lib/utils';
 
@@ -865,11 +865,11 @@ export class ProductModel {
     }
 
     if (options.collection) {
-      result = result.filter((p) => p.collections.includes(options.collection as any));
+      result = result.filter((p) => p.collections.includes(options.collection as Collection));
     }
 
     if (options.occasion) {
-      result = result.filter((p) => p.occasions.includes(options.occasion as any));
+      result = result.filter((p) => p.occasions.includes(options.occasion as Occasion));
     }
 
     if (options.isNewArrival !== undefined) {
@@ -899,7 +899,7 @@ export class ProductModel {
     }
 
     if (options.size) {
-      result = result.filter((p) => p.availableSizes.includes(options.size as any));
+      result = result.filter((p) => p.availableSizes.includes(options.size as Size));
     }
 
     // Sorting

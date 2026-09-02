@@ -7,7 +7,7 @@ export class HealthController {
    * Health check endpoint returning Prisma ORM, PostgreSQL database connectivity, and normalized entity counts
    * GET /api/health
    */
-  public async getHealth(req: NextRequest) {
+  public async getHealth(_req: NextRequest) {
     const startTime = performance.now();
     const dbConnected = await isPrismaConnected();
     let dbLatencyMs: number | null = null;

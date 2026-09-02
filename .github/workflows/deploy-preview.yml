@@ -1,0 +1,36 @@
+name: Pull Request Preview Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  validate-pr:
+    name: Validate PR Changes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Prisma Client Generation
+        run: npm run prisma:generate
+
+      - name: Code Quality & Type Check
+        run: |
+          npm run lint
+          npx tsc --noEmit
+          npm test
+
+      - name: Verify Clean Build
+        run: npm run build
+        env:
+          NODE_ENV: production

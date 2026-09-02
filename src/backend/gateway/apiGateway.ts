@@ -31,7 +31,7 @@ export class ApiGateway {
   /**
    * Execute Gateway pipeline around any controller handler
    */
-  public static handle<T = unknown>(
+  public static handle(
     handler: (
       req: NextRequest,
       context: RequestContext

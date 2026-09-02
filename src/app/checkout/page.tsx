@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import { generatePlaceholderImage } from '@/lib/utils';
-import { shippingRates, calculateShipping } from '@/data/shipping';
+import { calculateShipping } from '@/data/shipping';
 import { CheckoutStep, ShippingZone } from '@/types/cart';
 
 const steps: { key: CheckoutStep; label: string }[] = [

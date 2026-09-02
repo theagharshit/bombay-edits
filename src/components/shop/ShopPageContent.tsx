@@ -5,7 +5,7 @@ import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { ProductCard } from '@/components/product/ProductCard';
 import { products } from '@/data/products';
 import { categories, occasions } from '@/data/collections';
-import { Product, Category, Occasion, Fabric, EmbroideryType } from '@/types/product';
+import { Category, Occasion, Fabric, EmbroideryType, Collection } from '@/types/product';
 
 const fabrics: Fabric[] = [
   'Chanderi silk',
@@ -83,7 +83,7 @@ export function ShopPageContent({
       result = result.filter((p) => p.isNewArrival);
     } else if (filterType.startsWith('collection:')) {
       const collectionSlug = filterType.split(':')[1];
-      result = result.filter((p) => p.collections.includes(collectionSlug as any));
+      result = result.filter((p) => p.collections.includes(collectionSlug as Collection));
     }
 
     if (activeCategory) result = result.filter((p) => p.category === activeCategory);

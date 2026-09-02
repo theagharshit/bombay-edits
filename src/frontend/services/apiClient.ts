@@ -1,4 +1,4 @@
-import { ApiSuccessResponse, ApiErrorResponse } from '@/backend/types/api';
+import { ApiSuccessResponse } from '@/backend/types/api';
 
 export class ApiError extends Error {
   public status: number;
