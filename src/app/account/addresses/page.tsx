@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Input } from '@/frontend/components/ui/Input';
 
@@ -11,39 +11,22 @@ interface AddressItem {
   addressLine1: string;
   addressLine2?: string;
   city: string;
-  state: string;
-  postalCode: string;
+  state?: string;
+  postalCode?: string;
   country: string;
   isDefault: boolean;
 }
 
 export default function AddressesPage() {
-  const [addresses, setAddresses] = useState<AddressItem[]>([
-    {
-      id: 'addr-1',
-      name: 'Ananya Sharma',
-      phone: '+91 98201 23456',
-      addressLine1: 'B-402, Sea Green Apartments, Worli Sea Face',
-      city: 'Mumbai',
-      state: 'Maharashtra',
-      postalCode: '400018',
-      country: 'India',
-      isDefault: true,
-    },
-    {
-      id: 'addr-2',
-      name: 'Ananya Sharma (Atelier)',
-      phone: '+91 98201 23456',
-      addressLine1: '14 Kala Ghoda, Fort Heritage District',
-      city: 'Mumbai',
-      state: 'Maharashtra',
-      postalCode: '400001',
-      country: 'India',
-      isDefault: false,
-    },
-  ]);
-
+  const [addresses, setAddresses] = useState<AddressItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [statusMessage, setStatusMessage] = useState<{
+    type: 'success' | 'error';
+    text: string;
+  } | null>(null);
+
   const [newAddr, setNewAddr] = useState({
     name: '',
     phone: '',
@@ -56,46 +39,117 @@ export default function AddressesPage() {
     isDefault: false,
   });
 
-  const handleSetDefault = (id: string) => {
+  const fetchAddresses = async () => {
+    try {
+      const res = await fetch('/api/addresses');
+      if (res.ok) {
+        const json = await res.json();
+        if (json.data && Array.isArray(json.data)) {
+          setAddresses(json.data);
+        }
+      }
+    } catch (err) {
+      console.error('Failed to load addresses:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAddresses();
+  }, []);
+
+  const showNotification = (text: string, type: 'success' | 'error' = 'success') => {
+    setStatusMessage({ type, text });
+    setTimeout(() => {
+      setStatusMessage(null);
+    }, 4000);
+  };
+
+  const handleSetDefault = async (id: string) => {
+    // Optimistic UI update
     setAddresses((prev) =>
       prev.map((a) => ({
         ...a,
         isDefault: a.id === id,
       }))
     );
-  };
 
-  const handleDelete = (id: string) => {
-    setAddresses((prev) => prev.filter((a) => a.id !== id));
-  };
-
-  const handleAddAddress = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newAddr.name || !newAddr.addressLine1 || !newAddr.city) return;
-
-    const item: AddressItem = {
-      id: `addr-${Date.now()}`,
-      ...newAddr,
-    };
-
-    if (item.isDefault) {
-      setAddresses((prev) => [item, ...prev.map((a) => ({ ...a, isDefault: false }))]);
-    } else {
-      setAddresses((prev) => [...prev, item]);
+    try {
+      const res = await fetch(`/api/addresses/${id}/default`, {
+        method: 'PATCH',
+      });
+      if (res.ok) {
+        showNotification('Primary delivery address updated');
+      } else {
+        fetchAddresses();
+      }
+    } catch {
+      fetchAddresses();
     }
+  };
 
-    setShowAddModal(false);
-    setNewAddr({
-      name: '',
-      phone: '',
-      addressLine1: '',
-      addressLine2: '',
-      city: '',
-      state: '',
-      postalCode: '',
-      country: 'India',
-      isDefault: false,
-    });
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to remove this delivery address?')) return;
+
+    // Optimistic UI update
+    setAddresses((prev) => prev.filter((a) => a.id !== id));
+
+    try {
+      const res = await fetch(`/api/addresses/${id}`, {
+        method: 'DELETE',
+      });
+      if (res.ok) {
+        showNotification('Address removed successfully');
+      } else {
+        fetchAddresses();
+      }
+    } catch {
+      fetchAddresses();
+    }
+  };
+
+  const handleAddAddress = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newAddr.name || !newAddr.addressLine1 || !newAddr.city || !newAddr.phone) return;
+
+    setSubmitting(true);
+    try {
+      const res = await fetch('/api/addresses', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newAddr),
+      });
+
+      const json = await res.json();
+      if (res.ok && json.data) {
+        if (json.data.isDefault) {
+          setAddresses((prev) => [json.data, ...prev.map((a) => ({ ...a, isDefault: false }))]);
+        } else {
+          setAddresses((prev) => [...prev, json.data]);
+        }
+
+        setShowAddModal(false);
+        setNewAddr({
+          name: '',
+          phone: '',
+          addressLine1: '',
+          addressLine2: '',
+          city: '',
+          state: '',
+          postalCode: '',
+          country: 'India',
+          isDefault: false,
+        });
+        showNotification('New address added to your address book');
+      } else {
+        showNotification(json.error || 'Failed to add address', 'error');
+      }
+    } catch {
+      showNotification('Network error saving address', 'error');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -109,6 +163,25 @@ export default function AddressesPage() {
           <span>/</span>
           <span className="text-dark-espresso font-medium">Saved Addresses</span>
         </div>
+
+        {/* Status Notification Banner */}
+        {statusMessage && (
+          <div
+            className={`mb-6 p-4 text-[12px] tracking-wide uppercase font-medium flex items-center justify-between border ${
+              statusMessage.type === 'success'
+                ? 'bg-cream text-dark-espresso border-champagne-gold/60'
+                : 'bg-red-50 text-red-900 border-red-200'
+            }`}
+          >
+            <span>{statusMessage.text}</span>
+            <button
+              onClick={() => setStatusMessage(null)}
+              className="text-xs hover:opacity-70 cursor-pointer ml-4"
+            >
+              ✕
+            </button>
+          </div>
+        )}
 
         {/* Page Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 pb-8 mb-10 border-b border-beige-line">
@@ -126,7 +199,7 @@ export default function AddressesPage() {
           </div>
           <button
             onClick={() => setShowAddModal(true)}
-            className="inline-flex items-center justify-center gap-2 bg-dark-espresso text-cream px-6 py-3.5 text-[11px] uppercase tracking-[0.2em] font-medium hover:bg-chocolate-brown transition-all duration-300 shadow-xs hover:shadow-md cursor-pointer shrink-0"
+            className="inline-flex items-center justify-center gap-2 bg-dark-espresso text-cream px-6 py-3.5 text-[11px] uppercase tracking-[0.2em] font-medium hover:bg-chocolate-brown transition-all duration-300 shadow-xs hover:shadow-md cursor-pointer shrink-0 rounded-none"
           >
             <span>+</span>
             <span>Add New Address</span>
@@ -134,7 +207,16 @@ export default function AddressesPage() {
         </div>
 
         {/* Addresses Grid */}
-        {addresses.length === 0 ? (
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+            {[1, 2].map((n) => (
+              <div
+                key={n}
+                className="p-8 border border-beige-line bg-cream/30 animate-pulse h-64"
+              />
+            ))}
+          </div>
+        ) : addresses.length === 0 ? (
           <div className="text-center py-20 bg-cream/50 border border-beige-line p-10 max-w-xl mx-auto">
             <div className="w-12 h-12 mx-auto mb-4 border border-beige-line flex items-center justify-center text-muted-taupe">
               <svg
@@ -156,7 +238,7 @@ export default function AddressesPage() {
             </p>
             <button
               onClick={() => setShowAddModal(true)}
-              className="bg-dark-espresso text-cream px-8 py-3 text-[11px] uppercase tracking-[0.2em] hover:bg-chocolate-brown transition-colors cursor-pointer"
+              className="bg-dark-espresso text-cream px-8 py-3 text-[11px] uppercase tracking-[0.2em] hover:bg-chocolate-brown transition-colors cursor-pointer rounded-none"
             >
               Add Your First Address
             </button>
@@ -193,8 +275,11 @@ export default function AddressesPage() {
                     <p className="font-medium text-dark-espresso">{addr.addressLine1}</p>
                     {addr.addressLine2 && <p>{addr.addressLine2}</p>}
                     <p>
-                      {addr.city}, {addr.state}{' '}
-                      <span className="font-mono text-[12px]">{addr.postalCode}</span>
+                      {addr.city}
+                      {addr.state ? `, ${addr.state}` : ''}{' '}
+                      {addr.postalCode && (
+                        <span className="font-mono text-[12px]">{addr.postalCode}</span>
+                      )}
                     </p>
                     <p className="text-[11px] uppercase tracking-[0.16em] text-muted-taupe pt-1">
                       {addr.country}
@@ -229,26 +314,32 @@ export default function AddressesPage() {
         )}
       </div>
 
-      {/* Modern Luxury Add Address Modal */}
+      {/* Modern Luxury Add Address Modal - Generous Architectural Dialog */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-black/60 backdrop-blur-sm animate-fade-in">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10 overflow-y-auto bg-black/60 backdrop-blur-md animate-fade-in"
+          onClick={() => setShowAddModal(false)}
+        >
           <div
-            className="relative w-full max-w-2xl bg-ivory border border-beige-line shadow-2xl overflow-hidden my-8"
+            className="relative w-full max-w-4xl bg-ivory border border-beige-line shadow-2xl overflow-hidden my-auto rounded-none"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="flex items-center justify-between px-6 sm:px-8 py-6 border-b border-beige-line bg-cream/40">
+            <div className="flex items-center justify-between px-8 sm:px-12 py-7 border-b border-beige-line bg-cream/60">
               <div>
                 <span className="text-[10px] uppercase tracking-[0.25em] text-muted-taupe block font-medium">
-                  Atelier Dispatch
+                  Atelier Address Book
                 </span>
-                <h2 className="font-display text-2xl sm:text-3xl text-dark-espresso tracking-tight">
+                <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl text-dark-espresso tracking-tight mt-1">
                   Add Delivery Address
                 </h2>
+                <p className="text-[12px] text-chocolate-brown mt-1">
+                  Enter your residential or atelier destination for bespoke couture dispatches.
+                </p>
               </div>
               <button
                 onClick={() => setShowAddModal(false)}
-                className="w-9 h-9 flex items-center justify-center text-dark-espresso hover:bg-cream border border-transparent hover:border-beige-line transition-colors cursor-pointer text-lg"
+                className="w-11 h-11 flex items-center justify-center text-dark-espresso hover:bg-cream border border-beige-line/60 hover:border-dark-espresso transition-colors cursor-pointer text-xl rounded-none shrink-0"
                 aria-label="Close modal"
               >
                 ✕
@@ -256,99 +347,117 @@ export default function AddressesPage() {
             </div>
 
             {/* Modal Form */}
-            <form onSubmit={handleAddAddress} className="p-6 sm:p-8 space-y-5">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <Input
-                  label="Full Name"
-                  value={newAddr.name}
-                  onChange={(e) => setNewAddr({ ...newAddr, name: e.target.value })}
-                  required
-                  placeholder="e.g. Madame Ananya Sharma"
-                />
-                <Input
-                  label="Phone Number"
-                  value={newAddr.phone}
-                  onChange={(e) => setNewAddr({ ...newAddr, phone: e.target.value })}
-                  required
-                  placeholder="+91 98200 00000"
-                />
+            <form onSubmit={handleAddAddress} className="p-8 sm:p-12 space-y-6">
+              {/* Section 1: Contact Details */}
+              <div>
+                <span className="text-[10px] uppercase tracking-[0.2em] text-champagne-gold font-semibold block mb-4">
+                  01. Recipient Information
+                </span>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <Input
+                    label="Full Name / Attention"
+                    value={newAddr.name}
+                    onChange={(e) => setNewAddr({ ...newAddr, name: e.target.value })}
+                    required
+                    placeholder="e.g. Madame Ananya Sharma"
+                  />
+                  <Input
+                    label="Phone Number"
+                    value={newAddr.phone}
+                    onChange={(e) => setNewAddr({ ...newAddr, phone: e.target.value })}
+                    required
+                    placeholder="+91 98200 00000"
+                  />
+                </div>
               </div>
 
-              <Input
-                label="Street Address / Residence"
-                value={newAddr.addressLine1}
-                onChange={(e) => setNewAddr({ ...newAddr, addressLine1: e.target.value })}
-                required
-                placeholder="Flat / Villa number, Apartment name, Street"
-              />
+              <div className="border-t border-beige-line/60 pt-6">
+                <span className="text-[10px] uppercase tracking-[0.2em] text-champagne-gold font-semibold block mb-4">
+                  02. Location & Street Details
+                </span>
 
-              <Input
-                label="Apartment, Suite, Landmark (Optional)"
-                value={newAddr.addressLine2}
-                onChange={(e) => setNewAddr({ ...newAddr, addressLine2: e.target.value })}
-                placeholder="e.g. Near Kala Ghoda Gate"
-              />
+                <div className="space-y-5">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <Input
+                      label="Street Address / Residence"
+                      value={newAddr.addressLine1}
+                      onChange={(e) => setNewAddr({ ...newAddr, addressLine1: e.target.value })}
+                      required
+                      placeholder="Flat / Villa number, Building name, Street"
+                    />
+                    <Input
+                      label="Landmark / Suite / Locality (Optional)"
+                      value={newAddr.addressLine2}
+                      onChange={(e) => setNewAddr({ ...newAddr, addressLine2: e.target.value })}
+                      placeholder="e.g. Near Kala Ghoda Gate, Worli Sea Face"
+                    />
+                  </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <Input
-                  label="City"
-                  value={newAddr.city}
-                  onChange={(e) => setNewAddr({ ...newAddr, city: e.target.value })}
-                  required
-                  placeholder="e.g. Mumbai"
-                />
-                <Input
-                  label="State / Province"
-                  value={newAddr.state}
-                  onChange={(e) => setNewAddr({ ...newAddr, state: e.target.value })}
-                  required
-                  placeholder="e.g. Maharashtra"
-                />
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <Input
+                      label="City"
+                      value={newAddr.city}
+                      onChange={(e) => setNewAddr({ ...newAddr, city: e.target.value })}
+                      required
+                      placeholder="e.g. Mumbai"
+                    />
+                    <Input
+                      label="State / Province"
+                      value={newAddr.state}
+                      onChange={(e) => setNewAddr({ ...newAddr, state: e.target.value })}
+                      required
+                      placeholder="e.g. Maharashtra"
+                    />
+                    <Input
+                      label="PIN / Postal Code"
+                      value={newAddr.postalCode}
+                      onChange={(e) => setNewAddr({ ...newAddr, postalCode: e.target.value })}
+                      required
+                      placeholder="e.g. 400018"
+                    />
+                  </div>
+
+                  <div className="max-w-xs">
+                    <Input
+                      label="Country"
+                      value={newAddr.country}
+                      onChange={(e) => setNewAddr({ ...newAddr, country: e.target.value })}
+                      required
+                      placeholder="e.g. India"
+                    />
+                  </div>
+                </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <Input
-                  label="PIN / Postal Code"
-                  value={newAddr.postalCode}
-                  onChange={(e) => setNewAddr({ ...newAddr, postalCode: e.target.value })}
-                  required
-                  placeholder="e.g. 400018"
-                />
-                <Input
-                  label="Country"
-                  value={newAddr.country}
-                  onChange={(e) => setNewAddr({ ...newAddr, country: e.target.value })}
-                  required
-                  placeholder="e.g. India"
-                />
-              </div>
-
-              <div className="pt-2">
-                <label className="flex items-center gap-3 text-[13px] text-chocolate-brown cursor-pointer select-none">
+              <div className="pt-3 border-t border-beige-line/60">
+                <label className="flex items-center gap-3.5 text-[13px] text-dark-espresso cursor-pointer select-none">
                   <input
                     type="checkbox"
                     checked={newAddr.isDefault}
                     onChange={(e) => setNewAddr({ ...newAddr, isDefault: e.target.checked })}
-                    className="w-4 h-4 accent-dark-espresso cursor-pointer"
+                    className="w-4 h-4 accent-dark-espresso cursor-pointer rounded-none"
                   />
-                  <span>Set as default shipping address for express checkout</span>
+                  <span className="font-medium">
+                    Set as default delivery address for future orders & expedited checkout
+                  </span>
                 </label>
               </div>
 
               {/* Modal Actions */}
-              <div className="flex items-center justify-end gap-4 pt-6 border-t border-beige-line">
+              <div className="flex flex-col sm:flex-row items-center justify-end gap-4 pt-6 border-t border-beige-line">
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-6 py-3 text-[11px] uppercase tracking-[0.18em] text-dark-espresso hover:bg-cream border border-beige-line transition-colors cursor-pointer"
+                  className="w-full sm:w-auto px-8 py-3.5 text-[11px] uppercase tracking-[0.2em] text-dark-espresso hover:bg-cream border border-beige-line transition-colors cursor-pointer rounded-none"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-8 py-3 bg-dark-espresso text-cream text-[11px] uppercase tracking-[0.2em] font-medium hover:bg-chocolate-brown transition-all duration-300 shadow-xs hover:shadow-md cursor-pointer"
+                  disabled={submitting}
+                  className="w-full sm:w-auto px-10 py-3.5 bg-dark-espresso text-cream text-[11px] uppercase tracking-[0.2em] font-medium hover:bg-chocolate-brown disabled:opacity-50 transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer rounded-none"
                 >
-                  Save Address
+                  {submitting ? 'Saving Address...' : 'Save Address'}
                 </button>
               </div>
             </form>

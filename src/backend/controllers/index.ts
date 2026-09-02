@@ -5,3 +5,4 @@ export * from './collectionController';
 export * from './shippingController';
 export * from './orderController';
 export * from './healthController';
+export * from './addressController';

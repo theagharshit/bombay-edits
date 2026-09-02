@@ -6,6 +6,7 @@ import { shippingController } from '@/backend/controllers/shippingController';
 import { orderController } from '@/backend/controllers/orderController';
 import { newsletterController } from '@/backend/controllers/newsletterController';
 import { contactController } from '@/backend/controllers/contactController';
+import { addressController } from '@/backend/controllers/addressController';
 import { healthController } from '@/backend/controllers/healthController';
 import { ApiResponse } from '@/backend/utils/apiResponse';
 import { RequestContext } from '@/backend/types/api';
@@ -15,6 +16,7 @@ async function dispatch(req: NextRequest, context: RequestContext) {
   const method = req.method;
   const rootSegment = pathArray[0];
   const subSegment = pathArray[1];
+  const thirdSegment = pathArray[2];
 
   // 1. /api/v1/products
   if (rootSegment === 'products') {
@@ -82,7 +84,33 @@ async function dispatch(req: NextRequest, context: RequestContext) {
     }
   }
 
-  // 7. /api/v1/health
+  // 7. /api/v1/addresses
+  if (rootSegment === 'addresses') {
+    if (subSegment && thirdSegment === 'default' && (method === 'PATCH' || method === 'POST')) {
+      context.params = { id: subSegment };
+      return addressController.setDefaultAddress(req, context);
+    }
+    if (subSegment && method === 'GET') {
+      context.params = { id: subSegment };
+      return addressController.getAddressById(req, context);
+    }
+    if (subSegment && (method === 'PATCH' || method === 'PUT')) {
+      context.params = { id: subSegment };
+      return addressController.updateAddress(req, context);
+    }
+    if (subSegment && method === 'DELETE') {
+      context.params = { id: subSegment };
+      return addressController.deleteAddress(req, context);
+    }
+    if (method === 'GET') {
+      return addressController.getAddresses(req);
+    }
+    if (method === 'POST') {
+      return addressController.createAddress(req, context);
+    }
+  }
+
+  // 8. /api/v1/health
   if (rootSegment === 'health') {
     return healthController.getHealth(req);
   }
