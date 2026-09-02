@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Input } from '@/frontend/components/ui/Input';
+import { REGIONS, SupportedCountry } from '@/frontend/utils/geoRegions';
 
 interface AddressItem {
   id: string;
@@ -22,6 +23,7 @@ export default function AddressesPage() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [detectingLocation, setDetectingLocation] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{
     type: 'success' | 'error';
     text: string;
@@ -35,7 +37,7 @@ export default function AddressesPage() {
     city: '',
     state: '',
     postalCode: '',
-    country: 'India',
+    country: 'India' as SupportedCountry,
     isDefault: false,
   });
 
@@ -55,9 +57,93 @@ export default function AddressesPage() {
     }
   };
 
+  // Detect user country using browser Geolocation with IP / Timezone fallback, defaulting strictly to India
+  const detectLocationAndSetCountry = async () => {
+    setDetectingLocation(true);
+
+    const fallbackToIndiaOrTz = () => {
+      try {
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        if (tz && (tz.includes('Kathmandu') || tz.includes('Nepal'))) {
+          setNewAddr((prev) => ({
+            ...prev,
+            country: 'Nepal',
+            phone: prev.phone || '+977 ',
+          }));
+          return;
+        }
+      } catch {
+        // ignore
+      }
+      setNewAddr((prev) => ({
+        ...prev,
+        country: 'India',
+        phone: prev.phone || '+91 ',
+      }));
+    };
+
+    if (!('geolocation' in navigator)) {
+      fallbackToIndiaOrTz();
+      setDetectingLocation(false);
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        try {
+          const lat = pos.coords.latitude;
+          const lon = pos.coords.longitude;
+          // Reverse geocode via free public openstreetmap reverse lookup
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=5`
+          );
+          if (res.ok) {
+            const data = await res.json();
+            const countryCode = data.address?.country_code?.toUpperCase();
+            if (countryCode === 'NP' || data.address?.country?.toLowerCase() === 'nepal') {
+              setNewAddr((prev) => ({
+                ...prev,
+                country: 'Nepal',
+                phone: prev.phone.startsWith('+91') ? '+977 ' : prev.phone || '+977 ',
+              }));
+              setDetectingLocation(false);
+              return;
+            }
+          }
+        } catch {
+          // fallback if network error in reverse geocoding
+        }
+        // Default to India
+        fallbackToIndiaOrTz();
+        setDetectingLocation(false);
+      },
+      (_err) => {
+        // Permission denied or failed -> Strict Default to India
+        fallbackToIndiaOrTz();
+        setDetectingLocation(false);
+      },
+      { timeout: 6000, maximumAge: 60000 }
+    );
+  };
+
   useEffect(() => {
     fetchAddresses();
   }, []);
+
+  const openModal = () => {
+    setShowAddModal(true);
+    detectLocationAndSetCountry();
+  };
+
+  const handleCountryChange = (country: SupportedCountry) => {
+    setNewAddr((prev) => ({
+      ...prev,
+      country,
+      state: '', // reset selected state when switching country
+      phone:
+        country === 'Nepal' ? prev.phone.replace('+91', '+977') : prev.phone.replace('+977', '+91'),
+    }));
+  };
 
   const showNotification = (text: string, type: 'success' | 'error' = 'success') => {
     setStatusMessage({ type, text });
@@ -67,7 +153,6 @@ export default function AddressesPage() {
   };
 
   const handleSetDefault = async (id: string) => {
-    // Optimistic UI update
     setAddresses((prev) =>
       prev.map((a) => ({
         ...a,
@@ -92,7 +177,6 @@ export default function AddressesPage() {
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to remove this delivery address?')) return;
 
-    // Optimistic UI update
     setAddresses((prev) => prev.filter((a) => a.id !== id));
 
     try {
@@ -152,6 +236,8 @@ export default function AddressesPage() {
     }
   };
 
+  const currentCountryConfig = REGIONS[newAddr.country] || REGIONS.India;
+
   return (
     <div className="w-full min-h-screen bg-ivory text-dark-espresso font-body py-12 md:py-20">
       <div className="max-w-5xl mx-auto px-6 md:px-12">
@@ -193,12 +279,12 @@ export default function AddressesPage() {
               Saved Addresses
             </h1>
             <p className="text-[13px] text-chocolate-brown mt-2 max-w-lg leading-relaxed">
-              Manage your residential and atelier delivery locations for effortless couture
-              checkout.
+              Manage your residential and atelier delivery locations across India and Nepal for
+              effortless couture checkout.
             </p>
           </div>
           <button
-            onClick={() => setShowAddModal(true)}
+            onClick={openModal}
             className="inline-flex items-center justify-center gap-2 bg-dark-espresso text-cream px-6 py-3.5 text-[11px] uppercase tracking-[0.2em] font-medium hover:bg-chocolate-brown transition-all duration-300 shadow-xs hover:shadow-md cursor-pointer shrink-0 rounded-none"
           >
             <span>+</span>
@@ -237,7 +323,7 @@ export default function AddressesPage() {
               future orders.
             </p>
             <button
-              onClick={() => setShowAddModal(true)}
+              onClick={openModal}
               className="bg-dark-espresso text-cream px-8 py-3 text-[11px] uppercase tracking-[0.2em] hover:bg-chocolate-brown transition-colors cursor-pointer rounded-none"
             >
               Add Your First Address
@@ -349,10 +435,46 @@ export default function AddressesPage() {
 
             {/* Modal Form */}
             <form onSubmit={handleAddAddress} className="p-8 sm:p-14 space-y-8">
-              {/* Section 1: Contact Details */}
+              {/* Section 1: Region Selection (India or Nepal only) */}
               <div>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-[11px] uppercase tracking-[0.22em] text-chocolate-brown font-semibold block">
+                    01. Country / Destination Region
+                  </span>
+                  {detectingLocation && (
+                    <span className="text-[11px] text-champagne-gold animate-pulse">
+                      Detecting your location...
+                    </span>
+                  )}
+                </div>
+
+                {/* Strict 2-Option Luxury Selector */}
+                <div className="grid grid-cols-2 gap-4 max-w-md">
+                  {(['India', 'Nepal'] as SupportedCountry[]).map((countryName) => {
+                    const isSelected = newAddr.country === countryName;
+                    return (
+                      <button
+                        key={countryName}
+                        type="button"
+                        onClick={() => handleCountryChange(countryName)}
+                        className={`py-3.5 px-6 border text-[12px] uppercase tracking-[0.18em] font-medium transition-all duration-200 cursor-pointer text-center rounded-none flex items-center justify-center gap-2 ${
+                          isSelected
+                            ? 'bg-dark-espresso text-cream border-dark-espresso shadow-xs'
+                            : 'bg-cream/40 text-dark-espresso border-beige-line hover:border-dark-espresso/60 hover:bg-cream/70'
+                        }`}
+                      >
+                        <span>{countryName === 'India' ? '🇮🇳' : '🇳🇵'}</span>
+                        <span>{countryName}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Section 2: Contact Details */}
+              <div className="border-t border-beige-line/70 pt-8">
                 <span className="text-[11px] uppercase tracking-[0.22em] text-chocolate-brown font-semibold block mb-4">
-                  01. Recipient Information
+                  02. Recipient Information
                 </span>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
                   <Input
@@ -363,19 +485,19 @@ export default function AddressesPage() {
                     placeholder="e.g. Madame Ananya Sharma"
                   />
                   <Input
-                    label="Phone Number"
+                    label={`Phone Number (${currentCountryConfig.phoneCode})`}
                     value={newAddr.phone}
                     onChange={(e) => setNewAddr({ ...newAddr, phone: e.target.value })}
                     required
-                    placeholder="+91 98200 00000"
+                    placeholder={`${currentCountryConfig.phoneCode} 98200 00000`}
                   />
                 </div>
               </div>
 
-              {/* Section 2: Location & Street Details */}
+              {/* Section 3: Location & Street Details */}
               <div className="border-t border-beige-line/70 pt-8">
                 <span className="text-[11px] uppercase tracking-[0.22em] text-chocolate-brown font-semibold block mb-4">
-                  02. Location & Street Details
+                  03. Location & Street Details
                 </span>
 
                 <div className="space-y-6">
@@ -397,35 +519,39 @@ export default function AddressesPage() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-8">
                     <Input
-                      label="City"
+                      label="City / District"
                       value={newAddr.city}
                       onChange={(e) => setNewAddr({ ...newAddr, city: e.target.value })}
                       required
-                      placeholder="e.g. Mumbai"
+                      placeholder={newAddr.country === 'Nepal' ? 'e.g. Kathmandu' : 'e.g. Mumbai'}
                     />
+
+                    {/* Dynamic State / Province Dropdown based on Country */}
+                    <div>
+                      <label className="block text-[11px] uppercase tracking-[0.14em] text-chocolate-brown mb-2 font-medium">
+                        State / Province ({newAddr.country})
+                      </label>
+                      <select
+                        value={newAddr.state}
+                        onChange={(e) => setNewAddr({ ...newAddr, state: e.target.value })}
+                        required
+                        className="w-full bg-cream border border-beige-line px-4 py-3 text-[13px] text-dark-espresso focus:outline-none focus:border-dark-espresso transition-colors rounded-none cursor-pointer"
+                      >
+                        <option value="">Select State / Province</option>
+                        {currentCountryConfig.states.map((st) => (
+                          <option key={st} value={st}>
+                            {st}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
                     <Input
-                      label="State / Province"
-                      value={newAddr.state}
-                      onChange={(e) => setNewAddr({ ...newAddr, state: e.target.value })}
-                      required
-                      placeholder="e.g. Maharashtra"
-                    />
-                    <Input
-                      label="PIN / Postal Code"
+                      label={currentCountryConfig.postalLabel}
                       value={newAddr.postalCode}
                       onChange={(e) => setNewAddr({ ...newAddr, postalCode: e.target.value })}
                       required
-                      placeholder="e.g. 400018"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-8">
-                    <Input
-                      label="Country"
-                      value={newAddr.country}
-                      onChange={(e) => setNewAddr({ ...newAddr, country: e.target.value })}
-                      required
-                      placeholder="e.g. India"
+                      placeholder={currentCountryConfig.postalPlaceholder}
                     />
                   </div>
                 </div>
