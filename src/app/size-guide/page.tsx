@@ -74,7 +74,7 @@ export default function SizeGuidePage() {
       </div>
 
       {/* Custom stitching */}
-      <div className="bg-cream p-8 rounded-sm">
+      <div className="bg-cream p-8 rounded-none">
         <h2 className="font-display text-xl text-ink mb-3">Custom stitching</h2>
         <p className="text-sm text-deep-brown leading-relaxed mb-4">
           For our occasionwear and bridal pieces, we offer custom stitching to your exact

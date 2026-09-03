@@ -143,7 +143,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
             <Link
               href="/account"
               onClick={onClose}
-              className="flex items-center gap-3 p-3 text-ink hover:bg-border/30 transition-colors rounded-sm"
+              className="flex items-center gap-3 p-3 text-ink hover:bg-border/30 transition-colors rounded-none"
             >
               <User size={18} strokeWidth={1.5} className="text-text-muted" />
               <span>My Account</span>
@@ -151,7 +151,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
             <Link
               href="/wishlist"
               onClick={onClose}
-              className="flex items-center gap-3 p-3 text-ink hover:bg-border/30 transition-colors rounded-sm"
+              className="flex items-center gap-3 p-3 text-ink hover:bg-border/30 transition-colors rounded-none"
             >
               <Heart size={18} strokeWidth={1.5} className="text-text-muted" />
               <span>Wishlist</span>
@@ -159,7 +159,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
             <Link
               href="/orders"
               onClick={onClose}
-              className="flex items-center gap-3 p-3 text-ink hover:bg-border/30 transition-colors rounded-sm"
+              className="flex items-center gap-3 p-3 text-ink hover:bg-border/30 transition-colors rounded-none"
             >
               <Package size={18} strokeWidth={1.5} className="text-text-muted" />
               <span>Track Order</span>
@@ -167,7 +167,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
             <Link
               href="/faq"
               onClick={onClose}
-              className="flex items-center gap-3 p-3 text-ink hover:bg-border/30 transition-colors rounded-sm"
+              className="flex items-center gap-3 p-3 text-ink hover:bg-border/30 transition-colors rounded-none"
             >
               <HelpCircle size={18} strokeWidth={1.5} className="text-text-muted" />
               <span>FAQs</span>

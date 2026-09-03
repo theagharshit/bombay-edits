@@ -5,25 +5,25 @@
 
 @theme {
   /* Surfaces - Art Deco Palette */
-  --color-chalk: #FAF7F2; /* Ivory / Cream */
-  
+  --color-chalk: #faf7f2; /* Ivory / Cream */
+
   /* Accents & Primary Brand Colors */
-  --color-ink: #2C2421; /* Deep Brown / Soft Black */
-  --color-brass: #C1A68D; /* Champagne / Muted Beige */
+  --color-ink: #2c2421; /* Deep Brown / Soft Black */
+  --color-brass: #c1a68d; /* Champagne / Muted Beige */
   --color-bottle: #526154; /* Muted Green */
-  --color-sindoor: #722F37; /* Wine / Deep Earthy Red */
-  --color-rose: #D1B8B4; /* Soft Pink */
-  --color-sand: #D9D0C5; /* Earthy Beige */
+  --color-sindoor: #722f37; /* Wine / Deep Earthy Red */
+  --color-rose: #d1b8b4; /* Soft Pink */
+  --color-sand: #d9d0c5; /* Earthy Beige */
 
   /* Borders / Dividers */
-  --color-border: #E5E5E5;
-  --color-border-light: #F5F5F5;
+  --color-border: #e5e5e5;
+  --color-border-light: #f5f5f5;
 
   /* Text & Overlays */
   --color-text-muted: #666666;
   --color-on-image: #ffffff;
   --color-overlay: rgba(22, 35, 58, 0.45);
-  --color-focus-ring: #B98B3C;
+  --color-focus-ring: #b98b3c;
 
   /* Typography */
   --font-display: 'Bodoni Moda', 'Georgia', serif;
@@ -35,12 +35,12 @@
   --shadow-lg: 0 0 0 transparent;
   --shadow-drawer: -4px 0 24px rgba(22, 35, 58, 0.15);
 
-  /* Radii (Removed as per requirements, set to 0) */
+  /* Radii (Removed as per requirements, set to 0 everywhere) */
   --radius-xs: 0px;
   --radius-sm: 0px;
   --radius-md: 0px;
   --radius-lg: 0px;
-  --radius-pill: 9999px; /* explicitly kept for pills/badges */
+  --radius-pill: 0px;
 
   /* Motion */
   --duration-fast: 150ms;
@@ -61,6 +61,7 @@
 *::after {
   margin: 0;
   padding: 0;
+  border-radius: 0 !important;
 }
 
 html {
@@ -80,7 +81,12 @@ body {
 
 /* ─── Typography ─────────────────────────────────────────── */
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-display);
   color: var(--color-ink);
   letter-spacing: -0.01em;
@@ -88,10 +94,18 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 400;
 }
 
-h1 { font-size: clamp(2.25rem, 5vw, 3.75rem); }
-h2 { font-size: clamp(1.75rem, 3.5vw, 2.25rem); }
-h3 { font-size: clamp(1.375rem, 2.5vw, 1.875rem); }
-h4 { font-size: clamp(1.125rem, 2vw, 1.5rem); }
+h1 {
+  font-size: clamp(2.25rem, 5vw, 3.75rem);
+}
+h2 {
+  font-size: clamp(1.75rem, 3.5vw, 2.25rem);
+}
+h3 {
+  font-size: clamp(1.375rem, 2.5vw, 1.875rem);
+}
+h4 {
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+}
 
 p {
   max-width: 65ch;
@@ -136,7 +150,9 @@ a {
 /* ─── Reduced Motion ─────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -146,8 +162,12 @@ a {
 
 /* ─── Utility Classes ─────────────────────────────────────── */
 
-.font-display { font-family: var(--font-display); }
-.font-body { font-family: var(--font-body); }
+.font-display {
+  font-family: var(--font-display);
+}
+.font-body {
+  font-family: var(--font-body);
+}
 
 .container-site {
   width: 100%;
@@ -155,13 +175,35 @@ a {
   margin-inline: auto;
   padding-inline: 1.5rem;
 }
-@media (min-width: 768px) { .container-site { padding-inline: 2.5rem; } }
-@media (min-width: 1024px) { .container-site { padding-inline: 4rem; } }
-@media (min-width: 1600px) { .container-site { padding-inline: 5rem; } }
+@media (min-width: 768px) {
+  .container-site {
+    padding-inline: 2.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .container-site {
+    padding-inline: 4rem;
+  }
+}
+@media (min-width: 1600px) {
+  .container-site {
+    padding-inline: 5rem;
+  }
+}
 
-.section-padding { padding-block: 4rem; }
-@media (min-width: 768px) { .section-padding { padding-block: 5rem; } }
-@media (min-width: 1024px) { .section-padding { padding-block: 6rem; } }
+.section-padding {
+  padding-block: 4rem;
+}
+@media (min-width: 768px) {
+  .section-padding {
+    padding-block: 5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .section-padding {
+    padding-block: 6rem;
+  }
+}
 
 /* ─── Product Image Hover ─────────────────────────────────── */
 
@@ -190,7 +232,9 @@ a {
   scrollbar-width: none;
   padding-bottom: 1rem;
 }
-.scroll-rail::-webkit-scrollbar { display: none; }
+.scroll-rail::-webkit-scrollbar {
+  display: none;
+}
 .scroll-rail > * {
   scroll-snap-align: start;
   flex-shrink: 0;
@@ -199,12 +243,16 @@ a {
 /* ─── Skeleton Loading ─────────────────────────────────── */
 
 @keyframes skeleton-shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 .skeleton {
-  background: linear-gradient(90deg, #F5F5F5 25%, #E5E5E5 50%, #F5F5F5 75%);
+  background: linear-gradient(90deg, #f5f5f5 25%, #e5e5e5 50%, #f5f5f5 75%);
   background-size: 200% 100%;
   animation: skeleton-shimmer 1.5s ease-in-out infinite;
 }

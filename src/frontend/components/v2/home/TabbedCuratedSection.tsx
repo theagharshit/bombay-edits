@@ -25,10 +25,12 @@ export function TabbedCuratedSection({ products }: TabbedCuratedSectionProps) {
 
   // Filter products for the active tab (using mock logic)
   const activeCollectionId = TABS[activeTab].collectionId;
-  const filteredProducts = products.filter(p => {
-    if (activeCollectionId === 'restocked') return p.isNewArrival; // Mocking restocked with newArrival since old schema doesn't have restocked
-    return p.collections.includes(activeCollectionId as any);
-  }).slice(0, 6); // Limit to 6
+  const filteredProducts = products
+    .filter((p) => {
+      if (activeCollectionId === 'restocked') return p.isNewArrival; // Mocking restocked with newArrival since old schema doesn't have restocked
+      return p.collections.includes(activeCollectionId as any);
+    })
+    .slice(0, 6); // Limit to 6
 
   const checkScroll = () => {
     if (scrollContainerRef.current) {
@@ -79,7 +81,7 @@ export function TabbedCuratedSection({ products }: TabbedCuratedSectionProps) {
         </h2>
 
         {/* Tab List */}
-        <div 
+        <div
           className="flex justify-center gap-6 md:gap-12 mb-10 border-b border-border/50"
           role="tablist"
           aria-label="Curated Collections"
@@ -89,7 +91,9 @@ export function TabbedCuratedSection({ products }: TabbedCuratedSectionProps) {
             return (
               <button
                 key={tab.id}
-                ref={(el) => { tabRefs.current[index] = el; }}
+                ref={(el) => {
+                  tabRefs.current[index] = el;
+                }}
                 role="tab"
                 aria-selected={isActive}
                 aria-controls={`panel-${tab.id}`}
@@ -102,9 +106,7 @@ export function TabbedCuratedSection({ products }: TabbedCuratedSectionProps) {
                 }`}
               >
                 {tab.label}
-                {isActive && (
-                  <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-ink" />
-                )}
+                {isActive && <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-ink" />}
               </button>
             );
           })}
@@ -115,7 +117,7 @@ export function TabbedCuratedSection({ products }: TabbedCuratedSectionProps) {
           {/* Left Arrow */}
           <button
             onClick={() => scroll('left')}
-            className={`hidden md:flex absolute -left-6 top-1/3 -translate-y-1/2 z-10 p-3 bg-chalk border border-border text-ink rounded-full shadow-sm hover:border-brass hover:text-brass transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass ${
+            className={`hidden md:flex absolute -left-6 top-1/3 -translate-y-1/2 z-10 p-3 bg-chalk border border-border text-ink rounded-none shadow-sm hover:border-brass hover:text-brass transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass ${
               canScrollLeft ? 'opacity-0 group-hover:opacity-100' : 'opacity-0 pointer-events-none'
             }`}
             aria-label="Scroll left"
@@ -134,32 +136,32 @@ export function TabbedCuratedSection({ products }: TabbedCuratedSectionProps) {
             style={{ scrollbarWidth: 'none' }}
           >
             {filteredProducts.map((product) => (
-              <div 
-                key={product.id} 
+              <div
+                key={product.id}
                 className="snap-start flex-none w-[45vw] sm:w-[35vw] md:w-[calc(33.333%-16px)] lg:w-[calc(25%-18px)]"
               >
                 <ProductCard product={product} />
               </div>
             ))}
-            
+
             {/* View All Card */}
             <div className="snap-start flex-none w-[45vw] sm:w-[35vw] md:w-[calc(33.333%-16px)] lg:w-[calc(25%-18px)] flex items-center justify-center">
-               <Link
-                 href={`/collections/${activeCollectionId}`}
-                 className="flex flex-col items-center justify-center gap-4 text-ink hover:text-brass transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass p-8 text-center"
-               >
-                 <span className="w-12 h-12 rounded-full border border-current flex items-center justify-center">
-                   <ChevronRight size={24} strokeWidth={1.5} />
-                 </span>
-                 <span className="text-sm uppercase tracking-widest font-medium">Discover More</span>
-               </Link>
+              <Link
+                href={`/collections/${activeCollectionId}`}
+                className="flex flex-col items-center justify-center gap-4 text-ink hover:text-brass transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass p-8 text-center"
+              >
+                <span className="w-12 h-12 rounded-none border border-current flex items-center justify-center">
+                  <ChevronRight size={24} strokeWidth={1.5} />
+                </span>
+                <span className="text-sm uppercase tracking-widest font-medium">Discover More</span>
+              </Link>
             </div>
           </div>
 
           {/* Right Arrow */}
           <button
             onClick={() => scroll('right')}
-            className={`hidden md:flex absolute -right-6 top-1/3 -translate-y-1/2 z-10 p-3 bg-chalk border border-border text-ink rounded-full shadow-sm hover:border-brass hover:text-brass transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass ${
+            className={`hidden md:flex absolute -right-6 top-1/3 -translate-y-1/2 z-10 p-3 bg-chalk border border-border text-ink rounded-none shadow-sm hover:border-brass hover:text-brass transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass ${
               canScrollRight ? 'opacity-0 group-hover:opacity-100' : 'opacity-0 pointer-events-none'
             }`}
             aria-label="Scroll right"

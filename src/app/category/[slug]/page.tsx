@@ -29,7 +29,7 @@ export default async function CategoryPage({ params }: PageProps) {
     <Suspense
       fallback={
         <div className="container-site section-padding">
-          <div className="h-96 skeleton rounded" />
+          <div className="h-96 skeleton rounded-none" />
         </div>
       }
     >

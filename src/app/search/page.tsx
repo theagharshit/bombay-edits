@@ -28,7 +28,7 @@ function SearchResults() {
           </p>
           <Link
             href="/shop"
-            className="inline-block bg-ink text-ivory px-8 py-3 text-sm font-body rounded-sm"
+            className="inline-block bg-ink text-ivory px-8 py-3 text-sm font-body rounded-none"
           >
             Browse all products
           </Link>
@@ -49,7 +49,7 @@ export default function SearchPage() {
     <Suspense
       fallback={
         <div className="container-site section-padding">
-          <div className="h-96 skeleton rounded" />
+          <div className="h-96 skeleton rounded-none" />
         </div>
       }
     >

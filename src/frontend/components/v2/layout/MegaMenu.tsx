@@ -44,7 +44,7 @@ const MENU_DATA: Record<string, any> = {
       },
     ],
   },
-  'Kurtis': {
+  Kurtis: {
     columns: [
       {
         title: 'By Style',
@@ -119,7 +119,7 @@ export function MegaMenu({ activeCategory, onClose }: MegaMenuProps) {
                     >
                       {link.label}
                       {link.tag && (
-                        <span className="text-[9px] uppercase tracking-wider bg-brass/10 text-brass px-1.5 py-0.5 rounded-pill font-medium">
+                        <span className="text-[9px] uppercase tracking-wider bg-brass/10 text-brass px-1.5 py-0.5 rounded-none font-medium">
                           {link.tag}
                         </span>
                       )}

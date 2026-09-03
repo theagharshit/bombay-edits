@@ -13,7 +13,7 @@ export default function NewArrivalsPage() {
     <Suspense
       fallback={
         <div className="container-site section-padding">
-          <div className="h-96 skeleton rounded" />
+          <div className="h-96 skeleton rounded-none" />
         </div>
       }
     >

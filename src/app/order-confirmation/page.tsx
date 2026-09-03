@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: 'Order confirmed' };
 export default function OrderConfirmationPage() {
   return (
     <div className="container-site section-padding text-center max-w-2xl mx-auto">
-      <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-muted-green/10 flex items-center justify-center">
+      <div className="w-16 h-16 mx-auto mb-6 rounded-none bg-muted-green/10 flex items-center justify-center">
         <svg
           width="32"
           height="32"
@@ -27,17 +27,17 @@ export default function OrderConfirmationPage() {
         You will receive a confirmation email shortly with your order details and tracking
         information.
       </p>
-      <div className="bg-cream p-8 rounded-sm mb-8 text-left">
+      <div className="bg-cream p-8 rounded-none mb-8 text-left">
         <h2 className="font-display text-lg text-ink mb-4">What happens next</h2>
         <div className="space-y-4 text-sm text-deep-brown">
           <div className="flex gap-3">
-            <span className="w-6 h-6 bg-ink text-ivory rounded-full flex items-center justify-center text-xs flex-shrink-0">
+            <span className="w-6 h-6 bg-ink text-ivory rounded-none flex items-center justify-center text-xs flex-shrink-0">
               1
             </span>
             <p>Your order is confirmed and our team begins preparing your pieces.</p>
           </div>
           <div className="flex gap-3">
-            <span className="w-6 h-6 bg-ink text-ivory rounded-full flex items-center justify-center text-xs flex-shrink-0">
+            <span className="w-6 h-6 bg-ink text-ivory rounded-none flex items-center justify-center text-xs flex-shrink-0">
               2
             </span>
             <p>
@@ -46,7 +46,7 @@ export default function OrderConfirmationPage() {
             </p>
           </div>
           <div className="flex gap-3">
-            <span className="w-6 h-6 bg-ink text-ivory rounded-full flex items-center justify-center text-xs flex-shrink-0">
+            <span className="w-6 h-6 bg-ink text-ivory rounded-none flex items-center justify-center text-xs flex-shrink-0">
               3
             </span>
             <p>You will receive tracking information once your order ships.</p>
@@ -56,14 +56,14 @@ export default function OrderConfirmationPage() {
       <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
         <Link
           href="/shop"
-          className="inline-block bg-ink text-ivory px-8 py-3 text-sm font-body rounded-sm hover:bg-deep-brown transition-colors"
+          className="inline-block bg-ink text-ivory px-8 py-3 text-sm font-body rounded-none hover:bg-deep-brown transition-colors"
           style={{ transitionDuration: 'var(--duration-fast)' }}
         >
           Continue shopping
         </Link>
         <Link
           href="/account/orders"
-          className="inline-block border border-ink text-ink px-8 py-3 text-sm font-body rounded-sm hover:bg-ink hover:text-ivory transition-colors"
+          className="inline-block border border-ink text-ink px-8 py-3 text-sm font-body rounded-none hover:bg-ink hover:text-ivory transition-colors"
           style={{ transitionDuration: 'var(--duration-fast)' }}
         >
           View orders

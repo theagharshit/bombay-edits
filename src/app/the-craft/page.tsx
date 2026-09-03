@@ -53,7 +53,7 @@ export default function TheCraftPage() {
             >
               <div className="hidden md:block md:pr-[72px]" style={{ paddingRight: '72px' }}>
                 <div
-                  className="absolute top-[8px] rounded-full border border-[#D9CDBC] bg-[#FAF7F2] z-10 hidden md:block"
+                  className="absolute top-[8px] rounded-none border border-[#D9CDBC] bg-[#FAF7F2] z-10 hidden md:block"
                   style={{ right: '-6px', width: '12px', height: '12px' }}
                 />
 
@@ -164,7 +164,7 @@ export default function TheCraftPage() {
             >
               <div className="hidden md:block" style={{ paddingLeft: '72px' }}>
                 <div
-                  className="absolute top-[8px] rounded-full border border-[#D9CDBC] bg-[#FAF7F2] z-10 hidden md:block"
+                  className="absolute top-[8px] rounded-none border border-[#D9CDBC] bg-[#FAF7F2] z-10 hidden md:block"
                   style={{ left: '-6px', width: '12px', height: '12px' }}
                 />
 
@@ -202,7 +202,7 @@ export default function TheCraftPage() {
             >
               <div className="hidden md:block" style={{ paddingRight: '72px' }}>
                 <div
-                  className="absolute top-[8px] rounded-full border border-[#D9CDBC] bg-[#FAF7F2] z-10 hidden md:block"
+                  className="absolute top-[8px] rounded-none border border-[#D9CDBC] bg-[#FAF7F2] z-10 hidden md:block"
                   style={{ right: '-6px', width: '12px', height: '12px' }}
                 />
 

@@ -60,7 +60,7 @@ export function CollectionRail({ title, href, products }: CollectionRailProps) {
           {/* Left Arrow */}
           <button
             onClick={() => scroll('left')}
-            className={`hidden md:flex absolute -left-6 top-1/3 -translate-y-1/2 z-10 p-3 bg-chalk border border-border text-ink rounded-full shadow-sm hover:border-brass hover:text-brass transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass ${
+            className={`hidden md:flex absolute -left-6 top-1/3 -translate-y-1/2 z-10 p-3 bg-chalk border border-border text-ink rounded-none shadow-sm hover:border-brass hover:text-brass transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass ${
               canScrollLeft ? 'opacity-0 group-hover:opacity-100' : 'opacity-0 pointer-events-none'
             }`}
             aria-label="Scroll left"
@@ -76,8 +76,8 @@ export function CollectionRail({ title, href, products }: CollectionRailProps) {
             style={{ scrollbarWidth: 'none' }}
           >
             {products.map((product) => (
-              <div 
-                key={product.id} 
+              <div
+                key={product.id}
                 className="snap-start flex-none w-[45vw] sm:w-[35vw] md:w-[calc(33.333%-16px)] lg:w-[calc(25%-18px)]"
               >
                 <ProductCard product={product} />
@@ -88,7 +88,7 @@ export function CollectionRail({ title, href, products }: CollectionRailProps) {
           {/* Right Arrow */}
           <button
             onClick={() => scroll('right')}
-            className={`hidden md:flex absolute -right-6 top-1/3 -translate-y-1/2 z-10 p-3 bg-chalk border border-border text-ink rounded-full shadow-sm hover:border-brass hover:text-brass transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass ${
+            className={`hidden md:flex absolute -right-6 top-1/3 -translate-y-1/2 z-10 p-3 bg-chalk border border-border text-ink rounded-none shadow-sm hover:border-brass hover:text-brass transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass ${
               canScrollRight ? 'opacity-0 group-hover:opacity-100' : 'opacity-0 pointer-events-none'
             }`}
             aria-label="Scroll right"
@@ -96,7 +96,7 @@ export function CollectionRail({ title, href, products }: CollectionRailProps) {
             <ChevronRight size={20} strokeWidth={1} />
           </button>
         </div>
-        
+
         {/* Mobile Discover More */}
         <div className="mt-4 text-center md:hidden">
           <Link

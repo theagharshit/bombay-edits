@@ -50,7 +50,7 @@ export default function WishlistPage() {
           </p>
           <Link
             href="/shop"
-            className="inline-block bg-ink text-ivory px-8 py-3 text-sm font-body rounded-sm hover:bg-deep-brown transition-colors"
+            className="inline-block bg-ink text-ivory px-8 py-3 text-sm font-body rounded-none hover:bg-deep-brown transition-colors"
             style={{ transitionDuration: 'var(--duration-fast)' }}
           >
             Explore the collection

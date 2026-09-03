@@ -57,7 +57,9 @@ export function Header() {
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-          isScrolled || activeMegaMenu ? 'bg-chalk border-b border-border' : 'bg-chalk/90 backdrop-blur-md'
+          isScrolled || activeMegaMenu
+            ? 'bg-chalk border-b border-border'
+            : 'bg-chalk/90 backdrop-blur-md'
         }`}
         onMouseLeave={handleMouseLeaveHeader}
         onMouseEnter={() => setIsHoveringHeader(true)}
@@ -91,7 +93,7 @@ export function Header() {
           {/* Left Container */}
           <div className="flex items-center">
             {/* Mobile/Tablet Hamburger */}
-            <button 
+            <button
               className="xl:hidden p-1 mr-4 text-ink hover:text-brass focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
               onClick={() => setIsMobileDrawerOpen(true)}
               aria-label="Open menu"
@@ -134,8 +136,8 @@ export function Header() {
           {/* Center: Logo & Tagline */}
           <div
             className={`flex flex-col items-center transition-all duration-300 z-10 ${
-              isScrolled 
-                ? 'absolute left-4 top-1/2 -translate-y-1/2 items-start xl:static xl:translate-y-0 xl:left-auto xl:flex-1 mt-0' 
+              isScrolled
+                ? 'absolute left-4 top-1/2 -translate-y-1/2 items-start xl:static xl:translate-y-0 xl:left-auto xl:flex-1 mt-0'
                 : 'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 mt-6 md:mt-8'
             }`}
           >
@@ -169,7 +171,7 @@ export function Header() {
             >
               <Heart size={20} strokeWidth={1.5} />
               {wishlistCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-brass text-chalk text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-brass text-chalk text-[10px] w-4 h-4 rounded-none flex items-center justify-center">
                   {wishlistCount}
                 </span>
               )}
@@ -186,7 +188,7 @@ export function Header() {
             >
               <ShoppingBag size={20} strokeWidth={1.5} />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-brass text-chalk text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-brass text-chalk text-[10px] w-4 h-4 rounded-none flex items-center justify-center">
                   {cartCount}
                 </span>
               )}
@@ -196,17 +198,11 @@ export function Header() {
 
         {/* Mega Menu Overlay */}
         {activeMegaMenu && (
-          <MegaMenu
-            activeCategory={activeMegaMenu}
-            onClose={() => setActiveMegaMenu(null)}
-          />
+          <MegaMenu activeCategory={activeMegaMenu} onClose={() => setActiveMegaMenu(null)} />
         )}
       </header>
-      
-      <MobileDrawer 
-        isOpen={isMobileDrawerOpen} 
-        onClose={() => setIsMobileDrawerOpen(false)} 
-      />
+
+      <MobileDrawer isOpen={isMobileDrawerOpen} onClose={() => setIsMobileDrawerOpen(false)} />
     </>
   );
 }

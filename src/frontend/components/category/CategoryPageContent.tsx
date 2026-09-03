@@ -259,7 +259,7 @@ export function CategoryPageContent({
                         <label className="flex items-center gap-3 cursor-pointer group">
                           <input
                             type="checkbox"
-                            className="w-4 h-4 rounded-sm border-[#E5DFD5] text-[#4A3025] focus:ring-[#4A3025]"
+                            className="w-4 h-4 rounded-none border-[#E5DFD5] text-[#4A3025] focus:ring-[#4A3025]"
                           />
                           <span className="text-sm group-hover:text-[#4A3025] transition-colors">
                             {status}

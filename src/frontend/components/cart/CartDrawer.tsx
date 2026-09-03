@@ -33,11 +33,11 @@ export function CartDrawer() {
     <>
       {/* Backdrop */}
       {isOpen && (
-        <div 
-          className="fixed inset-0 z-[80]" 
+        <div
+          className="fixed inset-0 z-[80]"
           style={{ backgroundColor: 'rgba(74, 48, 37, 0.4)' }}
-          onClick={closeCart} 
-          aria-hidden="true" 
+          onClick={closeCart}
+          aria-hidden="true"
         />
       )}
 
@@ -58,11 +58,13 @@ export function CartDrawer() {
       >
         <div className="flex flex-col h-full font-body">
           {/* Header */}
-          <div 
+          <div
             className="flex items-center justify-between p-6"
             style={{ borderBottom: '1px solid #E5DFD5' }}
           >
-            <h2 className="font-display text-2xl" style={{ color: '#4A3025' }}>Your Archives ({itemCount})</h2>
+            <h2 className="font-display text-2xl" style={{ color: '#4A3025' }}>
+              Your Archives ({itemCount})
+            </h2>
             <button
               onClick={closeCart}
               className="p-2 transition-opacity hover:opacity-70"
@@ -84,10 +86,13 @@ export function CartDrawer() {
 
           {/* Free shipping progress */}
           {items.length > 0 && (
-            <div className="px-6 py-4" style={{ backgroundColor: '#FAF8F5', borderBottom: '1px solid #E5DFD5' }}>
-              <div className="w-full h-1 rounded-full overflow-hidden" style={{ backgroundColor: '#E5DFD5' }}>
+            <div
+              className="px-6 py-4"
+              style={{ backgroundColor: '#FAF8F5', borderBottom: '1px solid #E5DFD5' }}
+            >
+              <div className="w-full h-1 overflow-hidden" style={{ backgroundColor: '#E5DFD5' }}>
                 <div
-                  className="h-full rounded-full transition-all"
+                  className="h-full transition-all"
                   style={{
                     backgroundColor: '#4A3025',
                     width: `${freeShippingProgress}%`,
@@ -95,7 +100,10 @@ export function CartDrawer() {
                   }}
                 />
               </div>
-              <p className="text-[11px] uppercase tracking-[0.1em] mt-3" style={{ color: '#8A817C' }}>
+              <p
+                className="text-[11px] uppercase tracking-[0.1em] mt-3"
+                style={{ color: '#8A817C' }}
+              >
                 {remainingForFreeShipping > 0
                   ? `Add ${format(remainingForFreeShipping)} more for complimentary shipping`
                   : 'You qualify for complimentary shipping'}
@@ -107,7 +115,9 @@ export function CartDrawer() {
           <div className="flex-1 overflow-y-auto">
             {items.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full text-center px-8">
-                <p className="font-display text-2xl mb-2" style={{ color: '#4A3025' }}>Your bag is empty</p>
+                <p className="font-display text-2xl mb-2" style={{ color: '#4A3025' }}>
+                  Your bag is empty
+                </p>
                 <p className="text-sm mb-8" style={{ color: '#8A817C' }}>
                   Discover our collection of handcrafted Indian ethnic wear.
                 </p>
@@ -123,8 +133,8 @@ export function CartDrawer() {
             ) : (
               <div>
                 {items.map((item) => (
-                  <div 
-                    key={`${item.productId}-${item.size}`} 
+                  <div
+                    key={`${item.productId}-${item.size}`}
                     className="p-6 flex gap-6"
                     style={{ borderBottom: '1px solid #E5DFD5' }}
                   >
@@ -151,16 +161,25 @@ export function CartDrawer() {
                         >
                           {item.name}
                         </Link>
-                        <p className="text-[10px] uppercase tracking-[0.1em] mt-2" style={{ color: '#8A817C' }}>
+                        <p
+                          className="text-[10px] uppercase tracking-[0.1em] mt-2"
+                          style={{ color: '#8A817C' }}
+                        >
                           Color: {item.colour}
                         </p>
-                        <p className="text-[10px] uppercase tracking-[0.1em] mt-1" style={{ color: '#8A817C' }}>
+                        <p
+                          className="text-[10px] uppercase tracking-[0.1em] mt-1"
+                          style={{ color: '#8A817C' }}
+                        >
                           Size: {item.size}
                         </p>
                       </div>
 
                       <div className="flex items-end justify-between mt-4">
-                        <div className="flex items-center gap-3 text-xs pb-1" style={{ borderBottom: '1px solid #E5DFD5', color: '#8A817C' }}>
+                        <div
+                          className="flex items-center gap-3 text-xs pb-1"
+                          style={{ borderBottom: '1px solid #E5DFD5', color: '#8A817C' }}
+                        >
                           <button
                             onClick={() =>
                               updateQuantity(item.productId, item.size, item.quantity - 1)
@@ -182,7 +201,9 @@ export function CartDrawer() {
                           </button>
                         </div>
                         <div className="flex flex-col items-end gap-2">
-                          <span className="font-display text-lg" style={{ color: '#4A3025' }}>{format(item.price * item.quantity)}</span>
+                          <span className="font-display text-lg" style={{ color: '#4A3025' }}>
+                            {format(item.price * item.quantity)}
+                          </span>
                           <button
                             onClick={() => removeItem(item.productId, item.size)}
                             className="text-[10px] uppercase tracking-widest hover:opacity-70 transition-opacity"
@@ -201,19 +222,38 @@ export function CartDrawer() {
 
           {/* Footer */}
           {items.length > 0 && (
-            <div className="p-6 space-y-6" style={{ backgroundColor: '#FAF8F5', borderTop: '1px solid #E5DFD5' }}>
+            <div
+              className="p-6 space-y-6"
+              style={{ backgroundColor: '#FAF8F5', borderTop: '1px solid #E5DFD5' }}
+            >
               <div className="flex items-end justify-between">
-                <span className="text-[10px] uppercase tracking-[0.2em]" style={{ color: '#8A817C' }}>Subtotal</span>
-                <span className="text-3xl font-display" style={{ color: '#4A3025' }}>{format(subtotal)}</span>
+                <span
+                  className="text-[10px] uppercase tracking-[0.2em]"
+                  style={{ color: '#8A817C' }}
+                >
+                  Subtotal
+                </span>
+                <span className="text-3xl font-display" style={{ color: '#4A3025' }}>
+                  {format(subtotal)}
+                </span>
               </div>
-              <p className="text-[10px] uppercase tracking-[0.1em] text-center" style={{ color: '#8A817C' }}>Shipping and taxes calculated at checkout</p>
-              
+              <p
+                className="text-[10px] uppercase tracking-[0.1em] text-center"
+                style={{ color: '#8A817C' }}
+              >
+                Shipping and taxes calculated at checkout
+              </p>
+
               <div className="flex flex-col gap-3">
                 <Link
                   href="/cart"
                   onClick={closeCart}
                   className="block w-full text-center py-4 text-[10px] uppercase tracking-[0.2em] transition-colors"
-                  style={{ border: '1px solid #4A3025', color: '#4A3025', backgroundColor: 'transparent' }}
+                  style={{
+                    border: '1px solid #4A3025',
+                    color: '#4A3025',
+                    backgroundColor: 'transparent',
+                  }}
                 >
                   View full bag
                 </Link>

@@ -136,7 +136,7 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
                 <button
                   key={c}
                   onClick={() => setCurrency(c)}
-                  className={`px-3 py-1.5 text-xs font-body border rounded-sm transition-colors ${
+                  className={`px-3 py-1.5 text-xs font-body border rounded-none transition-colors ${
                     currency === c
                       ? 'bg-ink text-ivory border-ink'
                       : 'bg-transparent text-deep-brown border-border hover:border-ink'

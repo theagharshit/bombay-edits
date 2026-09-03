@@ -169,7 +169,7 @@ export function Header() {
                     <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
                   </svg>
                   {wishlistCount > 0 && (
-                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-espresso text-white text-[9px] rounded-full flex items-center justify-center font-body">
+                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-espresso text-white text-[9px] rounded-none flex items-center justify-center font-body">
                       {wishlistCount}
                     </span>
                   )}
@@ -194,7 +194,7 @@ export function Header() {
                     <path d="M16 10a4 4 0 01-8 0" />
                   </svg>
                   {itemCount > 0 && (
-                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-espresso text-white text-[9px] rounded-full flex items-center justify-center font-body">
+                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-espresso text-white text-[9px] rounded-none flex items-center justify-center font-body">
                       {itemCount}
                     </span>
                   )}

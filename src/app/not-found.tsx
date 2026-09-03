@@ -12,14 +12,14 @@ export default function NotFound() {
       <div className="flex flex-col sm:flex-row items-center gap-4">
         <Link
           href="/"
-          className="inline-block bg-ink text-ivory px-8 py-3 text-sm font-body rounded-sm hover:bg-deep-brown transition-colors"
+          className="inline-block bg-ink text-ivory px-8 py-3 text-sm font-body rounded-none hover:bg-deep-brown transition-colors"
           style={{ transitionDuration: 'var(--duration-fast)' }}
         >
           Back to home
         </Link>
         <Link
           href="/shop"
-          className="inline-block border border-ink text-ink px-8 py-3 text-sm font-body rounded-sm hover:bg-ink hover:text-ivory transition-colors"
+          className="inline-block border border-ink text-ink px-8 py-3 text-sm font-body rounded-none hover:bg-ink hover:text-ivory transition-colors"
           style={{ transitionDuration: 'var(--duration-fast)' }}
         >
           Browse the collection
