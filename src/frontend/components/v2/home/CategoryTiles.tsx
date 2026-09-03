@@ -40,7 +40,10 @@ export function CategoryTiles() {
   return (
     <section className="py-16 md:py-32 bg-chalk border-t border-border-light">
       <div className="container-site">
-        <div className="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-8 -mx-4 px-4 md:mx-0 md:px-0" style={{ scrollbarWidth: 'none' }}>
+        <div
+          className="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-8 -mx-4 px-4 md:mx-0 md:px-0"
+          style={{ scrollbarWidth: 'none' }}
+        >
           {CATEGORIES.map((category, index) => (
             <Link
               key={index}

@@ -52,7 +52,7 @@ export function HeroCarousel() {
   // Auto-advance logic
   useEffect(() => {
     if (prefersReducedMotion || isHovered) return;
-    
+
     // Function to check if document is visible before advancing
     const advance = () => {
       if (document.visibilityState === 'visible') {
@@ -70,7 +70,7 @@ export function HeroCarousel() {
 
     videoRefs.current.forEach((video, index) => {
       if (!video) return;
-      
+
       // Play current video, pause others
       if (index === currentSlide) {
         video.play().catch(() => {
@@ -83,11 +83,12 @@ export function HeroCarousel() {
   }, [currentSlide, prefersReducedMotion]);
 
   const handleNext = () => setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
-  const handlePrev = () => setCurrentSlide((prev) => (prev === 0 ? HERO_SLIDES.length - 1 : prev - 1));
+  const handlePrev = () =>
+    setCurrentSlide((prev) => (prev === 0 ? HERO_SLIDES.length - 1 : prev - 1));
 
   return (
-    <section 
-      className="relative w-full overflow-hidden" 
+    <section
+      className="relative w-full overflow-hidden"
       style={{ height: 'calc(100svh - 64px)', minHeight: '560px', marginTop: '64px' }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -119,7 +120,7 @@ export function HeroCarousel() {
                   playsInline
                   muted
                   loop
-                  preload={index === 0 ? "metadata" : "none"}
+                  preload={index === 0 ? 'metadata' : 'none'}
                   onTimeUpdate={(e) => {
                     if (index === 0 && e.currentTarget.currentTime > 2) {
                       setSlide1FinishedOnce(true);
@@ -146,8 +147,10 @@ export function HeroCarousel() {
             {/* Content (Bottom Left) */}
             <div className="absolute inset-x-0 bottom-0 pb-16 md:pb-24">
               <div className="container-site">
-                <div className="max-w-2xl transform transition-transform duration-slower ease-out"
-                     style={{ transform: isActive ? 'translateY(0)' : 'translateY(20px)' }}>
+                <div
+                  className="max-w-2xl transform transition-transform duration-slower ease-out"
+                  style={{ transform: isActive ? 'translateY(0)' : 'translateY(20px)' }}
+                >
                   <h2 className="text-chalk font-display text-4xl md:text-5xl lg:text-6xl leading-tight mb-8 drop-shadow-sm">
                     {slide.headline}
                   </h2>
@@ -183,7 +186,7 @@ export function HeroCarousel() {
               />
             ))}
           </div>
-          
+
           {/* Arrows */}
           <div className="flex gap-2">
             <button

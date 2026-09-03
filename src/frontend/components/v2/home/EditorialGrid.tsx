@@ -40,7 +40,7 @@ export function EditorialGrid() {
             unoptimized
           />
         </div>
-        
+
         {/* 2x2 Grid (Right) */}
         <div className="col-span-6 grid grid-cols-2 grid-rows-2 gap-4">
           {EDITORIAL_IMAGES.slice(1).map((img, idx) => (
@@ -59,7 +59,10 @@ export function EditorialGrid() {
       </div>
 
       {/* Mobile Horizontal Scroll Strip */}
-      <div className="md:hidden flex overflow-x-auto snap-x snap-mandatory scrollbar-none" style={{ scrollbarWidth: 'none' }}>
+      <div
+        className="md:hidden flex overflow-x-auto snap-x snap-mandatory scrollbar-none"
+        style={{ scrollbarWidth: 'none' }}
+      >
         {EDITORIAL_IMAGES.map((img, idx) => (
           <div key={idx} className="snap-start flex-none w-[85vw] aspect-[4/5] relative">
             <Image

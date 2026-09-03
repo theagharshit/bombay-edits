@@ -9,9 +9,11 @@ export const metadata: Metadata = {
 
 export default function AccountPage() {
   return (
-    <div className="bg-[#FAF6F0] min-h-screen font-body" style={{ paddingTop: '120px', paddingBottom: '96px' }}>
+    <div
+      className="bg-[#FAF6F0] min-h-screen font-body"
+      style={{ paddingTop: '120px', paddingBottom: '96px' }}
+    >
       <div className="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16">
-        
         {/* Header */}
         <div className="flex flex-col md:flex-row md:justify-between md:items-end">
           <div>
@@ -35,14 +37,15 @@ export default function AccountPage() {
         </div>
 
         {/* Top Divider */}
-        <hr className="border-t border-[#E5DFD5]" style={{ marginTop: '48px', marginBottom: '64px' }} />
+        <hr
+          className="border-t border-[#E5DFD5]"
+          style={{ marginTop: '48px', marginBottom: '64px' }}
+        />
 
         {/* Two Columns Layout */}
         <div className="flex flex-col lg:flex-row" style={{ gap: '80px' }}>
-          
           {/* Left Column (Approx 60%) */}
           <div className="lg:w-[58%]">
-            
             {/* Framed Portrait */}
             <div className="border border-[#E5DFD5] p-2 bg-white">
               <div className="relative w-full aspect-[4/5] bg-[#FAF6F0]">
@@ -57,14 +60,15 @@ export default function AccountPage() {
             </div>
 
             {/* Divider */}
-            <hr className="border-t border-[#E5DFD5]" style={{ marginTop: '48px', marginBottom: '48px' }} />
+            <hr
+              className="border-t border-[#E5DFD5]"
+              style={{ marginTop: '48px', marginBottom: '48px' }}
+            />
 
             {/* Bespoke Measurements */}
             <div>
               <div className="flex items-end justify-between mb-6">
-                <h2 className="font-display text-[32px] text-[#4A3025]">
-                  Bespoke Measurements
-                </h2>
+                <h2 className="font-display text-[32px] text-[#4A3025]">Bespoke Measurements</h2>
                 <button className="text-[9px] uppercase tracking-[0.25em] text-[#8A817C] border-b border-[#8A817C] pb-0.5 hover:text-[#4A3025] hover:border-[#4A3025] transition-colors">
                   Update
                 </button>
@@ -76,67 +80,72 @@ export default function AccountPage() {
                   <span className="text-[9px] uppercase tracking-[0.2em] text-[#8A817C] mb-3 block">
                     Bust
                   </span>
-                  <span className="font-display text-2xl text-[#4A3025]">
-                    34"
-                  </span>
+                  <span className="font-display text-2xl text-[#4A3025]">34"</span>
                 </div>
                 {/* Box 2 */}
                 <div className="border border-[#E5DFD5] bg-transparent py-6 px-2 text-center flex flex-col justify-center">
                   <span className="text-[9px] uppercase tracking-[0.2em] text-[#8A817C] mb-3 block">
                     Waist
                   </span>
-                  <span className="font-display text-2xl text-[#4A3025]">
-                    26"
-                  </span>
+                  <span className="font-display text-2xl text-[#4A3025]">26"</span>
                 </div>
                 {/* Box 3 */}
                 <div className="border border-[#E5DFD5] bg-transparent py-6 px-2 text-center flex flex-col justify-center">
                   <span className="text-[9px] uppercase tracking-[0.2em] text-[#8A817C] mb-3 block">
                     Hip
                   </span>
-                  <span className="font-display text-2xl text-[#4A3025]">
-                    36"
-                  </span>
+                  <span className="font-display text-2xl text-[#4A3025]">36"</span>
                 </div>
                 {/* Box 4 */}
                 <div className="border border-[#E5DFD5] bg-transparent py-6 px-2 text-center flex flex-col justify-center">
                   <span className="text-[9px] uppercase tracking-[0.2em] text-[#8A817C] mb-3 block">
                     Length
                   </span>
-                  <span className="font-display text-2xl text-[#4A3025]">
-                    Regular
-                  </span>
+                  <span className="font-display text-2xl text-[#4A3025]">Regular</span>
                 </div>
               </div>
             </div>
-
           </div>
 
           {/* Right Column (Approx 40%) */}
           <div className="lg:w-[42%] flex flex-col">
-            
             {/* Navigation Links */}
             <nav className="flex flex-col space-y-5 pt-2">
-              <Link href="/account/orders" className="font-display text-2xl text-[#4A3025] hover:opacity-70 transition-opacity">
+              <Link
+                href="/account/orders"
+                className="font-display text-2xl text-[#4A3025] hover:opacity-70 transition-opacity"
+              >
                 Purchased History
               </Link>
-              <Link href="/wishlist" className="font-display text-2xl text-[#4A3025] hover:opacity-70 transition-opacity">
+              <Link
+                href="/wishlist"
+                className="font-display text-2xl text-[#4A3025] hover:opacity-70 transition-opacity"
+              >
                 Wishlist Archives
               </Link>
-              <Link href="/consultations" className="font-display text-2xl text-[#4A3025] hover:opacity-70 transition-opacity">
+              <Link
+                href="/consultations"
+                className="font-display text-2xl text-[#4A3025] hover:opacity-70 transition-opacity"
+              >
                 Consultations
               </Link>
             </nav>
 
             {/* Divider */}
-            <hr className="border-t border-[#E5DFD5]" style={{ marginTop: '64px', marginBottom: '48px' }} />
+            <hr
+              className="border-t border-[#E5DFD5]"
+              style={{ marginTop: '64px', marginBottom: '48px' }}
+            />
 
             {/* Recent Acquisitions */}
             <div>
-              <span className="text-[9px] uppercase tracking-[0.2em] text-[#8A817C] block" style={{ marginBottom: '32px' }}>
+              <span
+                className="text-[9px] uppercase tracking-[0.2em] text-[#8A817C] block"
+                style={{ marginBottom: '32px' }}
+              >
                 Recent Acquisitions
               </span>
-              
+
               <div className="flex flex-col gap-6">
                 {/* Item 1 */}
                 <div className="flex items-start gap-5">
@@ -158,9 +167,7 @@ export default function AccountPage() {
                     <h4 className="font-display text-base text-[#4A3025] leading-tight mb-1">
                       The Malabar Silk Blouse
                     </h4>
-                    <span className="text-[11px] text-[#8A817C]">
-                      Ivory / Size 2 / Bespoke Fit
-                    </span>
+                    <span className="text-[11px] text-[#8A817C]">Ivory / Size 2 / Bespoke Fit</span>
                   </div>
                 </div>
 
@@ -184,15 +191,13 @@ export default function AccountPage() {
                     <h4 className="font-display text-base text-[#4A3025] leading-tight mb-1">
                       Heritage Zari Scarf
                     </h4>
-                    <span className="text-[11px] text-[#8A817C]">
-                      Umber / Free Size
-                    </span>
+                    <span className="text-[11px] text-[#8A817C]">Umber / Free Size</span>
                   </div>
                 </div>
               </div>
 
-              <Link 
-                href="/account/orders" 
+              <Link
+                href="/account/orders"
                 className="inline-block bg-[#4A3025] text-white text-[9px] uppercase tracking-[0.2em] hover:bg-[#3A251D] transition-colors"
                 style={{ marginTop: '48px', padding: '14px 32px' }}
               >
@@ -201,15 +206,24 @@ export default function AccountPage() {
             </div>
 
             {/* Divider */}
-            <hr className="border-t border-[#E5DFD5]" style={{ marginTop: '64px', marginBottom: '48px' }} />
+            <hr
+              className="border-t border-[#E5DFD5]"
+              style={{ marginTop: '64px', marginBottom: '48px' }}
+            />
 
             {/* Curated For You */}
             <div>
-              <span className="text-[9px] uppercase tracking-[0.2em] text-[#8A817C] block" style={{ marginBottom: '32px' }}>
+              <span
+                className="text-[9px] uppercase tracking-[0.2em] text-[#8A817C] block"
+                style={{ marginBottom: '32px' }}
+              >
                 Curated For You
               </span>
-              
-              <Link href="/shop" className="block border border-[#E5DFD5] p-2 bg-white group hover:border-[#D5CFC5] transition-colors">
+
+              <Link
+                href="/shop"
+                className="block border border-[#E5DFD5] p-2 bg-white group hover:border-[#D5CFC5] transition-colors"
+              >
                 <div className="relative w-full aspect-[16/10] bg-[#FAF6F0] overflow-hidden">
                   <Image
                     src={generatePlaceholderImage(800, 500, 'winter-edit-coat')}
@@ -219,16 +233,14 @@ export default function AccountPage() {
                     sizes="(max-width: 1024px) 100vw, 40vw"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-                  
+
                   {/* Overlay Content */}
                   <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between">
                     <div>
                       <span className="text-[8px] uppercase tracking-[0.2em] text-white/90 mb-1 block">
                         The Winter Edit
                       </span>
-                      <span className="font-display text-xl text-white">
-                        The Viceroy Coat
-                      </span>
+                      <span className="font-display text-xl text-white">The Viceroy Coat</span>
                     </div>
                     <div className="w-6 h-6 bg-white/90 flex items-center justify-center text-[#4A3025] text-sm">
                       +
@@ -237,7 +249,6 @@ export default function AccountPage() {
                 </div>
               </Link>
             </div>
-
           </div>
         </div>
       </div>
