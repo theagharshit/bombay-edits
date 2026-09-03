@@ -6,3 +6,4 @@ export * from './shippingController';
 export * from './orderController';
 export * from './healthController';
 export * from './addressController';
+export * from './wishlistController';

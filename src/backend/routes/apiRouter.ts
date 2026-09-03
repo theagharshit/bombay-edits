@@ -5,6 +5,7 @@ import { productController } from '../controllers/productController';
 import { collectionController } from '../controllers/collectionController';
 import { shippingController } from '../controllers/shippingController';
 import { orderController } from '../controllers/orderController';
+import { wishlistController } from '../controllers/wishlistController';
 
 /**
  * Backend API Route registry mapping HTTP methods & controller actions
@@ -39,5 +40,10 @@ export const ApiRouter = {
   orders: {
     create: withMiddlewares(orderController.createOrder.bind(orderController)),
     byId: withMiddlewares(orderController.getOrderById.bind(orderController)),
+  },
+  wishlist: {
+    get: withMiddlewares(wishlistController.getWishlist.bind(wishlistController)),
+    post: withMiddlewares(wishlistController.handleWishlistAction.bind(wishlistController)),
+    delete: withMiddlewares(wishlistController.removeWishlist.bind(wishlistController)),
   },
 };

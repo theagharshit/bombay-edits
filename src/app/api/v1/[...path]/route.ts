@@ -7,6 +7,7 @@ import { orderController } from '@/backend/controllers/orderController';
 import { newsletterController } from '@/backend/controllers/newsletterController';
 import { contactController } from '@/backend/controllers/contactController';
 import { addressController } from '@/backend/controllers/addressController';
+import { wishlistController } from '@/backend/controllers/wishlistController';
 import { healthController } from '@/backend/controllers/healthController';
 import { ApiResponse } from '@/backend/utils/apiResponse';
 import { RequestContext } from '@/backend/types/api';
@@ -110,7 +111,20 @@ async function dispatch(req: NextRequest, context: RequestContext) {
     }
   }
 
-  // 8. /api/v1/health
+  // 8. /api/v1/wishlist
+  if (rootSegment === 'wishlist') {
+    if (method === 'GET') {
+      return wishlistController.getWishlist(req);
+    }
+    if (method === 'POST') {
+      return wishlistController.handleWishlistAction(req, context);
+    }
+    if (method === 'DELETE') {
+      return wishlistController.removeWishlist(req);
+    }
+  }
+
+  // 9. /api/v1/health
   if (rootSegment === 'health') {
     return healthController.getHealth(req);
   }
