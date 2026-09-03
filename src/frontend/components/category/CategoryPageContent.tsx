@@ -4,7 +4,6 @@ import { useState, useMemo } from 'react';
 import { ProductCard } from '@/components/product/ProductCard';
 import { products } from '@/data/products';
 import { Category } from '@/types/product';
-import Link from 'next/link';
 
 interface CategoryPageContentProps {
   categorySlug: Category;
@@ -17,14 +16,18 @@ export function CategoryPageContent({
   title,
   description,
 }: CategoryPageContentProps) {
-  
   // Base products for this category
-  const categoryProducts = useMemo(() => products.filter(p => p.category === categorySlug), [categorySlug]);
-  
+  const categoryProducts = useMemo(
+    () => products.filter((p) => p.category === categorySlug),
+    [categorySlug]
+  );
+
   // Section slices (limit to 4)
-  const trendingProducts = categoryProducts.filter(p => p.isNewArrival).slice(0, 4);
-  const bestsellers = categoryProducts.filter(p => p.isBestseller).slice(0, 4);
-  const specialOffers = categoryProducts.filter(p => p.compareAtPrice && p.compareAtPrice > p.price).slice(0, 4);
+  const trendingProducts = categoryProducts.filter((p) => p.isNewArrival).slice(0, 4);
+  const bestsellers = categoryProducts.filter((p) => p.isBestseller).slice(0, 4);
+  const specialOffers = categoryProducts
+    .filter((p) => p.compareAtPrice && p.compareAtPrice > p.price)
+    .slice(0, 4);
 
   // Filter State for the Complete Collection Grid
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -32,8 +35,8 @@ export function CategoryPageContent({
   const [visibleCount, setVisibleCount] = useState(12);
 
   const filteredGridProducts = useMemo(() => {
-    let result = [...categoryProducts];
-    
+    const result = [...categoryProducts];
+
     // Sort logic
     if (activeSort === 'price-low') result.sort((a, b) => a.price - b.price);
     if (activeSort === 'price-high') result.sort((a, b) => b.price - a.price);
@@ -46,56 +49,76 @@ export function CategoryPageContent({
   const hasMore = visibleCount < filteredGridProducts.length;
 
   return (
-    <div className="bg-[#FAF6F0] min-h-screen text-[#4A3025] font-body" style={{ paddingBottom: '80px' }}>
-      
+    <div
+      className="bg-[#FAF6F0] min-h-screen text-[#4A3025] font-body"
+      style={{ paddingBottom: '80px' }}
+    >
       {/* Header */}
-      <div 
+      <div
         className="border-b border-[#E5DFD5]"
-        style={{ 
-          display: 'flex', 
-          flexDirection: 'column', 
-          alignItems: 'center', 
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
           textAlign: 'center',
-          paddingTop: '100px', 
-          paddingBottom: '40px', 
-          maxWidth: '1200px', 
-          margin: '0 auto', 
-          paddingLeft: '24px', 
-          paddingRight: '24px' 
+          paddingTop: '100px',
+          paddingBottom: '40px',
+          maxWidth: '1200px',
+          margin: '0 auto',
+          paddingLeft: '24px',
+          paddingRight: '24px',
         }}
       >
         <span className="text-[10px] uppercase tracking-[0.25em] text-[#8A817C] mb-4 block font-medium">
           Bombay Edits / Category
         </span>
-        <h1 className="font-display text-[48px] text-[#4A3025] mb-4 leading-tight text-center" style={{ textAlign: 'center', width: '100%' }}>
+        <h1
+          className="font-display text-[48px] text-[#4A3025] mb-4 leading-tight text-center"
+          style={{ textAlign: 'center', width: '100%' }}
+        >
           {title}
         </h1>
         {description && (
-          <p className="text-sm uppercase tracking-widest text-[#8A817C] text-center" style={{ maxWidth: '36rem', margin: '0 auto', textAlign: 'center' }}>
+          <p
+            className="text-sm uppercase tracking-widest text-[#8A817C] text-center"
+            style={{ maxWidth: '36rem', margin: '0 auto', textAlign: 'center' }}
+          >
             {description}
           </p>
         )}
       </div>
 
-      <div style={{ maxWidth: '1400px', margin: '0 auto', paddingLeft: '32px', paddingRight: '32px' }}>
-        
+      <div
+        style={{ maxWidth: '1400px', margin: '0 auto', paddingLeft: '32px', paddingRight: '32px' }}
+      >
         {/* Curated Sections */}
-        
+
         {/* Trending Now */}
         {trendingProducts.length > 0 && (
           <>
             <section style={{ marginTop: '80px' }}>
-              <div className="flex flex-col items-center text-center" style={{ marginBottom: '40px' }}>
+              <div
+                className="flex flex-col items-center text-center"
+                style={{ marginBottom: '40px' }}
+              >
                 <h2 className="font-display text-[36px] text-[#4A3025] mb-2">Trending</h2>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-[#8A817C]">Newest arrivals in {title}</span>
+                <span className="text-[10px] uppercase tracking-[0.2em] text-[#8A817C]">
+                  Newest arrivals in {title}
+                </span>
               </div>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6" style={{ rowGap: '40px' }}>
+              <div
+                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6"
+                style={{ rowGap: '40px' }}
+              >
                 {trendingProducts.map((product) => (
                   <ProductCard key={`trending-${product.id}`} product={product} priority={true} />
                 ))}
               </div>
             </section>
-            <hr className="border-t border-[#E5DFD5]" style={{ marginTop: '80px', marginBottom: '80px' }} />
+            <hr
+              className="border-t border-[#E5DFD5]"
+              style={{ marginTop: '80px', marginBottom: '80px' }}
+            />
           </>
         )}
 
@@ -103,17 +126,28 @@ export function CategoryPageContent({
         {bestsellers.length > 0 && (
           <>
             <section>
-              <div className="flex flex-col items-center text-center" style={{ marginBottom: '40px' }}>
+              <div
+                className="flex flex-col items-center text-center"
+                style={{ marginBottom: '40px' }}
+              >
                 <h2 className="font-display text-[36px] text-[#4A3025] mb-2">The Bestsellers</h2>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-[#8A817C]">Loved by our clients</span>
+                <span className="text-[10px] uppercase tracking-[0.2em] text-[#8A817C]">
+                  Loved by our clients
+                </span>
               </div>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6" style={{ rowGap: '40px' }}>
+              <div
+                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6"
+                style={{ rowGap: '40px' }}
+              >
                 {bestsellers.map((product) => (
                   <ProductCard key={`bestseller-${product.id}`} product={product} />
                 ))}
               </div>
             </section>
-            <hr className="border-t border-[#E5DFD5]" style={{ marginTop: '80px', marginBottom: '80px' }} />
+            <hr
+              className="border-t border-[#E5DFD5]"
+              style={{ marginTop: '80px', marginBottom: '80px' }}
+            />
           </>
         )}
 
@@ -121,29 +155,44 @@ export function CategoryPageContent({
         {specialOffers.length > 0 && (
           <>
             <section>
-              <div className="flex flex-col items-center text-center" style={{ marginBottom: '40px' }}>
+              <div
+                className="flex flex-col items-center text-center"
+                style={{ marginBottom: '40px' }}
+              >
                 <h2 className="font-display text-[36px] text-[#4A3025] mb-2">Special Offers</h2>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-[#8A817C]">The Archive</span>
+                <span className="text-[10px] uppercase tracking-[0.2em] text-[#8A817C]">
+                  The Archive
+                </span>
               </div>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6" style={{ rowGap: '40px' }}>
+              <div
+                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6"
+                style={{ rowGap: '40px' }}
+              >
                 {specialOffers.map((product) => (
                   <ProductCard key={`offer-${product.id}`} product={product} />
                 ))}
               </div>
             </section>
-            <hr className="border-t border-[#E5DFD5]" style={{ marginTop: '80px', marginBottom: '80px' }} />
+            <hr
+              className="border-t border-[#E5DFD5]"
+              style={{ marginTop: '80px', marginBottom: '80px' }}
+            />
           </>
         )}
 
         {/* The Complete Collection Grid with Filters */}
         <section style={{ paddingTop: '40px' }}>
           <div className="flex flex-col items-center text-center" style={{ marginBottom: '40px' }}>
-            <h2 className="font-display text-[36px] text-[#4A3025] mb-2">The Complete Collection</h2>
-            <span className="text-[10px] uppercase tracking-[0.2em] text-[#8A817C]">Browse all {title}</span>
+            <h2 className="font-display text-[36px] text-[#4A3025] mb-2">
+              The Complete Collection
+            </h2>
+            <span className="text-[10px] uppercase tracking-[0.2em] text-[#8A817C]">
+              Browse all {title}
+            </span>
           </div>
 
           {/* Toolbar */}
-          <div 
+          <div
             className="flex items-center justify-between border-y border-[#E5DFD5]"
             style={{ paddingTop: '24px', paddingBottom: '24px', marginBottom: '40px' }}
           >
@@ -151,7 +200,14 @@ export function CategoryPageContent({
               onClick={() => setFiltersOpen(!filtersOpen)}
               className="flex items-center gap-2 text-xs uppercase tracking-widest text-[#4A3025] hover:text-[#8A817C] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass p-1"
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
                 <line x1="4" y1="21" x2="4" y2="14"></line>
                 <line x1="4" y1="10" x2="4" y2="3"></line>
                 <line x1="12" y1="21" x2="12" y2="12"></line>
@@ -165,9 +221,13 @@ export function CategoryPageContent({
               {filtersOpen ? 'Hide Filters' : 'Filter'}
             </button>
             <div className="flex items-center gap-4 text-sm">
-              <span className="hidden md:inline text-[#8A817C]">{filteredGridProducts.length} Results</span>
+              <span className="hidden md:inline text-[#8A817C]">
+                {filteredGridProducts.length} Results
+              </span>
               <div className="flex items-center gap-2">
-                <label htmlFor="sort" className="text-xs uppercase tracking-widest text-[#8A817C]">Sort</label>
+                <label htmlFor="sort" className="text-xs uppercase tracking-widest text-[#8A817C]">
+                  Sort
+                </label>
                 <select
                   id="sort"
                   value={activeSort}
@@ -190,13 +250,20 @@ export function CategoryPageContent({
               <div className="sticky top-32 space-y-8">
                 {/* Status Filter (Example) */}
                 <div>
-                  <h3 className="text-xs font-semibold uppercase tracking-widest mb-4">Availability</h3>
+                  <h3 className="text-xs font-semibold uppercase tracking-widest mb-4">
+                    Availability
+                  </h3>
                   <ul className="space-y-3">
                     {['In Stock', 'Made to Order'].map((status) => (
                       <li key={status}>
                         <label className="flex items-center gap-3 cursor-pointer group">
-                          <input type="checkbox" className="w-4 h-4 rounded-sm border-[#E5DFD5] text-[#4A3025] focus:ring-[#4A3025]" />
-                          <span className="text-sm group-hover:text-[#4A3025] transition-colors">{status}</span>
+                          <input
+                            type="checkbox"
+                            className="w-4 h-4 rounded-sm border-[#E5DFD5] text-[#4A3025] focus:ring-[#4A3025]"
+                          />
+                          <span className="text-sm group-hover:text-[#4A3025] transition-colors">
+                            {status}
+                          </span>
                         </label>
                       </li>
                     ))}
@@ -211,7 +278,7 @@ export function CategoryPageContent({
               {visibleProducts.length === 0 ? (
                 <div className="text-center py-24">
                   <p className="text-lg text-[#8A817C]">No products found matching your filters.</p>
-                  <button 
+                  <button
                     onClick={() => {
                       setActiveSort('newest');
                     }}
@@ -221,7 +288,10 @@ export function CategoryPageContent({
                   </button>
                 </div>
               ) : (
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6" style={{ rowGap: '40px' }}>
+                <div
+                  className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6"
+                  style={{ rowGap: '40px' }}
+                >
                   {visibleProducts.map((product) => (
                     <ProductCard key={`grid-${product.id}`} product={product} />
                   ))}
