@@ -54,7 +54,7 @@ export function ShopPageContent({
           flexDirection: 'column',
           alignItems: 'center',
           textAlign: 'center',
-          paddingTop: '100px',
+          paddingTop: '32px',
           paddingBottom: '40px',
           maxWidth: '1200px',
           margin: '0 auto',

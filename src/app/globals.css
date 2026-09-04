@@ -209,6 +209,15 @@ a {
   }
 }
 
+.site-main-content {
+  padding-top: 1.5rem;
+}
+@media (min-width: 768px) {
+  .site-main-content {
+    padding-top: 2.5rem;
+  }
+}
+
 /* ─── Product Image Hover ─────────────────────────────────── */
 
 .product-image-hover {

@@ -12,7 +12,7 @@ export default function TheCraftPage() {
     <div className="bg-[#FAF7F2] text-[#7A6E64] font-body w-full overflow-hidden">
       {/* 4.1: ONE CONTAINER FOR THE WHOLE PAGE */}
       <div
-        className="w-full px-6 md:px-10 lg:px-16 pt-[72px] md:pt-[140px] pb-[96px] md:pb-[200px]"
+        className="w-full px-6 md:px-10 lg:px-16 pt-8 md:pt-12 pb-[96px] md:pb-[200px]"
         style={{ maxWidth: '1200px', margin: '0 auto', paddingBottom: '200px' }}
       >
         {/* Page header block */}

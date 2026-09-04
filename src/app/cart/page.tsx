@@ -45,7 +45,7 @@ export default function CartPage() {
         style={{
           maxWidth: '1200px',
           margin: '0 auto',
-          paddingTop: '160px',
+          paddingTop: '40px',
           paddingBottom: '40px',
           marginBottom: '64px',
           borderBottom: '1px solid #E5DFD5',

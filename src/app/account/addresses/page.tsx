@@ -283,7 +283,7 @@ export default function AddressesPage() {
   const currentCountryConfig = REGIONS[newAddr.country] || REGIONS.India;
 
   return (
-    <div className="w-full min-h-screen bg-ivory text-dark-espresso font-body pt-8 pb-20 md:pt-14 md:pb-28">
+    <div className="w-full min-h-screen bg-ivory text-dark-espresso font-body pt-12 pb-20 md:pt-16 md:pb-28">
       <div className="container-site max-w-6xl mx-auto px-6 sm:px-10 lg:px-12">
         {/* Navigation Breadcrumb */}
         <nav aria-label="Breadcrumb" className="mb-10 sm:mb-12">

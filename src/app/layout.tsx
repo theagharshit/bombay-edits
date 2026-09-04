@@ -63,7 +63,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-full w-full flex flex-col antialiased overflow-x-hidden">
         <Providers>
           <Header />
-          <main className="flex-1 w-full flex flex-col">{children}</main>
+          <main className="flex-1 w-full flex flex-col site-main-content">{children}</main>
           <Footer />
           <CartDrawer />
         </Providers>

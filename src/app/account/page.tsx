@@ -12,7 +12,7 @@ export default function AccountPage() {
   return (
     <div
       className="bg-[#FAF6F0] min-h-screen font-body"
-      style={{ paddingTop: '120px', paddingBottom: '96px' }}
+      style={{ paddingTop: '32px', paddingBottom: '96px' }}
     >
       <div className="max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16">
         {/* Header */}
