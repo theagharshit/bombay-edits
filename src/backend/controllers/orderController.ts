@@ -56,6 +56,20 @@ export class OrderController {
   }
 
   /**
+   * Get order list / purchase history
+   * GET /api/orders or GET /api/v1/orders
+   */
+  public async getOrders(req: NextRequest) {
+    const { searchParams } = new URL(req.url);
+    const email = searchParams.get('email') || undefined;
+    const limitParam = searchParams.get('limit');
+    const limit = limitParam ? parseInt(limitParam, 10) : undefined;
+
+    const orders = await OrderModel.getAll({ email, limit });
+    return ApiResponse.success(orders);
+  }
+
+  /**
    * Get order by ID or order number
    * GET /api/orders/[id]
    */
@@ -71,6 +85,17 @@ export class OrderController {
     }
 
     return ApiResponse.success(order);
+  }
+
+  /**
+   * Seed sample orders into database
+   * POST /api/orders/seed
+   */
+  public async seedOrders() {
+    const orders = await OrderModel.seedSampleOrders();
+    return ApiResponse.success(orders, {
+      message: 'Database seeded with sample orders successfully.',
+    });
   }
 }
 

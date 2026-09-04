@@ -50,4 +50,13 @@ describe('API Gateway & Utility Checks', () => {
     expect(productsDoc).toBeDefined();
     expect(productsDoc?.method).toBe('GET');
   });
+
+  it('should fetch non-static order history records from OrderModel', async () => {
+    const { OrderModel } = await import('@/backend/models/orderModel');
+    const orders = await OrderModel.getAll();
+    expect(Array.isArray(orders)).toBe(true);
+    expect(orders.length).toBeGreaterThan(0);
+    expect(orders[0]).toHaveProperty('orderNumber');
+    expect(orders[0]).toHaveProperty('items');
+  });
 });

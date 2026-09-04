@@ -38,6 +38,7 @@ export const ApiRouter = {
     calculate: withMiddlewares(shippingController.calculateShippingCost.bind(shippingController)),
   },
   orders: {
+    list: withMiddlewares(orderController.getOrders.bind(orderController)),
     create: withMiddlewares(orderController.createOrder.bind(orderController)),
     byId: withMiddlewares(orderController.getOrderById.bind(orderController)),
   },

@@ -60,6 +60,9 @@ async function dispatch(req: NextRequest, context: RequestContext) {
       context.params = { id: subSegment };
       return orderController.getOrderById(req, context);
     }
+    if (method === 'GET') {
+      return orderController.getOrders(req);
+    }
     if (method === 'POST') {
       return orderController.createOrder(req, context);
     }

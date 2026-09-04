@@ -2,6 +2,7 @@
 echo "🔍 Running pre-commit hooks (lint-staged & typecheck)..."
 
 # 1. Run lint-staged (ESLint + Prettier)
+npm run format
 npx lint-staged
 
 # 2. Run TypeScript typecheck to guarantee zero compilation errors

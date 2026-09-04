@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { products } from '../src/backend/models/productModel';
+import { INITIAL_ORDERS } from '../src/backend/models/orderModel';
 import { categories, collections, occasions } from '../src/backend/models/collectionModel';
 import { shippingRates, currencies } from '../src/backend/models/shippingModel';
 
@@ -307,6 +308,68 @@ export async function main() {
   }
 
   console.log(`✓ Seeded ${products.length} products with complete relations!`);
+
+  // 10. Seed Sample Orders
+  console.log('10. Seeding sample purchase history orders...');
+  for (const orderData of INITIAL_ORDERS) {
+    const customer = await prisma.customer.upsert({
+      where: { email: orderData.customer.email.toLowerCase().trim() },
+      update: {
+        firstName: orderData.customer.firstName,
+        lastName: orderData.customer.lastName,
+        phone: orderData.customer.phone || null,
+      },
+      create: {
+        email: orderData.customer.email.toLowerCase().trim(),
+        firstName: orderData.customer.firstName,
+        lastName: orderData.customer.lastName,
+        phone: orderData.customer.phone || null,
+      },
+    });
+
+    const existingOrder = await prisma.order.findUnique({
+      where: { orderNumber: orderData.orderNumber },
+    });
+
+    if (!existingOrder) {
+      await prisma.order.create({
+        data: {
+          id: orderData.orderId,
+          orderNumber: orderData.orderNumber,
+          customerId: customer.id,
+          customerEmail: orderData.customer.email,
+          customerFirstName: orderData.customer.firstName,
+          customerLastName: orderData.customer.lastName,
+          customerPhone: orderData.customer.phone,
+          shippingAddress: orderData.customer.address,
+          shippingCity: orderData.customer.city,
+          shippingState: orderData.customer.state || null,
+          shippingPostalCode: orderData.customer.postalCode || null,
+          shippingCountry: orderData.customer.country,
+          shippingZoneName: orderData.shippingZone,
+          subtotal: orderData.subtotal,
+          shippingCost: orderData.shippingCost,
+          total: orderData.total,
+          currency: orderData.currency || 'INR',
+          paymentMethod: orderData.paymentMethod,
+          status: orderData.status,
+          createdAt: new Date(orderData.createdAt),
+          items: {
+            create: orderData.items.map((item) => ({
+              productId: item.productId,
+              productSlug: item.slug,
+              productName: item.name,
+              unitPrice: item.price,
+              quantity: item.quantity,
+              size: item.size,
+              colour: item.colour,
+            })),
+          },
+        },
+      });
+    }
+  }
+  console.log(`✓ Seeded sample orders in database.`);
   console.log('🎉 Highly normalised database seeding finished successfully!');
 }
 

@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { generatePlaceholderImage } from '@/lib/utils';
 import { Metadata } from 'next';
+import { RecentAcquisitions } from '@/frontend/components/account/RecentAcquisitions';
 
 export const metadata: Metadata = {
   title: 'The Atelier | Bombay Edits',
@@ -138,72 +139,7 @@ export default function AccountPage() {
             />
 
             {/* Recent Acquisitions */}
-            <div>
-              <span
-                className="text-[9px] uppercase tracking-[0.2em] text-[#8A817C] block"
-                style={{ marginBottom: '32px' }}
-              >
-                Recent Acquisitions
-              </span>
-
-              <div className="flex flex-col gap-6">
-                {/* Item 1 */}
-                <div className="flex items-start gap-5">
-                  <div className="border border-[#E5DFD5] p-1 bg-white flex-shrink-0">
-                    <div className="relative w-16 h-16 bg-[#FAF6F0]">
-                      <Image
-                        src={generatePlaceholderImage(200, 200, 'malabar-blouse')}
-                        alt="Malabar Silk Blouse"
-                        fill
-                        className="object-cover sepia-[0.3]"
-                        sizes="64px"
-                      />
-                    </div>
-                  </div>
-                  <div className="pt-1">
-                    <span className="text-[9px] uppercase tracking-[0.15em] text-[#8A817C] mb-1.5 block">
-                      Delivered: Oct 12
-                    </span>
-                    <h4 className="font-display text-base text-[#4A3025] leading-tight mb-1">
-                      The Malabar Silk Blouse
-                    </h4>
-                    <span className="text-[11px] text-[#8A817C]">Ivory / Size 2 / Bespoke Fit</span>
-                  </div>
-                </div>
-
-                {/* Item 2 */}
-                <div className="flex items-start gap-5">
-                  <div className="border border-[#E5DFD5] p-1 bg-white flex-shrink-0">
-                    <div className="relative w-16 h-16 bg-[#FAF6F0]">
-                      <Image
-                        src={generatePlaceholderImage(200, 200, 'heritage-scarf')}
-                        alt="Heritage Zari Scarf"
-                        fill
-                        className="object-cover sepia-[0.3]"
-                        sizes="64px"
-                      />
-                    </div>
-                  </div>
-                  <div className="pt-1">
-                    <span className="text-[9px] uppercase tracking-[0.15em] text-[#8A817C] mb-1.5 block">
-                      Delivered: Aug 04
-                    </span>
-                    <h4 className="font-display text-base text-[#4A3025] leading-tight mb-1">
-                      Heritage Zari Scarf
-                    </h4>
-                    <span className="text-[11px] text-[#8A817C]">Umber / Free Size</span>
-                  </div>
-                </div>
-              </div>
-
-              <Link
-                href="/account/orders"
-                className="inline-block bg-[#4A3025] text-white text-[9px] uppercase tracking-[0.2em] hover:bg-[#3A251D] transition-colors"
-                style={{ marginTop: '48px', padding: '14px 32px' }}
-              >
-                View Full Archive
-              </Link>
-            </div>
+            <RecentAcquisitions />
 
             {/* Divider */}
             <hr
