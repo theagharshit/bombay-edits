@@ -28,7 +28,7 @@ export function TabbedCuratedSection({ products }: TabbedCuratedSectionProps) {
   const filteredProducts = products
     .filter((p) => {
       if (activeCollectionId === 'restocked') return p.isNewArrival; // Mocking restocked with newArrival since old schema doesn't have restocked
-      return p.collections.includes(activeCollectionId as any);
+      return (p.collections as string[]).includes(activeCollectionId);
     })
     .slice(0, 6); // Limit to 6
 

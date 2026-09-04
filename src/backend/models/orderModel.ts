@@ -2,6 +2,7 @@ import { CreateOrderDTO } from '../types/api';
 import { ShippingModel } from './shippingModel';
 import { ProductModel } from './productModel';
 import { prisma, isPrismaConnected } from '../db/prisma';
+import { Prisma } from '@prisma/client';
 import { logger } from '../utils/logger';
 
 export interface OrderRecord extends CreateOrderDTO {
@@ -292,7 +293,7 @@ export class OrderModel {
   public static async getAll(filter?: { email?: string; limit?: number }): Promise<OrderRecord[]> {
     if (await isPrismaConnected()) {
       try {
-        const whereClause: any = {};
+        const whereClause: Prisma.OrderWhereInput = {};
         if (filter?.email) {
           whereClause.customerEmail = {
             equals: filter.email.toLowerCase().trim(),

@@ -9,7 +9,29 @@ interface MegaMenuProps {
   onClose: () => void;
 }
 
-const MENU_DATA: Record<string, any> = {
+interface MenuLink {
+  label: string;
+  href: string;
+  tag?: string;
+}
+
+interface MenuColumn {
+  title: string;
+  links: MenuLink[];
+}
+
+interface MenuFeature {
+  image: string;
+  title: string;
+  href: string;
+}
+
+interface MenuCategoryData {
+  columns: MenuColumn[];
+  features: MenuFeature[];
+}
+
+const MENU_DATA: Record<string, MenuCategoryData> = {
   'New In': {
     columns: [
       {
@@ -104,13 +126,13 @@ export function MegaMenu({ activeCategory, onClose }: MegaMenuProps) {
       <div className="container-site mx-auto py-10 flex flex-col md:flex-row gap-12">
         {/* Left: Columns */}
         <div className="flex-1 flex flex-wrap gap-x-16 gap-y-10">
-          {data.columns.map((col: any, idx: number) => (
+          {data.columns.map((col, idx) => (
             <div key={idx} className="flex flex-col gap-4 min-w-[140px]">
               <h3 className="text-xs uppercase tracking-widest text-text-muted mb-2 font-body font-medium">
                 {col.title}
               </h3>
               <ul className="flex flex-col gap-3">
-                {col.links.map((link: any, linkIdx: number) => (
+                {col.links.map((link, linkIdx) => (
                   <li key={linkIdx}>
                     <Link
                       href={link.href}
@@ -133,7 +155,7 @@ export function MegaMenu({ activeCategory, onClose }: MegaMenuProps) {
 
         {/* Right: Featured Images */}
         <div className="hidden lg:flex gap-6 w-1/3">
-          {data.features.map((feature: any, idx: number) => (
+          {data.features.map((feature, idx) => (
             <Link
               key={idx}
               href={feature.href}

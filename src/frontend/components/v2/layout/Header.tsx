@@ -21,7 +21,6 @@ export function Header() {
   const [isAnnouncementVisible, setIsAnnouncementVisible] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
-  const [isHoveringHeader, setIsHoveringHeader] = useState(false);
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
 
   // Rotate announcements
@@ -47,7 +46,6 @@ export function Header() {
   };
 
   const handleMouseLeaveHeader = () => {
-    setIsHoveringHeader(false);
     setTimeout(() => {
       setActiveMegaMenu(null);
     }, 200);
@@ -62,7 +60,6 @@ export function Header() {
             : 'bg-chalk/90 backdrop-blur-md'
         }`}
         onMouseLeave={handleMouseLeaveHeader}
-        onMouseEnter={() => setIsHoveringHeader(true)}
       >
         {/* Announcement Bar */}
         {isAnnouncementVisible && (

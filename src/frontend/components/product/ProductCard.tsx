@@ -3,17 +3,17 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Heart } from 'lucide-react';
-import { Product } from '@/types/product';
+import { Product, Size } from '@/types/product';
 import { formatPrice } from '@/frontend/utils/formatters';
 import { useWishlist } from '@/context/WishlistContext';
 import { useCart } from '@/context/CartContext';
-import { useRouter } from 'next/navigation';
 
 interface ProductCardProps {
   product: Product;
   priority?: boolean;
 }
+
+const SIZES: Size[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
 export function ProductCard({ product, priority = false }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false);
@@ -21,7 +21,6 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
 
   const { isWishlisted, toggleWishlist } = useWishlist();
   const { addItem, openCart } = useCart();
-  const router = useRouter();
   const wishlisted = isWishlisted(product.id);
 
   // Format badge text
@@ -234,8 +233,8 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             </button>
           </div>
           <div className="flex flex-wrap" style={{ gap: '8px' }}>
-            {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((size) => {
-              const isAvailable = (product.stockBySize as any)[size] > 0;
+            {SIZES.map((size) => {
+              const isAvailable = (product.stockBySize[size] ?? 0) > 0;
               return (
                 <button
                   key={size}
