@@ -54,6 +54,7 @@ export default function AccountPage() {
                   src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=1000&q=80"
                   alt="Madame Anya Portrait"
                   fill
+                  priority
                   className="object-cover grayscale"
                   sizes="(max-width: 1024px) 100vw, 60vw"
                 />
