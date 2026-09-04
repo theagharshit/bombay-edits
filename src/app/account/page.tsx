@@ -120,6 +120,12 @@ export default function AccountPage() {
                 Purchased History
               </Link>
               <Link
+                href="/account/addresses"
+                className="font-display text-2xl text-[#4A3025] hover:opacity-70 transition-opacity"
+              >
+                Manage Saved Addresses
+              </Link>
+              <Link
                 href="/wishlist"
                 className="font-display text-2xl text-[#4A3025] hover:opacity-70 transition-opacity"
               >

@@ -23,6 +23,7 @@ export default function AddressesPage() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [editingAddrId, setEditingAddrId] = useState<string | null>(null);
   const [detectingLocation, setDetectingLocation] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{
     type: 'success' | 'error';
@@ -40,6 +41,39 @@ export default function AddressesPage() {
     country: 'India' as SupportedCountry,
     isDefault: false,
   });
+
+  const openModal = () => {
+    setEditingAddrId(null);
+    setNewAddr({
+      name: '',
+      phone: '',
+      addressLine1: '',
+      addressLine2: '',
+      city: '',
+      state: '',
+      postalCode: '',
+      country: 'India',
+      isDefault: false,
+    });
+    setShowAddModal(true);
+    detectLocationAndSetCountry();
+  };
+
+  const openEditModal = (addr: AddressItem) => {
+    setEditingAddrId(addr.id);
+    setNewAddr({
+      name: addr.name || '',
+      phone: addr.phone || '',
+      addressLine1: addr.addressLine1 || '',
+      addressLine2: addr.addressLine2 || '',
+      city: addr.city || '',
+      state: addr.state || '',
+      postalCode: addr.postalCode || '',
+      country: (addr.country as SupportedCountry) || 'India',
+      isDefault: addr.isDefault || false,
+    });
+    setShowAddModal(true);
+  };
 
   const fetchAddresses = async () => {
     try {
@@ -126,11 +160,6 @@ export default function AddressesPage() {
     fetchAddresses();
   }, []);
 
-  const openModal = () => {
-    setShowAddModal(true);
-    detectLocationAndSetCountry();
-  };
-
   const handleCountryChange = (country: SupportedCountry) => {
     setNewAddr((prev) => ({
       ...prev,
@@ -189,27 +218,47 @@ export default function AddressesPage() {
     }
   };
 
-  const handleAddAddress = async (e: React.FormEvent) => {
+  const handleSaveAddress = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newAddr.name || !newAddr.addressLine1 || !newAddr.city || !newAddr.phone) return;
 
     setSubmitting(true);
     try {
-      const res = await fetch('/api/addresses', {
-        method: 'POST',
+      const url = editingAddrId ? `/api/addresses/${editingAddrId}` : '/api/addresses';
+      const method = editingAddrId ? 'PATCH' : 'POST';
+
+      const res = await fetch(url, {
+        method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newAddr),
       });
 
       const json = await res.json();
       if (res.ok && json.data) {
-        if (json.data.isDefault) {
-          setAddresses((prev) => [json.data, ...prev.map((a) => ({ ...a, isDefault: false }))]);
+        if (editingAddrId) {
+          setAddresses((prev) =>
+            prev.map((a) => {
+              if (a.id === editingAddrId) {
+                return json.data;
+              }
+              if (json.data.isDefault) {
+                return { ...a, isDefault: false };
+              }
+              return a;
+            })
+          );
+          showNotification('Address details updated successfully');
         } else {
-          setAddresses((prev) => [...prev, json.data]);
+          if (json.data.isDefault) {
+            setAddresses((prev) => [json.data, ...prev.map((a) => ({ ...a, isDefault: false }))]);
+          } else {
+            setAddresses((prev) => [...prev, json.data]);
+          }
+          showNotification('New address added to your address book');
         }
 
         setShowAddModal(false);
+        setEditingAddrId(null);
         setNewAddr({
           name: '',
           phone: '',
@@ -221,9 +270,8 @@ export default function AddressesPage() {
           country: 'India',
           isDefault: false,
         });
-        showNotification('New address added to your address book');
       } else {
-        showNotification(json.error || 'Failed to add address', 'error');
+        showNotification(json.error || 'Failed to save address', 'error');
       }
     } catch {
       showNotification('Network error saving address', 'error');
@@ -395,12 +443,20 @@ export default function AddressesPage() {
                     </span>
                   )}
 
-                  <button
-                    onClick={() => handleDelete(addr.id)}
-                    className="text-[11px] uppercase tracking-[0.18em] text-red-800/80 hover:text-red-950 hover:underline transition-colors cursor-pointer py-1"
-                  >
-                    Remove
-                  </button>
+                  <div className="flex items-center gap-4">
+                    <button
+                      onClick={() => openEditModal(addr)}
+                      className="text-[11px] uppercase tracking-[0.18em] text-dark-espresso hover:text-champagne-gold transition-colors font-semibold cursor-pointer py-1"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(addr.id)}
+                      className="text-[11px] uppercase tracking-[0.18em] text-red-800/80 hover:text-red-950 hover:underline transition-colors cursor-pointer py-1"
+                    >
+                      Remove
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -425,11 +481,12 @@ export default function AddressesPage() {
                   Atelier Address Book
                 </span>
                 <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl text-dark-espresso tracking-tight mt-1">
-                  Add Delivery Address
+                  {editingAddrId ? 'Edit Delivery Address' : 'Add Delivery Address'}
                 </h2>
                 <p className="text-[13px] text-chocolate-brown mt-1.5 leading-relaxed">
-                  Enter your residential, suite, or atelier destination for bespoke couture
-                  dispatches.
+                  {editingAddrId
+                    ? 'Update your residential, suite, or atelier destination details.'
+                    : 'Enter your residential, suite, or atelier destination for bespoke couture dispatches.'}
                 </p>
               </div>
               <button
@@ -442,7 +499,7 @@ export default function AddressesPage() {
             </div>
 
             {/* Modal Form */}
-            <form onSubmit={handleAddAddress} className="p-8 sm:p-14 space-y-8 overflow-y-auto">
+            <form onSubmit={handleSaveAddress} className="p-8 sm:p-14 space-y-8 overflow-y-auto">
               {/* Section 1: Region Selection (India or Nepal only) */}
               <div>
                 <div className="flex items-center justify-between mb-4">
@@ -594,7 +651,11 @@ export default function AddressesPage() {
                   disabled={submitting}
                   className="w-full sm:w-auto px-12 py-4 bg-dark-espresso text-cream text-[11px] uppercase tracking-[0.22em] font-medium hover:bg-chocolate-brown disabled:opacity-50 transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer rounded-none"
                 >
-                  {submitting ? 'Saving Address...' : 'Save Address'}
+                  {submitting
+                    ? 'Saving Address...'
+                    : editingAddrId
+                      ? 'Save Changes'
+                      : 'Save Address'}
                 </button>
               </div>
             </form>
