@@ -21,15 +21,13 @@ export class OrderController {
       throw new AppError('Order must contain at least one item.', 400);
     }
 
-    Validator.requireFields(customer, [
-      'email',
-      'firstName',
-      'lastName',
-      'phone',
-      'address',
-      'city',
-    ]);
+    Validator.requireFields(customer, ['email', 'firstName', 'lastName', 'address', 'city']);
+    customer.email = (customer.email || '').trim();
     Validator.validateEmail(customer.email);
+
+    if (!customer.phone) {
+      customer.phone = 'N/A';
+    }
 
     logger.info(`Creating order for customer ${customer.email}`, {
       itemCount: items.length,

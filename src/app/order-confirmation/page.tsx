@@ -1,11 +1,18 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 
-export const metadata: Metadata = { title: 'Order confirmed' };
+export const metadata: Metadata = { title: 'Order Confirmed | The Bombay Edit' };
 
-export default function OrderConfirmationPage() {
+export default async function OrderConfirmationPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ orderNumber?: string; id?: string }>;
+}) {
+  const params = searchParams ? await searchParams : undefined;
+  const orderNumber = params?.orderNumber || params?.id;
+
   return (
-    <div className="container-site section-padding text-center max-w-2xl mx-auto">
+    <div className="container-site section-padding text-center max-w-2xl mx-auto py-20 px-6">
       <div className="w-16 h-16 mx-auto mb-6 rounded-none bg-muted-green/10 flex items-center justify-center">
         <svg
           width="32"
@@ -20,6 +27,11 @@ export default function OrderConfirmationPage() {
         </svg>
       </div>
       <h1 className="font-display text-3xl md:text-4xl text-ink mb-4">Thank you for your order</h1>
+      {orderNumber && (
+        <p className="text-xs uppercase tracking-widest text-chocolate font-medium mb-3">
+          Order Reference: <span className="text-ink font-semibold">{orderNumber}</span>
+        </p>
+      )}
       <p className="text-sm text-deep-brown mb-2">
         Your order has been placed and is being prepared by our artisans.
       </p>

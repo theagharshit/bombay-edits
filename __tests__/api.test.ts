@@ -59,4 +59,40 @@ describe('API Gateway & Utility Checks', () => {
     expect(orders[0]).toHaveProperty('orderNumber');
     expect(orders[0]).toHaveProperty('items');
   });
+
+  it('should successfully create an order and compute totals with OrderModel.createOrder', async () => {
+    const { OrderModel } = await import('@/backend/models/orderModel');
+    const newOrder = await OrderModel.createOrder({
+      items: [
+        {
+          productId: 'ks-001',
+          slug: 'chandni-chanderi-set',
+          name: 'Chandni Chanderi set',
+          price: 14500,
+          quantity: 2,
+          size: 'M',
+          colour: 'Ivory',
+        },
+      ],
+      customer: {
+        email: 'test.shopper@example.com',
+        firstName: 'Mira',
+        lastName: 'Patel',
+        phone: '+91 98765 43210',
+        address: '10 Marine Drive',
+        city: 'Mumbai',
+        state: 'Maharashtra',
+        postalCode: '400020',
+        country: 'India',
+      },
+      shippingZone: 'mumbai',
+      paymentMethod: 'UPI',
+    });
+
+    expect(newOrder).toBeDefined();
+    expect(newOrder.orderNumber).toMatch(/^TBE-\d{4}-\d{5}$/);
+    expect(newOrder.subtotal).toBe(29000);
+    expect(newOrder.status).toBe('confirmed');
+    expect(newOrder.customer.email).toBe('test.shopper@example.com');
+  });
 });

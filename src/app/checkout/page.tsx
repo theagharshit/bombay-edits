@@ -9,6 +9,8 @@ import { useCurrency } from '@/context/CurrencyContext';
 import { generatePlaceholderImage } from '@/lib/utils';
 import { calculateShipping } from '@/data/shipping';
 import { CheckoutStep, ShippingZone } from '@/types/cart';
+import { OrderService } from '@/frontend/services/orderService';
+import { CreateOrderDTO } from '@/backend/types/api';
 
 const steps: { key: CheckoutStep; label: string }[] = [
   { key: 'contact', label: 'Contact' },
@@ -22,12 +24,16 @@ const paymentMethods = [
   { id: 'card', label: 'Credit / debit card', region: 'international' },
 ];
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, subtotal, clearCart } = useCart();
   const { format } = useCurrency();
 
   const [currentStep, setCurrentStep] = useState<CheckoutStep>('contact');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [form, setForm] = useState({
     email: '',
     firstName: '',
@@ -48,24 +54,64 @@ export default function CheckoutPage() {
   const shipping = calculateShipping(form.shippingZone, subtotal);
   const total = subtotal + shipping;
 
+  const validateField = (field: string, value: string): string => {
+    switch (field) {
+      case 'email':
+        if (!value.trim()) return 'Email address is required';
+        if (!EMAIL_REGEX.test(value.trim())) return 'Please enter a valid email address';
+        return '';
+      case 'firstName':
+        if (!value.trim()) return 'First name is required';
+        return '';
+      case 'lastName':
+        if (!value.trim()) return 'Last name is required';
+        return '';
+      case 'address':
+        if (!value.trim()) return 'Street address is required';
+        return '';
+      case 'city':
+        if (!value.trim()) return 'City is required';
+        return '';
+      case 'postalCode':
+        if (!value.trim()) return 'Postal code is required';
+        return '';
+      default:
+        return '';
+    }
+  };
+
   const updateField = (field: string, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
-    setErrors((prev) => ({ ...prev, [field]: '' }));
+    const fieldError = validateField(field, value);
+    setErrors((prev) => ({ ...prev, [field]: fieldError }));
+    if (submitError) setSubmitError(null);
+  };
+
+  const handleBlur = (field: string) => {
+    const value = form[field as keyof typeof form] as string;
+    const fieldError = validateField(field, value);
+    setErrors((prev) => ({ ...prev, [field]: fieldError }));
   };
 
   const validateStep = (step: CheckoutStep): boolean => {
     const newErrors: Record<string, string> = {};
     if (step === 'contact') {
-      if (!form.email.includes('@')) newErrors.email = 'Required';
-      if (!form.firstName.trim()) newErrors.firstName = 'Required';
-      if (!form.lastName.trim()) newErrors.lastName = 'Required';
+      const emailErr = validateField('email', form.email);
+      const firstNameErr = validateField('firstName', form.firstName);
+      const lastNameErr = validateField('lastName', form.lastName);
+      if (emailErr) newErrors.email = emailErr;
+      if (firstNameErr) newErrors.firstName = firstNameErr;
+      if (lastNameErr) newErrors.lastName = lastNameErr;
     }
     if (step === 'shipping') {
-      if (!form.address.trim()) newErrors.address = 'Required';
-      if (!form.city.trim()) newErrors.city = 'Required';
-      if (!form.postalCode.trim()) newErrors.postalCode = 'Required';
+      const addressErr = validateField('address', form.address);
+      const cityErr = validateField('city', form.city);
+      const postalCodeErr = validateField('postalCode', form.postalCode);
+      if (addressErr) newErrors.address = addressErr;
+      if (cityErr) newErrors.city = cityErr;
+      if (postalCodeErr) newErrors.postalCode = postalCodeErr;
     }
-    setErrors(newErrors);
+    setErrors((prev) => ({ ...prev, ...newErrors }));
     return Object.keys(newErrors).length === 0;
   };
 
@@ -80,9 +126,62 @@ export default function CheckoutPage() {
     if (idx > 0) setCurrentStep(steps[idx - 1].key);
   };
 
-  const handlePlaceOrder = () => {
-    clearCart();
-    router.push('/order-confirmation');
+  const handlePlaceOrder = async () => {
+    const isContactValid = validateStep('contact');
+    const isShippingValid = validateStep('shipping');
+
+    if (!isContactValid || !isShippingValid) {
+      if (!isContactValid) {
+        setCurrentStep('contact');
+      } else {
+        setCurrentStep('shipping');
+      }
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      const orderPayload: CreateOrderDTO = {
+        items: items.map((item) => ({
+          productId: item.productId,
+          slug: item.slug || item.productId,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          size: item.size,
+          colour: item.colour || 'Standard',
+        })),
+        customer: {
+          email: form.email.trim(),
+          firstName: form.firstName.trim(),
+          lastName: form.lastName.trim(),
+          phone: form.phone.trim() || 'N/A',
+          address: form.address.trim(),
+          city: form.city.trim(),
+          state: form.state.trim() || '',
+          postalCode: form.postalCode.trim() || '',
+          country: form.country,
+        },
+        shippingZone: form.shippingZone,
+        paymentMethod: form.paymentMethod === 'upi' ? 'UPI' : 'Credit Card',
+        notes: form.notes || undefined,
+      };
+
+      const res = await OrderService.createOrder(orderPayload);
+
+      clearCart();
+      const orderRef = res.orderNumber || res.orderId;
+      router.push(`/order-confirmation?orderNumber=${encodeURIComponent(orderRef)}`);
+    } catch (err: unknown) {
+      console.error('Failed to create order:', err);
+      const message =
+        err instanceof Error ? err.message : 'Failed to place order. Please try again.';
+      setSubmitError(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (items.length === 0) {
@@ -145,25 +244,47 @@ export default function CheckoutPage() {
                     type="email"
                     value={form.email}
                     onChange={(e) => updateField('email', e.target.value)}
+                    onBlur={() => handleBlur('email')}
                     className={`w-full bg-transparent border-b ${errors.email ? 'border-wine placeholder:text-wine' : 'border-border focus:border-ink'} py-3 text-sm font-body text-ink focus:outline-none transition-colors placeholder:text-text-muted`}
                     placeholder="Email Address *"
                   />
+                  {errors.email && (
+                    <p className="text-[11px] text-wine mt-1.5 font-body tracking-wide">
+                      {errors.email}
+                    </p>
+                  )}
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <input
-                    type="text"
-                    value={form.firstName}
-                    onChange={(e) => updateField('firstName', e.target.value)}
-                    className={`w-full bg-transparent border-b ${errors.firstName ? 'border-wine' : 'border-border focus:border-ink'} py-3 text-sm font-body text-ink focus:outline-none transition-colors placeholder:text-text-muted`}
-                    placeholder="First Name *"
-                  />
-                  <input
-                    type="text"
-                    value={form.lastName}
-                    onChange={(e) => updateField('lastName', e.target.value)}
-                    className={`w-full bg-transparent border-b ${errors.lastName ? 'border-wine' : 'border-border focus:border-ink'} py-3 text-sm font-body text-ink focus:outline-none transition-colors placeholder:text-text-muted`}
-                    placeholder="Last Name *"
-                  />
+                  <div>
+                    <input
+                      type="text"
+                      value={form.firstName}
+                      onChange={(e) => updateField('firstName', e.target.value)}
+                      onBlur={() => handleBlur('firstName')}
+                      className={`w-full bg-transparent border-b ${errors.firstName ? 'border-wine' : 'border-border focus:border-ink'} py-3 text-sm font-body text-ink focus:outline-none transition-colors placeholder:text-text-muted`}
+                      placeholder="First Name *"
+                    />
+                    {errors.firstName && (
+                      <p className="text-[11px] text-wine mt-1.5 font-body tracking-wide">
+                        {errors.firstName}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <input
+                      type="text"
+                      value={form.lastName}
+                      onChange={(e) => updateField('lastName', e.target.value)}
+                      onBlur={() => handleBlur('lastName')}
+                      className={`w-full bg-transparent border-b ${errors.lastName ? 'border-wine' : 'border-border focus:border-ink'} py-3 text-sm font-body text-ink focus:outline-none transition-colors placeholder:text-text-muted`}
+                      placeholder="Last Name *"
+                    />
+                    {errors.lastName && (
+                      <p className="text-[11px] text-wine mt-1.5 font-body tracking-wide">
+                        {errors.lastName}
+                      </p>
+                    )}
+                  </div>
                 </div>
                 <div>
                   <input
@@ -185,28 +306,52 @@ export default function CheckoutPage() {
                 2. Shipping Address
               </h2>
               <div className="space-y-6">
-                <input
-                  type="text"
-                  value={form.address}
-                  onChange={(e) => updateField('address', e.target.value)}
-                  className={`w-full bg-transparent border-b ${errors.address ? 'border-wine' : 'border-border focus:border-ink'} py-3 text-sm font-body text-ink focus:outline-none transition-colors placeholder:text-text-muted`}
-                  placeholder="Street Address *"
-                />
+                <div>
+                  <input
+                    type="text"
+                    value={form.address}
+                    onChange={(e) => updateField('address', e.target.value)}
+                    onBlur={() => handleBlur('address')}
+                    className={`w-full bg-transparent border-b ${errors.address ? 'border-wine' : 'border-border focus:border-ink'} py-3 text-sm font-body text-ink focus:outline-none transition-colors placeholder:text-text-muted`}
+                    placeholder="Street Address *"
+                  />
+                  {errors.address && (
+                    <p className="text-[11px] text-wine mt-1.5 font-body tracking-wide">
+                      {errors.address}
+                    </p>
+                  )}
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <input
-                    type="text"
-                    value={form.city}
-                    onChange={(e) => updateField('city', e.target.value)}
-                    className={`w-full bg-transparent border-b ${errors.city ? 'border-wine' : 'border-border focus:border-ink'} py-3 text-sm font-body text-ink focus:outline-none transition-colors placeholder:text-text-muted`}
-                    placeholder="City *"
-                  />
-                  <input
-                    type="text"
-                    value={form.postalCode}
-                    onChange={(e) => updateField('postalCode', e.target.value)}
-                    className={`w-full bg-transparent border-b ${errors.postalCode ? 'border-wine' : 'border-border focus:border-ink'} py-3 text-sm font-body text-ink focus:outline-none transition-colors placeholder:text-text-muted`}
-                    placeholder="Postal Code *"
-                  />
+                  <div>
+                    <input
+                      type="text"
+                      value={form.city}
+                      onChange={(e) => updateField('city', e.target.value)}
+                      onBlur={() => handleBlur('city')}
+                      className={`w-full bg-transparent border-b ${errors.city ? 'border-wine' : 'border-border focus:border-ink'} py-3 text-sm font-body text-ink focus:outline-none transition-colors placeholder:text-text-muted`}
+                      placeholder="City *"
+                    />
+                    {errors.city && (
+                      <p className="text-[11px] text-wine mt-1.5 font-body tracking-wide">
+                        {errors.city}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <input
+                      type="text"
+                      value={form.postalCode}
+                      onChange={(e) => updateField('postalCode', e.target.value)}
+                      onBlur={() => handleBlur('postalCode')}
+                      className={`w-full bg-transparent border-b ${errors.postalCode ? 'border-wine' : 'border-border focus:border-ink'} py-3 text-sm font-body text-ink focus:outline-none transition-colors placeholder:text-text-muted`}
+                      placeholder="Postal Code *"
+                    />
+                    {errors.postalCode && (
+                      <p className="text-[11px] text-wine mt-1.5 font-body tracking-wide">
+                        {errors.postalCode}
+                      </p>
+                    )}
+                  </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <input
@@ -294,6 +439,12 @@ export default function CheckoutPage() {
                   </span>
                 </div>
               </div>
+
+              {submitError && (
+                <div className="p-4 bg-wine/10 border border-wine text-wine text-xs uppercase tracking-wider">
+                  {submitError}
+                </div>
+              )}
             </div>
           )}
 
@@ -302,7 +453,8 @@ export default function CheckoutPage() {
             {currentStepIndex > 0 ? (
               <button
                 onClick={prevStep}
-                className="text-xs uppercase tracking-widest text-text-muted hover:text-ink transition-colors"
+                disabled={isSubmitting}
+                className="text-xs uppercase tracking-widest text-text-muted hover:text-ink transition-colors disabled:opacity-50"
               >
                 ← Back
               </button>
@@ -318,9 +470,17 @@ export default function CheckoutPage() {
             {currentStep === 'review' ? (
               <button
                 onClick={handlePlaceOrder}
-                className="w-full sm:w-auto bg-ink text-ivory px-12 py-4 text-xs uppercase tracking-widest font-medium hover:bg-chocolate transition-colors shadow-sm"
+                disabled={isSubmitting}
+                className="w-full sm:w-auto bg-ink text-ivory px-12 py-4 text-xs uppercase tracking-widest font-medium hover:bg-chocolate transition-colors shadow-sm disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3"
               >
-                Place Order
+                {isSubmitting ? (
+                  <>
+                    <span className="inline-block w-4 h-4 border-2 border-ivory border-t-transparent rounded-full animate-spin" />
+                    <span>Placing Order...</span>
+                  </>
+                ) : (
+                  'Place Order'
+                )}
               </button>
             ) : (
               <button
