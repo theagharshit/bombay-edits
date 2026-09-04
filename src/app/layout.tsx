@@ -1,15 +1,16 @@
 import type { Metadata } from 'next';
-import { Bodoni_Moda, Jost } from 'next/font/google';
+import { Cormorant_Garamond, Jost } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/v2/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/cart/CartDrawer';
 import { Providers } from './providers';
 
-const bodoniModa = Bodoni_Moda({
+const cormorantGaramond = Cormorant_Garamond({
   variable: '--font-display',
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
   display: 'swap',
 });
 
@@ -57,7 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={`${bodoniModa.variable} ${jost.variable} h-full`}
+      className={`${cormorantGaramond.variable} ${jost.variable} h-full`}
     >
       <body className="min-h-full w-full flex flex-col antialiased overflow-x-hidden">
         <Providers>

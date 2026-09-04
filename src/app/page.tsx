@@ -1,38 +1,15 @@
-import { HeroCarousel } from '@/components/v2/home/HeroCarousel';
-import { CollectionRail } from '@/components/v2/home/CollectionRail';
-import { CategoryTiles } from '@/components/v2/home/CategoryTiles';
-import { TabbedCuratedSection } from '@/components/v2/home/TabbedCuratedSection';
-import { EditorialGrid } from '@/components/v2/home/EditorialGrid';
-import { products } from '@/data/products';
+import { Hero } from '@/frontend/components/v2/home/Hero';
+import { LatestEdit } from '@/frontend/components/v2/home/LatestEdit';
+import { CuratedCollections } from '@/frontend/components/v2/home/CuratedCollections';
+import { Heritage } from '@/frontend/components/v2/home/Heritage';
 
 export default async function HomePage() {
-  // Simple mock derivations for sections
-  const mostWantedProducts = products.filter((p) => p.isBestseller).slice(0, 8);
-  const festiveProducts = products
-    .filter((p) => p.collections.includes('festive-edit'))
-    .slice(0, 8);
-
   return (
-    <div className="bg-chalk flex flex-col gap-16 md:gap-32 pb-16 md:pb-32">
-      <HeroCarousel />
-
-      <CollectionRail
-        title="Most Wanted"
-        href="/collections/bestsellers"
-        products={mostWantedProducts}
-      />
-
-      <CategoryTiles />
-
-      <TabbedCuratedSection products={products} />
-
-      <EditorialGrid />
-
-      <CollectionRail
-        title="The Festive Edit"
-        href="/collections/festive"
-        products={festiveProducts}
-      />
+    <div className="flex flex-col w-full bg-[var(--color-ivory)]" style={{ gap: '120px', paddingBottom: '120px' }}>
+      <Hero />
+      <LatestEdit />
+      <CuratedCollections />
+      <Heritage />
     </div>
   );
 }
