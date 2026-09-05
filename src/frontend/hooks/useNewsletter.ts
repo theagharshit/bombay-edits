@@ -40,14 +40,9 @@ export function useNewsletter(): UseNewsletterReturn {
       const data = typeof payload === 'string' ? { email: payload } : payload;
 
       try {
-        const response = await NewsletterService.subscribe(data);
+        await NewsletterService.subscribe(data);
         setIsSuccess(true);
-        if (!response.isNew) {
-          setIsAlreadySubscribed(true);
-          setMessage('You are already subscribed to our newsletter.');
-        } else {
-          setMessage('Thank you for subscribing to The Bombay Edit.');
-        }
+        setMessage('Thank you for subscribing to The Bombay Edit.');
         return true;
       } catch (err: unknown) {
         const msg = err instanceof Error ? err.message : 'Failed to subscribe. Please try again.';

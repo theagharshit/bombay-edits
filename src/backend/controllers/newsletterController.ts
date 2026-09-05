@@ -22,17 +22,14 @@ export class NewsletterController {
       requestId: context.requestId,
     });
 
-    const { subscriber, isNew } = await NewsletterModel.subscribe(email, source);
+    const { subscriber } = await NewsletterModel.subscribe(email, source);
 
     return ApiResponse.success(
       {
         email: subscriber.email,
-        isNew,
       },
       {
-        message: isNew
-          ? 'Thank you for subscribing to The Bombay Edit.'
-          : 'You are already subscribed to our newsletter.',
+        message: 'Thank you for subscribing to The Bombay Edit.',
         status: 200,
       }
     );

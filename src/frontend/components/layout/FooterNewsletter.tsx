@@ -50,9 +50,7 @@ export function FooterNewsletter() {
                 d="M5 13l4 4L19 7"
               />
             </svg>
-            <span>
-              {isAlreadySubscribed ? 'Already on The List' : 'Welcome to The Bombay Edit'}
-            </span>
+            <span>Welcome to The Bombay Edit</span>
           </div>
           <p className="text-[11px] text-[var(--color-muted)]">
             {message || 'Thank you for subscribing to our newsletter.'}

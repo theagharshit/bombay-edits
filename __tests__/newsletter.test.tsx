@@ -54,7 +54,7 @@ describe('Newsletter Model & Controller', () => {
     expect(response.status).toBe(200);
     expect(body.success).toBe(true);
     expect(body.data.email).toBe(testEmail);
-    expect(body.data.isNew).toBe(true);
+    expect(body.message).toBe('Thank you for subscribing to The Bombay Edit.');
   });
 
   it('should process controller unsubscribe request via HTTP mock', async () => {

@@ -73,9 +73,7 @@ export default function NewsletterPage() {
                     className="text-2xl text-[var(--color-ink)] italic mb-2"
                     style={{ fontFamily: 'var(--font-display)' }}
                   >
-                    {isAlreadySubscribed
-                      ? 'You Are Already On The List'
-                      : 'Welcome to The Bombay Edit'}
+                    Welcome to The Bombay Edit
                   </h3>
                   <p className="font-body text-[14px] text-[var(--color-muted)] max-w-md mx-auto">
                     {message ||
