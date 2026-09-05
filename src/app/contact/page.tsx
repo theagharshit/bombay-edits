@@ -13,7 +13,6 @@ import {
   MapPin,
   Package,
   X,
-  Lock,
 } from 'lucide-react';
 import { useContact } from '@/frontend/hooks/useContact';
 import { useAuth } from '@/frontend/context/AuthContext';
@@ -264,22 +263,13 @@ function ContactContent() {
                 </p>
 
                 {/* Squeezed Reference Ticket */}
-                <div className="w-full max-w-xs bg-[var(--color-ivory)] border border-[var(--color-line)] p-2.5 mb-3.5 text-[10.5px] space-y-1 text-left">
-                  <div className="flex justify-between items-center border-b border-[var(--color-line)] pb-1">
+                <div className="w-full max-w-xs bg-[var(--color-ivory)] border border-[var(--color-line)] p-2.5 mb-3.5 text-[10.5px] text-left">
+                  <div className="flex justify-between items-center">
                     <span className="text-[var(--color-muted)] uppercase tracking-wider">
                       Ticket ID
                     </span>
                     <span className="font-mono font-medium text-[var(--color-ink)]">
                       {data?.submissionId || 'Recorded'}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-[var(--color-muted)] uppercase tracking-wider">
-                      Status
-                    </span>
-                    <span className="inline-flex items-center gap-1 px-1.5 py-0.2 bg-emerald-100 text-emerald-900 rounded-full text-[9.5px] uppercase tracking-wider font-semibold">
-                      <span className="w-1.2 h-1.2 rounded-full bg-emerald-600" />
-                      {data?.status || 'new'}
                     </span>
                   </div>
                 </div>
@@ -300,22 +290,19 @@ function ContactContent() {
               >
                 {/* Prefilled Banner with Clear All Button */}
                 {isPrefilled && form.orderNumber && (
-                  <div className="flex items-center justify-between px-3 py-2 bg-[#eadecd] border border-[var(--color-line)] text-[11px] text-[var(--color-ink)] rounded-xs">
+                  <div className="flex items-center justify-between px-3 py-2 bg-[#eadecd]/80 border border-[var(--color-line)] text-[11px] text-[var(--color-ink)] rounded-xs">
                     <div className="flex items-center gap-1.5">
                       <Package size={13} className="text-[var(--color-ink)] shrink-0" />
                       <span>
                         Order Reference:{' '}
-                        <strong className="font-mono font-semibold">{form.orderNumber}</strong>{' '}
-                        <span className="text-[10px] text-[var(--color-muted)]">
-                          (details locked)
-                        </span>
+                        <strong className="font-mono font-semibold">{form.orderNumber}</strong>
                       </span>
                     </div>
                     <button
                       type="button"
                       onClick={handleClearAll}
                       className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider text-[var(--color-ink)] hover:underline font-semibold cursor-pointer ml-2"
-                      title="Clear all prefilled details"
+                      title="Clear prefilled details"
                     >
                       <X size={11} strokeWidth={2} />
                       <span>Clear all</span>
@@ -332,20 +319,15 @@ function ContactContent() {
                     >
                       Inquiry Topic
                     </label>
-                    {isPrefilled && (
-                      <span className="text-[9px] text-[var(--color-muted)] flex items-center gap-0.5">
-                        <Lock size={9} /> Locked
-                      </span>
-                    )}
                   </div>
                   <select
                     id="contact_subject"
                     disabled={isPrefilled}
                     value={form.subject}
                     onChange={(e) => setForm((prev) => ({ ...prev, subject: e.target.value }))}
-                    className={`w-full border border-[var(--color-line)] text-[12px] text-[var(--color-ink)] px-2.5 py-1.5 focus:outline-none transition-colors ${
+                    className={`w-full border border-[var(--color-line)] text-[12px] text-[var(--color-ink)] px-2.5 py-1.5 focus:outline-none transition-all ${
                       isPrefilled
-                        ? 'bg-[#ece5d9] cursor-not-allowed opacity-90'
+                        ? 'bg-[#eadecd]/40 opacity-70 blur-[0.3px] pointer-events-none cursor-not-allowed select-none'
                         : 'bg-[var(--color-ivory)] focus:border-[var(--color-ink)] cursor-pointer'
                     }`}
                   >
@@ -367,11 +349,6 @@ function ContactContent() {
                       >
                         Name <span className="text-red-700">*</span>
                       </label>
-                      {isPrefilled && form.name && (
-                        <span className="text-[9px] text-[var(--color-muted)] flex items-center gap-0.5">
-                          <Lock size={9} /> Locked
-                        </span>
-                      )}
                     </div>
                     <input
                       id="contact_name"
@@ -382,9 +359,9 @@ function ContactContent() {
                       value={form.name}
                       onChange={(e) => setForm((prev) => ({ ...prev, name: e.target.value }))}
                       placeholder="Your name"
-                      className={`w-full border border-[var(--color-line)] text-[12px] text-[var(--color-ink)] placeholder:text-[var(--color-muted)]/50 px-2.5 py-1.5 focus:outline-none transition-colors disabled:opacity-50 ${
+                      className={`w-full border border-[var(--color-line)] text-[12px] text-[var(--color-ink)] placeholder:text-[var(--color-muted)]/50 px-2.5 py-1.5 focus:outline-none transition-all disabled:opacity-50 ${
                         isPrefilled
-                          ? 'bg-[#ece5d9] cursor-not-allowed select-none'
+                          ? 'bg-[#eadecd]/40 opacity-70 blur-[0.3px] pointer-events-none cursor-not-allowed select-none'
                           : 'bg-[var(--color-ivory)] focus:border-[var(--color-ink)]'
                       }`}
                     />
@@ -398,11 +375,6 @@ function ContactContent() {
                       >
                         Email <span className="text-red-700">*</span>
                       </label>
-                      {isPrefilled && form.email && (
-                        <span className="text-[9px] text-[var(--color-muted)] flex items-center gap-0.5">
-                          <Lock size={9} /> Locked
-                        </span>
-                      )}
                     </div>
                     <input
                       id="contact_email"
@@ -413,9 +385,9 @@ function ContactContent() {
                       value={form.email}
                       onChange={(e) => setForm((prev) => ({ ...prev, email: e.target.value }))}
                       placeholder="name@example.com"
-                      className={`w-full border border-[var(--color-line)] text-[12px] text-[var(--color-ink)] placeholder:text-[var(--color-muted)]/50 px-2.5 py-1.5 focus:outline-none transition-colors disabled:opacity-50 ${
+                      className={`w-full border border-[var(--color-line)] text-[12px] text-[var(--color-ink)] placeholder:text-[var(--color-muted)]/50 px-2.5 py-1.5 focus:outline-none transition-all disabled:opacity-50 ${
                         isPrefilled
-                          ? 'bg-[#ece5d9] cursor-not-allowed select-none'
+                          ? 'bg-[#eadecd]/40 opacity-70 blur-[0.3px] pointer-events-none cursor-not-allowed select-none'
                           : 'bg-[var(--color-ivory)] focus:border-[var(--color-ink)]'
                       }`}
                     />
@@ -433,11 +405,6 @@ function ContactContent() {
                         WhatsApp / Mobile{' '}
                         <span className="text-[var(--color-muted)] font-normal">(Optional)</span>
                       </label>
-                      {isPrefilled && form.phone && (
-                        <span className="text-[9px] text-[var(--color-muted)] flex items-center gap-0.5">
-                          <Lock size={9} /> Locked
-                        </span>
-                      )}
                     </div>
                     <input
                       id="contact_phone"
@@ -447,9 +414,9 @@ function ContactContent() {
                       value={form.phone}
                       onChange={(e) => setForm((prev) => ({ ...prev, phone: e.target.value }))}
                       placeholder="+91 98765 43210"
-                      className={`w-full border border-[var(--color-line)] text-[12px] text-[var(--color-ink)] placeholder:text-[var(--color-muted)]/50 px-2.5 py-1.5 focus:outline-none transition-colors disabled:opacity-50 ${
+                      className={`w-full border border-[var(--color-line)] text-[12px] text-[var(--color-ink)] placeholder:text-[var(--color-muted)]/50 px-2.5 py-1.5 focus:outline-none transition-all disabled:opacity-50 ${
                         isPrefilled
-                          ? 'bg-[#ece5d9] cursor-not-allowed select-none'
+                          ? 'bg-[#eadecd]/40 opacity-70 blur-[0.3px] pointer-events-none cursor-not-allowed select-none'
                           : 'bg-[var(--color-ivory)] focus:border-[var(--color-ink)]'
                       }`}
                     />
@@ -464,11 +431,6 @@ function ContactContent() {
                         Order Number{' '}
                         <span className="text-[var(--color-muted)] font-normal">(Optional)</span>
                       </label>
-                      {isPrefilled && form.orderNumber && (
-                        <span className="text-[9px] text-[var(--color-muted)] flex items-center gap-0.5">
-                          <Lock size={9} /> Locked
-                        </span>
-                      )}
                     </div>
                     <input
                       id="contact_orderNumber"
@@ -480,9 +442,9 @@ function ContactContent() {
                         setForm((prev) => ({ ...prev, orderNumber: e.target.value }))
                       }
                       placeholder="e.g. TBE-2026-XXXXX"
-                      className={`w-full border border-[var(--color-line)] text-[12px] font-mono text-[var(--color-ink)] placeholder:text-[var(--color-muted)]/50 px-2.5 py-1.5 focus:outline-none transition-colors disabled:opacity-50 ${
+                      className={`w-full border border-[var(--color-line)] text-[12px] font-mono text-[var(--color-ink)] placeholder:text-[var(--color-muted)]/50 px-2.5 py-1.5 focus:outline-none transition-all disabled:opacity-50 ${
                         isPrefilled
-                          ? 'bg-[#ece5d9] cursor-not-allowed select-none font-semibold'
+                          ? 'bg-[#eadecd]/40 opacity-70 blur-[0.3px] pointer-events-none cursor-not-allowed select-none font-semibold'
                           : 'bg-[var(--color-ivory)] focus:border-[var(--color-ink)]'
                       }`}
                     />

@@ -84,7 +84,7 @@ async function dispatch(req: NextRequest, context: RequestContext) {
       return contactController.handleContactSubmission(req, context);
     }
     if (method === 'GET') {
-      return contactController.getSubmissions();
+      return contactController.getSubmissions(req);
     }
   }
 

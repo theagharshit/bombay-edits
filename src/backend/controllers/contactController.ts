@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { ContactModel } from '../models/contactModel';
+import { AuthModel } from '../models/authModel';
 import { ApiResponse } from '../utils/apiResponse';
 import { Validator } from '../middlewares/validatorMiddleware';
 import { logger } from '../utils/logger';
@@ -47,12 +48,39 @@ export class ContactController {
   }
 
   /**
-   * Get list of contact submissions (for administrative use)
+   * Get list of contact submissions / consultation tickets
+   * Supports:
+   * 1. Authenticated member (fetches customer's own tickets by session)
+   * 2. Query by email (for guest ticket verification / lookup)
+   * 3. Admin (fetches all submissions)
    * GET /api/contact
    */
-  public async getSubmissions() {
-    const submissions = await ContactModel.getAll();
-    return ApiResponse.success(submissions, { status: 200 });
+  public async getSubmissions(req: NextRequest) {
+    const customer = await AuthModel.getCustomerFromRequest(req);
+    const { searchParams } = new URL(req.url);
+    const queryEmail = searchParams.get('email')?.trim().toLowerCase();
+
+    if (customer) {
+      if (customer.role === 'admin') {
+        const submissions = queryEmail
+          ? await ContactModel.getByEmail(queryEmail)
+          : await ContactModel.getAll();
+        return ApiResponse.success(submissions, { status: 200 });
+      }
+
+      // Member strictly views tickets associated with their registered account email
+      const submissions = await ContactModel.getByEmail(customer.email);
+      return ApiResponse.success(submissions, { status: 200 });
+    }
+
+    // Guest lookup: if specific email provided
+    if (queryEmail) {
+      const submissions = await ContactModel.getByEmail(queryEmail);
+      return ApiResponse.success(submissions, { status: 200 });
+    }
+
+    // Unauthenticated general query: return empty array for privacy
+    return ApiResponse.success([], { status: 200 });
   }
 
   /**
