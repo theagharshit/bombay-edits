@@ -110,16 +110,16 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
         aria-label="Mobile Navigation Menu"
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-[var(--color-line)] shrink-0 h-[60px]">
-          <span className="font-display text-[22px] tracking-[0.02em] text-[var(--color-ink)]">
+        <div className="flex items-center justify-between px-4 py-2.5 border-b border-[var(--color-line)] shrink-0 h-[50px]">
+          <span className="font-display text-[20px] tracking-[0.02em] text-[var(--color-ink)]">
             Bombay Edits
           </span>
           <button
             onClick={onClose}
-            className="p-2 text-[var(--color-ink)] hover:opacity-70 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)] cursor-pointer"
+            className="p-1.5 text-[var(--color-ink)] hover:opacity-70 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)] cursor-pointer"
             aria-label="Close menu"
           >
-            <X size={20} strokeWidth={1} />
+            <X size={18} strokeWidth={1} />
           </button>
         </div>
 
@@ -132,12 +132,12 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
                 <div key={group.title} className="border-b border-[var(--color-line)]">
                   <button
                     onClick={() => toggleGroup(group.title)}
-                    className="w-full flex items-center justify-between p-5 text-[var(--color-ink)] focus-visible:outline-none focus-visible:bg-[var(--color-shell)] transition-colors cursor-pointer"
+                    className="w-full flex items-center justify-between px-4 py-2.5 text-[var(--color-ink)] focus-visible:outline-none focus-visible:bg-[var(--color-shell)] transition-colors cursor-pointer"
                     aria-expanded={isOpen}
                   >
-                    <span className="font-display text-[18px]">{group.title}</span>
+                    <span className="font-display text-[16px]">{group.title}</span>
                     <ChevronDown
-                      size={18}
+                      size={15}
                       strokeWidth={1}
                       className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
                     />
@@ -147,13 +147,13 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
                       isOpen ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'
                     }`}
                   >
-                    <ul className="flex flex-col px-5 pb-5">
+                    <ul className="flex flex-col px-4 pb-3 pt-1">
                       {group.links.map((link) => (
                         <li key={link.label}>
                           <Link
                             href={link.href}
                             onClick={onClose}
-                            className="block font-body text-[14px] text-[var(--color-muted)] hover:text-[var(--color-ink)] py-2 capitalize transition-colors cursor-pointer"
+                            className="block font-body text-[13px] text-[var(--color-muted)] hover:text-[var(--color-ink)] py-1 capitalize transition-colors cursor-pointer"
                           >
                             {link.label}
                           </Link>
@@ -173,36 +173,36 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
             <Link
               href="/account"
               onClick={onClose}
-              className="flex flex-col items-center justify-center p-4 gap-2 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors border-r border-[var(--color-line)] cursor-pointer"
+              className="flex flex-col items-center justify-center p-2.5 gap-1 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors border-r border-[var(--color-line)] cursor-pointer"
             >
-              <User size={18} strokeWidth={1} />
-              <span className="font-body text-[11px] uppercase tracking-[0.1em]">Account</span>
+              <User size={16} strokeWidth={1} />
+              <span className="font-body text-[10px] uppercase tracking-[0.1em]">Account</span>
             </Link>
             <Link
               href="/the-craft"
               onClick={onClose}
-              className="flex flex-col items-center justify-center p-4 gap-2 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors cursor-pointer"
+              className="flex flex-col items-center justify-center p-2.5 gap-1 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors cursor-pointer"
             >
-              <BookOpen size={18} strokeWidth={1} />
-              <span className="font-body text-[11px] uppercase tracking-[0.1em]">Our Story</span>
+              <BookOpen size={16} strokeWidth={1} />
+              <span className="font-body text-[10px] uppercase tracking-[0.1em]">Our Story</span>
             </Link>
           </div>
           <div className="grid grid-cols-2">
             <Link
               href={isAuthenticated ? '/account/orders' : '/account?tab=guest-lookup'}
               onClick={onClose}
-              className="flex flex-col items-center justify-center p-4 gap-2 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors border-r border-[var(--color-line)] cursor-pointer"
+              className="flex flex-col items-center justify-center p-2.5 gap-1 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors border-r border-[var(--color-line)] cursor-pointer"
             >
-              <Package size={18} strokeWidth={1} />
-              <span className="font-body text-[11px] uppercase tracking-[0.1em]">Track Order</span>
+              <Package size={16} strokeWidth={1} />
+              <span className="font-body text-[10px] uppercase tracking-[0.1em]">Track Order</span>
             </Link>
             <Link
               href="/contact"
               onClick={onClose}
-              className="flex flex-col items-center justify-center p-4 gap-2 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors cursor-pointer"
+              className="flex flex-col items-center justify-center p-2.5 gap-1 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors cursor-pointer"
             >
-              <Phone size={18} strokeWidth={1} />
-              <span className="font-body text-[11px] uppercase tracking-[0.1em]">Support</span>
+              <Phone size={16} strokeWidth={1} />
+              <span className="font-body text-[10px] uppercase tracking-[0.1em]">Support</span>
             </Link>
           </div>
         </div>
