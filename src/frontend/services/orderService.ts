@@ -29,7 +29,10 @@ export class OrderService {
     return ApiClient.get<OrderRecord[]>(endpoint);
   }
 
-  public static async getOrderById(id: string): Promise<OrderRecord> {
-    return ApiClient.get<OrderRecord>(`/api/orders/${id}`);
+  public static async getOrderById(id: string, params?: { email?: string }): Promise<OrderRecord> {
+    const query = params?.email
+      ? `?email=${encodeURIComponent(params.email.toLowerCase().trim())}`
+      : '';
+    return ApiClient.get<OrderRecord>(`/api/orders/${id}${query}`);
   }
 }

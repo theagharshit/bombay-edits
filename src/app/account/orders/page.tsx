@@ -251,9 +251,17 @@ function OrdersContent() {
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-beige-line pb-6 mb-6">
                   <div>
                     <div className="flex items-center gap-3 mb-1">
-                      <span className="font-display text-xl text-dark-espresso font-medium">
+                      <Link
+                        href={`/account/orders/${encodeURIComponent(order.orderNumber)}${
+                          order.customer?.email
+                            ? `?email=${encodeURIComponent(order.customer.email)}`
+                            : ''
+                        }`}
+                        className="font-display text-xl text-dark-espresso font-medium hover:text-champagne-gold transition-colors underline-offset-4 hover:underline cursor-pointer"
+                        title="View order details and consignment status"
+                      >
                         {order.orderNumber}
-                      </span>
+                      </Link>
                       <Badge variant={order.status === 'delivered' ? 'muted' : 'gold'}>
                         {getStatusLabel(order.status)}
                       </Badge>
@@ -321,6 +329,17 @@ function OrdersContent() {
                   </div>
 
                   <div className="flex items-center gap-3">
+                    <Link
+                      href={`/account/orders/${encodeURIComponent(order.orderNumber)}${
+                        order.customer?.email
+                          ? `?email=${encodeURIComponent(order.customer.email)}`
+                          : ''
+                      }`}
+                    >
+                      <Button variant="primary" size="sm">
+                        View Details
+                      </Button>
+                    </Link>
                     <Link
                       href={`/contact?orderNumber=${encodeURIComponent(
                         order.orderNumber

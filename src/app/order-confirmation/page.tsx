@@ -74,11 +74,13 @@ export default async function OrderConfirmationPage({
           Continue shopping
         </Link>
         <Link
-          href="/account/orders"
+          href={
+            orderNumber ? `/account/orders/${encodeURIComponent(orderNumber)}` : '/account/orders'
+          }
           className="inline-block border border-ink text-ink px-8 py-3 text-sm font-body rounded-none hover:bg-ink hover:text-ivory transition-colors"
           style={{ transitionDuration: 'var(--duration-fast)' }}
         >
-          View orders
+          View order details
         </Link>
       </div>
     </div>
