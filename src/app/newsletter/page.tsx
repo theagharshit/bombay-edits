@@ -21,11 +21,11 @@ export default function NewsletterPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[var(--color-ivory)] py-16 md:py-24 border-t border-[var(--color-line)]">
+    <main className="min-h-screen bg-[var(--color-ivory)] py-8 md:py-12 border-t border-[var(--color-line)]">
       <Container>
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-2xl mx-auto" style={{ zoom: 0.9 }}>
           {/* Breadcrumb */}
-          <nav className="mb-8 flex items-center gap-2 text-[12px] font-body text-[var(--color-muted)]">
+          <nav className="mb-4 flex items-center gap-2 text-[12px] font-body text-[var(--color-muted)]">
             <Link href="/" className="hover:text-[var(--color-ink)] transition-colors">
               Home
             </Link>
@@ -34,24 +34,24 @@ export default function NewsletterPage() {
           </nav>
 
           {/* Header */}
-          <div className="text-center mb-10">
-            <span className="text-[11px] uppercase tracking-[0.25em] text-[var(--color-muted)] font-body block mb-3">
+          <div className="text-center mb-6">
+            <span className="text-[11px] uppercase tracking-[0.25em] text-[var(--color-muted)] font-body block mb-2">
               The Atelier Dispatch
             </span>
             <h1
-              className="text-3xl md:text-5xl text-[var(--color-ink)] italic mb-4 font-normal"
+              className="text-3xl md:text-4xl text-[var(--color-ink)] italic mb-2.5 font-normal"
               style={{ fontFamily: 'var(--font-display)' }}
             >
               Sign In For The News Letter
             </h1>
-            <p className="font-body text-[15px] text-[var(--color-muted)] max-w-lg mx-auto leading-relaxed">
+            <p className="font-body text-[14px] text-[var(--color-muted)] max-w-lg mx-auto leading-relaxed">
               Experience the quiet beauty of modern Indian craft. Receive exclusive invitations to
               private edits, artisan notes, and first access to new collections.
             </p>
           </div>
 
           {/* Subscription Card */}
-          <div className="bg-[#f3ede4] border border-[var(--color-line)] p-8 md:p-10 shadow-sm mb-12 min-h-[285px] flex flex-col justify-center">
+          <div className="bg-[#f3ede4] border border-[var(--color-line)] p-6 md:p-8 shadow-sm mb-8 min-h-[250px] flex flex-col justify-center">
             {isSuccess ? (
               <div
                 data-testid="newsletter-page-success"
@@ -90,14 +90,14 @@ export default function NewsletterPage() {
             ) : (
               <form
                 onSubmit={handleSubmit}
-                className="flex flex-col gap-5"
+                className="flex flex-col gap-4"
                 data-testid="newsletter-page-form"
               >
                 {/* Email Input */}
                 <div>
                   <label
                     htmlFor="page_newsletter_email"
-                    className="block font-body text-[12px] uppercase tracking-wider text-[var(--color-ink)] mb-2 font-medium"
+                    className="block font-body text-[11px] uppercase tracking-wider text-[var(--color-ink)] mb-1.5 font-medium"
                   >
                     Email Address <span className="text-red-700">*</span>
                   </label>
@@ -112,7 +112,7 @@ export default function NewsletterPage() {
                     placeholder="Enter your email address"
                     required
                     disabled={isLoading}
-                    className="w-full bg-transparent border border-[var(--color-line)] focus:border-[var(--color-ink)] text-[14px] font-body text-[var(--color-ink)] placeholder:text-[var(--color-muted)]/60 px-4 py-3 focus:outline-none transition-colors disabled:opacity-50"
+                    className="w-full bg-transparent border border-[var(--color-line)] focus:border-[var(--color-ink)] text-[13px] font-body text-[var(--color-ink)] placeholder:text-[var(--color-muted)]/60 px-3.5 py-2.5 focus:outline-none transition-colors disabled:opacity-50"
                   />
                 </div>
 
@@ -120,18 +120,18 @@ export default function NewsletterPage() {
                 <button
                   type="submit"
                   disabled={isLoading || !email.trim()}
-                  className="w-full border border-[var(--color-ink)] bg-[var(--color-ink)] text-[var(--color-ivory)] hover:bg-[#322018] py-3.5 text-[11px] uppercase tracking-[0.2em] font-medium transition-all disabled:opacity-50 cursor-pointer"
+                  className="w-full border border-[var(--color-ink)] bg-[var(--color-ink)] text-[var(--color-ivory)] hover:bg-[#322018] py-3 text-[10px] uppercase tracking-[0.2em] font-medium transition-all disabled:opacity-50 cursor-pointer"
                 >
                   {isLoading ? 'Joining The List...' : 'Join The Bombay Edit Dispatch'}
                 </button>
 
                 {error && (
-                  <p className="text-[12px] text-rose-800 font-body text-center bg-rose-50 border border-rose-200 py-2 px-3">
+                  <p className="text-[12px] text-rose-800 font-body text-center bg-rose-50 border border-rose-200 py-1.5 px-3">
                     {error}
                   </p>
                 )}
 
-                <p className="text-center font-body text-[11px] text-[var(--color-muted)] leading-relaxed">
+                <p className="text-center font-body text-[10.5px] text-[var(--color-muted)] leading-relaxed">
                   We respect your sanctuary. By continuing, you agree to our{' '}
                   <Link
                     href="/policies/terms-of-service"
@@ -153,10 +153,10 @@ export default function NewsletterPage() {
           </div>
 
           {/* Value Props */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-            <div className="p-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+            <div className="p-2">
               <h4
-                className="text-[17px] text-[var(--color-ink)] italic mb-1"
+                className="text-[16px] text-[var(--color-ink)] italic mb-1"
                 style={{ fontFamily: 'var(--font-display)' }}
               >
                 Private Previews
@@ -165,9 +165,9 @@ export default function NewsletterPage() {
                 Be the first to browse seasonal launches 24 hours before public availability.
               </p>
             </div>
-            <div className="p-4">
+            <div className="p-2">
               <h4
-                className="text-[17px] text-[var(--color-ink)] italic mb-1"
+                className="text-[16px] text-[var(--color-ink)] italic mb-1"
                 style={{ fontFamily: 'var(--font-display)' }}
               >
                 Artisan Stories
@@ -176,9 +176,9 @@ export default function NewsletterPage() {
                 Quiet notes and reflections on traditional Indian textiles, weaves, and dyes.
               </p>
             </div>
-            <div className="p-4">
+            <div className="p-2">
               <h4
-                className="text-[17px] text-[var(--color-ink)] italic mb-1"
+                className="text-[16px] text-[var(--color-ink)] italic mb-1"
                 style={{ fontFamily: 'var(--font-display)' }}
               >
                 Curated Edits
