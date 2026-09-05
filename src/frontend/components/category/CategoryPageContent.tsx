@@ -107,8 +107,7 @@ export function CategoryPageContent({
                 </span>
               </div>
               <div
-                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6"
-                style={{ rowGap: '40px' }}
+                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-12"
               >
                 {trendingProducts.map((product) => (
                   <ProductCard key={`trending-${product.id}`} product={product} priority={true} />
@@ -136,8 +135,7 @@ export function CategoryPageContent({
                 </span>
               </div>
               <div
-                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6"
-                style={{ rowGap: '40px' }}
+                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-12"
               >
                 {bestsellers.map((product) => (
                   <ProductCard key={`bestseller-${product.id}`} product={product} />
@@ -165,8 +163,7 @@ export function CategoryPageContent({
                 </span>
               </div>
               <div
-                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6"
-                style={{ rowGap: '40px' }}
+                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-12"
               >
                 {specialOffers.map((product) => (
                   <ProductCard key={`offer-${product.id}`} product={product} />
@@ -289,8 +286,7 @@ export function CategoryPageContent({
                 </div>
               ) : (
                 <div
-                  className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6"
-                  style={{ rowGap: '40px' }}
+                  className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10"
                 >
                   {visibleProducts.map((product) => (
                     <ProductCard key={`grid-${product.id}`} product={product} />

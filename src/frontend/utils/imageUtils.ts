@@ -51,5 +51,5 @@ export function getProductPlaceholder(
 ): string {
   const seed = getStableSeed(slug + type);
   const id = FASHION_IDS[seed % FASHION_IDS.length];
-  return `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${600}&h=${800}&q=80`;
+  return `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${800}&h=${1200}&q=80`;
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Product } from '@/types/product';
@@ -8,100 +8,114 @@ import { ProductCard } from '../product/ProductCard';
 
 interface CollectionRailProps {
   title: string;
+  subtitle?: string;
   href: string;
   products: Product[];
 }
 
-export function CollectionRail({ title, href, products }: CollectionRailProps) {
+export function CollectionRail({ title, subtitle, href, products }: CollectionRailProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
-  const checkScroll = () => {
+  const checkScroll = useCallback(() => {
     if (scrollContainerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-      setCanScrollLeft(scrollLeft > 0);
-      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10); // 10px tolerance
+      setCanScrollLeft(scrollLeft > 10);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
     }
-  };
+  }, []);
 
   useEffect(() => {
     checkScroll();
-    window.addEventListener('resize', checkScroll);
-    return () => window.removeEventListener('resize', checkScroll);
-  }, [products]);
+    const handleResize = () => checkScroll();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [products, checkScroll]);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollContainerRef.current) {
-      const scrollAmount = scrollContainerRef.current.clientWidth * 0.8;
+      const scrollAmount = scrollContainerRef.current.clientWidth * 0.75;
       scrollContainerRef.current.scrollBy({
         left: direction === 'left' ? -scrollAmount : scrollAmount,
         behavior: 'smooth',
       });
+      setTimeout(checkScroll, 350);
     }
   };
 
+  if (!products || products.length === 0) return null;
+
   return (
-    <section className="py-16 md:py-32 bg-chalk">
-      <div className="container-site">
-        <div className="flex items-end justify-between mb-8 md:mb-12">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display text-ink uppercase tracking-tight">
-            {title}
-          </h2>
-          <Link
-            href={href}
-            className="hidden md:inline-block text-sm uppercase tracking-widest text-ink hover:text-brass transition-colors border-b border-ink hover:border-brass pb-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
-          >
-            Discover More
-          </Link>
+    <section className="w-full">
+      <div className="max-w-[1400px] mx-auto px-5 md:px-10 lg:px-16">
+        {/* Header Row — Nishorama Inspired Layout */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-10 gap-4">
+          <div>
+            {subtitle && (
+              <span className="text-[10px] md:text-[11px] uppercase tracking-[0.22em] text-[var(--color-muted)] font-medium block mb-2">
+                {subtitle}
+              </span>
+            )}
+            <h2 className="font-display text-3xl md:text-4xl lg:text-[42px] text-[var(--color-ink)] tracking-tight leading-tight">
+              {title}
+            </h2>
+          </div>
+
+          {/* Desktop Right Controls: Discover More + Slider Navigation Arrows */}
+          <div className="hidden md:flex items-center gap-4">
+            <Link
+              href={href}
+              className="inline-flex items-center justify-center rounded-full border border-[var(--color-ink)] text-[var(--color-ink)] px-6 py-2.5 text-[11px] uppercase tracking-[0.14em] font-medium hover:bg-[var(--color-ink)] hover:text-[var(--color-ivory)] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
+            >
+              Discover More
+            </Link>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => scroll('left')}
+                disabled={!canScrollLeft}
+                className="w-10 h-10 rounded-full border border-[var(--color-line)] flex items-center justify-center text-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-[var(--color-ivory)] hover:border-[var(--color-ink)] disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-[var(--color-ink)] disabled:hover:border-[var(--color-line)] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
+                aria-label={`Scroll left in ${title}`}
+              >
+                <ChevronLeft size={18} strokeWidth={1.5} />
+              </button>
+              <button
+                onClick={() => scroll('right')}
+                disabled={!canScrollRight}
+                className="w-10 h-10 rounded-full border border-[var(--color-line)] flex items-center justify-center text-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-[var(--color-ivory)] hover:border-[var(--color-ink)] disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-[var(--color-ink)] disabled:hover:border-[var(--color-line)] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
+                aria-label={`Scroll right in ${title}`}
+              >
+                <ChevronRight size={18} strokeWidth={1.5} />
+              </button>
+            </div>
+          </div>
         </div>
 
-        <div className="relative group">
-          {/* Left Arrow */}
-          <button
-            onClick={() => scroll('left')}
-            className={`hidden md:flex absolute -left-6 top-1/3 -translate-y-1/2 z-10 p-3 bg-chalk border border-border text-ink rounded-none shadow-sm hover:border-brass hover:text-brass transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass ${
-              canScrollLeft ? 'opacity-0 group-hover:opacity-100' : 'opacity-0 pointer-events-none'
-            }`}
-            aria-label="Scroll left"
-          >
-            <ChevronLeft size={20} strokeWidth={1} />
-          </button>
-
-          {/* Scroll Container */}
+        {/* Product Slider Track */}
+        <div className="relative">
           <div
             ref={scrollContainerRef}
             onScroll={checkScroll}
-            className="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-8 -mx-4 px-4 md:mx-0 md:px-0"
+            className="flex gap-5 md:gap-7 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-4 -mx-5 px-5 md:mx-0 md:px-0"
             style={{ scrollbarWidth: 'none' }}
           >
             {products.map((product) => (
               <div
                 key={product.id}
-                className="snap-start flex-none w-[45vw] sm:w-[35vw] md:w-[calc(33.333%-16px)] lg:w-[calc(25%-18px)]"
+                className="snap-start flex-none w-[80vw] sm:w-[50vw] md:w-[38vw] lg:w-[340px] xl:w-[370px]"
               >
                 <ProductCard product={product} />
               </div>
             ))}
           </div>
-
-          {/* Right Arrow */}
-          <button
-            onClick={() => scroll('right')}
-            className={`hidden md:flex absolute -right-6 top-1/3 -translate-y-1/2 z-10 p-3 bg-chalk border border-border text-ink rounded-none shadow-sm hover:border-brass hover:text-brass transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass ${
-              canScrollRight ? 'opacity-0 group-hover:opacity-100' : 'opacity-0 pointer-events-none'
-            }`}
-            aria-label="Scroll right"
-          >
-            <ChevronRight size={20} strokeWidth={1} />
-          </button>
         </div>
 
-        {/* Mobile Discover More */}
-        <div className="mt-4 text-center md:hidden">
+        {/* Mobile Discover More Button */}
+        <div className="mt-6 text-center md:hidden">
           <Link
             href={href}
-            className="inline-block text-xs uppercase tracking-widest text-ink hover:text-brass transition-colors border-b border-ink pb-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
+            className="inline-flex items-center justify-center rounded-full border border-[var(--color-ink)] text-[var(--color-ink)] px-8 py-3 text-[11px] uppercase tracking-[0.14em] font-medium hover:bg-[var(--color-ink)] hover:text-[var(--color-ivory)] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
           >
             Discover More
           </Link>

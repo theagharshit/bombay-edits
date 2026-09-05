@@ -7,33 +7,33 @@ const PRODUCTS = [
     name: 'The Malabar Gown',
     fabric: 'Hand-embroidered Silk',
     price: '₹ 45,000',
-    aspect: 'aspect-[3/4]',
+    aspect: 'aspect-[2/3]',
     badge: 'NEW IN',
-    image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=600&h=800&q=80',
+    image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=800&h=1200&q=80',
     href: '/shop/malabar-gown'
   },
   {
     name: 'Colaba Drape',
     fabric: 'Structured Georgette',
     price: '₹ 32,500',
-    aspect: 'aspect-[3/4]',
-    image: 'https://images.unsplash.com/photo-1616583936499-d4116e7e2e76?auto=format&fit=crop&w=600&h=800&q=80',
+    aspect: 'aspect-[2/3]',
+    image: 'https://images.unsplash.com/photo-1616583936499-d4116e7e2e76?auto=format&fit=crop&w=800&h=1200&q=80',
     href: '/shop/colaba-drape'
   },
   {
     name: 'Marine Pearl Cape',
     fabric: 'Sheer Organza & Pearls',
     price: '₹ 28,000',
-    aspect: 'aspect-[3/4]',
-    image: 'https://images.unsplash.com/photo-1503160865267-af4660ce7bf2?auto=format&fit=crop&w=600&h=800&q=80',
+    aspect: 'aspect-[2/3]',
+    image: 'https://images.unsplash.com/photo-1503160865267-af4660ce7bf2?auto=format&fit=crop&w=800&h=1200&q=80',
     href: '/shop/marine-pearl-cape'
   },
   {
     name: 'Heritage Brocade',
     fabric: 'Woven Metallic Zari',
     price: '₹ 18,000',
-    aspect: 'aspect-[3/4]',
-    image: 'https://images.unsplash.com/photo-1571908599407-cdb918ed83bf?auto=format&fit=crop&w=600&h=800&q=80',
+    aspect: 'aspect-[2/3]',
+    image: 'https://images.unsplash.com/photo-1571908599407-cdb918ed83bf?auto=format&fit=crop&w=800&h=1200&q=80',
     href: '/shop/heritage-brocade'
   }
 ];
@@ -73,7 +73,7 @@ export function LatestEdit() {
                   {/* Image Wrapper */}
                   <div 
                     className="relative w-full overflow-hidden" 
-                    style={{ aspectRatio: '3/4' }}
+                    style={{ aspectRatio: '2/3' }}
                   >
                     <Image
                       src={product.image}

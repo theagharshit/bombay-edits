@@ -97,8 +97,7 @@ export function ShopPageContent({
               </div>
 
               <div
-                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6"
-                style={{ rowGap: '40px' }}
+                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-12"
               >
                 {trendingProducts.map((product) => (
                   <ProductCard key={`trending-${product.id}`} product={product} priority={true} />
@@ -127,8 +126,7 @@ export function ShopPageContent({
               </div>
 
               <div
-                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6"
-                style={{ rowGap: '40px' }}
+                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-12"
               >
                 {bestsellers.map((product) => (
                   <ProductCard key={`bestseller-${product.id}`} product={product} />
@@ -146,7 +144,7 @@ export function ShopPageContent({
         {categorySections.map((cat) => {
           const categoryProducts = filteredBaseProducts
             .filter((p) => p.category === cat.id)
-            .slice(0, 4);
+            .slice(0, 3);
 
           if (categoryProducts.length === 0) return null;
 
@@ -164,8 +162,7 @@ export function ShopPageContent({
                 </div>
 
                 <div
-                  className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6"
-                  style={{ rowGap: '40px' }}
+                  className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-12"
                 >
                   {categoryProducts.map((product) => (
                     <ProductCard key={`${cat.id}-${product.id}`} product={product} />
@@ -206,8 +203,7 @@ export function ShopPageContent({
             </div>
 
             <div
-              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6"
-              style={{ rowGap: '40px' }}
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-12"
             >
               {specialOffers.map((product) => (
                 <ProductCard key={`offer-${product.id}`} product={product} />

@@ -138,17 +138,17 @@ export function TabbedCuratedSection({ products }: TabbedCuratedSectionProps) {
             {filteredProducts.map((product) => (
               <div
                 key={product.id}
-                className="snap-start flex-none w-[45vw] sm:w-[35vw] md:w-[calc(33.333%-16px)] lg:w-[calc(25%-18px)]"
+                className="snap-start flex-none w-[70vw] sm:w-[48vw] md:w-[calc(40%-16px)] lg:w-[calc(33.333%-16px)]"
               >
                 <ProductCard product={product} />
               </div>
             ))}
 
             {/* View All Card */}
-            <div className="snap-start flex-none w-[45vw] sm:w-[35vw] md:w-[calc(33.333%-16px)] lg:w-[calc(25%-18px)] flex items-center justify-center">
+            <div className="snap-start flex-none w-[70vw] sm:w-[48vw] md:w-[calc(40%-16px)] lg:w-[calc(33.333%-16px)] flex items-center justify-center">
               <Link
                 href={`/collections/${activeCollectionId}`}
-                className="flex flex-col items-center justify-center gap-4 text-ink hover:text-brass transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass p-8 text-center"
+                className="w-full aspect-[2/3] border border-border flex flex-col items-center justify-center p-6 text-center hover:border-brass transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
               >
                 <span className="w-12 h-12 rounded-none border border-current flex items-center justify-center">
                   <ChevronRight size={24} strokeWidth={1.5} />
