@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { X, ChevronDown, User, Heart, Package, Phone } from 'lucide-react';
+import { useAuth } from '@/frontend/context/AuthContext';
 
 interface MobileDrawerProps {
   isOpen: boolean;
@@ -70,6 +71,7 @@ const MENU_GROUPS = [
 
 export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
   const [openGroup, setOpenGroup] = useState<string | null>(null);
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     if (isOpen) {
@@ -114,7 +116,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
           </span>
           <button
             onClick={onClose}
-            className="p-2 text-[var(--color-ink)] hover:opacity-70 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)]"
+            className="p-2 text-[var(--color-ink)] hover:opacity-70 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus-ring)] cursor-pointer"
             aria-label="Close menu"
           >
             <X size={20} strokeWidth={1} />
@@ -130,7 +132,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
                 <div key={group.title} className="border-b border-[var(--color-line)]">
                   <button
                     onClick={() => toggleGroup(group.title)}
-                    className="w-full flex items-center justify-between p-5 text-[var(--color-ink)] focus-visible:outline-none focus-visible:bg-[var(--color-shell)] transition-colors"
+                    className="w-full flex items-center justify-between p-5 text-[var(--color-ink)] focus-visible:outline-none focus-visible:bg-[var(--color-shell)] transition-colors cursor-pointer"
                     aria-expanded={isOpen}
                   >
                     <span className="font-display text-[18px]">{group.title}</span>
@@ -151,7 +153,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
                           <Link
                             href={link.href}
                             onClick={onClose}
-                            className="block font-body text-[14px] text-[var(--color-muted)] hover:text-[var(--color-ink)] py-2 capitalize transition-colors"
+                            className="block font-body text-[14px] text-[var(--color-muted)] hover:text-[var(--color-ink)] py-2 capitalize transition-colors cursor-pointer"
                           >
                             {link.label}
                           </Link>
@@ -171,7 +173,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
             <Link
               href="/account"
               onClick={onClose}
-              className="flex flex-col items-center justify-center p-4 gap-2 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors border-r border-[var(--color-line)]"
+              className="flex flex-col items-center justify-center p-4 gap-2 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors border-r border-[var(--color-line)] cursor-pointer"
             >
               <User size={18} strokeWidth={1} />
               <span className="font-body text-[11px] uppercase tracking-[0.1em]">Account</span>
@@ -179,7 +181,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
             <Link
               href="/wishlist"
               onClick={onClose}
-              className="flex flex-col items-center justify-center p-4 gap-2 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors"
+              className="flex flex-col items-center justify-center p-4 gap-2 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors cursor-pointer"
             >
               <Heart size={18} strokeWidth={1} />
               <span className="font-body text-[11px] uppercase tracking-[0.1em]">Wishlist</span>
@@ -187,16 +189,16 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
           </div>
           <div className="grid grid-cols-2">
             <Link
-              href="/orders"
+              href={isAuthenticated ? '/account/orders' : '/account?tab=guest-lookup'}
               onClick={onClose}
-              className="flex flex-col items-center justify-center p-4 gap-2 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors border-r border-[var(--color-line)]"
+              className="flex flex-col items-center justify-center p-4 gap-2 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors border-r border-[var(--color-line)] cursor-pointer"
             >
               <Package size={18} strokeWidth={1} />
               <span className="font-body text-[11px] uppercase tracking-[0.1em]">Track Order</span>
             </Link>
             <a
               href="tel:+919876543210"
-              className="flex flex-col items-center justify-center p-4 gap-2 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors"
+              className="flex flex-col items-center justify-center p-4 gap-2 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors cursor-pointer"
             >
               <Phone size={18} strokeWidth={1} />
               <span className="font-body text-[11px] uppercase tracking-[0.1em]">Support</span>

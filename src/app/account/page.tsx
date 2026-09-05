@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { generatePlaceholderImage } from '@/lib/utils';
@@ -26,7 +27,9 @@ export default function AccountPage() {
   if (!isAuthenticated) {
     return (
       <div className="bg-[#FAF6F0] min-h-screen font-body py-12">
-        <AtelierAuthGate />
+        <Suspense fallback={null}>
+          <AtelierAuthGate />
+        </Suspense>
       </div>
     );
   }

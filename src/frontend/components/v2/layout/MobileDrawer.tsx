@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { X, ChevronDown, User, Heart, Package, Phone } from 'lucide-react';
+import { useAuth } from '@/frontend/context/AuthContext';
 
 interface MobileDrawerProps {
   isOpen: boolean;
@@ -70,6 +71,7 @@ const MENU_GROUPS = [
 
 export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
   const [openGroup, setOpenGroup] = useState<string | null>(null);
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     if (isOpen) {
@@ -187,16 +189,16 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
           </div>
           <div className="grid grid-cols-2">
             <Link
-              href="/orders"
+              href={isAuthenticated ? '/account/orders' : '/account?tab=guest-lookup'}
               onClick={onClose}
-              className="flex flex-col items-center justify-center p-4 gap-2 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors border-r border-[var(--color-line)]"
+              className="flex flex-col items-center justify-center p-4 gap-2 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors border-r border-[var(--color-line)] cursor-pointer"
             >
               <Package size={18} strokeWidth={1} />
               <span className="font-body text-[11px] uppercase tracking-[0.1em]">Track Order</span>
             </Link>
             <a
               href="tel:+919876543210"
-              className="flex flex-col items-center justify-center p-4 gap-2 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors"
+              className="flex flex-col items-center justify-center p-4 gap-2 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors cursor-pointer"
             >
               <Phone size={18} strokeWidth={1} />
               <span className="font-body text-[11px] uppercase tracking-[0.1em]">Support</span>

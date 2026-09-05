@@ -1,13 +1,25 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/frontend/context/AuthContext';
 
 export function AtelierAuthGate() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { login, register } = useAuth();
-  const [activeTab, setActiveTab] = useState<'signin' | 'register' | 'guest-lookup'>('signin');
+  const tabParam = searchParams.get('tab');
+  const [activeTab, setActiveTab] = useState<'signin' | 'register' | 'guest-lookup'>(() => {
+    if (tabParam === 'guest-lookup') return 'guest-lookup';
+    if (tabParam === 'register') return 'register';
+    return 'signin';
+  });
+
+  useEffect(() => {
+    if (tabParam === 'guest-lookup' || tabParam === 'register' || tabParam === 'signin') {
+      setActiveTab(tabParam);
+    }
+  }, [tabParam]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
