@@ -123,21 +123,28 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
           </button>
         </div>
 
-        {/* Scrollable Nav Accordions */}
-        <div className="flex-1 overflow-y-auto overflow-x-hidden">
-          <nav className="flex flex-col">
+        {/* Scrollable Nav Accordions - Filling Whole Space */}
+        <div className="flex-1 overflow-y-auto overflow-x-hidden flex flex-col">
+          <nav className="flex-1 min-h-full flex flex-col">
             {MENU_GROUPS.map((group) => {
               const isOpen = openGroup === group.title;
               return (
-                <div key={group.title} className="border-b border-[var(--color-line)]">
+                <div
+                  key={group.title}
+                  className={`border-b border-[var(--color-line)] flex flex-col transition-all ${
+                    isOpen ? 'shrink-0' : 'flex-1'
+                  }`}
+                >
                   <button
                     onClick={() => toggleGroup(group.title)}
-                    className="w-full flex items-center justify-between px-4 py-2.5 text-[var(--color-ink)] focus-visible:outline-none focus-visible:bg-[var(--color-shell)] transition-colors cursor-pointer"
+                    className="w-full flex-1 min-h-[46px] flex items-center justify-between px-5 py-3 text-[var(--color-ink)] focus-visible:outline-none focus-visible:bg-[var(--color-shell)] transition-colors cursor-pointer"
                     aria-expanded={isOpen}
                   >
-                    <span className="font-display text-[16px]">{group.title}</span>
+                    <span className="font-display text-[17px] tracking-[0.01em]">
+                      {group.title}
+                    </span>
                     <ChevronDown
-                      size={15}
+                      size={16}
                       strokeWidth={1}
                       className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
                     />
@@ -147,13 +154,13 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
                       isOpen ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'
                     }`}
                   >
-                    <ul className="flex flex-col px-4 pb-3 pt-1">
+                    <ul className="flex flex-col px-5 pb-4 pt-1">
                       {group.links.map((link) => (
                         <li key={link.label}>
                           <Link
                             href={link.href}
                             onClick={onClose}
-                            className="block font-body text-[13px] text-[var(--color-muted)] hover:text-[var(--color-ink)] py-1 capitalize transition-colors cursor-pointer"
+                            className="block font-body text-[13.5px] text-[var(--color-muted)] hover:text-[var(--color-ink)] py-1.5 capitalize transition-colors cursor-pointer"
                           >
                             {link.label}
                           </Link>
