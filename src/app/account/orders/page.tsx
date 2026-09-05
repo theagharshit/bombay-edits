@@ -321,7 +321,21 @@ function OrdersContent() {
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <Link href="/contact">
+                    <Link
+                      href={`/contact?orderNumber=${encodeURIComponent(
+                        order.orderNumber
+                      )}&email=${encodeURIComponent(
+                        order.customer?.email || customer?.email || ''
+                      )}&name=${encodeURIComponent(
+                        order.customer
+                          ? `${order.customer.firstName} ${order.customer.lastName || ''}`.trim()
+                          : customer
+                            ? `${customer.firstName} ${customer.lastName || ''}`.trim()
+                            : ''
+                      )}&phone=${encodeURIComponent(
+                        order.customer?.phone || customer?.phone || ''
+                      )}&subject=${encodeURIComponent('Order Status & Tracking')}`}
+                    >
                       <Button variant="ghost" size="sm">
                         Need Assistance?
                       </Button>

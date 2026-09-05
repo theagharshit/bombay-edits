@@ -1,9 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
 import Link from 'next/link';
-import { Mail, MessageSquare, Clock, CheckCircle2, ArrowUpRight, Send, MapPin } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import {
+  Mail,
+  MessageSquare,
+  Clock,
+  CheckCircle2,
+  ArrowUpRight,
+  Send,
+  MapPin,
+  Package,
+  X,
+  Lock,
+} from 'lucide-react';
 import { useContact } from '@/frontend/hooks/useContact';
+import { useAuth } from '@/frontend/context/AuthContext';
 
 const TOPIC_OPTIONS = [
   'General Inquiry',
@@ -13,7 +26,19 @@ const TOPIC_OPTIONS = [
   'Exchanges & Returns',
 ];
 
-export default function ContactPage() {
+function ContactContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { customer } = useAuth();
+  const messageInputRef = useRef<HTMLTextAreaElement>(null);
+
+  const urlOrder = searchParams.get('orderNumber') || '';
+  const urlEmail = searchParams.get('email') || '';
+  const urlName = searchParams.get('name') || '';
+  const urlPhone = searchParams.get('phone') || '';
+  const urlSubject = searchParams.get('subject') || '';
+
+  const [isPrefilled, setIsPrefilled] = useState<boolean>(false);
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -22,6 +47,52 @@ export default function ContactPage() {
     subject: TOPIC_OPTIONS[0],
     message: '',
   });
+
+  // Prepopulate form fields from URL params (Need Assistance flow) or customer profile
+  useEffect(() => {
+    const customerFullName = customer
+      ? `${customer.firstName} ${customer.lastName || ''}`.trim()
+      : '';
+    const resolvedName = urlName || customerFullName;
+    const resolvedEmail = urlEmail || customer?.email || '';
+    const resolvedPhone = urlPhone || customer?.phone || '';
+    const resolvedOrder = urlOrder || '';
+    const resolvedSubject = urlSubject || (urlOrder ? 'Order Status & Tracking' : TOPIC_OPTIONS[0]);
+
+    if (urlOrder) {
+      setIsPrefilled(true);
+    }
+
+    setForm((prev) => ({
+      ...prev,
+      name: resolvedName || prev.name,
+      email: resolvedEmail || prev.email,
+      phone: resolvedPhone || prev.phone,
+      orderNumber: resolvedOrder || prev.orderNumber,
+      subject: resolvedSubject || prev.subject,
+    }));
+
+    // If order reference provided, auto-focus message box so user only has to write their message
+    if (urlOrder) {
+      const timer = setTimeout(() => {
+        messageInputRef.current?.focus();
+      }, 150);
+      return () => clearTimeout(timer);
+    }
+  }, [urlOrder, urlEmail, urlName, urlPhone, urlSubject, customer]);
+
+  const handleClearAll = () => {
+    setIsPrefilled(false);
+    setForm({
+      name: '',
+      email: '',
+      phone: '',
+      orderNumber: '',
+      subject: TOPIC_OPTIONS[0],
+      message: '',
+    });
+    router.replace('/contact');
+  };
 
   const { isLoading, isSuccess, error, data, submitContact, reset } = useContact();
 
@@ -47,11 +118,13 @@ export default function ContactPage() {
       subject: TOPIC_OPTIONS[0],
       message: '',
     });
+    setIsPrefilled(false);
+    router.replace('/contact');
   };
 
   return (
     <main className="bg-[var(--color-ivory)] pt-[60px] flex flex-col justify-start">
-      <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 py-4" style={{ zoom: 1.21 }}>
+      <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 py-4" style={{ zoom: 1.01 }}>
         {/* Breadcrumb Navigation */}
         <nav className="mb-2.5 flex items-center gap-2 text-[11px] font-body text-[var(--color-muted)]">
           <Link href="/" className="hover:text-[var(--color-ink)] transition-colors">
@@ -225,19 +298,56 @@ export default function ContactPage() {
                 className="flex flex-col gap-2.5 font-body text-[12.5px]"
                 data-testid="contact-form"
               >
+                {/* Prefilled Banner with Clear All Button */}
+                {isPrefilled && form.orderNumber && (
+                  <div className="flex items-center justify-between px-3 py-2 bg-[#eadecd] border border-[var(--color-line)] text-[11px] text-[var(--color-ink)] rounded-xs">
+                    <div className="flex items-center gap-1.5">
+                      <Package size={13} className="text-[var(--color-ink)] shrink-0" />
+                      <span>
+                        Order Reference:{' '}
+                        <strong className="font-mono font-semibold">{form.orderNumber}</strong>{' '}
+                        <span className="text-[10px] text-[var(--color-muted)]">
+                          (details locked)
+                        </span>
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleClearAll}
+                      className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider text-[var(--color-ink)] hover:underline font-semibold cursor-pointer ml-2"
+                      title="Clear all prefilled details"
+                    >
+                      <X size={11} strokeWidth={2} />
+                      <span>Clear all</span>
+                    </button>
+                  </div>
+                )}
+
                 {/* Topic Select */}
                 <div>
-                  <label
-                    htmlFor="contact_subject"
-                    className="block text-[9.5px] uppercase tracking-[0.16em] text-[var(--color-ink)] mb-0.5 font-medium"
-                  >
-                    Inquiry Topic
-                  </label>
+                  <div className="flex items-center justify-between mb-0.5">
+                    <label
+                      htmlFor="contact_subject"
+                      className="block text-[9.5px] uppercase tracking-[0.16em] text-[var(--color-ink)] font-medium"
+                    >
+                      Inquiry Topic
+                    </label>
+                    {isPrefilled && (
+                      <span className="text-[9px] text-[var(--color-muted)] flex items-center gap-0.5">
+                        <Lock size={9} /> Locked
+                      </span>
+                    )}
+                  </div>
                   <select
                     id="contact_subject"
+                    disabled={isPrefilled}
                     value={form.subject}
                     onChange={(e) => setForm((prev) => ({ ...prev, subject: e.target.value }))}
-                    className="w-full bg-[var(--color-ivory)] border border-[var(--color-line)] focus:border-[var(--color-ink)] text-[12px] text-[var(--color-ink)] px-2.5 py-1.5 focus:outline-none transition-colors cursor-pointer"
+                    className={`w-full border border-[var(--color-line)] text-[12px] text-[var(--color-ink)] px-2.5 py-1.5 focus:outline-none transition-colors ${
+                      isPrefilled
+                        ? 'bg-[#ece5d9] cursor-not-allowed opacity-90'
+                        : 'bg-[var(--color-ivory)] focus:border-[var(--color-ink)] cursor-pointer'
+                    }`}
                   >
                     {TOPIC_OPTIONS.map((topic) => (
                       <option key={topic} value={topic}>
@@ -250,40 +360,64 @@ export default function ContactPage() {
                 {/* Name & Email (2 cols) */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   <div>
-                    <label
-                      htmlFor="contact_name"
-                      className="block text-[9.5px] uppercase tracking-[0.16em] text-[var(--color-ink)] mb-0.5 font-medium"
-                    >
-                      Name <span className="text-red-700">*</span>
-                    </label>
+                    <div className="flex items-center justify-between mb-0.5">
+                      <label
+                        htmlFor="contact_name"
+                        className="block text-[9.5px] uppercase tracking-[0.16em] text-[var(--color-ink)] font-medium"
+                      >
+                        Name <span className="text-red-700">*</span>
+                      </label>
+                      {isPrefilled && form.name && (
+                        <span className="text-[9px] text-[var(--color-muted)] flex items-center gap-0.5">
+                          <Lock size={9} /> Locked
+                        </span>
+                      )}
+                    </div>
                     <input
                       id="contact_name"
                       type="text"
                       required
+                      readOnly={isPrefilled}
                       disabled={isLoading}
                       value={form.name}
                       onChange={(e) => setForm((prev) => ({ ...prev, name: e.target.value }))}
                       placeholder="Your name"
-                      className="w-full bg-[var(--color-ivory)] border border-[var(--color-line)] focus:border-[var(--color-ink)] text-[12px] text-[var(--color-ink)] placeholder:text-[var(--color-muted)]/50 px-2.5 py-1.5 focus:outline-none transition-colors disabled:opacity-50"
+                      className={`w-full border border-[var(--color-line)] text-[12px] text-[var(--color-ink)] placeholder:text-[var(--color-muted)]/50 px-2.5 py-1.5 focus:outline-none transition-colors disabled:opacity-50 ${
+                        isPrefilled
+                          ? 'bg-[#ece5d9] cursor-not-allowed select-none'
+                          : 'bg-[var(--color-ivory)] focus:border-[var(--color-ink)]'
+                      }`}
                     />
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="contact_email"
-                      className="block text-[9.5px] uppercase tracking-[0.16em] text-[var(--color-ink)] mb-0.5 font-medium"
-                    >
-                      Email <span className="text-red-700">*</span>
-                    </label>
+                    <div className="flex items-center justify-between mb-0.5">
+                      <label
+                        htmlFor="contact_email"
+                        className="block text-[9.5px] uppercase tracking-[0.16em] text-[var(--color-ink)] font-medium"
+                      >
+                        Email <span className="text-red-700">*</span>
+                      </label>
+                      {isPrefilled && form.email && (
+                        <span className="text-[9px] text-[var(--color-muted)] flex items-center gap-0.5">
+                          <Lock size={9} /> Locked
+                        </span>
+                      )}
+                    </div>
                     <input
                       id="contact_email"
                       type="email"
                       required
+                      readOnly={isPrefilled}
                       disabled={isLoading}
                       value={form.email}
                       onChange={(e) => setForm((prev) => ({ ...prev, email: e.target.value }))}
                       placeholder="name@example.com"
-                      className="w-full bg-[var(--color-ivory)] border border-[var(--color-line)] focus:border-[var(--color-ink)] text-[12px] text-[var(--color-ink)] placeholder:text-[var(--color-muted)]/50 px-2.5 py-1.5 focus:outline-none transition-colors disabled:opacity-50"
+                      className={`w-full border border-[var(--color-line)] text-[12px] text-[var(--color-ink)] placeholder:text-[var(--color-muted)]/50 px-2.5 py-1.5 focus:outline-none transition-colors disabled:opacity-50 ${
+                        isPrefilled
+                          ? 'bg-[#ece5d9] cursor-not-allowed select-none'
+                          : 'bg-[var(--color-ivory)] focus:border-[var(--color-ink)]'
+                      }`}
                     />
                   </div>
                 </div>
@@ -291,47 +425,71 @@ export default function ContactPage() {
                 {/* Mobile & Order Number (2 cols) */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   <div>
-                    <label
-                      htmlFor="contact_phone"
-                      className="block text-[9.5px] uppercase tracking-[0.16em] text-[var(--color-ink)] mb-0.5 font-medium"
-                    >
-                      WhatsApp / Mobile{' '}
-                      <span className="text-[var(--color-muted)] font-normal">(Optional)</span>
-                    </label>
+                    <div className="flex items-center justify-between mb-0.5">
+                      <label
+                        htmlFor="contact_phone"
+                        className="block text-[9.5px] uppercase tracking-[0.16em] text-[var(--color-ink)] font-medium"
+                      >
+                        WhatsApp / Mobile{' '}
+                        <span className="text-[var(--color-muted)] font-normal">(Optional)</span>
+                      </label>
+                      {isPrefilled && form.phone && (
+                        <span className="text-[9px] text-[var(--color-muted)] flex items-center gap-0.5">
+                          <Lock size={9} /> Locked
+                        </span>
+                      )}
+                    </div>
                     <input
                       id="contact_phone"
                       type="tel"
+                      readOnly={isPrefilled}
                       disabled={isLoading}
                       value={form.phone}
                       onChange={(e) => setForm((prev) => ({ ...prev, phone: e.target.value }))}
                       placeholder="+91 98765 43210"
-                      className="w-full bg-[var(--color-ivory)] border border-[var(--color-line)] focus:border-[var(--color-ink)] text-[12px] text-[var(--color-ink)] placeholder:text-[var(--color-muted)]/50 px-2.5 py-1.5 focus:outline-none transition-colors disabled:opacity-50"
+                      className={`w-full border border-[var(--color-line)] text-[12px] text-[var(--color-ink)] placeholder:text-[var(--color-muted)]/50 px-2.5 py-1.5 focus:outline-none transition-colors disabled:opacity-50 ${
+                        isPrefilled
+                          ? 'bg-[#ece5d9] cursor-not-allowed select-none'
+                          : 'bg-[var(--color-ivory)] focus:border-[var(--color-ink)]'
+                      }`}
                     />
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="contact_orderNumber"
-                      className="block text-[9.5px] uppercase tracking-[0.16em] text-[var(--color-ink)] mb-0.5 font-medium"
-                    >
-                      Order Number{' '}
-                      <span className="text-[var(--color-muted)] font-normal">(Optional)</span>
-                    </label>
+                    <div className="flex items-center justify-between mb-0.5">
+                      <label
+                        htmlFor="contact_orderNumber"
+                        className="block text-[9.5px] uppercase tracking-[0.16em] text-[var(--color-ink)] font-medium"
+                      >
+                        Order Number{' '}
+                        <span className="text-[var(--color-muted)] font-normal">(Optional)</span>
+                      </label>
+                      {isPrefilled && form.orderNumber && (
+                        <span className="text-[9px] text-[var(--color-muted)] flex items-center gap-0.5">
+                          <Lock size={9} /> Locked
+                        </span>
+                      )}
+                    </div>
                     <input
                       id="contact_orderNumber"
                       type="text"
+                      readOnly={isPrefilled}
                       disabled={isLoading}
                       value={form.orderNumber}
                       onChange={(e) =>
                         setForm((prev) => ({ ...prev, orderNumber: e.target.value }))
                       }
                       placeholder="e.g. TBE-2026-XXXXX"
-                      className="w-full bg-[var(--color-ivory)] border border-[var(--color-line)] focus:border-[var(--color-ink)] text-[12px] font-mono text-[var(--color-ink)] placeholder:text-[var(--color-muted)]/50 px-2.5 py-1.5 focus:outline-none transition-colors disabled:opacity-50"
+                      className={`w-full border border-[var(--color-line)] text-[12px] font-mono text-[var(--color-ink)] placeholder:text-[var(--color-muted)]/50 px-2.5 py-1.5 focus:outline-none transition-colors disabled:opacity-50 ${
+                        isPrefilled
+                          ? 'bg-[#ece5d9] cursor-not-allowed select-none font-semibold'
+                          : 'bg-[var(--color-ivory)] focus:border-[var(--color-ink)]'
+                      }`}
                     />
                   </div>
                 </div>
 
-                {/* Message Field (2 rows) */}
+                {/* Message Field (Always editable, focused automatically when prefilled) */}
                 <div>
                   <label
                     htmlFor="contact_message"
@@ -340,13 +498,18 @@ export default function ContactPage() {
                     Message <span className="text-red-700">*</span>
                   </label>
                   <textarea
+                    ref={messageInputRef}
                     id="contact_message"
                     required
                     rows={2}
                     disabled={isLoading}
                     value={form.message}
                     onChange={(e) => setForm((prev) => ({ ...prev, message: e.target.value }))}
-                    placeholder="Describe your inquiry, sizing requirement, or order query..."
+                    placeholder={
+                      isPrefilled && form.orderNumber
+                        ? `Please describe your query regarding order #${form.orderNumber}...`
+                        : 'Describe your inquiry, sizing requirement, or order query...'
+                    }
                     className="w-full bg-[var(--color-ivory)] border border-[var(--color-line)] focus:border-[var(--color-ink)] text-[12px] text-[var(--color-ink)] placeholder:text-[var(--color-muted)]/50 px-2.5 py-1.5 focus:outline-none transition-colors disabled:opacity-50 resize-none"
                   />
                 </div>
@@ -394,5 +557,19 @@ export default function ContactPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function ContactPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-[400px] bg-[var(--color-ivory)] flex items-center justify-center">
+          <div className="w-6 h-6 border-2 border-[var(--color-ink)] border-t-transparent rounded-full animate-spin" />
+        </div>
+      }
+    >
+      <ContactContent />
+    </Suspense>
   );
 }
