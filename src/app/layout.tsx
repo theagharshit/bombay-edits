@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Cormorant_Garamond, Jost } from 'next/font/google';
 import './globals.css';
-import { Header } from '@/components/v2/layout/Header';
+import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/cart/CartDrawer';
 import { Providers } from './providers';
@@ -60,10 +60,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       data-scroll-behavior="smooth"
       className={`${cormorantGaramond.variable} ${jost.variable} h-full`}
     >
-      <body className="min-h-full w-full flex flex-col antialiased overflow-x-hidden">
+      <body className="m-0 p-0 min-h-full w-full flex flex-col antialiased overflow-x-hidden">
         <Providers>
           <Header />
-          <main className="flex-1 w-full flex flex-col site-main-content">{children}</main>
+          <main className="m-0 p-0 flex-1 w-full flex flex-col">{children}</main>
           <Footer />
           <CartDrawer />
         </Providers>

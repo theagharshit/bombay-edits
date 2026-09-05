@@ -10,24 +10,42 @@ export const metadata: Metadata = {
 export default function TheCraftPage() {
   return (
     <div className="bg-[#FAF7F2] text-[#7A6E64] font-body w-full overflow-hidden">
-      {/* 4.1: ONE CONTAINER FOR THE WHOLE PAGE */}
-      <div
-        className="w-full px-6 md:px-10 lg:px-16 pt-8 md:pt-12 pb-[96px] md:pb-[200px]"
-        style={{ maxWidth: '1200px', margin: '0 auto', paddingBottom: '200px' }}
-      >
-        {/* Page header block */}
-        <header className="flex flex-col items-center text-center">
-          <h1 className="font-display text-[36px] md:text-[56px] text-[#5C3A2A] leading-none whitespace-nowrap">
+      {/* Cinematic Hero Section */}
+      <section className="relative w-full h-[65vh] min-h-[480px] flex items-center justify-center overflow-hidden bg-black">
+        <Image
+          src="https://images.unsplash.com/photo-1524228529766-4d7fe5dc55ca?auto=format&fit=crop&w=2400&h=1400&q=85"
+          alt="Inside Bombay Edits – Textile Craft & Atelier"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center opacity-85"
+        />
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              'linear-gradient(to top, rgba(30,22,18,0.85) 0%, rgba(30,22,18,0.4) 50%, rgba(30,22,18,0.2) 100%)',
+          }}
+        />
+        <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-[800px] mt-12">
+          <span className="text-[11px] uppercase tracking-[0.24em] font-medium text-white/70 mb-3 font-body">
+            Inside Bombay Edits
+          </span>
+          <h1 className="font-display text-[44px] md:text-[68px] text-white leading-none whitespace-nowrap mb-6 drop-shadow-sm">
             Our Story
           </h1>
-          <p
-            className="text-[15px] leading-[1.7] mt-[48px] md:mt-[64px]"
-            style={{ maxWidth: '620px', margin: '48px auto 0 auto' }}
-          >
+          <p className="text-[15px] md:text-[17px] text-white/90 leading-[1.7] max-w-[620px] font-body">
             A chronicle of style, woven into the historic fabric of Old Bombay. We resurrect the
             elegance of a bygone era for the modern connoisseur.
           </p>
-        </header>
+        </div>
+      </section>
+
+      {/* 4.1: ONE CONTAINER FOR THE WHOLE PAGE */}
+      <div
+        className="w-full px-6 md:px-10 lg:px-16 pt-12 md:pt-16 pb-[96px] md:pb-[200px]"
+        style={{ maxWidth: '1200px', margin: '0 auto', paddingBottom: '200px' }}
+      >
 
         {/* 4.5: Space between intro and timeline - Apply as padding on wrapper */}
         <section

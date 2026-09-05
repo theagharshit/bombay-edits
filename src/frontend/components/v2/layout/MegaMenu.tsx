@@ -1,204 +1,164 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Container } from '@/frontend/components/layout/Container';
 
 interface MegaMenuProps {
-  activeCategory: string;
   onClose: () => void;
 }
 
-interface MenuLink {
-  label: string;
-  href: string;
-  tag?: string;
-}
-
-interface MenuColumn {
-  title: string;
-  links: MenuLink[];
-}
-
-interface MenuFeature {
-  image: string;
-  title: string;
-  href: string;
-}
-
-interface MenuCategoryData {
-  columns: MenuColumn[];
-  features: MenuFeature[];
-}
-
-const MENU_DATA: Record<string, MenuCategoryData> = {
-  'New In': {
-    columns: [
-      {
-        title: 'Trending',
-        links: [
-          { label: 'The Festive Edit', href: '/category/occasionwear', tag: 'New' },
-          { label: 'Velvet Collection', href: '/shop' },
-          { label: 'Brocade Specials', href: '/shop' },
-          { label: 'Winter Whites', href: '/shop' },
-        ],
-      },
-      {
-        title: 'By Category',
-        links: [
-          { label: 'Kurta Sets', href: '/category/kurta-sets' },
-          { label: 'Co-ords', href: '/category/co-ord-sets', tag: 'Bestseller' },
-          { label: 'Dresses', href: '/category/indo-western' },
-          { label: 'Shararas', href: '/category/shararas' },
-        ],
-      },
-    ],
-    features: [
-      {
-        image: 'https://placehold.co/400x500/1F4D3A/FBFAF8/webp?text=Festive+Edit',
-        title: 'The Festive Edit',
-        href: '/category/occasionwear',
-      },
-      {
-        image: 'https://placehold.co/400x500/B98B3C/FBFAF8/webp?text=Velvet+Luxe',
-        title: 'Velvet Luxe',
-        href: '/shop',
-      },
+const LINK_GROUPS = [
+  {
+    title: 'Kurta Sets',
+    links: [
+      { label: 'Straight Cut', href: '/category/kurta-sets' },
+      { label: 'Anarkali', href: '/category/kurta-sets' },
+      { label: 'Short Kurtas', href: '/category/kurta-sets' },
+      { label: 'Velvet Sets', href: '/category/kurta-sets' },
     ],
   },
-  Kurtis: {
-    columns: [
-      {
-        title: 'By Style',
-        links: [
-          { label: 'Straight Cut', href: '/category/kurta-sets' },
-          { label: 'Anarkali', href: '/category/kurta-sets', tag: 'Restocked' },
-          { label: 'A-Line', href: '/category/kurta-sets' },
-          { label: 'Short Kurtis', href: '/category/kurta-sets' },
-        ],
-      },
-      {
-        title: 'By Fabric',
-        links: [
-          { label: 'Cotton Silk', href: '/shop' },
-          { label: 'Chanderi', href: '/shop' },
-          { label: 'Raw Silk', href: '/shop' },
-        ],
-      },
-      {
-        title: 'By Work',
-        links: [
-          { label: 'Chikankari', href: '/shop' },
-          { label: 'Zari Work', href: '/shop' },
-          { label: 'Mirror Work', href: '/shop' },
-        ],
-      },
-    ],
-    features: [
-      {
-        image: 'https://placehold.co/400x500/16233A/FBFAF8/webp?text=Chikankari',
-        title: 'Classic Chikankari',
-        href: '/shop',
-      },
+  {
+    title: 'Co-ord Sets',
+    links: [
+      { label: 'Printed Co-ords', href: '/category/co-ord-sets' },
+      { label: 'Solid Co-ords', href: '/category/co-ord-sets' },
+      { label: 'Indo Western', href: '/category/co-ord-sets' },
     ],
   },
-};
+  {
+    title: 'Shirts & Tops',
+    links: [
+      { label: 'Embroidered Shirts', href: '/category/embroidered-shirts' },
+      { label: 'Crop Tops', href: '/category/embroidered-shirts' },
+      { label: 'Tunics', href: '/category/embroidered-shirts' },
+    ],
+  },
+  {
+    title: 'Shararas',
+    links: [
+      { label: 'Festive Shararas', href: '/category/shararas' },
+      { label: 'Casual Shararas', href: '/category/shararas' },
+    ],
+  },
+  {
+    title: 'Occasionwear',
+    links: [
+      { label: 'The Wedding Edit', href: '/category/occasionwear' },
+      { label: 'Haldi & Mehendi', href: '/category/occasionwear' },
+      { label: 'Festive Wear', href: '/category/occasionwear' },
+    ],
+  },
+  {
+    title: 'Collections',
+    links: [
+      { label: 'Signature', href: '/collections/signature' },
+      { label: 'Monsoon Edit', href: '/collections/monsoon' },
+      { label: 'Summer Sorbet', href: '/collections/summer' },
+    ],
+  },
+  {
+    title: 'Accessories',
+    links: [
+      { label: 'Dupattas', href: '/category/accessories' },
+      { label: 'Jewellery', href: '/category/accessories' },
+      { label: 'Potlis', href: '/category/accessories' },
+    ],
+  },
+];
 
-export function MegaMenu({ activeCategory, onClose }: MegaMenuProps) {
-  const menuRef = useRef<HTMLDivElement>(null);
-  const data = MENU_DATA[activeCategory] || MENU_DATA['New In'];
+const PROMO_TILES = [
+  {
+    title: 'The Festive Edit',
+    href: '/collections/festive',
+    image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=600&h=800&q=80',
+  },
+  {
+    title: 'New Arrivals',
+    href: '/new-arrivals',
+    image: 'https://images.unsplash.com/photo-1616583936499-d4116e7e2e76?auto=format&fit=crop&w=600&h=800&q=80',
+  },
+];
 
-  // Handle escape key
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
-
+export function MegaMenu({ onClose }: MegaMenuProps) {
   return (
-    <div
-      ref={menuRef}
-      className="absolute top-full left-0 w-full bg-chalk border-b border-border shadow-drawer animate-fade-in-down origin-top"
-      style={{ animationDuration: '120ms' }}
-    >
-      <div className="container-site mx-auto py-10 flex flex-col md:flex-row gap-12">
-        {/* Left: Columns */}
-        <div className="flex-1 flex flex-wrap gap-x-16 gap-y-10">
-          {data.columns.map((col, idx) => (
-            <div key={idx} className="flex flex-col gap-4 min-w-[140px]">
-              <h3 className="text-xs uppercase tracking-widest text-text-muted mb-2 font-body font-medium">
-                {col.title}
-              </h3>
-              <ul className="flex flex-col gap-3">
-                {col.links.map((link, linkIdx) => (
-                  <li key={linkIdx}>
-                    <Link
-                      href={link.href}
-                      className="text-ink hover:text-brass transition-colors text-[15px] flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
-                      onClick={onClose}
-                    >
-                      {link.label}
-                      {link.tag && (
-                        <span className="text-[9px] uppercase tracking-wider bg-brass/10 text-brass px-1.5 py-0.5 rounded-none font-medium">
-                          {link.tag}
-                        </span>
-                      )}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+    <div className="w-full bg-[var(--color-ivory)] border-t border-[var(--color-line)] shadow-sm">
+      <Container>
+        <div className="py-12 grid grid-cols-12 gap-8">
+          
+          {/* Columns 1-8: Link Groups (4 per row) */}
+          <div className="col-span-8">
+            <div className="grid grid-cols-4 gap-y-10 gap-x-6">
+              {LINK_GROUPS.map((group) => (
+                <div key={group.title} className="flex flex-col gap-[12px]">
+                  <h4 
+                    className="text-[var(--color-ink)]" 
+                    style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '18px' }}
+                  >
+                    {group.title}
+                  </h4>
+                  <ul className="flex flex-col gap-[12px]">
+                    {group.links.map((link) => (
+                      <li key={link.label}>
+                        <Link
+                          href={link.href}
+                          onClick={onClose}
+                          className="font-body text-[14px] text-[var(--color-muted)] hover:text-[var(--color-ink)] transition-colors capitalize"
+                        >
+                          {link.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-
-        {/* Right: Featured Images */}
-        <div className="hidden lg:flex gap-6 w-1/3">
-          {data.features.map((feature, idx) => (
-            <Link
-              key={idx}
-              href={feature.href}
-              className="group block flex-1 relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
-              onClick={onClose}
-            >
-              <div className="aspect-[4/5] relative bg-border-light overflow-hidden">
-                <Image
-                  src={feature.image}
-                  alt={feature.title}
-                  fill
-                  className="object-cover transition-transform duration-slower group-hover:scale-105"
-                  unoptimized
-                />
-              </div>
-              <div className="absolute inset-0 bg-overlay/20 transition-opacity duration-normal group-hover:opacity-0" />
-              <p className="absolute bottom-4 left-4 text-chalk font-display text-lg drop-shadow-md">
-                {feature.title}
-              </p>
-            </Link>
-          ))}
-        </div>
-      </div>
-
-      {/* Bottom Support Strip */}
-      <div className="bg-ink text-chalk/80 py-3 text-xs tracking-wide">
-        <div className="container-site mx-auto flex flex-wrap justify-between items-center gap-4">
-          <p>Order Support: Mon - Sat, 10 AM to 7 PM IST</p>
-          <div className="flex items-center gap-6">
-            <a
-              href="tel:+919876543210"
-              className="hover:text-brass transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
-            >
-              +91 98765 43210
-            </a>
-            <a
-              href="https://wa.me/919876543210"
-              className="hover:text-brass transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
-            >
-              WhatsApp Us
-            </a>
           </div>
+
+          {/* Columns 9-12: Image Tiles */}
+          <div className="col-span-4 flex gap-6">
+            {PROMO_TILES.map((tile) => (
+              <div key={tile.title} className="flex-1 flex flex-col gap-4">
+                <Link 
+                  href={tile.href} 
+                  onClick={onClose}
+                  className="group block"
+                >
+                  <div className="relative w-full overflow-hidden" style={{ aspectRatio: '3/4' }}>
+                    <Image
+                      src={tile.image}
+                      alt={tile.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                    />
+                  </div>
+                  <span className="block mt-4 font-body text-[14px] text-[var(--color-ink)] hover:opacity-70 transition-opacity">
+                    {tile.title}
+                  </span>
+                </Link>
+              </div>
+            ))}
+          </div>
+
         </div>
+      </Container>
+
+      {/* Footer Strip */}
+      <div className="border-t border-[var(--color-line)] py-4">
+        <Container>
+          <div className="flex justify-between items-center font-body text-[12px] text-[var(--color-muted)]">
+            <div className="flex gap-8">
+              <span>Order Support: Mon - Sat, 10 AM to 7 PM IST</span>
+              <a href="tel:+919876543210" className="hover:text-[var(--color-ink)] transition-colors">+91 98765 43210</a>
+              <a href="https://wa.me/919876543210" className="hover:text-[var(--color-ink)] transition-colors">WhatsApp Us</a>
+            </div>
+            <div className="flex gap-6">
+              <Link href="/faqs" onClick={onClose} className="hover:text-[var(--color-ink)] transition-colors">FAQs</Link>
+              <Link href="/policies/shipping" onClick={onClose} className="hover:text-[var(--color-ink)] transition-colors">Shipping</Link>
+              <Link href="/policies/refund-policy" onClick={onClose} className="hover:text-[var(--color-ink)] transition-colors">Returns</Link>
+            </div>
+          </div>
+        </Container>
       </div>
     </div>
   );

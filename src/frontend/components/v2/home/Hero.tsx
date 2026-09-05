@@ -1,23 +1,32 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { Wordmark } from '../layout/Wordmark';
 
 export function Hero() {
   return (
-    <section className="relative w-full min-h-[88vh] md:min-h-[640px] flex items-center justify-center">
+    <section className="m-0 relative w-full min-h-[88vh] md:min-h-[640px] flex justify-center pt-[136px]">
       {/* Background Image */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 bg-ink">
         <Image
-          src="https://images.unsplash.com/photo-1619516388835-2b60acc4049e?auto=format&fit=crop&w=2000&q=80"
-          alt="An Edit of Modern Romance"
+          src="/images/hero-ethnic.jpg"
+          alt="Luxury Indian ethnic fashion — embroidered silk kurta set in heritage architecture"
           fill
           priority
           sizes="100vw"
-          className="object-cover object-center"
+          className="object-cover object-center opacity-80"
         />
       </div>
 
       {/* Flat dark overlay */}
       <div className="absolute inset-0 z-10" style={{ backgroundColor: 'rgba(30,22,18,0.32)' }} />
+
+      {/* Top gradient overlay specifically for header visibility */}
+      <div 
+        className="absolute inset-0 z-[15] pointer-events-none" 
+        style={{
+          background: 'linear-gradient(to bottom, rgba(30,22,18,0.6) 0%, rgba(30,22,18,0) 20%)'
+        }}
+      />
 
       {/* Bottom gradient overlay to ivory */}
       <div 
@@ -27,20 +36,38 @@ export function Hero() {
         }}
       />
 
-      {/* Content Block positioned at 52% height */}
-      <div 
-        className="relative z-30 flex flex-col items-center text-center w-full px-6"
-        style={{ top: '2%' }} // 50% from flex-center + 2% = 52% roughly, but using absolute might be more precise.
-      >
-        <div className="flex flex-col" style={{ gap: '8px' }}>
-          <h1 className="font-hero-1 text-white">An Edit of</h1>
-          <h1 className="font-hero-1 text-white italic">Modern Romance</h1>
+      {/* Content Block */}
+      <div className="relative z-30 flex flex-col items-center w-full px-6">
+        <div className="flex flex-col items-start gap-[48px] w-full max-w-[var(--max-content)] mx-auto">
+          <Wordmark id="hero-wordmark" />
+          {/* Tagline — separate from wordmark so it doesn't get FLIP-scaled */}
+          <p
+            className="fixed z-[55] pointer-events-none whitespace-nowrap italic select-none"
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(0.85rem, 2vw, 1.4rem)',
+              lineHeight: 1,
+              left: 'max(24px, calc((100vw - var(--max-content)) / 2 + 24px))',
+              top: 'calc(120px + clamp(2.5rem, 11vw, 9rem) + 12px)',
+              color: 'var(--color-ivory)',
+              opacity: 0.7,
+              letterSpacing: '0.06em',
+            }}
+            aria-hidden="true"
+            id="hero-tagline"
+          >
+            Indian craft, reimagined.
+          </p>
+          <div className="flex flex-col gap-2" style={{ marginTop: 'calc(clamp(2.5rem, 11vw, 9rem) + 60px)' }}>
+            <h1 className="font-hero-1 text-white">An Edit of</h1>
+            <h1 className="font-hero-1 text-white italic">Modern Romance</h1>
+          </div>
         </div>
 
         <Link
           href="/shop"
-          className="font-btn text-white border border-white hover:bg-white hover:text-[var(--color-ink)] transition-colors duration-200"
-          style={{ marginTop: '44px', padding: '15px 36px' }}
+          className="font-btn text-white border border-white hover:bg-white hover:text-ink transition-colors duration-200 self-center"
+          style={{ marginTop: 'auto', marginBottom: '80px', padding: '15px 36px' }}
         >
           SHOP THE EDIT
         </Link>

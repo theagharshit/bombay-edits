@@ -1,205 +1,239 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
-import { Search, Heart, User, ShoppingBag, X, Menu } from 'lucide-react';
-import { MegaMenu } from './MegaMenu';
-import { MobileDrawer } from './MobileDrawer';
-import { useWishlist } from '@/context/WishlistContext';
+import { Search, User, Heart, Menu } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { Wordmark } from './Wordmark';
 
-const ANNOUNCEMENTS = [
-  'Complimentary shipping on orders over ₹15,000',
-  'The Festive Edit has arrived. Discover more',
-  'Sign up for 10% off your first order',
-];
-
-const NAV_ITEMS = [
-  { label: 'New In', href: '/new-arrivals' },
-  { label: 'Shop All', href: '/shop' },
-  { label: 'Kurtis', href: '/category/kurta-sets' },
-  { label: 'Co-ords', href: '/category/co-ord-sets' },
-  { label: 'Tops', href: '/category/embroidered-shirts' },
-  { label: 'Bottoms', href: '/category/shararas' },
+const NAV_PILLS = [
+  { label: 'New In', href: '/collections/new' },
+  { label: 'Shop All', href: '/collections' },
+  { label: 'Kurta Sets', href: '/collections/kurta-sets' },
+  { label: 'Trending', href: '/collections/trending', hasDot: true },
+  { label: 'Co-ords', href: '/collections/co-ords' },
+  { label: 'Occasion', href: '/collections/occasionwear' },
 ];
 
 export function Header() {
-  const { count: wishlistCount } = useWishlist();
-  const { itemCount: cartCount, toggleCart } = useCart();
-  const [announcementIndex, setAnnouncementIndex] = useState(0);
-  const [isAnnouncementVisible, setIsAnnouncementVisible] = useState(true);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
-  const [isHoveringHeader, setIsHoveringHeader] = useState(false);
-  const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
+  const { itemCount } = useCart();
 
-  // Rotate announcements
-  useEffect(() => {
-    if (!isAnnouncementVisible) return;
-    const interval = setInterval(() => {
-      setAnnouncementIndex((prev) => (prev + 1) % ANNOUNCEMENTS.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [isAnnouncementVisible]);
+  // Refs for animation
+  const wordmarkRef = useRef<HTMLHeadingElement>(null);
+  const placeholderRef = useRef<HTMLSpanElement>(null);
+  const menuPillRef = useRef<HTMLButtonElement>(null);
+  const taglineRef = useRef<HTMLDivElement>(null);
+  const navPillsRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
-  // Handle scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+  // We need to measure the deltas
+  const deltasRef = useRef({ dx: 0, dy: 0, scale: 1 });
+
+  const measure = useCallback(() => {
+    if (!wordmarkRef.current || !placeholderRef.current) return;
+    
+    // Reset transform to measure true resting state
+    wordmarkRef.current.style.transform = 'none';
+    
+    const startRect = wordmarkRef.current.getBoundingClientRect();
+    const destRect = placeholderRef.current.getBoundingClientRect();
+    
+    // Calculate scale required to make start width match dest width
+    const scale = destRect.width / startRect.width;
+    
+    // Calculate translation from start origin to dest origin
+    const dx = destRect.left - startRect.left;
+    const dy = destRect.top - startRect.top;
+    
+    deltasRef.current = { dx, dy, scale };
   }, []);
 
-  const handleMouseEnterMenu = (category: string) => {
-    setActiveMegaMenu(category);
-  };
+  useEffect(() => {
+    measure();
+    window.addEventListener('resize', measure);
+    document.fonts.ready.then(measure);
+    return () => window.removeEventListener('resize', measure);
+  }, [measure]);
 
-  const handleMouseLeaveHeader = () => {
-    setIsHoveringHeader(false);
-    setTimeout(() => {
-      setActiveMegaMenu(null);
-    }, 200);
-  };
+  // Request Animation Frame loop
+  useEffect(() => {
+    let rafId: number;
+    
+    // Standard CSS "ease" approximation for cubic-bezier(0.25, 0.1, 0.25, 1)
+    // The prompt requested cubic-bezier(0.4, 0, 0.2, 1) which is standard Material Design ease-in-out.
+    // Using a polynomial approximation for smoothness.
+    const ease = (t: number) => {
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    };
+    
+    const loop = () => {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const scrollY = window.scrollY;
+      
+      // Calculate progress p
+      let targetP = Math.min(Math.max(scrollY / 320, 0), 1);
+      if (prefersReducedMotion) {
+         targetP = scrollY > 40 ? 1 : 0;
+      }
+      
+      const p = ease(targetP);
+      
+      // 1. FLIP Transform on Wordmark
+      if (wordmarkRef.current) {
+        const { dx, dy, scale } = deltasRef.current;
+        if (p > 0 && p < 1) {
+          wordmarkRef.current.style.willChange = 'transform';
+        } else {
+          wordmarkRef.current.style.willChange = 'auto';
+        }
+        
+        wordmarkRef.current.style.transform = `translate3d(${dx * p}px, ${dy * p}px, 0) scale(${1 + (scale - 1) * p})`;
+        
+        // p=0.45 to 1.0 for color interpolation (ivory to --color-ink)
+        const colorP = Math.min(Math.max((p - 0.45) / 0.55, 0), 1);
+        wordmarkRef.current.style.color = `color-mix(in srgb, var(--color-ink) ${colorP * 100}%, var(--color-ivory))`;
+      }
+      
+      // 2. Nav Pills Fade (0 to 0.35, staggered)
+      navPillsRefs.current.forEach((el, index) => {
+        if (!el) return;
+        const startP = index * 0.02;
+        const endP = startP + 0.35;
+        let pillP = (targetP - startP) / (endP - startP); // using un-eased targetP for triggers to keep stagger linear
+        pillP = Math.min(Math.max(pillP, 0), 1);
+        
+        const opacity = 1 - pillP;
+        const scale = 1 - (0.06 * pillP);
+        
+        el.style.opacity = opacity.toString();
+        el.style.transform = `scale(${scale})`;
+        el.style.pointerEvents = opacity === 0 ? 'none' : 'auto';
+        
+        if (opacity === 0) {
+          el.setAttribute('tabindex', '-1');
+        } else {
+          el.removeAttribute('tabindex');
+        }
+      });
+      
+      // 3. Menu Pill Fade In (0.35 to 0.6)
+      if (menuPillRef.current) {
+        let menuP = (targetP - 0.35) / 0.25;
+        menuP = Math.min(Math.max(menuP, 0), 1);
+        
+        menuPillRef.current.style.opacity = menuP.toString();
+        menuPillRef.current.style.transform = `scale(${0.94 + 0.06 * menuP})`;
+        menuPillRef.current.style.pointerEvents = menuP > 0.5 ? 'auto' : 'none';
+        
+        if (menuP === 0) {
+          menuPillRef.current.setAttribute('tabindex', '-1');
+        } else {
+          menuPillRef.current.removeAttribute('tabindex');
+        }
+      }
+      
+      // 4. Tagline Fade Out (0 to 0.25)
+      if (taglineRef.current) {
+        let taglineP = targetP / 0.25;
+        taglineP = Math.min(Math.max(taglineP, 0), 1);
+        taglineRef.current.style.opacity = (1 - taglineP).toString();
+      }
+      
+      rafId = requestAnimationFrame(loop);
+    };
+    
+    rafId = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(rafId);
+  }, []);
+
+  const pillClass = "bg-[var(--color-ivory)] text-[var(--color-ink)] text-[13.5px] font-medium font-body rounded-full px-5 h-[36px] flex items-center justify-center transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ink)] origin-center whitespace-nowrap tracking-wide";
+  const iconButtonClass = "bg-[var(--color-ivory)] text-[var(--color-ink)] w-[36px] h-[36px] rounded-full flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ink)] shrink-0";
 
   return (
-    <>
-      <header
-        className={`sticky top-0 z-50 w-full transition-all duration-300 ${
-          isScrolled || activeMegaMenu
-            ? 'bg-[#FAF6F0] border-b border-[#E5DFD5] shadow-xs'
-            : 'bg-[#FAF6F0]/98 backdrop-blur-md border-b border-[#E5DFD5]'
-        }`}
-        onMouseLeave={handleMouseLeaveHeader}
-        onMouseEnter={() => setIsHoveringHeader(true)}
-      >
-        {/* Announcement Bar */}
-        {isAnnouncementVisible && (
-          <div
-            className={`bg-[#4A3025] text-white relative flex items-center justify-center px-4 transition-all duration-300 overflow-hidden ${
-              isScrolled && !activeMegaMenu ? 'h-0 opacity-0' : 'h-8 md:h-9 opacity-100'
-            }`}
-          >
-            <p className="text-[10px] md:text-[11px] tracking-widest uppercase text-center font-medium">
-              {ANNOUNCEMENTS[announcementIndex]}
-            </p>
-            <button
-              onClick={() => setIsAnnouncementVisible(false)}
-              className="absolute right-4 p-1 hover:opacity-70 transition-opacity focus-visible:outline-none cursor-pointer"
-              aria-label="Dismiss announcement"
-            >
-              <X size={14} />
-            </button>
-          </div>
-        )}
-
-        {/* Tier 1: Brand Utility Bar (3-Column Grid guarantees no overlaps) */}
-        <div className="container-site mx-auto px-4 md:px-8">
-          <div className="grid grid-cols-3 items-center py-4 md:py-5 border-b border-[#E5DFD5]/40">
-            {/* Left Column: Mobile menu trigger & Desktop Search */}
-            <div className="flex items-center gap-3">
-              <button
-                className="md:hidden p-1.5 text-[#4A3025] hover:opacity-70 focus-visible:outline-none cursor-pointer"
-                onClick={() => setIsMobileDrawerOpen(true)}
-                aria-label="Open menu"
-              >
-                <Menu size={22} strokeWidth={1.5} />
-              </button>
-
-              <button className="hidden md:flex items-center gap-2 text-[#4A3025] hover:text-[#8A817C] transition-colors p-1 cursor-pointer">
-                <Search size={18} strokeWidth={1.5} />
-                <span className="text-[10px] uppercase tracking-[0.2em] font-medium hidden lg:inline">
-                  Search
-                </span>
-              </button>
-            </div>
-
-            {/* Center Column: Grand Brand Logo */}
-            <div className="flex flex-col items-center justify-center text-center">
-              <Link href="/" className="focus-visible:outline-none inline-block">
-                <h1 className="font-display text-[#4A3025] text-2xl sm:text-3xl md:text-4xl tracking-tight leading-none">
-                  Bombay Edits
-                </h1>
-              </Link>
-              <p className="text-[8px] sm:text-[9px] uppercase tracking-[0.28em] text-[#8A817C] mt-1 whitespace-nowrap font-medium">
-                Indian Craft, Reimagined
-              </p>
-            </div>
-
-            {/* Right Column: Action Icons */}
-            <div className="flex items-center justify-end gap-4 md:gap-6">
+    <header className="fixed top-0 w-full z-50 bg-transparent pointer-events-none px-6">
+      <div className="grid grid-cols-[1fr_auto_1fr] items-center h-[72px] pointer-events-auto">
+        
+        {/* Left Zone */}
+        <div className="flex items-center h-full relative">
+          {/* The Nav Pills */}
+          <nav className="flex items-center gap-[10px] absolute left-0 top-1/2 -translate-y-1/2">
+            {NAV_PILLS.map((link, index) => (
               <Link
-                href="/wishlist"
-                className="hidden sm:flex text-[#4A3025] hover:opacity-70 transition-opacity p-1 relative"
-                aria-label="Wishlist"
+                key={link.label}
+                href={link.href}
+                className={pillClass}
+                ref={(el) => {
+                  navPillsRefs.current[index] = el;
+                }}
               >
-                <Heart size={19} strokeWidth={1.5} />
-                {wishlistCount > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 bg-[#4A3025] text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-mono">
-                    {wishlistCount}
-                  </span>
+                {link.label}
+                {link.hasDot && (
+                  <span className="w-[5px] h-[5px] rounded-full bg-[#D4AF37] ml-[6px] shrink-0" />
                 )}
               </Link>
-
-              <Link
-                href="/account"
-                className="text-[#4A3025] hover:opacity-70 transition-opacity p-1"
-                aria-label="Account"
-              >
-                <User size={19} strokeWidth={1.5} />
-              </Link>
-
-              <button
-                onClick={toggleCart}
-                className="text-[#4A3025] hover:opacity-70 transition-opacity p-1 relative cursor-pointer"
-                aria-label="Shopping Cart"
-              >
-                <ShoppingBag size={19} strokeWidth={1.5} />
-                {cartCount > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 bg-[#4A3025] text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-mono">
-                    {cartCount}
-                  </span>
-                )}
-              </button>
-            </div>
-          </div>
-
-          {/* Tier 2: Centered Category Navigation Bar */}
-          <nav
-            className={`hidden md:flex items-center justify-center gap-7 lg:gap-10 py-3 transition-all duration-300 ${
-              isScrolled ? 'py-2 text-[10px]' : 'py-3 text-[11px]'
-            }`}
-            aria-label="Category navigation"
-          >
-            {NAV_ITEMS.map((item) => (
-              <div
-                key={item.label}
-                className="relative py-1 whitespace-nowrap"
-                onMouseEnter={() => handleMouseEnterMenu(item.label)}
-              >
-                <Link
-                  href={item.href}
-                  className={`uppercase tracking-[0.22em] font-medium transition-colors hover:text-[#4A3025] ${
-                    activeMegaMenu === item.label
-                      ? 'text-[#4A3025] font-semibold border-b border-[#4A3025]'
-                      : 'text-[#8A817C]'
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              </div>
             ))}
           </nav>
+
+          {/* The Menu Pill + Placeholder */}
+          <div className="flex items-center gap-[16px] absolute left-0 top-1/2 -translate-y-1/2">
+            <button 
+              ref={menuPillRef}
+              className="bg-[var(--color-ink)] text-[var(--color-ivory)] text-[13.5px] font-medium font-body rounded-full px-5 h-[36px] flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ivory)] opacity-0 pointer-events-none origin-center whitespace-nowrap tracking-wide"
+              style={{ transform: 'scale(0.94)' }}
+              aria-label="Open menu"
+            >
+              <Menu size={16} strokeWidth={1.5} />
+              <span className="leading-none pt-px">Menu</span>
+            </button>
+          </div>
         </div>
 
-        {/* Mega Menu Overlay */}
-        {activeMegaMenu && (
-          <MegaMenu activeCategory={activeMegaMenu} onClose={() => setActiveMegaMenu(null)} />
-        )}
-      </header>
+        {/* Centre Zone */}
+        <div className="grid place-items-center h-full">
+          <div 
+            ref={taglineRef} 
+            className="col-start-1 row-start-1 text-[var(--color-ivory)] text-[15px] italic whitespace-nowrap opacity-90 tracking-wide"
+            style={{ fontFamily: 'var(--font-display)' }}
+          >
+            Indian craft, reimagined.
+          </div>
+          {/* The Hidden Logo Placeholder */}
+          <span 
+            ref={placeholderRef}
+            className="col-start-1 row-start-1 invisible whitespace-nowrap text-[var(--color-ink)] tracking-tight"
+            style={{ fontFamily: 'var(--font-display)', fontSize: '22px', lineHeight: 1 }}
+            aria-hidden="true"
+          >
+            Bombay Edits
+          </span>
+        </div>
 
-      <MobileDrawer isOpen={isMobileDrawerOpen} onClose={() => setIsMobileDrawerOpen(false)} />
-    </>
+        {/* Right Zone */}
+        <div className="flex items-center justify-end gap-[8px]">
+          <button className={iconButtonClass} aria-label="Currency">
+            <span className="font-body text-[13px] font-medium tracking-wide">Rs</span>
+          </button>
+          <Link href="/wishlist" className={iconButtonClass} aria-label="Wishlist">
+            <Heart size={16} strokeWidth={1} />
+          </Link>
+          <button className={iconButtonClass} aria-label="Search">
+            <Search size={16} strokeWidth={1} />
+          </button>
+          <Link href="/account" className={iconButtonClass} aria-label="Account">
+            <User size={16} strokeWidth={1} />
+          </Link>
+          
+          {/* Cart Pill */}
+          <button 
+            className={`${pillClass} ml-[8px] gap-[12px]`}
+            aria-label="Cart"
+          >
+            <span className="leading-none pt-px">Cart</span>
+            <span className="w-px h-[12px] bg-[var(--color-ink)] opacity-20" />
+            <span className="leading-none pt-px">{itemCount}</span>
+          </button>
+        </div>
+
+      </div>
+    </header>
   );
 }
-

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { useContact } from '@/frontend/hooks/useContact';
 
 export default function ContactPage() {
@@ -16,14 +17,39 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="container-site section-padding max-w-2xl mx-auto">
-      <h1 className="font-display text-3xl md:text-4xl text-ink mb-4">Get in touch</h1>
-      <p className="text-sm text-text-muted mb-10">
-        We would love to hear from you. For custom stitching enquiries, order questions, or simply
-        to say hello.
-      </p>
+    <div className="w-full bg-[var(--color-ivory)] pb-24">
+      {/* Cinematic Hero Banner */}
+      <section className="relative w-full h-[60vh] min-h-[440px] flex items-center justify-center overflow-hidden bg-black mb-16">
+        <Image
+          src="https://images.unsplash.com/photo-1503160865267-af4660ce7bf2?auto=format&fit=crop&w=2400&h=1400&q=85"
+          alt="Contact Us – Private Atelier and Custom Stitching"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center opacity-85"
+        />
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              'linear-gradient(to top, rgba(30,22,18,0.85) 0%, rgba(30,22,18,0.4) 50%, rgba(30,22,18,0.2) 100%)',
+          }}
+        />
+        <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-[800px] mt-12">
+          <span className="text-[11px] uppercase tracking-[0.24em] font-medium text-white/70 mb-3 font-body">
+            Bespoke & Atelier
+          </span>
+          <h1 className="font-display text-[44px] md:text-[68px] text-white leading-none whitespace-nowrap mb-6 drop-shadow-sm">
+            Get in Touch
+          </h1>
+          <p className="text-[15px] md:text-[17px] text-white/90 leading-[1.7] max-w-[620px] font-body">
+            We would love to hear from you. For custom stitching enquiries, private styling
+            appointments, or bespoke couture commissions.
+          </p>
+        </div>
+      </section>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <div className="container-site max-w-3xl mx-auto px-6">
         <div>
           {isSuccess ? (
             <div className="bg-cream p-8 rounded-none border border-beige-line text-center">

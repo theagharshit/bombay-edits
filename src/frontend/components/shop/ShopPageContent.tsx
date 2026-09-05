@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { ProductCard } from '@/components/product/ProductCard';
 import { products } from '@/data/products';
 import Link from 'next/link';
@@ -46,40 +47,37 @@ export function ShopPageContent({
       className="bg-[#FAF6F0] min-h-screen text-[#4A3025] font-body"
       style={{ paddingBottom: '80px' }}
     >
-      {/* Header */}
-      <div
-        className="border-b border-[#E5DFD5]"
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          textAlign: 'center',
-          paddingTop: '32px',
-          paddingBottom: '40px',
-          maxWidth: '1200px',
-          margin: '0 auto',
-          paddingLeft: '24px',
-          paddingRight: '24px',
-        }}
-      >
-        <span className="text-[10px] uppercase tracking-[0.25em] text-[#8A817C] mb-4 block font-medium">
-          Bombay Edits / Shop
-        </span>
-        <h1
-          className="font-display text-[48px] text-[#4A3025] mb-4 leading-tight text-center"
-          style={{ textAlign: 'center', width: '100%' }}
-        >
-          {title}
-        </h1>
-        {description && (
-          <p
-            className="text-sm uppercase tracking-widest text-[#8A817C] text-center"
-            style={{ maxWidth: '36rem', margin: '0 auto', textAlign: 'center' }}
-          >
-            {description}
-          </p>
-        )}
-      </div>
+      {/* Cinematic Hero Banner */}
+      <section className="relative w-full h-[65vh] min-h-[480px] flex items-center justify-center overflow-hidden bg-black">
+        <Image
+          src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=2400&h=1400&q=85"
+          alt="The Shop – Contemporary Indian Ethnic Wear"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center opacity-85"
+        />
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              'linear-gradient(to top, rgba(30,22,18,0.85) 0%, rgba(30,22,18,0.4) 50%, rgba(30,22,18,0.2) 100%)',
+          }}
+        />
+        <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-[800px] mt-12">
+          <span className="text-[11px] uppercase tracking-[0.24em] font-medium text-white/70 mb-3 font-body">
+            Bombay Edits / Ready-to-Wear
+          </span>
+          <h1 className="font-display text-[44px] md:text-[68px] text-white leading-none whitespace-nowrap mb-6 drop-shadow-sm">
+            {title}
+          </h1>
+          {description && (
+            <p className="text-[15px] md:text-[17px] text-white/90 leading-[1.7] max-w-[620px] font-body">
+              {description}
+            </p>
+          )}
+        </div>
+      </section>
 
       <div
         style={{ maxWidth: '1400px', margin: '0 auto', paddingLeft: '32px', paddingRight: '32px' }}
