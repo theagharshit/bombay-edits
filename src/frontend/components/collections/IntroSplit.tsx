@@ -15,6 +15,7 @@ export function IntroSplit() {
                   src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=1200&h=900&q=80"
                   alt="Curated in Bombay"
                   fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover"
                 />
               </div>

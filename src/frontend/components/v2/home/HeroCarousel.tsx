@@ -134,6 +134,7 @@ export function HeroCarousel() {
                   src={slide.posterSrc}
                   alt={slide.headline}
                   fill
+                  sizes="100vw"
                   className="object-cover"
                   priority={index === 0} // LCP optimization
                   unoptimized

@@ -23,6 +23,7 @@ export function SignatureEditPage({ collection }: SignatureEditPageProps) {
             src={collection.heroImage || generatePlaceholderImage(1920, 1080, 'signature-hero')}
             alt={collection.name}
             fill
+            sizes="100vw"
             unoptimized={true}
             className="object-cover"
             priority
@@ -79,6 +80,7 @@ export function SignatureEditPage({ collection }: SignatureEditPageProps) {
                 src={generatePlaceholderImage(800, 1000, 'signature-editorial')}
                 alt="Signature craftsmanship"
                 fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 unoptimized={true}
                 className="object-cover"
               />
@@ -102,6 +104,7 @@ export function SignatureEditPage({ collection }: SignatureEditPageProps) {
                   src={generatePlaceholderImage(600, 800, 'lookbook-1')}
                   alt="Lookbook 1"
                   fill
+                  sizes="(max-width: 768px) 100vw, 42vw"
                   unoptimized={true}
                   className="object-cover"
                 />
@@ -115,6 +118,7 @@ export function SignatureEditPage({ collection }: SignatureEditPageProps) {
                   src={generatePlaceholderImage(1000, 625, 'lookbook-2')}
                   alt="Lookbook 2"
                   fill
+                  sizes="(max-width: 768px) 100vw, 58vw"
                   unoptimized={true}
                   className="object-cover"
                 />
@@ -129,6 +133,7 @@ export function SignatureEditPage({ collection }: SignatureEditPageProps) {
                   src={generatePlaceholderImage(800, 800, 'lookbook-3')}
                   alt="Lookbook 3"
                   fill
+                  sizes="(max-width: 768px) 100vw, 45vw"
                   unoptimized={true}
                   className="object-cover"
                 />

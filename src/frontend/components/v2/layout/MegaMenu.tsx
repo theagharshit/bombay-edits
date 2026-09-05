@@ -126,6 +126,7 @@ export function MegaMenu({ onClose }: MegaMenuProps) {
                       src={tile.image}
                       alt={tile.title}
                       fill
+                      sizes="250px"
                       className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                     />
                   </div>

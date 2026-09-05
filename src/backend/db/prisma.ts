@@ -5,8 +5,33 @@ declare global {
   var prismaGlobal: PrismaClient | undefined;
 }
 
+function getPrismaConstructor(): typeof PrismaClient {
+  let Client = PrismaClient;
+  if (process.env.NODE_ENV !== 'production') {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const dummy = new (Client as any)();
+      if (!('guestSession' in dummy)) {
+        if (typeof require !== 'undefined' && require.cache) {
+          Object.keys(require.cache).forEach((key) => {
+            if (key.includes('@prisma') || key.includes('.prisma')) {
+              delete require.cache[key];
+            }
+          });
+          // eslint-disable-next-line @typescript-eslint/no-require-imports
+          Client = require('@prisma/client').PrismaClient;
+        }
+      }
+    } catch {
+      // ignore
+    }
+  }
+  return Client;
+}
+
 function createPrismaClient(): PrismaClient {
-  const client = new PrismaClient({
+  const Client = getPrismaConstructor();
+  const client = new Client({
     log: [
       { emit: 'event', level: 'query' },
       { emit: 'event', level: 'error' },
@@ -28,6 +53,17 @@ function createPrismaClient(): PrismaClient {
   });
 
   return client;
+}
+
+// If globalThis.prismaGlobal was cached before new models (like guestSession) were added, recreate it
+if (globalThis.prismaGlobal && !('guestSession' in globalThis.prismaGlobal)) {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (globalThis.prismaGlobal as any).$disconnect?.();
+  } catch {
+    // ignore
+  }
+  globalThis.prismaGlobal = undefined;
 }
 
 export const prisma = globalThis.prismaGlobal ?? createPrismaClient();

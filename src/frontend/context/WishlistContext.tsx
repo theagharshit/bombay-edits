@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
 import { WishlistItem } from '@/types/cart';
+import { getDeviceFingerprint } from '@/frontend/utils/deviceFingerprint';
 
 interface WishlistContextValue {
   items: WishlistItem[];
@@ -64,9 +65,20 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
     syncWishlistFromApi();
   }, []);
 
-  // Save to local storage whenever items change
+  // Save to local storage and DB guest session whenever items change
   useEffect(() => {
     localStorage.setItem('tbe-wishlist', JSON.stringify(items));
+
+    const fp = getDeviceFingerprint();
+    // Also persist to guest_sessions table in DB
+    fetch('/api/guest-session', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(fp ? { 'x-device-fingerprint': fp } : {}),
+      },
+      body: JSON.stringify({ action: 'update_wishlist', items, deviceFingerprint: fp }),
+    }).catch(() => {});
   }, [items]);
 
   const isWishlisted = useCallback(

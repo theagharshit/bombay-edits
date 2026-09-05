@@ -4,6 +4,7 @@ export function Wordmark({ id }: { id?: string }) {
   return (
     <h1
       id={id}
+      suppressHydrationWarning
       className="whitespace-nowrap z-[60]"
       style={{
         fontFamily: 'var(--font-display)',

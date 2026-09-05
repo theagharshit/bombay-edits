@@ -8,6 +8,7 @@ export function Hero() {
         alt="Collections Hero"
         fill
         priority
+        sizes="100vw"
         className="object-cover object-center"
       />
       <div className="absolute inset-0 bg-[#1E1612] opacity-[0.28]" />

@@ -173,6 +173,7 @@ export function CartDrawer() {
                           src={product.image}
                           alt={product.name}
                           fill
+                          sizes="140px"
                           className="object-cover group-hover:opacity-90 transition-opacity"
                         />
                       </div>
@@ -199,7 +200,13 @@ export function CartDrawer() {
                     onClick={closeCart}
                     className="relative w-[100px] aspect-[3/4] flex-shrink-0 bg-[var(--color-shell)] hover:opacity-90 transition-opacity"
                   >
-                    <Image src={item.image} alt={item.name} fill className="object-cover" />
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      fill
+                      sizes="100px"
+                      className="object-cover"
+                    />
                   </Link>
                   <div className="flex flex-col justify-between flex-1">
                     <div>

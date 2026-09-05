@@ -6,9 +6,11 @@ import {
   useReducer,
   useEffect,
   useCallback,
+  useRef,
   type ReactNode,
 } from 'react';
 import { CartItem } from '@/types/cart';
+import { getDeviceFingerprint } from '@/frontend/utils/deviceFingerprint';
 
 interface CartState {
   items: CartItem[];
@@ -95,23 +97,86 @@ const CartContext = createContext<CartContextValue | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, { items: [], isOpen: false });
+  const isHydratedRef = useRef(false);
 
-  // Hydrate from localStorage on mount
+  // Hydrate from localStorage first, then sync with DB guest session
   useEffect(() => {
+    let localItems: CartItem[] = [];
     try {
       const saved = localStorage.getItem('tbe-cart');
       if (saved) {
-        const parsed = JSON.parse(saved);
-        dispatch({ type: 'HYDRATE', payload: parsed });
+        localItems = JSON.parse(saved);
+        dispatch({ type: 'HYDRATE', payload: localItems });
       }
     } catch {
       // Ignore parse errors
     }
+
+    // Fetch persistent guest session from database
+    async function syncCartWithDb() {
+      try {
+        const fp = getDeviceFingerprint();
+        const res = await fetch('/api/guest-session', {
+          headers: fp ? { 'x-device-fingerprint': fp } : {},
+        });
+        if (res.ok) {
+          const json = await res.json();
+          if (json.data && Array.isArray(json.data.cart)) {
+            const dbCart: CartItem[] = json.data.cart;
+            if (dbCart.length > 0) {
+              dispatch({ type: 'HYDRATE', payload: dbCart });
+              localStorage.setItem('tbe-cart', JSON.stringify(dbCart));
+            } else if (localItems.length > 0) {
+              // Push local items to DB guest session
+              fetch('/api/guest-session', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  ...(fp ? { 'x-device-fingerprint': fp } : {}),
+                },
+                body: JSON.stringify({
+                  action: 'update_cart',
+                  items: localItems,
+                  deviceFingerprint: fp,
+                }),
+              }).catch(() => {});
+            }
+          }
+        }
+      } catch {
+        // Fallback to local storage if API is unreachable
+      } finally {
+        isHydratedRef.current = true;
+      }
+    }
+
+    syncCartWithDb();
   }, []);
 
-  // Persist to localStorage on change
+  // Persist to localStorage and DB guest session on change
   useEffect(() => {
     localStorage.setItem('tbe-cart', JSON.stringify(state.items));
+
+    // Only sync to DB after initial hydration is completed
+    if (isHydratedRef.current) {
+      const timer = setTimeout(() => {
+        const fp = getDeviceFingerprint();
+        fetch('/api/guest-session', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(fp ? { 'x-device-fingerprint': fp } : {}),
+          },
+          body: JSON.stringify({
+            action: 'update_cart',
+            items: state.items,
+            deviceFingerprint: fp,
+          }),
+        }).catch(() => {});
+      }, 300);
+
+      return () => clearTimeout(timer);
+    }
   }, [state.items]);
 
   const itemCount = state.items.reduce((sum, i) => sum + i.quantity, 0);

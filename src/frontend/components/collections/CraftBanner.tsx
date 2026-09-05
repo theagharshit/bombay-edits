@@ -10,6 +10,7 @@ export function CraftBanner() {
         src="https://images.unsplash.com/photo-1524228529766-4d7fe5dc55ca?auto=format&fit=crop&w=2400&h=1000&q=80"
         alt="Craftsmanship"
         fill
+        sizes="100vw"
         className="object-cover object-center"
       />
       <div className="absolute inset-0 bg-[#1E1612] opacity-[0.30]" />
