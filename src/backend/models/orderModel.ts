@@ -390,8 +390,13 @@ export class OrderModel {
       filtered = filtered.filter(
         (o) => o.customer.email.toLowerCase() === filter.email!.toLowerCase().trim()
       );
-    } else if (!filter?.email && !filter?.customerId) {
-      filtered = [];
+    }
+    if (filter?.customerId) {
+      filtered = filtered.filter(
+        (o) =>
+          (o as unknown as { customerId?: string }).customerId === filter.customerId ||
+          (o.customer as unknown as { id?: string }).id === filter.customerId
+      );
     }
     if (filter?.orderNumber) {
       filtered = filtered.filter(
