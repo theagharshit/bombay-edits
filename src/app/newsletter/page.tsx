@@ -21,9 +21,9 @@ export default function NewsletterPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[var(--color-ivory)] py-8 md:py-12 border-t border-[var(--color-line)]">
+    <main className="min-h-screen bg-[var(--color-ivory)] pt-[92px] md:pt-[104px] pb-10 md:pb-14 border-t border-[var(--color-line)]">
       <Container>
-        <div className="max-w-2xl mx-auto" style={{ zoom: 0.9 }}>
+        <div className="max-w-2xl mx-auto" style={{ zoom: 0.85 }}>
           {/* Breadcrumb */}
           <nav className="mb-4 flex items-center gap-2 text-[12px] font-body text-[var(--color-muted)]">
             <Link href="/" className="hover:text-[var(--color-ink)] transition-colors">
