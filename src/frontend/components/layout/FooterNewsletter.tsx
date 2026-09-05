@@ -6,8 +6,7 @@ import { useNewsletter } from '@/frontend/hooks/useNewsletter';
 
 export function FooterNewsletter() {
   const [email, setEmail] = useState('');
-  const { isLoading, isSuccess, isAlreadySubscribed, message, error, subscribe, reset } =
-    useNewsletter();
+  const { isLoading, isSuccess, message, error, subscribe, reset } = useNewsletter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
