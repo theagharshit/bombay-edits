@@ -85,37 +85,11 @@ export function Footer() {
                 <p>
                   <span className="font-medium text-[var(--color-ink)]">Mob:</span> +91 9876543210
                 </p>
-                <p>
-                  <span className="font-medium text-[var(--color-ink)]">Opening Hours:</span> Mon to
-                  Sat: 10:30AM - 8:30PM
-                </p>
               </div>
             </div>
 
             {/* News Letter Column */}
             <FooterNewsletter />
-
-            {/* Payment Methods */}
-            <div className="col-span-full md:col-span-3 mt-[8px]">
-              <p
-                className="text-[var(--color-muted)] italic mb-[10px]"
-                style={{ fontFamily: 'var(--font-display)', fontSize: '13px' }}
-              >
-                We accept all major payment methods.
-              </p>
-              <div className="flex items-center gap-[8px]">
-                {['VISA', 'MASTERCARD', 'UPI', 'AMEX'].map((method) => (
-                  <div
-                    key={method}
-                    className="h-[22px] px-[10px] border border-[var(--color-muted)] opacity-50 flex items-center justify-center"
-                  >
-                    <span className="font-body text-[9px] font-medium text-[var(--color-ink)] uppercase tracking-wider">
-                      {method}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </Container>
 
