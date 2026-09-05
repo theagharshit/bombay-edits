@@ -333,13 +333,6 @@ export function Header() {
 
           {/* Right Zone */}
           <div className="flex items-center justify-end gap-[6px] h-full">
-            <button
-              className={iconButtonClass}
-              aria-label="Currency"
-              style={{ borderWidth: '0px' }}
-            >
-              <span className="font-body text-[11px] font-medium tracking-wide">Rs</span>
-            </button>
             <Link
               href="/wishlist"
               className={iconButtonClass}

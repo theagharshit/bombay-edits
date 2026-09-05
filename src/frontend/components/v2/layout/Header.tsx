@@ -209,9 +209,6 @@ export function Header() {
 
         {/* Right Zone */}
         <div className="flex items-center justify-end gap-[8px]">
-          <button className={iconButtonClass} aria-label="Currency">
-            <span className="font-body text-[13px] font-medium tracking-wide">Rs</span>
-          </button>
           <Link href="/wishlist" className={iconButtonClass} aria-label="Wishlist">
             <Heart size={16} strokeWidth={1} />
           </Link>
