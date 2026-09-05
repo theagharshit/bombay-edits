@@ -2,286 +2,153 @@ import Image from 'next/image';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Our Story',
+  title: 'Our Story | The Bombay Edit',
   description:
     'A chronicle of style, woven into the historic fabric of Old Bombay. We resurrect the elegance of a bygone era for the modern connoisseur.',
 };
 
 export default function TheCraftPage() {
   return (
-    <div className="bg-[#FAF7F2] text-[#7A6E64] font-body w-full overflow-hidden">
-      {/* Cinematic Hero Section */}
-      <section className="relative w-full h-[65vh] min-h-[480px] flex items-center justify-center overflow-hidden bg-black">
-        <Image
-          src="https://images.unsplash.com/photo-1524228529766-4d7fe5dc55ca?auto=format&fit=crop&w=2400&h=1400&q=85"
-          alt="Inside Bombay Edits – Textile Craft & Atelier"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center opacity-85"
-        />
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              'linear-gradient(to top, rgba(30,22,18,0.85) 0%, rgba(30,22,18,0.4) 50%, rgba(30,22,18,0.2) 100%)',
-          }}
-        />
-        <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-[800px] mt-12">
-          <span className="text-[11px] uppercase tracking-[0.24em] font-medium text-white/70 mb-3 font-body">
-            Inside Bombay Edits
-          </span>
-          <h1 className="font-display text-[44px] md:text-[68px] text-white leading-none whitespace-nowrap mb-6 drop-shadow-sm">
-            Our Story
-          </h1>
-          <p className="text-[15px] md:text-[17px] text-white/90 leading-[1.7] max-w-[620px] font-body">
-            A chronicle of style, woven into the historic fabric of Old Bombay. We resurrect the
-            elegance of a bygone era for the modern connoisseur.
-          </p>
-        </div>
-      </section>
-
-      {/* 4.1: ONE CONTAINER FOR THE WHOLE PAGE */}
-      <div
-        className="w-full px-6 md:px-10 lg:px-16 pt-12 md:pt-16 pb-[96px] md:pb-[200px]"
-        style={{ maxWidth: '1200px', margin: '0 auto', paddingBottom: '200px' }}
-      >
-        {/* 4.5: Space between intro and timeline - Apply as padding on wrapper */}
-        <section
-          className="relative pt-[96px] md:pt-[200px]"
-          style={{ width: '100%', paddingTop: '200px' }}
+    <div className="bg-[#FAF7F2] text-[#7A6E64] font-body w-full min-h-screen pt-[88px] md:pt-[104px] pb-16 md:pb-24">
+      {/* Editorial Header (Matches Reference Design) */}
+      <header className="max-w-[720px] mx-auto text-center px-6 mb-14 md:mb-20">
+        <h1
+          className="text-4xl md:text-5xl text-[#5C3A2A] font-normal italic mb-3 tracking-normal"
+          style={{ fontFamily: 'var(--font-display)' }}
         >
-          {/* 4.2: Centre the rule - Exact horizontal centre of the container */}
+          Our Story
+        </h1>
+        <p className="text-[13.5px] md:text-[14.5px] text-[#7A6E64] leading-[1.75] max-w-[580px] mx-auto">
+          A chronicle of style, woven into the historic fabric of Old Bombay. We resurrect the
+          elegance of a bygone era for the modern connoisseur.
+        </p>
+      </header>
+
+      {/* Center Timeline Container */}
+      <div className="max-w-[1040px] mx-auto px-6 md:px-10 relative">
+        {/* Continuous Central Vertical Line */}
+        <div
+          className="hidden md:block absolute left-1/2 -translate-x-1/2 top-2 bottom-8 w-[1px] bg-[#D9CDBC]"
+          aria-hidden="true"
+        />
+
+        {/* Row 1: Provenance (Text Left, Photo Right) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 items-center mb-16 md:mb-24 relative">
+          {/* Timeline Node on Center Line */}
           <div
-            className="hidden md:block absolute bg-[#D9CDBC]"
-            style={{ left: '50%', top: 0, bottom: 0, width: '1px', marginLeft: '-0.5px' }}
+            className="hidden md:block absolute left-1/2 -translate-x-1/2 top-6 w-2.5 h-2.5 rounded-full border border-[#D9CDBC] bg-[#FAF7F2] z-10"
+            aria-hidden="true"
           />
 
-          {/* 4.3: Make each entry symmetrical - Grid with two equal columns */}
-          {/* Row 1: Provenance */}
+          {/* Left: Provenance Text (Right-aligned to center) */}
+          <div className="order-2 md:order-1 flex flex-col md:items-end md:text-right md:pr-14 mt-6 md:mt-0">
+            <div className="max-w-[360px]">
+              <h2
+                className="text-[26px] md:text-[32px] italic text-[#5C3A2A] mb-3.5 leading-tight font-normal"
+                style={{ fontFamily: 'var(--font-display)' }}
+              >
+                Provenance
+              </h2>
+              <p className="text-[13px] md:text-[13.5px] leading-[1.8] text-[#7A6E64]">
+                Rooted in the colonial architecture and vibrant street life of South Bombay, our
+                inspiration is drawn from the juxtaposed realities of the city. Every silhouette
+                echoes the grand archways and the whispered secrets of old members&apos; clubs.
+              </p>
+            </div>
+          </div>
+
+          {/* Right: Archway Image */}
+          <div className="order-1 md:order-2 flex md:justify-start md:pl-14">
+            <div className="relative w-full max-w-[380px] aspect-[4/5] bg-[#ece4d8] shadow-xs overflow-hidden">
+              <Image
+                src="https://images.unsplash.com/photo-1519955045385-7cdb8e07c76f?auto=format&fit=crop&w=800&q=85"
+                alt="Colonial architecture of Old Bombay"
+                fill
+                sizes="(max-width: 768px) 100vw, 380px"
+                className="object-cover grayscale contrast-[1.05]"
+                priority
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Row 2: Materiality (Photo Left, Text Right) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 items-center mb-16 md:mb-24 relative">
+          {/* Timeline Node on Center Line */}
           <div
-            className="grid grid-cols-1 md:grid-cols-2 mb-[160px] md:mb-[240px]"
-            style={{ width: '100%', marginBottom: '240px' }}
-          >
-            {/* Left Column (Text) */}
-            <div
-              className="flex flex-col md:items-end md:text-right relative order-2 md:order-1 mt-8 md:mt-0 pr-0 md:pr-0"
-              style={{ paddingRight: '0' }}
-            >
-              <div className="hidden md:block md:pr-[72px]" style={{ paddingRight: '72px' }}>
-                <div
-                  className="absolute top-[8px] rounded-none border border-[#D9CDBC] bg-[#FAF7F2] z-10 hidden md:block"
-                  style={{ right: '-6px', width: '12px', height: '12px' }}
-                />
+            className="hidden md:block absolute left-1/2 -translate-x-1/2 top-6 w-2.5 h-2.5 rounded-full border border-[#D9CDBC] bg-[#FAF7F2] z-10"
+            aria-hidden="true"
+          />
 
-                <div className="w-full" style={{ maxWidth: '400px' }}>
-                  <h2 className="font-display text-[24px] md:text-[32px] italic text-[#5C3A2A] mb-8 leading-tight">
-                    Provenance
-                  </h2>
-                  <p className="text-[14px] leading-[1.75]">
-                    Rooted in the colonial architecture and vibrant street life of South Bombay, our
-                    inspiration is drawn from the juxtaposed realities of the city. Every silhouette
-                    echoes the grand archways and the whispered secrets of old members&apos; clubs.
-                  </p>
-                </div>
-              </div>
-              {/* Mobile text block wrapper since we used md:pr-[72px] above */}
-              <div className="md:hidden w-full" style={{ maxWidth: '400px' }}>
-                <h2 className="font-display text-[24px] md:text-[32px] italic text-[#5C3A2A] mb-8 leading-tight">
-                  Provenance
-                </h2>
-                <p className="text-[14px] leading-[1.75]">
-                  Rooted in the colonial architecture and vibrant street life of South Bombay, our
-                  inspiration is drawn from the juxtaposed realities of the city. Every silhouette
-                  echoes the grand archways and the whispered secrets of old members&apos; clubs.
-                </p>
-              </div>
-            </div>
-
-            {/* Right Column (Image) */}
-            <div
-              className="flex md:justify-start order-1 md:order-2 pl-0 md:pl-0"
-              style={{ paddingLeft: '0' }}
-            >
-              <div className="hidden md:flex w-full justify-start" style={{ paddingLeft: '72px' }}>
-                <div
-                  className="relative w-full bg-cream"
-                  style={{ maxWidth: '480px', maxHeight: '600px', aspectRatio: '4/5' }}
-                >
-                  <Image
-                    src="https://images.unsplash.com/photo-1519955045385-7cdb8e07c76f?auto=format&fit=crop&w=480&h=600&q=80"
-                    alt="Colonial architecture"
-                    fill
-                    className="object-cover grayscale sepia-[0.2]"
-                    sizes="(max-width: 768px) 100vw, 480px"
-                  />
-                </div>
-              </div>
-              <div className="md:hidden w-full flex justify-start">
-                <div
-                  className="relative w-full bg-cream"
-                  style={{ maxWidth: '480px', maxHeight: '600px', aspectRatio: '4/5' }}
-                >
-                  <Image
-                    src="https://images.unsplash.com/photo-1519955045385-7cdb8e07c76f?auto=format&fit=crop&w=480&h=600&q=80"
-                    alt="Colonial architecture"
-                    fill
-                    className="object-cover grayscale sepia-[0.2]"
-                    sizes="(max-width: 768px) 100vw, 480px"
-                  />
-                </div>
-              </div>
+          {/* Left: Textile Loom Image */}
+          <div className="order-1 md:order-1 flex md:justify-end md:pr-14">
+            <div className="relative w-full max-w-[380px] aspect-[16/10] bg-[#ece4d8] shadow-xs overflow-hidden">
+              <Image
+                src="https://images.unsplash.com/photo-1571587289339-cb7da03fb5a6?auto=format&fit=crop&w=800&q=85"
+                alt="Textile weaving and materiality"
+                fill
+                sizes="(max-width: 768px) 100vw, 380px"
+                className="object-cover sepia-[0.2] contrast-[1.02]"
+              />
             </div>
           </div>
 
-          {/* Row 2: Materiality */}
+          {/* Right: Materiality Text (Left-aligned from center) */}
+          <div className="order-2 md:order-2 flex flex-col md:items-start md:text-left md:pl-14 mt-6 md:mt-0">
+            <div className="max-w-[360px]">
+              <h2
+                className="text-[26px] md:text-[32px] italic text-[#5C3A2A] mb-3.5 leading-tight font-normal"
+                style={{ fontFamily: 'var(--font-display)' }}
+              >
+                Materiality
+              </h2>
+              <p className="text-[13px] md:text-[13.5px] leading-[1.8] text-[#7A6E64]">
+                We source only the finest indigenous textiles, honoring the hands that weave them.
+                Our commitment is to a tactile experience — garments that feel like treasured
+                heirlooms, blending rough khadi with smooth silks in unexpected harmony.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Row 3: Legacy (Text Left, Photo Right) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 items-center relative">
+          {/* Timeline Node on Center Line */}
           <div
-            className="grid grid-cols-1 md:grid-cols-2 mb-[160px] md:mb-[240px]"
-            style={{ width: '100%', marginBottom: '240px' }}
-          >
-            {/* Left Column (Image) */}
-            <div
-              className="flex md:justify-end order-1 md:order-1 pr-0 md:pr-0"
-              style={{ paddingRight: '0' }}
-            >
-              <div className="hidden md:flex w-full justify-end" style={{ paddingRight: '72px' }}>
-                <div
-                  className="relative w-full bg-cream"
-                  style={{ maxWidth: '480px', aspectRatio: '16/10' }}
-                >
-                  <Image
-                    src="https://images.unsplash.com/photo-1571587289339-cb7da03fb5a6?auto=format&fit=crop&w=480&h=300&q=80"
-                    alt="Textiles and materiality"
-                    fill
-                    className="object-cover sepia-[0.3]"
-                    sizes="(max-width: 768px) 100vw, 480px"
-                  />
-                </div>
-              </div>
-              <div className="md:hidden w-full flex justify-end">
-                <div
-                  className="relative w-full bg-cream"
-                  style={{ maxWidth: '480px', aspectRatio: '16/10' }}
-                >
-                  <Image
-                    src="https://images.unsplash.com/photo-1571587289339-cb7da03fb5a6?auto=format&fit=crop&w=480&h=300&q=80"
-                    alt="Textiles and materiality"
-                    fill
-                    className="object-cover sepia-[0.3]"
-                    sizes="(max-width: 768px) 100vw, 480px"
-                  />
-                </div>
-              </div>
-            </div>
+            className="hidden md:block absolute left-1/2 -translate-x-1/2 top-6 w-2.5 h-2.5 rounded-full border border-[#D9CDBC] bg-[#FAF7F2] z-10"
+            aria-hidden="true"
+          />
 
-            {/* Right Column (Text) */}
-            <div
-              className="flex flex-col md:items-start md:text-left relative order-2 md:order-2 mt-8 md:mt-0 pl-0 md:pl-0"
-              style={{ paddingLeft: '0' }}
-            >
-              <div className="hidden md:block" style={{ paddingLeft: '72px' }}>
-                <div
-                  className="absolute top-[8px] rounded-none border border-[#D9CDBC] bg-[#FAF7F2] z-10 hidden md:block"
-                  style={{ left: '-6px', width: '12px', height: '12px' }}
-                />
-
-                <div className="w-full" style={{ maxWidth: '400px' }}>
-                  <h2 className="font-display text-[24px] md:text-[32px] italic text-[#5C3A2A] mb-8 leading-tight">
-                    Materiality
-                  </h2>
-                  <p className="text-[14px] leading-[1.75]">
-                    We source only the finest indigenous textiles, honoring the hands that weave
-                    them. Our commitment is to a tactile experience — garments that feel like
-                    treasured heirlooms, blending rough khadi with smooth silks in unexpected
-                    harmony.
-                  </p>
-                </div>
-              </div>
-              <div className="md:hidden w-full" style={{ maxWidth: '400px' }}>
-                <h2 className="font-display text-[24px] md:text-[32px] italic text-[#5C3A2A] mb-8 leading-tight">
-                  Materiality
-                </h2>
-                <p className="text-[14px] leading-[1.75]">
-                  We source only the finest indigenous textiles, honoring the hands that weave them.
-                  Our commitment is to a tactile experience — garments that feel like treasured
-                  heirlooms, blending rough khadi with smooth silks in unexpected harmony.
-                </p>
-              </div>
+          {/* Left: Legacy Text (Right-aligned to center) */}
+          <div className="order-2 md:order-1 flex flex-col md:items-end md:text-right md:pr-14 mt-6 md:mt-0">
+            <div className="max-w-[360px]">
+              <h2
+                className="text-[26px] md:text-[32px] italic text-[#5C3A2A] mb-3.5 leading-tight font-normal"
+                style={{ fontFamily: 'var(--font-display)' }}
+              >
+                Legacy
+              </h2>
+              <p className="text-[13px] md:text-[13.5px] leading-[1.8] text-[#7A6E64]">
+                Bombay Edits is not just fashion; it is an archive in motion. We are preserving the
+                romance of the past for the future. Each design sketch is a promise to maintain the
+                slow, deliberate pace of true luxury in a transient world.
+              </p>
             </div>
           </div>
 
-          {/* Row 3: Legacy */}
-          <div className="grid grid-cols-1 md:grid-cols-2" style={{ width: '100%' }}>
-            {/* Left Column (Text) */}
-            <div
-              className="flex flex-col md:items-end md:text-right relative order-2 md:order-1 mt-8 md:mt-0 pr-0 md:pr-0"
-              style={{ paddingRight: '0' }}
-            >
-              <div className="hidden md:block" style={{ paddingRight: '72px' }}>
-                <div
-                  className="absolute top-[8px] rounded-none border border-[#D9CDBC] bg-[#FAF7F2] z-10 hidden md:block"
-                  style={{ right: '-6px', width: '12px', height: '12px' }}
-                />
-
-                <div className="w-full" style={{ maxWidth: '400px' }}>
-                  <h2 className="font-display text-[24px] md:text-[32px] italic text-[#5C3A2A] mb-8 leading-tight">
-                    Legacy
-                  </h2>
-                  <p className="text-[14px] leading-[1.75]">
-                    Bombay Edits is not just fashion; it is an archive in motion. We are preserving
-                    the romance of the past for the future. Each design sketch is a promise to
-                    maintain the slow, deliberate pace of true luxury in a transient world.
-                  </p>
-                </div>
-              </div>
-              <div className="md:hidden w-full" style={{ maxWidth: '400px' }}>
-                <h2 className="font-display text-[24px] md:text-[32px] italic text-[#5C3A2A] mb-8 leading-tight">
-                  Legacy
-                </h2>
-                <p className="text-[14px] leading-[1.75]">
-                  Bombay Edits is not just fashion; it is an archive in motion. We are preserving
-                  the romance of the past for the future. Each design sketch is a promise to
-                  maintain the slow, deliberate pace of true luxury in a transient world.
-                </p>
-              </div>
-            </div>
-
-            {/* Right Column (Image) */}
-            <div
-              className="flex md:justify-start order-1 md:order-2 pl-0 md:pl-0"
-              style={{ paddingLeft: '0' }}
-            >
-              <div className="hidden md:flex w-full justify-start" style={{ paddingLeft: '72px' }}>
-                <div
-                  className="relative w-full bg-cream"
-                  style={{ maxWidth: '480px', maxHeight: '600px', aspectRatio: '4/5' }}
-                >
-                  <Image
-                    src="https://images.unsplash.com/photo-1524228529766-4d7fe5dc55ca?auto=format&fit=crop&w=480&h=600&q=80"
-                    alt="Design sketches"
-                    fill
-                    className="object-cover grayscale"
-                    sizes="(max-width: 768px) 100vw, 480px"
-                  />
-                </div>
-              </div>
-              <div className="md:hidden w-full flex justify-start">
-                <div
-                  className="relative w-full bg-cream"
-                  style={{ maxWidth: '480px', maxHeight: '600px', aspectRatio: '4/5' }}
-                >
-                  <Image
-                    src="https://images.unsplash.com/photo-1524228529766-4d7fe5dc55ca?auto=format&fit=crop&w=480&h=600&q=80"
-                    alt="Design sketches"
-                    fill
-                    className="object-cover grayscale"
-                    sizes="(max-width: 768px) 100vw, 480px"
-                  />
-                </div>
-              </div>
+          {/* Right: Design Sketches Image */}
+          <div className="order-1 md:order-2 flex md:justify-start md:pl-14">
+            <div className="relative w-full max-w-[380px] aspect-[4/5] bg-[#ece4d8] shadow-xs overflow-hidden">
+              <Image
+                src="https://images.unsplash.com/photo-1524228529766-4d7fe5dc55ca?auto=format&fit=crop&w=800&q=85"
+                alt="Design sketches and legacy archive"
+                fill
+                sizes="(max-width: 768px) 100vw, 380px"
+                className="object-cover grayscale contrast-[1.05]"
+              />
             </div>
           </div>
-        </section>
+        </div>
       </div>
     </div>
   );

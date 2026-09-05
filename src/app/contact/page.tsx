@@ -51,7 +51,7 @@ export default function ContactPage() {
 
   return (
     <main className="bg-[var(--color-ivory)] pt-[60px] flex flex-col justify-start">
-      <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 py-4" style={{ zoom: 0.82 }}>
+      <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 py-4" style={{ zoom: 0.89 }}>
         {/* Breadcrumb Navigation */}
         <nav className="mb-2.5 flex items-center gap-2 text-[11px] font-body text-[var(--color-muted)]">
           <Link href="/" className="hover:text-[var(--color-ink)] transition-colors">
