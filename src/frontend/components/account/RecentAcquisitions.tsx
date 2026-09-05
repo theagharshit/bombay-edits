@@ -6,15 +6,26 @@ import Link from 'next/link';
 import { OrderService } from '@/frontend/services/orderService';
 import { OrderRecord } from '@/backend/models/orderModel';
 import { generatePlaceholderImage } from '@/frontend/utils/imageUtils';
+import { useAuth } from '@/frontend/context/AuthContext';
 
 export function RecentAcquisitions() {
+  const { customer, isAuthenticated, isLoading: authLoading } = useAuth();
   const [orders, setOrders] = useState<OrderRecord[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchAcquisitions() {
+      if (authLoading) return;
+
+      if (!isAuthenticated || !customer) {
+        setOrders([]);
+        setLoading(false);
+        return;
+      }
+
       try {
-        const data = await OrderService.getOrders({ limit: 3 });
+        setLoading(true);
+        const data = await OrderService.getOrders({ email: customer.email, limit: 3 });
         setOrders(data || []);
       } catch (err) {
         console.error('Failed to load recent acquisitions:', err);
@@ -23,7 +34,7 @@ export function RecentAcquisitions() {
       }
     }
     fetchAcquisitions();
-  }, []);
+  }, [customer, isAuthenticated, authLoading]);
 
   const formatDate = (isoStr: string) => {
     try {

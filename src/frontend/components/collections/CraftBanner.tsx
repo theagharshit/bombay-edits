@@ -7,7 +7,7 @@ export function CraftBanner() {
       style={{ aspectRatio: '21/9' }}
     >
       <Image
-        src="https://images.unsplash.com/photo-1583391733958-6925e0a6d091?auto=format&fit=crop&w=2400&h=1000&q=80"
+        src="https://images.unsplash.com/photo-1524228529766-4d7fe5dc55ca?auto=format&fit=crop&w=2400&h=1000&q=80"
         alt="Craftsmanship"
         fill
         className="object-cover object-center"

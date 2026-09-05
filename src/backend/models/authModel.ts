@@ -191,4 +191,22 @@ export class AuthModel {
       createdAt: customer.createdAt,
     };
   }
+
+  /**
+   * Extract and authenticate customer from NextRequest (via httpOnly auth_token cookie or Bearer header)
+   */
+  public static async getCustomerFromRequest(req: {
+    cookies: { get(name: string): { value: string } | undefined };
+    headers: { get(name: string): string | null };
+  }): Promise<SanitizedCustomer | null> {
+    let token = req.cookies.get('auth_token')?.value;
+    if (!token) {
+      const authHeader = req.headers.get('authorization');
+      if (authHeader?.startsWith('Bearer ')) {
+        token = authHeader.slice(7).trim();
+      }
+    }
+    if (!token) return null;
+    return AuthModel.getCustomerFromToken(token);
+  }
 }

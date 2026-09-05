@@ -302,16 +302,42 @@ export class OrderModel {
     return orderStore.find((o) => o.orderId === orderId || o.orderNumber === orderId);
   }
 
-  public static async getAll(filter?: { email?: string; limit?: number }): Promise<OrderRecord[]> {
+  public static async getAll(filter?: {
+    email?: string;
+    customerId?: string;
+    orderNumber?: string;
+    limit?: number;
+  }): Promise<OrderRecord[]> {
     if (await isPrismaConnected()) {
       try {
         const whereClause: Prisma.OrderWhereInput = {};
-        if (filter?.email) {
+
+        if (filter?.customerId && filter?.email) {
+          whereClause.OR = [
+            { customerId: filter.customerId },
+            {
+              customerEmail: {
+                equals: filter.email.toLowerCase().trim(),
+                mode: 'insensitive',
+              },
+            },
+          ];
+        } else if (filter?.customerId) {
+          whereClause.customerId = filter.customerId;
+        } else if (filter?.email) {
           whereClause.customerEmail = {
             equals: filter.email.toLowerCase().trim(),
             mode: 'insensitive',
           };
         }
+
+        if (filter?.orderNumber) {
+          whereClause.orderNumber = {
+            equals: filter.orderNumber.trim(),
+            mode: 'insensitive',
+          };
+        }
+
         const orders = await prisma.order.findMany({
           where: whereClause,
           orderBy: { createdAt: 'desc' },
@@ -319,50 +345,57 @@ export class OrderModel {
           include: { items: true },
         });
 
-        if (orders.length > 0) {
-          return orders.map((order) => ({
-            orderId: order.id,
-            orderNumber: order.orderNumber,
-            items: order.items.map((i) => ({
-              productId: i.productId || '',
-              slug: i.productSlug,
-              name: i.productName,
-              price: Number(i.unitPrice),
-              quantity: i.quantity,
-              size: i.size,
-              colour: i.colour,
-            })),
-            customer: {
-              email: order.customerEmail,
-              firstName: order.customerFirstName,
-              lastName: order.customerLastName,
-              phone: order.customerPhone,
-              address: order.shippingAddress,
-              city: order.shippingCity,
-              state: order.shippingState || '',
-              postalCode: order.shippingPostalCode || '',
-              country: order.shippingCountry,
-            },
-            shippingZone: order.shippingZoneName as OrderRecord['shippingZone'],
-            paymentMethod: order.paymentMethod,
-            notes: order.notes || undefined,
-            subtotal: Number(order.subtotal),
-            shippingCost: Number(order.shippingCost),
-            total: Number(order.total),
-            currency: order.currency,
-            status: order.status as OrderRecord['status'],
-            createdAt: order.createdAt.toISOString(),
-          }));
-        }
+        // When Prisma query succeeds, always return mapped array (even if empty [])
+        return orders.map((order) => ({
+          orderId: order.id,
+          orderNumber: order.orderNumber,
+          items: order.items.map((i) => ({
+            productId: i.productId || '',
+            slug: i.productSlug,
+            name: i.productName,
+            price: Number(i.unitPrice),
+            quantity: i.quantity,
+            size: i.size,
+            colour: i.colour,
+          })),
+          customer: {
+            email: order.customerEmail,
+            firstName: order.customerFirstName,
+            lastName: order.customerLastName,
+            phone: order.customerPhone,
+            address: order.shippingAddress,
+            city: order.shippingCity,
+            state: order.shippingState || '',
+            postalCode: order.shippingPostalCode || '',
+            country: order.shippingCountry,
+          },
+          shippingZone: order.shippingZoneName as OrderRecord['shippingZone'],
+          paymentMethod: order.paymentMethod,
+          notes: order.notes || undefined,
+          subtotal: Number(order.subtotal),
+          shippingCost: Number(order.shippingCost),
+          total: Number(order.total),
+          currency: order.currency,
+          status: order.status as OrderRecord['status'],
+          createdAt: order.createdAt.toISOString(),
+        }));
       } catch (err) {
         logger.warn('Failed to fetch orders via Prisma', { error: err });
       }
     }
 
+    // In-memory fallback (only when Prisma is disconnected or throws)
     let filtered = [...orderStore];
     if (filter?.email) {
       filtered = filtered.filter(
-        (o) => o.customer.email.toLowerCase() === filter.email!.toLowerCase()
+        (o) => o.customer.email.toLowerCase() === filter.email!.toLowerCase().trim()
+      );
+    } else if (!filter?.email && !filter?.customerId) {
+      filtered = [];
+    }
+    if (filter?.orderNumber) {
+      filtered = filtered.filter(
+        (o) => o.orderNumber.toLowerCase() === filter.orderNumber!.toLowerCase().trim()
       );
     }
     if (filter?.limit) {

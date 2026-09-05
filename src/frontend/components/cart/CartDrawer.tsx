@@ -40,7 +40,7 @@ const RECOMMENDED_PRODUCTS = [
     slug: 'zari-sharara',
     name: 'Zari Sharara',
     image:
-      'https://images.unsplash.com/photo-1583391733958-6925e0a6d091?auto=format&fit=crop&w=300&h=400&q=80',
+      'https://images.unsplash.com/photo-1524228529766-4d7fe5dc55ca?auto=format&fit=crop&w=300&h=400&q=80',
     price: 3200,
   },
   {

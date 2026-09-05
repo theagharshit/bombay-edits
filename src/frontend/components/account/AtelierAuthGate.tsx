@@ -56,9 +56,11 @@ export function AtelierAuthGate() {
 
   const handleLookup = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!lookupForm.orderNumber.trim()) return;
+    if (!lookupForm.orderNumber.trim() || !lookupForm.email.trim()) return;
     router.push(
-      `/order-confirmation?orderNumber=${encodeURIComponent(lookupForm.orderNumber.trim())}`
+      `/account/orders?orderNumber=${encodeURIComponent(
+        lookupForm.orderNumber.trim()
+      )}&email=${encodeURIComponent(lookupForm.email.trim().toLowerCase())}`
     );
   };
 

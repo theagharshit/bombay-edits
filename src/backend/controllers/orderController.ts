@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { OrderModel } from '../models/orderModel';
+import { AuthModel } from '../models/authModel';
 import { ApiResponse } from '../utils/apiResponse';
 import { Validator } from '../middlewares/validatorMiddleware';
 import { AppError } from '../middlewares/errorHandlerMiddleware';
@@ -55,16 +56,52 @@ export class OrderController {
 
   /**
    * Get order list / purchase history
+   * Strictly isolated to the authenticated customer's registered email only.
    * GET /api/orders or GET /api/v1/orders
    */
   public async getOrders(req: NextRequest) {
+    const customer = await AuthModel.getCustomerFromRequest(req);
     const { searchParams } = new URL(req.url);
-    const email = searchParams.get('email') || undefined;
+    const orderNumber = searchParams.get('orderNumber')?.trim();
+    const queryEmail = searchParams.get('email')?.trim().toLowerCase();
     const limitParam = searchParams.get('limit');
     const limit = limitParam ? parseInt(limitParam, 10) : undefined;
 
-    const orders = await OrderModel.getAll({ email, limit });
-    return ApiResponse.success(orders);
+    // 1. Authenticated member session
+    if (customer) {
+      if (customer.role === 'admin') {
+        const orders = await OrderModel.getAll({
+          email: queryEmail,
+          orderNumber,
+          limit,
+        });
+        return ApiResponse.success(orders);
+      }
+
+      // Member strictly sees only orders registered to their own email and customer profile
+      const orders = await OrderModel.getAll({
+        customerId: customer.id,
+        email: customer.email,
+        orderNumber,
+        limit,
+      });
+      return ApiResponse.success(orders);
+    }
+
+    // 2. Unauthenticated guest lookup:
+    // Requires BOTH orderNumber AND billing email to verify ownership before displaying
+    if (orderNumber && queryEmail) {
+      const orders = await OrderModel.getAll({
+        email: queryEmail,
+        orderNumber,
+        limit: 1,
+      });
+      return ApiResponse.success(orders);
+    }
+
+    // 3. Unauthenticated general query:
+    // Never expose other customers' orders to anonymous requests
+    return ApiResponse.success([]);
   }
 
   /**
@@ -80,6 +117,22 @@ export class OrderController {
     const order = await OrderModel.getById(id);
     if (!order) {
       throw new AppError(`Order "${id}" not found.`, 404);
+    }
+
+    // Privacy & Security Check:
+    const customer = await AuthModel.getCustomerFromRequest(req);
+    const { searchParams } = new URL(req.url);
+    const verifyEmail = searchParams.get('email')?.trim().toLowerCase();
+
+    if (customer && customer.role !== 'admin') {
+      if (order.customer.email.toLowerCase() !== customer.email.toLowerCase()) {
+        throw new AppError('Unauthorized access to this order.', 403);
+      }
+    } else if (!customer) {
+      // Guest access requires email verification matching the order
+      if (!verifyEmail || verifyEmail !== order.customer.email.toLowerCase()) {
+        throw new AppError('Verification email matching order required for guest access.', 403);
+      }
     }
 
     return ApiResponse.success(order);

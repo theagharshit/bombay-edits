@@ -54,7 +54,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
       <div className="relative aspect-[2/3] w-full rounded-[3px] overflow-hidden bg-[#F7F5F0]">
         <Link
           href={`/product/${product.slug}`}
-          className="block w-full h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
+          className="relative block w-full h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
           tabIndex={-1}
         >
           {/* Primary Image */}

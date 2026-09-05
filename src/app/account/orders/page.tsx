@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Badge } from '@/frontend/components/ui/Badge';
@@ -11,13 +12,17 @@ import { OrderRecord } from '@/backend/models/orderModel';
 
 import { useAuth } from '@/frontend/context/AuthContext';
 
-export default function OrdersPage() {
-  const { isAuthenticated, isLoading: authLoading } = useAuth();
+function OrdersContent() {
+  const { customer, isAuthenticated, isLoading: authLoading } = useAuth();
+  const searchParams = useSearchParams();
+  const urlOrderNum = searchParams.get('orderNumber') || '';
+  const urlEmail = searchParams.get('email') || '';
+
   const [orders, setOrders] = useState<OrderRecord[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [guestOrderNum, setGuestOrderNum] = useState('');
-  const [guestEmail, setGuestEmail] = useState('');
+  const [guestOrderNum, setGuestOrderNum] = useState(urlOrderNum);
+  const [guestEmail, setGuestEmail] = useState(urlEmail);
   const [guestLoading, setGuestLoading] = useState(false);
   const [guestError, setGuestError] = useState<string | null>(null);
 
@@ -25,14 +30,36 @@ export default function OrdersPage() {
     async function fetchOrders() {
       if (authLoading) return;
 
-      if (!isAuthenticated) {
+      if (!isAuthenticated || !customer) {
         setLoading(false);
+        // If guest arrives with order number and email in URL, automatically perform lookup
+        if (urlOrderNum && urlEmail) {
+          setGuestLoading(true);
+          setGuestError(null);
+          try {
+            const res = await fetch(
+              `/api/orders?orderNumber=${encodeURIComponent(
+                urlOrderNum.trim()
+              )}&email=${encodeURIComponent(urlEmail.trim().toLowerCase())}`
+            );
+            const json = await res.json();
+            if (res.ok && json.data && Array.isArray(json.data) && json.data.length > 0) {
+              setOrders(json.data);
+            } else {
+              setGuestError('No order found matching this order number and email.');
+            }
+          } catch {
+            setGuestError('Failed to lookup guest order.');
+          } finally {
+            setGuestLoading(false);
+          }
+        }
         return;
       }
 
       try {
         setLoading(true);
-        const data = await OrderService.getOrders();
+        const data = await OrderService.getOrders({ email: customer.email });
         setOrders(data || []);
       } catch (err) {
         console.error('Failed to fetch purchase history:', err);
@@ -43,16 +70,21 @@ export default function OrdersPage() {
     }
 
     fetchOrders();
-  }, [isAuthenticated, authLoading]);
+  }, [customer, isAuthenticated, authLoading, urlOrderNum, urlEmail]);
 
   const handleGuestLookup = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!guestOrderNum.trim()) return;
+    if (!guestOrderNum.trim() || !guestEmail.trim()) {
+      setGuestError('Please enter both your order number and contact email.');
+      return;
+    }
     setGuestLoading(true);
     setGuestError(null);
     try {
       const res = await fetch(
-        `/api/orders?orderNumber=${encodeURIComponent(guestOrderNum.trim())}`
+        `/api/orders?orderNumber=${encodeURIComponent(
+          guestOrderNum.trim()
+        )}&email=${encodeURIComponent(guestEmail.trim().toLowerCase())}`
       );
       const json = await res.json();
       if (res.ok && json.data && Array.isArray(json.data) && json.data.length > 0) {
@@ -153,6 +185,20 @@ export default function OrdersPage() {
                   onChange={(e) => setGuestOrderNum(e.target.value)}
                   placeholder="e.g. TBE-2026-89329"
                   className="w-full bg-[#FAF6F0] border border-beige-line px-4 py-3 text-[13px] text-dark-espresso font-mono focus:outline-none focus:border-dark-espresso rounded-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[10px] uppercase tracking-[0.2em] text-[#8A817C] mb-1 font-medium">
+                  Billing / Contact Email
+                </label>
+                <input
+                  type="email"
+                  required
+                  value={guestEmail}
+                  onChange={(e) => setGuestEmail(e.target.value)}
+                  placeholder="email used at checkout"
+                  className="w-full bg-[#FAF6F0] border border-beige-line px-4 py-3 text-[13px] text-dark-espresso focus:outline-none focus:border-dark-espresso rounded-none"
                 />
               </div>
 
@@ -295,5 +341,20 @@ export default function OrdersPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function OrdersPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="container-site section-padding max-w-4xl mx-auto py-24 text-center font-body">
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-dark-espresso mb-4" />
+          <p className="text-[13px] text-chocolate-brown">Loading your atelier orders...</p>
+        </div>
+      }
+    >
+      <OrdersContent />
+    </Suspense>
   );
 }
