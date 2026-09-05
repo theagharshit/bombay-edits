@@ -327,7 +327,7 @@ function ContactContent() {
                     onChange={(e) => setForm((prev) => ({ ...prev, subject: e.target.value }))}
                     className={`w-full border border-[var(--color-line)] text-[12px] text-[var(--color-ink)] px-2.5 py-1.5 focus:outline-none transition-all ${
                       isPrefilled
-                        ? 'bg-[#eadecd]/40 opacity-70 blur-[0.3px] pointer-events-none cursor-not-allowed select-none'
+                        ? 'bg-[#eadecd]/40 opacity-70 blur-[0.3px] cursor-not-allowed select-none'
                         : 'bg-[var(--color-ivory)] focus:border-[var(--color-ink)] cursor-pointer'
                     }`}
                   >
@@ -361,7 +361,7 @@ function ContactContent() {
                       placeholder="Your name"
                       className={`w-full border border-[var(--color-line)] text-[12px] text-[var(--color-ink)] placeholder:text-[var(--color-muted)]/50 px-2.5 py-1.5 focus:outline-none transition-all disabled:opacity-50 ${
                         isPrefilled
-                          ? 'bg-[#eadecd]/40 opacity-70 blur-[0.3px] pointer-events-none cursor-not-allowed select-none'
+                          ? 'bg-[#eadecd]/40 opacity-70 blur-[0.3px] cursor-not-allowed select-none'
                           : 'bg-[var(--color-ivory)] focus:border-[var(--color-ink)]'
                       }`}
                     />
@@ -387,7 +387,7 @@ function ContactContent() {
                       placeholder="name@example.com"
                       className={`w-full border border-[var(--color-line)] text-[12px] text-[var(--color-ink)] placeholder:text-[var(--color-muted)]/50 px-2.5 py-1.5 focus:outline-none transition-all disabled:opacity-50 ${
                         isPrefilled
-                          ? 'bg-[#eadecd]/40 opacity-70 blur-[0.3px] pointer-events-none cursor-not-allowed select-none'
+                          ? 'bg-[#eadecd]/40 opacity-70 blur-[0.3px] cursor-not-allowed select-none'
                           : 'bg-[var(--color-ivory)] focus:border-[var(--color-ink)]'
                       }`}
                     />
@@ -416,7 +416,7 @@ function ContactContent() {
                       placeholder="+91 98765 43210"
                       className={`w-full border border-[var(--color-line)] text-[12px] text-[var(--color-ink)] placeholder:text-[var(--color-muted)]/50 px-2.5 py-1.5 focus:outline-none transition-all disabled:opacity-50 ${
                         isPrefilled
-                          ? 'bg-[#eadecd]/40 opacity-70 blur-[0.3px] pointer-events-none cursor-not-allowed select-none'
+                          ? 'bg-[#eadecd]/40 opacity-70 blur-[0.3px] cursor-not-allowed select-none'
                           : 'bg-[var(--color-ivory)] focus:border-[var(--color-ink)]'
                       }`}
                     />
@@ -444,7 +444,7 @@ function ContactContent() {
                       placeholder="e.g. TBE-2026-XXXXX"
                       className={`w-full border border-[var(--color-line)] text-[12px] font-mono text-[var(--color-ink)] placeholder:text-[var(--color-muted)]/50 px-2.5 py-1.5 focus:outline-none transition-all disabled:opacity-50 ${
                         isPrefilled
-                          ? 'bg-[#eadecd]/40 opacity-70 blur-[0.3px] pointer-events-none cursor-not-allowed select-none font-semibold'
+                          ? 'bg-[#eadecd]/40 opacity-70 blur-[0.3px] cursor-not-allowed select-none font-semibold'
                           : 'bg-[var(--color-ivory)] focus:border-[var(--color-ink)]'
                       }`}
                     />
