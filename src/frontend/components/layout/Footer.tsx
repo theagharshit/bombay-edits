@@ -9,6 +9,7 @@ const UPPER_COLUMNS = [
     title: 'Connect with us',
     links: [
       { label: 'Call', href: 'tel:+919876543210' },
+      { label: 'Email', href: 'mailto:support@bombayedits.com' },
       { label: 'Text (WhatsApp)', href: 'https://wa.me/919876543210' },
       { label: 'Instagram', href: 'https://instagram.com/bombayedits' },
       { label: 'YouTube', href: 'https://youtube.com/@bombayedits' },
@@ -80,10 +81,21 @@ export function Footer() {
                 </p>
                 <p>
                   <span className="font-medium text-[var(--color-ink)]">Email:</span>{' '}
-                  support@bombayedits.com
+                  <a
+                    href="mailto:support@bombayedits.com"
+                    className="hover:text-[var(--color-ink)] hover:underline transition-colors"
+                  >
+                    support@bombayedits.com
+                  </a>
                 </p>
                 <p>
-                  <span className="font-medium text-[var(--color-ink)]">Mob:</span> +91 9876543210
+                  <span className="font-medium text-[var(--color-ink)]">Mob:</span>{' '}
+                  <a
+                    href="tel:+919876543210"
+                    className="hover:text-[var(--color-ink)] hover:underline transition-colors"
+                  >
+                    +91 9876543210
+                  </a>
                 </p>
               </div>
             </div>
