@@ -73,7 +73,15 @@ export class ApiClient {
     });
   }
 
-  public static async delete<T>(endpoint: string, options?: RequestInit): Promise<T> {
-    return this.request<T>(endpoint, { method: 'DELETE', ...options });
+  public static async delete<T>(
+    endpoint: string,
+    body?: unknown,
+    options?: RequestInit
+  ): Promise<T> {
+    return this.request<T>(endpoint, {
+      method: 'DELETE',
+      body: body !== undefined ? JSON.stringify(body) : undefined,
+      ...options,
+    });
   }
 }

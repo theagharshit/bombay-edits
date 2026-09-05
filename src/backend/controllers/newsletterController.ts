@@ -46,6 +46,35 @@ export class NewsletterController {
     const subscribers = await NewsletterModel.getAll();
     return ApiResponse.success(subscribers, { status: 200 });
   }
+
+  /**
+   * Handle newsletter unsubscription
+   * DELETE /api/newsletter
+   */
+  public async handleUnsubscribe(req: NextRequest, context: RequestContext) {
+    const body = await req.json();
+    const { email } = body;
+
+    Validator.requireFields(body, ['email']);
+    Validator.validateEmail(email);
+
+    logger.info(`Newsletter unsubscribe request for ${email}`, {
+      requestId: context.requestId,
+    });
+
+    await NewsletterModel.unsubscribe(email);
+
+    return ApiResponse.success(
+      {
+        email,
+        unsubscribed: true,
+      },
+      {
+        message: 'You have been unsubscribed from the newsletter.',
+        status: 200,
+      }
+    );
+  }
 }
 
 export const newsletterController = new NewsletterController();

@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { Container } from '@/frontend/components/layout/Container';
+import { FooterNewsletter } from '@/frontend/components/layout/FooterNewsletter';
 
 const UPPER_COLUMNS = [
   {
@@ -28,6 +29,7 @@ const UPPER_COLUMNS = [
     links: [
       { label: 'Our story', href: '/our-story' },
       { label: 'Contact us', href: '/contact' },
+      { label: 'Newsletter', href: '/newsletter' },
     ],
   },
 ];
@@ -100,7 +102,7 @@ export function Footer() {
       {/* ═══ Upper Section: Info Columns + Embroidery Art ═══ */}
       <div className="bg-[#e8e2da] border-t border-[var(--color-line)]">
         <Container>
-          <div className="relative z-10 grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr_1.2fr] gap-x-[32px] gap-y-[32px] py-[48px] md:py-[56px]">
+          <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_1.05fr_1fr_1.15fr_1.4fr] gap-x-[32px] gap-y-[36px] py-[48px] md:py-[56px]">
             {/* Info Columns */}
             {UPPER_COLUMNS.map((col) => (
               <div key={col.title} className="flex flex-col">
@@ -152,8 +154,11 @@ export function Footer() {
               </div>
             </div>
 
+            {/* News Letter Column */}
+            <FooterNewsletter />
+
             {/* Payment Methods */}
-            <div className="md:col-span-2 mt-[8px]">
+            <div className="col-span-full md:col-span-3 mt-[8px]">
               <p
                 className="text-[var(--color-muted)] italic mb-[10px]"
                 style={{ fontFamily: 'var(--font-display)', fontSize: '13px' }}

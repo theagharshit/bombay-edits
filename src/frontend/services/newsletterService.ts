@@ -16,4 +16,10 @@ export class NewsletterService {
   ): Promise<NewsletterSubscribeResponse> {
     return ApiClient.post<NewsletterSubscribeResponse>('/api/newsletter', payload);
   }
+
+  public static async unsubscribe(
+    email: string
+  ): Promise<{ email: string; unsubscribed: boolean }> {
+    return ApiClient.delete<{ email: string; unsubscribed: boolean }>('/api/newsletter', { email });
+  }
 }

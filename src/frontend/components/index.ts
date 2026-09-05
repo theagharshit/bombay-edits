@@ -1,5 +1,6 @@
 export * from './layout/Header';
 export * from './layout/Footer';
+export * from './layout/FooterNewsletter';
 export * from './layout/MobileNav';
 export * from './layout/SectionWrapper';
 export * from './product/ProductCard';
