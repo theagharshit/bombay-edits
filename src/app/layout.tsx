@@ -60,7 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       data-scroll-behavior="smooth"
       className={`${cormorantGaramond.variable} ${jost.variable} h-full`}
     >
-      <body className="m-0 p-0 min-h-full w-full flex flex-col antialiased overflow-x-hidden">
+      <body className="m-0 p-0 min-h-screen min-h-dvh w-full flex flex-col antialiased overflow-x-hidden">
         <Providers>
           <Header />
           <main className="m-0 p-0 flex-1 w-full flex flex-col">{children}</main>

@@ -34,73 +34,11 @@ const UPPER_COLUMNS = [
   },
 ];
 
-const FOOTER_SECTIONS = [
-  {
-    title: 'Kurtis',
-    links: [
-      { label: 'All Kurtis', href: '/collections/kurtis' },
-      { label: 'Short Kurti', href: '/collections/short-kurti' },
-      { label: 'Long Kurti', href: '/collections/long-kurti' },
-      { label: 'Sleeveless Kurti', href: '/collections/sleeveless-kurti' },
-      { label: 'Sleeved Kurti', href: '/collections/sleeved-kurti' },
-      { label: 'Corset Kurti', href: '/collections/corset-kurti' },
-      { label: 'Deep Back Kurti', href: '/collections/deep-back-kurti' },
-      { label: 'Halter Kurti', href: '/collections/halter-kurti' },
-    ],
-  },
-  {
-    title: 'Tops',
-    links: [
-      { label: 'All Tops', href: '/collections/tops' },
-      { label: 'Cover Ups', href: '/collections/cover-ups' },
-      { label: 'Corset Tops', href: '/collections/corset-tops' },
-      { label: 'Halter Tops', href: '/collections/halter-tops' },
-      { label: 'Fitted Tops', href: '/collections/fitted-tops' },
-      { label: 'Loose Fitted Tops', href: '/collections/loose-fitted-tops' },
-    ],
-  },
-  {
-    title: 'Sets',
-    links: [
-      { label: 'All Sets', href: '/collections/sets' },
-      { label: 'Skirt Sets', href: '/collections/skirt-sets' },
-      { label: '3 Piece', href: '/collections/3-piece' },
-      { label: '2 Piece', href: '/collections/2-piece' },
-    ],
-  },
-  {
-    title: 'Bottoms',
-    links: [
-      { label: 'All Bottoms', href: '/collections/bottoms' },
-      { label: 'Pants', href: '/collections/pants' },
-      { label: 'Skirts', href: '/collections/skirts' },
-    ],
-  },
-  {
-    title: 'Dresses',
-    links: [
-      { label: 'All Dresses', href: '/collections/dresses' },
-      { label: 'Maxi Dresses', href: '/collections/maxi-dresses' },
-      { label: 'Mini Dresses', href: '/collections/mini-dresses' },
-    ],
-  },
-  {
-    title: 'Our Collections',
-    links: [
-      { label: 'NishoOffice SS2', href: '/collections/nishooffice-ss2' },
-      { label: 'NishoOffice SS1', href: '/collections/nishooffice-ss1' },
-      { label: 'NishoHaveli SS2', href: '/collections/nishohaveli-ss2' },
-      { label: 'NishoHaveli SS1', href: '/collections/nishohaveli-ss1' },
-      { label: 'Desi Romance', href: '/collections/desi-romance' },
-    ],
-  },
-];
-
 export function Footer() {
   return (
-    <footer className="bg-[var(--color-ivory)]">
-      {/* ═══ Upper Section: Info Columns + Embroidery Art ═══ */}
-      <div className="bg-[#e8e2da] border-t border-[var(--color-line)]">
+    <footer className="bg-[#e8e2da] mt-auto w-full border-t border-[var(--color-line)]">
+      {/* ═══ Main Section: Info Columns + Company Info + News Letter ═══ */}
+      <div>
         <Container>
           <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_1.05fr_1fr_1.15fr_1.4fr] gap-x-[32px] gap-y-[36px] py-[48px] md:py-[56px]">
             {/* Info Columns */}
@@ -181,64 +119,19 @@ export function Footer() {
           </div>
         </Container>
 
-        {/* Credit Line */}
+        {/* Bottom Bar: Brand & Credit Line */}
         <div className="border-t border-[var(--color-line)]">
           <Container>
-            <p className="py-[12px] text-center font-body text-[11px] text-[var(--color-muted)] tracking-wide">
-              Designed by Bombay Edits | © Bombay Edits {new Date().getFullYear()}
-            </p>
+            <div className="py-[18px] flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
+              <p className="font-body text-[11px] uppercase tracking-[0.14em] text-[var(--color-muted)]">
+                Indian Craft, Reimagined
+              </p>
+              <p className="font-body text-[11px] text-[var(--color-muted)] tracking-wide">
+                Designed by Bombay Edits | © Bombay Edits {new Date().getFullYear()}
+              </p>
+            </div>
           </Container>
         </div>
-      </div>
-
-      {/* ═══ Lower Section: Category Links ═══ */}
-      <div className="border-t border-[var(--color-line)]">
-        <Container>
-          <div className="flex flex-col">
-            {FOOTER_SECTIONS.map((section) => (
-              <div key={section.title} className="py-[20px] border-b border-[var(--color-line)]">
-                <h3
-                  className="text-[var(--color-ink)] mb-[8px]"
-                  style={{
-                    fontFamily: 'var(--font-body)',
-                    fontWeight: 600,
-                    fontSize: '14px',
-                    lineHeight: 1.3,
-                  }}
-                >
-                  {section.title}
-                </h3>
-                <div className="flex flex-wrap items-center gap-y-[4px]">
-                  {section.links.map((link, index) => (
-                    <span key={link.label} className="flex items-center">
-                      <Link
-                        href={link.href}
-                        className="font-body text-[13px] text-[var(--color-muted)] hover:text-[var(--color-ink)] transition-colors"
-                      >
-                        {link.label}
-                      </Link>
-                      {index < section.links.length - 1 && (
-                        <span className="mx-[8px] text-[var(--color-line)] text-[13px] select-none">
-                          |
-                        </span>
-                      )}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Bottom Bar */}
-          <div className="py-[24px] flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
-            <p className="font-body text-[11px] uppercase tracking-[0.12em] text-[var(--color-muted)]">
-              Indian Craft, Reimagined
-            </p>
-            <p className="font-body text-[12px] text-[var(--color-muted)]">
-              © Bombay Edits {new Date().getFullYear()}
-            </p>
-          </div>
-        </Container>
       </div>
     </footer>
   );
