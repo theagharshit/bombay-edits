@@ -23,7 +23,7 @@ export default function NewsletterPage() {
   return (
     <main className="min-h-screen bg-[var(--color-ivory)] pt-[92px] md:pt-[104px] pb-10 md:pb-14 border-t border-[var(--color-line)]">
       <Container>
-        <div className="max-w-2xl mx-auto" style={{ zoom: 0.85 }}>
+        <div className="max-w-2xl mx-auto" style={{ zoom: 1 }}>
           {/* Breadcrumb */}
           <nav className="mb-4 flex items-center gap-2 text-[12px] font-body text-[var(--color-muted)]">
             <Link href="/" className="hover:text-[var(--color-ink)] transition-colors">
