@@ -220,28 +220,16 @@ export function Header() {
           }
         }
       } else {
-        // Non-home pages: logo and pills always visible
+        // Non-home pages: Bombay Edits logo and Menu button always visible throughout the app
         if (headerLogoRef.current) {
           headerLogoRef.current.style.opacity = '1';
           headerLogoRef.current.style.pointerEvents = 'auto';
         }
-        if (isMobile) {
-          if (menuPillRef.current) {
-            menuPillRef.current.style.opacity = '1';
-            menuPillRef.current.style.transform = 'scale(1)';
-            menuPillRef.current.style.pointerEvents = 'auto';
-          }
-        } else {
-          navPillsRefs.current.forEach((el) => {
-            if (!el) return;
-            el.style.opacity = '1';
-            el.style.transform = 'scale(1)';
-            el.style.pointerEvents = 'auto';
-          });
-          if (menuPillRef.current) {
-            menuPillRef.current.style.opacity = '0';
-            menuPillRef.current.style.pointerEvents = 'none';
-          }
+        if (menuPillRef.current) {
+          menuPillRef.current.style.opacity = '1';
+          menuPillRef.current.style.transform = 'scale(1)';
+          menuPillRef.current.style.pointerEvents = 'auto';
+          menuPillRef.current.removeAttribute('tabindex');
         }
       }
 
@@ -273,36 +261,40 @@ export function Header() {
         <div className="container-site relative z-10 h-[64px] md:h-[72px] grid grid-cols-[1fr_auto_1fr] items-center pointer-events-auto">
           {/* Left Zone */}
           <div className="grid place-items-start h-full">
-            {/* Nav Pills (Desktop) */}
-            <nav className="col-start-1 row-start-1 hidden md:flex items-center gap-[6px] h-full">
-              {NAV_PILLS.map((link, index) => (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  className={pillClass}
-                  style={{ borderWidth: '0px' }}
-                  ref={(el) => {
-                    navPillsRefs.current[index] = el;
-                  }}
-                >
-                  {link.label}
-                  {link.hasDot && (
-                    <span
-                      className="w-[6px] h-[6px] rounded-full bg-[#c1a68d] shrink-0"
-                      style={{ marginLeft: '8px', borderRadius: '50%' }}
-                    />
-                  )}
-                </Link>
-              ))}
-            </nav>
+            {/* Nav Pills (Desktop - Home page scroll animation only) */}
+            {isHomePage && (
+              <nav className="col-start-1 row-start-1 hidden md:flex items-center gap-[6px] h-full">
+                {NAV_PILLS.map((link, index) => (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    className={pillClass}
+                    style={{ borderWidth: '0px' }}
+                    ref={(el) => {
+                      navPillsRefs.current[index] = el;
+                    }}
+                  >
+                    {link.label}
+                    {link.hasDot && (
+                      <span
+                        className="w-[6px] h-[6px] rounded-full bg-[#c1a68d] shrink-0"
+                        style={{ marginLeft: '8px', borderRadius: '50%' }}
+                      />
+                    )}
+                  </Link>
+                ))}
+              </nav>
+            )}
 
-            {/* Menu Pill */}
+            {/* Menu Pill (Always visible throughout the app) */}
             <div className="col-start-1 row-start-1 flex items-center gap-[16px] h-full">
               <button
                 ref={menuPillRef}
                 onClick={() => setDrawerOpen(true)}
-                className="bg-[var(--color-ink)] text-[var(--color-ivory)] text-[11.5px] uppercase tracking-[0.08em] font-medium font-body rounded-full px-[20px] h-[32px] flex items-center justify-center gap-[6px] border-0 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-ivory)] opacity-0 pointer-events-none origin-center whitespace-nowrap transition-transform hover:scale-105 active:scale-95 cursor-pointer"
-                style={{ transform: 'scale(0.94)', borderWidth: '0px' }}
+                className={`bg-[var(--color-ink)] text-[var(--color-ivory)] text-[11.5px] uppercase tracking-[0.08em] font-medium font-body rounded-full px-[20px] h-[32px] flex items-center justify-center gap-[6px] border-0 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-ivory)] origin-center whitespace-nowrap transition-transform hover:scale-105 active:scale-95 cursor-pointer ${
+                  isHomePage ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
+                }`}
+                style={{ transform: isHomePage ? 'scale(0.94)' : 'scale(1)', borderWidth: '0px' }}
                 aria-label="Open menu"
               >
                 <Menu size={14} strokeWidth={1.5} />
