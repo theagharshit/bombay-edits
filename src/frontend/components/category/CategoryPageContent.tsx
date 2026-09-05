@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { ProductCard } from '@/components/product/ProductCard';
+import { ProductCard } from '@/frontend/components/v2/product/ProductCard';
 import { products } from '@/data/products';
 import { Category } from '@/types/product';
 
@@ -106,7 +106,7 @@ export function CategoryPageContent({
                   Newest arrivals in {title}
                 </span>
               </div>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-12">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10">
                 {trendingProducts.map((product) => (
                   <ProductCard key={`trending-${product.id}`} product={product} priority={true} />
                 ))}
@@ -132,7 +132,7 @@ export function CategoryPageContent({
                   Loved by our clients
                 </span>
               </div>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-12">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10">
                 {bestsellers.map((product) => (
                   <ProductCard key={`bestseller-${product.id}`} product={product} />
                 ))}
@@ -158,7 +158,7 @@ export function CategoryPageContent({
                   The Archive
                 </span>
               </div>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-12">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10">
                 {specialOffers.map((product) => (
                   <ProductCard key={`offer-${product.id}`} product={product} />
                 ))}

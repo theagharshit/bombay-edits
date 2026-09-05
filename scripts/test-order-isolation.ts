@@ -1,6 +1,7 @@
 import { OrderModel } from '../src/backend/models/orderModel';
 import { orderController } from '../src/backend/controllers/orderController';
 import { signJwt } from '../src/backend/utils/jwt';
+import { prisma } from '../src/backend/db/prisma';
 import { NextRequest } from 'next/server';
 
 function assert(condition: boolean, message: string) {
@@ -37,7 +38,7 @@ async function runOrderIsolationTests() {
   );
 
   console.log('\n--- Suite 3: Controller Authenticated Session Enforcement ---');
-  const existingCustomer = await OrderModel['prisma']?.customer?.findUnique({
+  const existingCustomer = await prisma.customer.findUnique({
     where: { email: 'a@g.com' },
   });
   const customerId = existingCustomer ? existingCustomer.id : 'cmto74ix90004ou0l0b8vd8ji';

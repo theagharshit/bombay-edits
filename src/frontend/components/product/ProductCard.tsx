@@ -50,8 +50,8 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         setIsHovered(false);
       }}
     >
-      {/* Image Container (2:3 Portrait Aspect Ratio, Large & Immersive) */}
-      <div className="relative aspect-[2/3] w-full rounded-[3px] overflow-hidden bg-[#F7F5F0]">
+      {/* Image Container (3:4 Portrait Aspect Ratio, Refined & Compact) */}
+      <div className="relative aspect-[3/4] w-full rounded-[2px] overflow-hidden bg-[#F7F5F0]">
         <Link
           href={`/product/${product.slug}`}
           className="relative block w-full h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
@@ -62,7 +62,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             src={product.images[0]?.src || ''}
             alt={product.images[0]?.alt || product.name}
             fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             className={`object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.04] ${
               isHovered && product.images.length > 1 ? 'opacity-0 hidden md:block' : 'opacity-100'
             }`}
@@ -76,7 +76,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
               src={product.images[1]?.src || ''}
               alt={product.images[1]?.alt || product.name}
               fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
               className={`object-cover object-top absolute inset-0 transition-opacity duration-500 hidden md:block ${
                 isHovered ? 'opacity-100' : 'opacity-0'
               }`}

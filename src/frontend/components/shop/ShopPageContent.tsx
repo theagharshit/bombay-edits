@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { ProductCard } from '@/components/product/ProductCard';
+import { ProductCard } from '@/frontend/components/v2/product/ProductCard';
 import { products } from '@/data/products';
 import Link from 'next/link';
 
@@ -96,7 +96,7 @@ export function ShopPageContent({
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-12">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10">
                 {trendingProducts.map((product) => (
                   <ProductCard key={`trending-${product.id}`} product={product} priority={true} />
                 ))}
@@ -123,7 +123,7 @@ export function ShopPageContent({
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-12">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10">
                 {bestsellers.map((product) => (
                   <ProductCard key={`bestseller-${product.id}`} product={product} />
                 ))}
@@ -140,7 +140,7 @@ export function ShopPageContent({
         {categorySections.map((cat) => {
           const categoryProducts = filteredBaseProducts
             .filter((p) => p.category === cat.id)
-            .slice(0, 3);
+            .slice(0, 4);
 
           if (categoryProducts.length === 0) return null;
 
@@ -157,7 +157,7 @@ export function ShopPageContent({
                   </span>
                 </div>
 
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-12">
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10">
                   {categoryProducts.map((product) => (
                     <ProductCard key={`${cat.id}-${product.id}`} product={product} />
                   ))}
@@ -196,7 +196,7 @@ export function ShopPageContent({
               </span>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-12">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10">
               {specialOffers.map((product) => (
                 <ProductCard key={`offer-${product.id}`} product={product} />
               ))}
