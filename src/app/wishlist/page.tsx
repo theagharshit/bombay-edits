@@ -6,8 +6,10 @@ import { products } from '@/data/products';
 import { ProductCard } from '@/frontend/components/v2/product/ProductCard';
 
 export default function WishlistPage() {
-  const { wishlist, clearWishlist } = useWishlist();
-  const wishlistProducts = wishlist.map((id) => products.find((p) => p.id === id)).filter(Boolean);
+  const { items, clearWishlist } = useWishlist();
+  const wishlistProducts = items
+    .map((item) => products.find((p) => p.id === item.productId))
+    .filter(Boolean);
 
   return (
     <div className="container-site section-padding font-body">
@@ -15,10 +17,10 @@ export default function WishlistPage() {
         <div>
           <h1 className="font-display text-3xl md:text-4xl text-ink mb-1">Your Wishlist</h1>
           <p className="text-sm text-text-muted font-body">
-            {wishlist.length} {wishlist.length === 1 ? 'item' : 'items'} saved
+            {items.length} {items.length === 1 ? 'item' : 'items'} saved
           </p>
         </div>
-        {wishlist.length > 0 && (
+        {items.length > 0 && (
           <button
             onClick={clearWishlist}
             className="text-xs uppercase tracking-widest text-text-muted hover:text-ink transition-colors font-medium cursor-pointer"

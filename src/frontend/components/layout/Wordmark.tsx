@@ -1,7 +1,5 @@
 'use client';
 
-import { forwardRef } from 'react';
-
 export function Wordmark({ id }: { id?: string }) {
   return (
     <h1

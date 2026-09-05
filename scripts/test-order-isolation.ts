@@ -1,4 +1,4 @@
-import { OrderModel } from '../src/backend/models/orderModel';
+import { OrderModel, OrderRecord } from '../src/backend/models/orderModel';
 import { orderController } from '../src/backend/controllers/orderController';
 import { signJwt } from '../src/backend/utils/jwt';
 import { prisma } from '../src/backend/db/prisma';
@@ -64,7 +64,7 @@ async function runOrderIsolationTests() {
   assert(Array.isArray(authBody.data), 'Returns data array');
   assert(authBody.data.length > 0, 'Returns user own orders');
   assert(
-    authBody.data.every((o: any) => o.customer.email.toLowerCase() === 'a@g.com'),
+    authBody.data.every((o: OrderRecord) => o.customer.email.toLowerCase() === 'a@g.com'),
     'Controller only returns orders matching authenticated customer email'
   );
 
@@ -77,7 +77,7 @@ async function runOrderIsolationTests() {
   const spoofRes = await orderController.getOrders(spoofReq);
   const spoofBody = await spoofRes.json();
   assert(
-    spoofBody.data.every((o: any) => o.customer.email.toLowerCase() === 'a@g.com'),
+    spoofBody.data.every((o: OrderRecord) => o.customer.email.toLowerCase() === 'a@g.com'),
     'Controller overrides query email and protects other clients from spoofing'
   );
 

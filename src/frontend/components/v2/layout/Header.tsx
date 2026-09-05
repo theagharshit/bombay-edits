@@ -4,7 +4,6 @@ import { useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { Search, User, Heart, Menu } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
-import { Wordmark } from './Wordmark';
 
 const NAV_PILLS = [
   { label: 'New In', href: '/collections/new' },
