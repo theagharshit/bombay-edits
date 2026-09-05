@@ -9,13 +9,27 @@ import { generatePlaceholderImage } from '@/frontend/utils/imageUtils';
 import { OrderService } from '@/frontend/services/orderService';
 import { OrderRecord } from '@/backend/models/orderModel';
 
+import { useAuth } from '@/frontend/context/AuthContext';
+
 export default function OrdersPage() {
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
   const [orders, setOrders] = useState<OrderRecord[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [guestOrderNum, setGuestOrderNum] = useState('');
+  const [guestEmail, setGuestEmail] = useState('');
+  const [guestLoading, setGuestLoading] = useState(false);
+  const [guestError, setGuestError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchOrders() {
+      if (authLoading) return;
+
+      if (!isAuthenticated) {
+        setLoading(false);
+        return;
+      }
+
       try {
         setLoading(true);
         const data = await OrderService.getOrders();
@@ -29,7 +43,29 @@ export default function OrdersPage() {
     }
 
     fetchOrders();
-  }, []);
+  }, [isAuthenticated, authLoading]);
+
+  const handleGuestLookup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!guestOrderNum.trim()) return;
+    setGuestLoading(true);
+    setGuestError(null);
+    try {
+      const res = await fetch(
+        `/api/orders?orderNumber=${encodeURIComponent(guestOrderNum.trim())}`
+      );
+      const json = await res.json();
+      if (res.ok && json.data && Array.isArray(json.data) && json.data.length > 0) {
+        setOrders(json.data);
+      } else {
+        setGuestError('No order found matching this order number and email.');
+      }
+    } catch {
+      setGuestError('Failed to lookup guest order.');
+    } finally {
+      setGuestLoading(false);
+    }
+  };
 
   const formatDate = (isoStr: string) => {
     try {
@@ -87,17 +123,71 @@ export default function OrdersPage() {
           <p className="text-sm">{error}</p>
         </div>
       ) : orders.length === 0 ? (
-        <div className="text-center py-16 bg-cream border border-beige-line p-8">
-          <p className="font-display text-xl text-dark-espresso mb-2">No Past Orders</p>
-          <p className="text-[13px] text-chocolate-brown mb-6">
-            You haven't placed any orders with The Bombay Edit yet.
-          </p>
-          <Link href="/shop">
-            <Button variant="primary" size="sm">
-              Explore The Collection
-            </Button>
-          </Link>
-        </div>
+        !isAuthenticated ? (
+          <div className="bg-cream/40 border border-beige-line p-8 sm:p-12 text-center max-w-xl mx-auto">
+            <span className="text-[10px] uppercase tracking-[0.25em] text-[#8A817C] mb-2 block font-medium">
+              Guest Order Tracking
+            </span>
+            <h2 className="font-display text-2xl text-dark-espresso mb-3">
+              Track Your Consignment
+            </h2>
+            <p className="text-[13px] text-chocolate-brown mb-8 leading-relaxed">
+              Purchased as a guest without an account? Enter your consignment order number below to
+              view items, status, and shipping destination.
+            </p>
+
+            <form onSubmit={handleGuestLookup} className="space-y-4 text-left max-w-md mx-auto">
+              {guestError && (
+                <div className="p-3 bg-red-50 border border-red-200 text-red-800 text-xs">
+                  {guestError}
+                </div>
+              )}
+              <div>
+                <label className="block text-[10px] uppercase tracking-[0.2em] text-[#8A817C] mb-1 font-medium">
+                  Order Number
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={guestOrderNum}
+                  onChange={(e) => setGuestOrderNum(e.target.value)}
+                  placeholder="e.g. TBE-2026-89329"
+                  className="w-full bg-[#FAF6F0] border border-beige-line px-4 py-3 text-[13px] text-dark-espresso font-mono focus:outline-none focus:border-dark-espresso rounded-none"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={guestLoading}
+                className="w-full py-3.5 bg-dark-espresso text-cream text-[11px] uppercase tracking-[0.22em] font-medium hover:bg-chocolate-brown disabled:opacity-50 transition-colors cursor-pointer rounded-none"
+              >
+                {guestLoading ? 'Locating Order...' : 'Look Up Order'}
+              </button>
+            </form>
+
+            <div className="mt-8 pt-6 border-t border-beige-line text-[12px] text-chocolate-brown">
+              <span>Have an account? </span>
+              <Link
+                href="/account"
+                className="text-dark-espresso font-semibold underline underline-offset-4"
+              >
+                Sign in to view full purchase archives
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <div className="text-center py-16 bg-cream border border-beige-line p-8">
+            <p className="font-display text-xl text-dark-espresso mb-2">No Past Orders</p>
+            <p className="text-[13px] text-chocolate-brown mb-6">
+              You haven't placed any orders with The Bombay Edit yet.
+            </p>
+            <Link href="/shop">
+              <Button variant="primary" size="sm">
+                Explore The Collection
+              </Button>
+            </Link>
+          </div>
+        )
       ) : (
         <div className="space-y-8">
           {orders.map((order) => {

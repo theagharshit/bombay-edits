@@ -223,15 +223,18 @@ model Currency {
 // ── 4. Customers & Addresses ──────────────────────────────────
 
 model Customer {
-  id        String    @id @default(cuid())
-  email     String    @unique
-  firstName String
-  lastName  String
-  phone     String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  addresses Address[]
-  orders    Order[]
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String?
+  firstName    String
+  lastName     String
+  phone        String?
+  role         String    @default("customer") // 'customer' | 'admin'
+  isGuest      Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  addresses    Address[]
+  orders       Order[]
 
   @@map("customers")
 }

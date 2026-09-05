@@ -1,0 +1,194 @@
+import { prisma } from '@/backend/db/prisma';
+import {
+  hashPassword,
+  verifyPassword,
+  signJwt,
+  verifyJwt,
+  JwtUserPayload,
+} from '@/backend/utils/jwt';
+
+export interface RegisterDTO {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  phone?: string;
+}
+
+export interface LoginDTO {
+  email: string;
+  password: string;
+}
+
+export interface SanitizedCustomer {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phone: string | null;
+  role: string;
+  isGuest: boolean;
+  createdAt: Date;
+}
+
+export class AuthModel {
+  /**
+   * Register a new member account or upgrade an existing guest account
+   */
+  public static async register(
+    dto: RegisterDTO
+  ): Promise<{ customer: SanitizedCustomer; token: string }> {
+    const email = dto.email.trim().toLowerCase();
+    const password = dto.password;
+
+    if (!email || !password || password.length < 6) {
+      throw new Error('Valid email and password with at least 6 characters required');
+    }
+
+    const hashedPassword = await hashPassword(password);
+
+    // Check if customer already exists in DB
+    const existing = await prisma.customer.findUnique({
+      where: { email },
+    });
+
+    let customer;
+
+    if (existing) {
+      if (existing.passwordHash) {
+        throw new Error('An account with this email already exists. Please sign in.');
+      }
+      // Customer checked out previously as a guest -> Upgrade to full member!
+      customer = await prisma.customer.update({
+        where: { id: existing.id },
+        data: {
+          passwordHash: hashedPassword,
+          firstName: dto.firstName.trim() || existing.firstName,
+          lastName: dto.lastName.trim() || existing.lastName,
+          phone: dto.phone?.trim() || existing.phone,
+          isGuest: false,
+        },
+      });
+    } else {
+      // New Customer
+      customer = await prisma.customer.create({
+        data: {
+          email,
+          passwordHash: hashedPassword,
+          firstName: dto.firstName.trim(),
+          lastName: dto.lastName.trim(),
+          phone: dto.phone?.trim() || null,
+          role: 'customer',
+          isGuest: false,
+        },
+      });
+    }
+
+    // Auto-link any past guest orders placed with this email to this customer profile
+    try {
+      await prisma.order.updateMany({
+        where: {
+          customerEmail: email,
+          customerId: null,
+        },
+        data: {
+          customerId: customer.id,
+        },
+      });
+    } catch {
+      // Non-fatal if order linking fails
+    }
+
+    const token = await signJwt({
+      customerId: customer.id,
+      email: customer.email,
+      firstName: customer.firstName,
+      lastName: customer.lastName,
+      role: customer.role,
+      isGuest: false,
+    });
+
+    return {
+      customer: {
+        id: customer.id,
+        email: customer.email,
+        firstName: customer.firstName,
+        lastName: customer.lastName,
+        phone: customer.phone,
+        role: customer.role,
+        isGuest: customer.isGuest,
+        createdAt: customer.createdAt,
+      },
+      token,
+    };
+  }
+
+  /**
+   * Log in an existing member
+   */
+  public static async login(
+    dto: LoginDTO
+  ): Promise<{ customer: SanitizedCustomer; token: string }> {
+    const email = dto.email.trim().toLowerCase();
+    const customer = await prisma.customer.findUnique({
+      where: { email },
+    });
+
+    if (!customer || !customer.passwordHash) {
+      throw new Error('Invalid email or password.');
+    }
+
+    const passwordMatch = await verifyPassword(dto.password, customer.passwordHash);
+    if (!passwordMatch) {
+      throw new Error('Invalid email or password.');
+    }
+
+    const token = await signJwt({
+      customerId: customer.id,
+      email: customer.email,
+      firstName: customer.firstName,
+      lastName: customer.lastName,
+      role: customer.role,
+      isGuest: customer.isGuest,
+    });
+
+    return {
+      customer: {
+        id: customer.id,
+        email: customer.email,
+        firstName: customer.firstName,
+        lastName: customer.lastName,
+        phone: customer.phone,
+        role: customer.role,
+        isGuest: customer.isGuest,
+        createdAt: customer.createdAt,
+      },
+      token,
+    };
+  }
+
+  /**
+   * Validate a JWT token and retrieve the current customer profile
+   */
+  public static async getCustomerFromToken(token: string): Promise<SanitizedCustomer | null> {
+    const payload = await verifyJwt<JwtUserPayload>(token);
+    if (!payload || !payload.customerId) return null;
+
+    const customer = await prisma.customer.findUnique({
+      where: { id: payload.customerId },
+    });
+
+    if (!customer) return null;
+
+    return {
+      id: customer.id,
+      email: customer.email,
+      firstName: customer.firstName,
+      lastName: customer.lastName,
+      phone: customer.phone,
+      role: customer.role,
+      isGuest: customer.isGuest,
+      createdAt: customer.createdAt,
+    };
+  }
+}

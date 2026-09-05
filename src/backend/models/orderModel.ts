@@ -187,6 +187,17 @@ export class OrderModel {
           },
         });
 
+        // Verify which product IDs exist in Prisma to avoid foreign key violations
+        const itemProductIds = verifiedItems.map((i) => i.productId).filter(Boolean);
+        const existingDbProducts =
+          itemProductIds.length > 0
+            ? await prisma.product.findMany({
+                where: { id: { in: itemProductIds } },
+                select: { id: true },
+              })
+            : [];
+        const validDbProductIdSet = new Set(existingDbProducts.map((p) => p.id));
+
         const createdOrder = await prisma.order.create({
           data: {
             id: orderId,
@@ -211,7 +222,8 @@ export class OrderModel {
             status: 'confirmed',
             items: {
               create: verifiedItems.map((item) => ({
-                productId: item.productId,
+                productId:
+                  item.productId && validDbProductIdSet.has(item.productId) ? item.productId : null,
                 productSlug: item.slug,
                 productName: item.name,
                 unitPrice: item.price,

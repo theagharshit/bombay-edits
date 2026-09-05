@@ -103,7 +103,7 @@ export function CollectionRail({ title, subtitle, href, products }: CollectionRa
             {products.map((product) => (
               <div
                 key={product.id}
-                className="snap-start flex-none w-[80vw] sm:w-[50vw] md:w-[38vw] lg:w-[340px] xl:w-[370px]"
+                className="snap-start flex-none w-[56vw] sm:w-[34vw] md:w-[24vw] lg:w-[18vw] max-w-[240px]"
               >
                 <ProductCard product={product} />
               </div>

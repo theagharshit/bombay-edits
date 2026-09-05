@@ -1,14 +1,38 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { generatePlaceholderImage } from '@/lib/utils';
-import { Metadata } from 'next';
 import { RecentAcquisitions } from '@/frontend/components/account/RecentAcquisitions';
-
-export const metadata: Metadata = {
-  title: 'The Atelier | Bombay Edits',
-};
+import { AtelierAuthGate } from '@/frontend/components/account/AtelierAuthGate';
+import { useAuth } from '@/frontend/context/AuthContext';
 
 export default function AccountPage() {
+  const { customer, isAuthenticated, isLoading, logout } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="bg-[#FAF6F0] min-h-screen font-body flex items-center justify-center py-24">
+        <div className="text-center">
+          <div className="w-8 h-8 border-2 border-[#4A3025] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <span className="text-[10px] uppercase tracking-[0.25em] text-[#8A817C] font-medium">
+            Entering The Atelier...
+          </span>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="bg-[#FAF6F0] min-h-screen font-body py-12">
+        <AtelierAuthGate />
+      </div>
+    );
+  }
+
+  const displayName = customer?.firstName ? `Madame ${customer.firstName}` : 'Madame Anya';
+
   return (
     <div
       className="bg-[#FAF6F0] min-h-screen font-body"
@@ -24,14 +48,17 @@ export default function AccountPage() {
             <h1 className="font-display text-[42px] leading-[1.1] text-[#4A3025]">
               Welcome back,
               <br />
-              Madame Anya.
+              {displayName}.
             </h1>
           </div>
           <div className="mt-8 md:mt-0 flex flex-col items-end">
             <span className="text-[10px] text-[#8A817C] mb-2 font-medium">
-              Member since MMXVIII
+              {customer?.email || 'Member since MMXVIII'}
             </span>
-            <button className="text-[9px] uppercase tracking-[0.25em] text-[#4A3025] border-b border-[#4A3025] pb-0.5 font-medium transition-opacity hover:opacity-70">
+            <button
+              onClick={() => logout()}
+              className="text-[9px] uppercase tracking-[0.25em] text-[#4A3025] border-b border-[#4A3025] pb-0.5 font-medium transition-opacity hover:opacity-70 cursor-pointer"
+            >
               Sign out
             </button>
           </div>
