@@ -51,14 +51,14 @@ export default function NewsletterPage() {
           </div>
 
           {/* Subscription Card */}
-          <div className="bg-[#f3ede4] border border-[var(--color-line)] p-8 md:p-12 shadow-sm mb-12">
+          <div className="bg-[#f3ede4] border border-[var(--color-line)] p-8 md:p-10 shadow-sm mb-12 min-h-[285px] flex flex-col justify-center">
             {isSuccess ? (
               <div
                 data-testid="newsletter-page-success"
-                className="text-center py-6 flex flex-col items-center gap-4"
+                className="text-center flex flex-col items-center justify-center gap-3 py-1"
               >
-                <div className="w-12 h-12 rounded-full border border-[var(--color-ink)] flex items-center justify-center text-[var(--color-ink)]">
-                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="w-10 h-10 rounded-full border border-[var(--color-ink)] flex items-center justify-center text-[var(--color-ink)]">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -69,12 +69,12 @@ export default function NewsletterPage() {
                 </div>
                 <div>
                   <h3
-                    className="text-2xl text-[var(--color-ink)] italic mb-2"
+                    className="text-xl md:text-2xl text-[var(--color-ink)] italic mb-1.5"
                     style={{ fontFamily: 'var(--font-display)' }}
                   >
                     Welcome to The Bombay Edit
                   </h3>
-                  <p className="font-body text-[14px] text-[var(--color-muted)] max-w-md mx-auto">
+                  <p className="font-body text-[13px] text-[var(--color-muted)] max-w-md mx-auto">
                     {message ||
                       'Thank you for subscribing. We look forward to sharing our latest stories and designs with you.'}
                   </p>
@@ -82,7 +82,7 @@ export default function NewsletterPage() {
                 <button
                   type="button"
                   onClick={reset}
-                  className="mt-4 border border-[var(--color-ink)] text-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-[var(--color-ivory)] px-6 py-2.5 text-[11px] uppercase tracking-[0.18em] transition-colors cursor-pointer"
+                  className="mt-2 border border-[var(--color-ink)] text-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-[var(--color-ivory)] px-5 py-2 text-[10px] uppercase tracking-[0.18em] transition-colors cursor-pointer"
                 >
                   Subscribe Another Email
                 </button>
@@ -90,7 +90,7 @@ export default function NewsletterPage() {
             ) : (
               <form
                 onSubmit={handleSubmit}
-                className="flex flex-col gap-6"
+                className="flex flex-col gap-5"
                 data-testid="newsletter-page-form"
               >
                 {/* Email Input */}

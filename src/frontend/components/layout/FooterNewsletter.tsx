@@ -33,11 +33,11 @@ export function FooterNewsletter() {
       {isSuccess ? (
         <div
           data-testid="newsletter-success-state"
-          className="p-3 bg-[#ded7cd] border border-[var(--color-line)] text-[var(--color-ink)] font-body text-[12px] flex flex-col gap-1.5 transition-all"
+          className="min-h-[56px] flex flex-col justify-center gap-1 font-body text-[12px] text-[var(--color-ink)]"
         >
           <div className="flex items-center gap-1.5 font-medium">
             <svg
-              className="w-4 h-4 text-[var(--color-ink)] shrink-0"
+              className="w-3.5 h-3.5 text-[var(--color-ink)] shrink-0"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -49,23 +49,24 @@ export function FooterNewsletter() {
                 d="M5 13l4 4L19 7"
               />
             </svg>
-            <span>Welcome to The Bombay Edit</span>
+            <span>{message || 'Thank you for subscribing.'}</span>
           </div>
-          <p className="text-[11px] text-[var(--color-muted)]">
-            {message || 'Thank you for subscribing to our newsletter.'}
-          </p>
-          <button
-            type="button"
-            onClick={reset}
-            className="text-[10px] underline uppercase tracking-wider text-[var(--color-ink)] hover:text-black self-start mt-1 cursor-pointer"
-          >
-            Subscribe another email
-          </button>
+          <div className="flex items-center gap-2 text-[11px] text-[var(--color-muted)]">
+            <span>Welcome to The Bombay Edit.</span>
+            <span>·</span>
+            <button
+              type="button"
+              onClick={reset}
+              className="underline hover:text-[var(--color-ink)] cursor-pointer"
+            >
+              Subscribe another
+            </button>
+          </div>
         </div>
       ) : (
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col gap-2.5"
+          className="flex flex-col gap-2.5 min-h-[56px]"
           data-testid="newsletter-form"
         >
           <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-2">
