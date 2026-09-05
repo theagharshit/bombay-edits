@@ -1,9 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { Input } from '@/frontend/components/ui/Input';
 import { REGIONS, SupportedCountry } from '@/frontend/utils/geoRegions';
+import { useAuth } from '@/frontend/context/AuthContext';
+import { AtelierAuthGate } from '@/frontend/components/account/AtelierAuthGate';
 
 interface AddressItem {
   id: string;
@@ -19,6 +21,7 @@ interface AddressItem {
 }
 
 export default function AddressesPage() {
+  const { customer, isAuthenticated, isLoading: authLoading } = useAuth();
   const [addresses, setAddresses] = useState<AddressItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -45,15 +48,15 @@ export default function AddressesPage() {
   const openModal = () => {
     setEditingAddrId(null);
     setNewAddr({
-      name: '',
-      phone: '',
+      name: customer?.firstName ? `${customer.firstName} ${customer.lastName || ''}`.trim() : '',
+      phone: customer?.phone || '',
       addressLine1: '',
       addressLine2: '',
       city: '',
       state: '',
       postalCode: '',
       country: 'India',
-      isDefault: false,
+      isDefault: addresses.length === 0,
     });
     setShowAddModal(true);
     detectLocationAndSetCountry();
@@ -75,21 +78,31 @@ export default function AddressesPage() {
     setShowAddModal(true);
   };
 
-  const fetchAddresses = async () => {
+  const fetchAddresses = useCallback(async () => {
+    if (!isAuthenticated) {
+      setLoading(false);
+      return;
+    }
     try {
+      setLoading(true);
       const res = await fetch('/api/addresses');
       if (res.ok) {
         const json = await res.json();
         if (json.data && Array.isArray(json.data)) {
           setAddresses(json.data);
+        } else {
+          setAddresses([]);
         }
+      } else {
+        setAddresses([]);
       }
     } catch (err) {
       console.error('Failed to load addresses:', err);
+      setAddresses([]);
     } finally {
       setLoading(false);
     }
-  };
+  }, [isAuthenticated]);
 
   const detectLocationAndSetCountry = async () => {
     setDetectingLocation(true);
@@ -101,7 +114,7 @@ export default function AddressesPage() {
           setNewAddr((prev) => ({
             ...prev,
             country: 'Nepal',
-            phone: prev.phone || '+977 ',
+            phone: prev.phone.startsWith('+91') ? '+977 ' : prev.phone || '+977 ',
           }));
           return;
         }
@@ -157,8 +170,12 @@ export default function AddressesPage() {
   };
 
   useEffect(() => {
-    fetchAddresses();
-  }, []);
+    if (!authLoading && isAuthenticated) {
+      fetchAddresses();
+    } else if (!authLoading && !isAuthenticated) {
+      setLoading(false);
+    }
+  }, [authLoading, isAuthenticated, fetchAddresses]);
 
   const handleCountryChange = (country: SupportedCountry) => {
     setNewAddr((prev) => ({
@@ -281,6 +298,27 @@ export default function AddressesPage() {
   };
 
   const currentCountryConfig = REGIONS[newAddr.country] || REGIONS.India;
+
+  if (authLoading) {
+    return (
+      <div className="bg-[#FAF6F0] min-h-screen font-body flex items-center justify-center py-24">
+        <div className="text-center">
+          <div className="w-8 h-8 border-2 border-[#4A3025] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <span className="text-[10px] uppercase tracking-[0.25em] text-[#8A817C] font-medium">
+            Entering The Atelier...
+          </span>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="bg-[#FAF6F0] min-h-screen font-body py-12">
+        <AtelierAuthGate />
+      </div>
+    );
+  }
 
   return (
     <div className="w-full min-h-screen bg-ivory text-dark-espresso font-body pt-12 pb-20 md:pt-16 md:pb-28">

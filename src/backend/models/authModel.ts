@@ -6,6 +6,10 @@ import {
   verifyJwt,
   JwtUserPayload,
 } from '@/backend/utils/jwt';
+import { CartItem, WishlistItem } from '@/types/cart';
+import { CartModel } from './cartModel';
+import { mergeWishlists } from '../utils/cartMerge';
+import { Prisma } from '@prisma/client';
 
 export interface RegisterDTO {
   email: string;
@@ -13,11 +17,19 @@ export interface RegisterDTO {
   firstName: string;
   lastName: string;
   phone?: string;
+  guestCart?: CartItem[];
+  guestWishlist?: WishlistItem[];
+  guestSessionToken?: string;
+  deviceFingerprint?: string;
 }
 
 export interface LoginDTO {
   email: string;
   password: string;
+  guestCart?: CartItem[];
+  guestWishlist?: WishlistItem[];
+  guestSessionToken?: string;
+  deviceFingerprint?: string;
 }
 
 export interface SanitizedCustomer {
@@ -37,7 +49,12 @@ export class AuthModel {
    */
   public static async register(
     dto: RegisterDTO
-  ): Promise<{ customer: SanitizedCustomer; token: string }> {
+  ): Promise<{
+    customer: SanitizedCustomer;
+    token: string;
+    cart: CartItem[];
+    wishlist: WishlistItem[];
+  }> {
     const email = dto.email.trim().toLowerCase();
     const password = dto.password;
 
@@ -108,6 +125,45 @@ export class AuthModel {
       isGuest: false,
     });
 
+    // Merge guest cart items into customer account
+    let joinedCart: CartItem[] = [];
+    try {
+      joinedCart = await CartModel.mergeGuestCartIntoCustomer({
+        customerId: customer.id,
+        sessionToken: dto.guestSessionToken,
+        deviceFingerprint: dto.deviceFingerprint,
+        guestItems: dto.guestCart,
+      });
+    } catch {
+      joinedCart = dto.guestCart || [];
+    }
+
+    // Merge guest wishlist into customer profile
+    let joinedWishlist: WishlistItem[] = [];
+    try {
+      const existingWishlist = (customer.wishlistData as unknown as WishlistItem[]) || [];
+      const incomingWishlist = dto.guestWishlist || [];
+      joinedWishlist = mergeWishlists(existingWishlist, incomingWishlist);
+
+      await prisma.customer.update({
+        where: { id: customer.id },
+        data: { wishlistData: joinedWishlist as unknown as Prisma.InputJsonValue },
+      });
+
+      if (dto.deviceFingerprint || dto.guestSessionToken) {
+        await prisma.wishlistItem.updateMany({
+          where: {
+            userIdentifier: {
+              in: [dto.deviceFingerprint || '', dto.guestSessionToken || ''].filter(Boolean),
+            },
+          },
+          data: { customerId: customer.id },
+        });
+      }
+    } catch {
+      joinedWishlist = dto.guestWishlist || [];
+    }
+
     return {
       customer: {
         id: customer.id,
@@ -120,15 +176,22 @@ export class AuthModel {
         createdAt: customer.createdAt,
       },
       token,
+      cart: joinedCart,
+      wishlist: joinedWishlist,
     };
   }
 
   /**
-   * Log in an existing member
+   * Log in an existing member and join any guest items into their account
    */
   public static async login(
     dto: LoginDTO
-  ): Promise<{ customer: SanitizedCustomer; token: string }> {
+  ): Promise<{
+    customer: SanitizedCustomer;
+    token: string;
+    cart: CartItem[];
+    wishlist: WishlistItem[];
+  }> {
     const email = dto.email.trim().toLowerCase();
     const customer = await prisma.customer.findUnique({
       where: { email },
@@ -152,6 +215,45 @@ export class AuthModel {
       isGuest: customer.isGuest,
     });
 
+    // Merge guest cart items into customer account
+    let joinedCart: CartItem[] = [];
+    try {
+      joinedCart = await CartModel.mergeGuestCartIntoCustomer({
+        customerId: customer.id,
+        sessionToken: dto.guestSessionToken,
+        deviceFingerprint: dto.deviceFingerprint,
+        guestItems: dto.guestCart,
+      });
+    } catch {
+      joinedCart = await CartModel.getCart({ customerId: customer.id });
+    }
+
+    // Merge guest wishlist into customer profile
+    let joinedWishlist: WishlistItem[] = [];
+    try {
+      const existingWishlist = (customer.wishlistData as unknown as WishlistItem[]) || [];
+      const incomingWishlist = dto.guestWishlist || [];
+      joinedWishlist = mergeWishlists(existingWishlist, incomingWishlist);
+
+      await prisma.customer.update({
+        where: { id: customer.id },
+        data: { wishlistData: joinedWishlist as unknown as Prisma.InputJsonValue },
+      });
+
+      if (dto.deviceFingerprint || dto.guestSessionToken) {
+        await prisma.wishlistItem.updateMany({
+          where: {
+            userIdentifier: {
+              in: [dto.deviceFingerprint || '', dto.guestSessionToken || ''].filter(Boolean),
+            },
+          },
+          data: { customerId: customer.id },
+        });
+      }
+    } catch {
+      joinedWishlist = (customer.wishlistData as unknown as WishlistItem[]) || [];
+    }
+
     return {
       customer: {
         id: customer.id,
@@ -164,6 +266,8 @@ export class AuthModel {
         createdAt: customer.createdAt,
       },
       token,
+      cart: joinedCart,
+      wishlist: joinedWishlist,
     };
   }
 

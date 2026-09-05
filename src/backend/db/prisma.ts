@@ -55,8 +55,11 @@ function createPrismaClient(): PrismaClient {
   return client;
 }
 
-// If globalThis.prismaGlobal was cached before new models (like guestSession) were added, recreate it
-if (globalThis.prismaGlobal && !('guestSession' in globalThis.prismaGlobal)) {
+// If globalThis.prismaGlobal was cached before new models (like cartItem) were added, recreate it
+if (
+  globalThis.prismaGlobal &&
+  (!('guestSession' in globalThis.prismaGlobal) || !('cartItem' in globalThis.prismaGlobal))
+) {
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (globalThis.prismaGlobal as any).$disconnect?.();

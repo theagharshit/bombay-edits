@@ -25,14 +25,30 @@ function getOrCreateUserIdentifier(): string {
   return userId;
 }
 
+import { useAuth } from '@/frontend/context/AuthContext';
+
 export function WishlistProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<WishlistItem[]>([]);
+  const { customer, isAuthenticated } = useAuth();
   const [userIdentifier, setUserIdentifier] = useState<string>('guest');
+
+  // Listen for login/register wishlist synchronization events
+  useEffect(() => {
+    const handleSync = (e: Event) => {
+      const customEvent = e as CustomEvent<WishlistItem[]>;
+      if (customEvent.detail && Array.isArray(customEvent.detail)) {
+        setItems(customEvent.detail);
+      }
+    };
+    window.addEventListener('tbe-wishlist-sync', handleSync);
+    return () => window.removeEventListener('tbe-wishlist-sync', handleSync);
+  }, []);
 
   // Initialize userIdentifier and fetch wishlist from API infrastructure
   useEffect(() => {
-    const userId = getOrCreateUserIdentifier();
-    setUserIdentifier(userId);
+    const activeUserId =
+      isAuthenticated && customer?.id ? customer.id : getOrCreateUserIdentifier();
+    setUserIdentifier(activeUserId);
 
     // Initial local storage load for instant render
     try {
@@ -45,11 +61,14 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
     // Sync with database via API infrastructure
     async function syncWishlistFromApi() {
       try {
-        const res = await fetch(`/api/v1/wishlist?userIdentifier=${encodeURIComponent(userId)}`, {
-          headers: {
-            'x-user-identifier': userId,
-          },
-        });
+        const res = await fetch(
+          `/api/v1/wishlist?userIdentifier=${encodeURIComponent(activeUserId)}`,
+          {
+            headers: {
+              'x-user-identifier': activeUserId,
+            },
+          }
+        );
         if (res.ok) {
           const json = await res.json();
           if (json.data && Array.isArray(json.data.items)) {
@@ -63,23 +82,25 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
     }
 
     syncWishlistFromApi();
-  }, []);
+  }, [customer?.id, isAuthenticated]);
 
-  // Save to local storage and DB guest session whenever items change
+  // Save to local storage and DB whenever items change
   useEffect(() => {
     localStorage.setItem('tbe-wishlist', JSON.stringify(items));
 
-    const fp = getDeviceFingerprint();
-    // Also persist to guest_sessions table in DB
-    fetch('/api/guest-session', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(fp ? { 'x-device-fingerprint': fp } : {}),
-      },
-      body: JSON.stringify({ action: 'update_wishlist', items, deviceFingerprint: fp }),
-    }).catch(() => {});
-  }, [items]);
+    // Only invoke guest-session if unauthenticated
+    if (!isAuthenticated) {
+      const fp = getDeviceFingerprint();
+      fetch('/api/guest-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(fp ? { 'x-device-fingerprint': fp } : {}),
+        },
+        body: JSON.stringify({ action: 'update_wishlist', items, deviceFingerprint: fp }),
+      }).catch(() => {});
+    }
+  }, [items, isAuthenticated]);
 
   const isWishlisted = useCallback(
     (productId: string) => items.some((i) => i.productId === productId),

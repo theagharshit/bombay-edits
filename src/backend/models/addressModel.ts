@@ -1,5 +1,6 @@
 import { prisma, isPrismaConnected } from '../db/prisma';
 import { logger } from '../utils/logger';
+import { Prisma } from '@prisma/client';
 
 export interface AddressRecord {
   id: string;
@@ -17,6 +18,8 @@ export interface AddressRecord {
 }
 
 export interface CreateAddressDTO {
+  customerId?: string;
+  customerEmail?: string;
   name: string;
   phone: string;
   addressLine1: string;
@@ -26,7 +29,6 @@ export interface CreateAddressDTO {
   postalCode?: string;
   country?: string;
   isDefault?: boolean;
-  customerEmail?: string;
 }
 
 export interface UpdateAddressDTO {
@@ -41,80 +43,77 @@ export interface UpdateAddressDTO {
   isDefault?: boolean;
 }
 
-const defaultAddresses: AddressRecord[] = [
-  {
-    id: 'addr-1',
-    name: 'Ananya Sharma',
-    phone: '+91 98201 23456',
-    addressLine1: 'B-402, Sea Green Apartments, Worli Sea Face',
-    addressLine2: 'Worli',
-    city: 'Mumbai',
-    state: 'Maharashtra',
-    postalCode: '400018',
-    country: 'India',
-    isDefault: true,
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: 'addr-2',
-    name: 'Ananya Sharma (Atelier)',
-    phone: '+91 98201 23456',
-    addressLine1: '14 Kala Ghoda, Fort Heritage District',
-    addressLine2: 'Fort',
-    city: 'Mumbai',
-    state: 'Maharashtra',
-    postalCode: '400001',
-    country: 'India',
-    isDefault: false,
-    createdAt: new Date().toISOString(),
-  },
-];
-
-let addressStore: AddressRecord[] = [...defaultAddresses];
+export interface AddressFilter {
+  customerId?: string;
+  customerEmail?: string;
+}
 
 export class AddressModel {
-  public static async getAll(customerEmail?: string): Promise<AddressRecord[]> {
+  /**
+   * Get all addresses strictly isolated for a given customer.
+   * If customer has 0 addresses, returns [] (never mock data).
+   * If no customer is specified, returns [] to prevent data leakage.
+   */
+  public static async getAll(filter?: AddressFilter | string): Promise<AddressRecord[]> {
+    const normalizedFilter: AddressFilter =
+      typeof filter === 'string' ? { customerEmail: filter } : filter || {};
+
+    const { customerId, customerEmail } = normalizedFilter;
+
+    // Strict access control: never return all addresses to anonymous callers
+    if (!customerId && !customerEmail) {
+      return [];
+    }
+
     if (await isPrismaConnected()) {
       try {
+        const where: Prisma.AddressWhereInput = {};
+        if (customerId) {
+          where.customerId = customerId;
+        } else if (customerEmail) {
+          where.customer = { email: customerEmail.toLowerCase().trim() };
+        }
+
         const addresses = await prisma.address.findMany({
-          where: customerEmail
-            ? { customer: { email: customerEmail.toLowerCase().trim() } }
-            : undefined,
+          where,
           include: { customer: true },
           orderBy: [{ isDefault: 'desc' }, { createdAt: 'desc' }],
         });
 
-        if (addresses.length > 0) {
-          return addresses.map((addr) => ({
-            id: addr.id,
-            customerId: addr.customerId,
-            name: addr.customer
-              ? `${addr.customer.firstName} ${addr.customer.lastName}`.trim()
-              : 'Customer',
-            phone: addr.customer?.phone || '',
-            addressLine1: addr.addressLine1,
-            addressLine2: addr.addressLine2 || undefined,
-            city: addr.city,
-            state: addr.state || undefined,
-            postalCode: addr.postalCode || undefined,
-            country: addr.country,
-            isDefault: addr.isDefault,
-            createdAt: addr.createdAt.toISOString(),
-          }));
-        }
+        // Always map from the actual DB query (returns [] if 0 addresses found)
+        return addresses.map((addr) => ({
+          id: addr.id,
+          customerId: addr.customerId,
+          name: addr.customer
+            ? `${addr.customer.firstName} ${addr.customer.lastName}`.trim()
+            : 'Customer',
+          phone: addr.customer?.phone || '',
+          addressLine1: addr.addressLine1,
+          addressLine2: addr.addressLine2 || undefined,
+          city: addr.city,
+          state: addr.state || undefined,
+          postalCode: addr.postalCode || undefined,
+          country: addr.country,
+          isDefault: addr.isDefault,
+          createdAt: addr.createdAt.toISOString(),
+        }));
       } catch (err) {
-        logger.warn('Failed to query addresses from Prisma, using memory store', { error: err });
+        logger.warn('Failed to query addresses from Prisma', { error: err });
+        return [];
       }
     }
 
-    return [...addressStore];
+    return [];
   }
 
-  public static async getById(id: string): Promise<AddressRecord | null> {
+  /**
+   * Retrieve a single address with ownership verification
+   */
+  public static async getById(id: string, customerId?: string): Promise<AddressRecord | null> {
     if (await isPrismaConnected()) {
       try {
-        const addr = await prisma.address.findUnique({
-          where: { id },
+        const addr = await prisma.address.findFirst({
+          where: customerId ? { id, customerId } : { id },
           include: { customer: true },
         });
 
@@ -137,56 +136,57 @@ export class AddressModel {
           };
         }
       } catch (err) {
-        logger.warn('Failed to find address in Prisma, using memory store', { error: err });
+        logger.warn('Failed to find address in Prisma', { error: err });
       }
     }
 
-    return addressStore.find((a) => a.id === id) || null;
+    return null;
   }
 
+  /**
+   * Create a new address bound to the customer profile
+   */
   public static async create(data: CreateAddressDTO): Promise<AddressRecord> {
-    const isDefault = data.isDefault ?? addressStore.length === 0;
     const id = `addr-${Date.now()}`;
-    const newRecord: AddressRecord = {
-      id,
-      name: data.name.trim(),
-      phone: data.phone.trim(),
-      addressLine1: data.addressLine1.trim(),
-      addressLine2: data.addressLine2?.trim() || undefined,
-      city: data.city.trim(),
-      state: data.state?.trim() || undefined,
-      postalCode: data.postalCode?.trim() || undefined,
-      country: data.country?.trim() || 'India',
-      isDefault,
-      createdAt: new Date().toISOString(),
-    };
+    const email = data.customerEmail?.toLowerCase().trim();
 
-    if (isDefault) {
-      addressStore = addressStore.map((a) => ({ ...a, isDefault: false }));
+    if (!data.customerId && !email) {
+      throw new Error('Authenticated customer account required to save address.');
     }
-    addressStore.unshift(newRecord);
 
     if (await isPrismaConnected()) {
       try {
-        const email = (data.customerEmail || 'ananya.sharma@example.com').toLowerCase().trim();
-        const names = data.name.trim().split(' ');
-        const firstName = names[0] || 'Valued';
-        const lastName = names.slice(1).join(' ') || 'Client';
+        // Resolve or upsert customer
+        let customerId = data.customerId;
+        if (!customerId && email) {
+          const names = data.name.trim().split(' ');
+          const customer = await prisma.customer.upsert({
+            where: { email },
+            update: { phone: data.phone },
+            create: {
+              email,
+              firstName: names[0] || 'Client',
+              lastName: names.slice(1).join(' ') || '',
+              phone: data.phone,
+            },
+          });
+          customerId = customer.id;
+        }
 
-        const customer = await prisma.customer.upsert({
-          where: { email },
-          update: { phone: data.phone },
-          create: {
-            email,
-            firstName,
-            lastName,
-            phone: data.phone,
-          },
+        if (!customerId) {
+          throw new Error('Failed to resolve customer ID for address creation');
+        }
+
+        // Check if customer already has any address
+        const existingCount = await prisma.address.count({
+          where: { customerId },
         });
+
+        const isDefault = data.isDefault ?? existingCount === 0;
 
         if (isDefault) {
           await prisma.address.updateMany({
-            where: { customerId: customer.id },
+            where: { customerId },
             data: { isDefault: false },
           });
         }
@@ -194,7 +194,7 @@ export class AddressModel {
         const created = await prisma.address.create({
           data: {
             id,
-            customerId: customer.id,
+            customerId,
             addressLine1: data.addressLine1.trim(),
             addressLine2: data.addressLine2?.trim() || null,
             city: data.city.trim(),
@@ -205,79 +205,123 @@ export class AddressModel {
           },
         });
 
-        logger.info(`✓ Saved address to Prisma (${created.id})`);
+        logger.info(`✓ Saved address to Prisma (${created.id}) for customer (${customerId})`);
+
+        return {
+          id: created.id,
+          customerId: created.customerId,
+          name: data.name.trim(),
+          phone: data.phone.trim(),
+          addressLine1: created.addressLine1,
+          addressLine2: created.addressLine2 || undefined,
+          city: created.city,
+          state: created.state || undefined,
+          postalCode: created.postalCode || undefined,
+          country: created.country,
+          isDefault: created.isDefault,
+          createdAt: created.createdAt.toISOString(),
+        };
       } catch (err) {
-        logger.warn('Failed to write address to Prisma, saved to memory', { error: err });
+        logger.error('Failed to create address in Prisma', err);
+        throw err;
       }
     }
 
-    return newRecord;
+    throw new Error('Database connection unavailable');
   }
 
-  public static async update(id: string, data: UpdateAddressDTO): Promise<AddressRecord | null> {
-    const existing = addressStore.find((a) => a.id === id);
-    if (!existing) return null;
-
-    if (data.isDefault) {
-      addressStore = addressStore.map((a) => ({ ...a, isDefault: a.id === id }));
-    }
-
-    const updated: AddressRecord = {
-      ...existing,
-      ...data,
-    };
-
-    addressStore = addressStore.map((a) => (a.id === id ? updated : a));
-
+  /**
+   * Update an address verifying customer ownership
+   */
+  public static async update(
+    id: string,
+    data: UpdateAddressDTO,
+    customerId?: string
+  ): Promise<AddressRecord | null> {
     if (await isPrismaConnected()) {
       try {
+        const existing = await prisma.address.findFirst({
+          where: customerId ? { id, customerId } : { id },
+          include: { customer: true },
+        });
+
+        if (!existing) return null;
+
         if (data.isDefault) {
-          const dbAddr = await prisma.address.findUnique({ where: { id } });
-          if (dbAddr) {
-            await prisma.address.updateMany({
-              where: { customerId: dbAddr.customerId },
-              data: { isDefault: false },
-            });
-          }
+          await prisma.address.updateMany({
+            where: { customerId: existing.customerId },
+            data: { isDefault: false },
+          });
         }
 
-        await prisma.address.update({
+        const updated = await prisma.address.update({
           where: { id },
           data: {
-            ...(data.addressLine1 && { addressLine1: data.addressLine1 }),
-            ...(data.addressLine2 !== undefined && { addressLine2: data.addressLine2 || null }),
-            ...(data.city && { city: data.city }),
-            ...(data.state !== undefined && { state: data.state || null }),
-            ...(data.postalCode !== undefined && { postalCode: data.postalCode || null }),
-            ...(data.country && { country: data.country }),
+            ...(data.addressLine1 && { addressLine1: data.addressLine1.trim() }),
+            ...(data.addressLine2 !== undefined && {
+              addressLine2: data.addressLine2?.trim() || null,
+            }),
+            ...(data.city && { city: data.city.trim() }),
+            ...(data.state !== undefined && { state: data.state?.trim() || null }),
+            ...(data.postalCode !== undefined && { postalCode: data.postalCode?.trim() || null }),
+            ...(data.country && { country: data.country.trim() }),
             ...(data.isDefault !== undefined && { isDefault: data.isDefault }),
           },
+          include: { customer: true },
         });
+
+        return {
+          id: updated.id,
+          customerId: updated.customerId,
+          name:
+            data.name ||
+            (updated.customer
+              ? `${updated.customer.firstName} ${updated.customer.lastName}`.trim()
+              : 'Customer'),
+          phone: data.phone || updated.customer?.phone || '',
+          addressLine1: updated.addressLine1,
+          addressLine2: updated.addressLine2 || undefined,
+          city: updated.city,
+          state: updated.state || undefined,
+          postalCode: updated.postalCode || undefined,
+          country: updated.country,
+          isDefault: updated.isDefault,
+          createdAt: updated.createdAt.toISOString(),
+        };
       } catch (err) {
-        logger.warn('Failed to update address in Prisma, updated memory', { error: err });
+        logger.error('Failed to update address in Prisma', err);
       }
     }
 
-    return updated;
+    return null;
   }
 
-  public static async setDefault(id: string): Promise<AddressRecord | null> {
-    return this.update(id, { isDefault: true });
+  /**
+   * Set address as default verifying ownership
+   */
+  public static async setDefault(id: string, customerId?: string): Promise<AddressRecord | null> {
+    return this.update(id, { isDefault: true }, customerId);
   }
 
-  public static async delete(id: string): Promise<boolean> {
-    const initialLen = addressStore.length;
-    addressStore = addressStore.filter((a) => a.id !== id);
-    const deleted = addressStore.length < initialLen;
-
+  /**
+   * Delete an address verifying customer ownership
+   */
+  public static async delete(id: string, customerId?: string): Promise<boolean> {
     if (await isPrismaConnected()) {
       try {
+        const existing = await prisma.address.findFirst({
+          where: customerId ? { id, customerId } : { id },
+        });
+
+        if (!existing) return false;
+
         await prisma.address.delete({ where: { id } });
+        return true;
       } catch (err) {
-        logger.warn('Failed to delete address from Prisma', { error: err });
+        logger.error('Failed to delete address from Prisma', err);
       }
     }
 
-    return deleted;
+    return false;
   }
 }

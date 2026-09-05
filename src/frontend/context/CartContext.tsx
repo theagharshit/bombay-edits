@@ -95,11 +95,26 @@ interface CartContextValue {
 
 const CartContext = createContext<CartContextValue | undefined>(undefined);
 
+import { useAuth } from '@/frontend/context/AuthContext';
+
 export function CartProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, { items: [], isOpen: false });
   const isHydratedRef = useRef(false);
+  const { customer, isAuthenticated } = useAuth();
 
-  // Hydrate from localStorage first, then sync with DB guest session
+  // Listen for login/register cart synchronization events
+  useEffect(() => {
+    const handleSync = (e: Event) => {
+      const customEvent = e as CustomEvent<CartItem[]>;
+      if (customEvent.detail && Array.isArray(customEvent.detail)) {
+        dispatch({ type: 'HYDRATE', payload: customEvent.detail });
+      }
+    };
+    window.addEventListener('tbe-cart-sync', handleSync);
+    return () => window.removeEventListener('tbe-cart-sync', handleSync);
+  }, []);
+
+  // Hydrate from localStorage first, then sync with database (/api/cart)
   useEffect(() => {
     let localItems: CartItem[] = [];
     try {
@@ -112,30 +127,29 @@ export function CartProvider({ children }: { children: ReactNode }) {
       // Ignore parse errors
     }
 
-    // Fetch persistent guest session from database
     async function syncCartWithDb() {
       try {
         const fp = getDeviceFingerprint();
-        const res = await fetch('/api/guest-session', {
+        const res = await fetch('/api/cart', {
           headers: fp ? { 'x-device-fingerprint': fp } : {},
         });
         if (res.ok) {
           const json = await res.json();
-          if (json.data && Array.isArray(json.data.cart)) {
-            const dbCart: CartItem[] = json.data.cart;
+          if (json.data && Array.isArray(json.data.items)) {
+            const dbCart: CartItem[] = json.data.items;
             if (dbCart.length > 0) {
               dispatch({ type: 'HYDRATE', payload: dbCart });
               localStorage.setItem('tbe-cart', JSON.stringify(dbCart));
             } else if (localItems.length > 0) {
-              // Push local items to DB guest session
-              fetch('/api/guest-session', {
+              // Push local items to DB
+              fetch('/api/cart', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
                   ...(fp ? { 'x-device-fingerprint': fp } : {}),
                 },
                 body: JSON.stringify({
-                  action: 'update_cart',
+                  action: 'update',
                   items: localItems,
                   deviceFingerprint: fp,
                 }),
@@ -144,16 +158,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
           }
         }
       } catch {
-        // Fallback to local storage if API is unreachable
+        // Fallback to local storage
       } finally {
         isHydratedRef.current = true;
       }
     }
 
     syncCartWithDb();
-  }, []);
+  }, [customer?.id, isAuthenticated]);
 
-  // Persist to localStorage and DB guest session on change
+  // Persist to localStorage and database on change
   useEffect(() => {
     localStorage.setItem('tbe-cart', JSON.stringify(state.items));
 
@@ -161,14 +175,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
     if (isHydratedRef.current) {
       const timer = setTimeout(() => {
         const fp = getDeviceFingerprint();
-        fetch('/api/guest-session', {
+        fetch('/api/cart', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             ...(fp ? { 'x-device-fingerprint': fp } : {}),
           },
           body: JSON.stringify({
-            action: 'update_cart',
+            action: 'update',
             items: state.items,
             deviceFingerprint: fp,
           }),
@@ -196,7 +210,24 @@ export function CartProvider({ children }: { children: ReactNode }) {
       dispatch({ type: 'UPDATE_QUANTITY', payload: { productId, size, quantity } }),
     []
   );
-  const clearCart = useCallback(() => dispatch({ type: 'CLEAR_CART' }), []);
+  const clearCart = useCallback(() => {
+    dispatch({ type: 'CLEAR_CART' });
+    try {
+      localStorage.removeItem('tbe-cart');
+    } catch {
+      // ignore
+    }
+
+    const fp = getDeviceFingerprint();
+    fetch('/api/cart', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(fp ? { 'x-device-fingerprint': fp } : {}),
+      },
+      body: JSON.stringify({ action: 'clear', deviceFingerprint: fp }),
+    }).catch(() => {});
+  }, []);
   const toggleCart = useCallback(() => dispatch({ type: 'TOGGLE_CART' }), []);
   const openCart = useCallback(() => dispatch({ type: 'OPEN_CART' }), []);
   const closeCart = useCallback(() => dispatch({ type: 'CLOSE_CART' }), []);

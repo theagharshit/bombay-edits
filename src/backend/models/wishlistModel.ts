@@ -213,17 +213,42 @@ export class WishlistModel {
   }
 
   /**
-   * Clear all items from wishlist for userIdentifier
+   * Clear all items from wishlist across every table
    */
-  public static async clearWishlist(userIdentifier = 'guest'): Promise<boolean> {
+  public static async clearWishlist(
+    userIdentifier = 'guest',
+    customerId?: string
+  ): Promise<boolean> {
     const key = userIdentifier.trim() || 'guest';
 
     if (await isPrismaConnected()) {
       try {
+        const orConditions = [{ userIdentifier: key }];
+        if (customerId) {
+          orConditions.push({ userIdentifier: customerId });
+        }
+
         await prisma.wishlistItem.deleteMany({
-          where: { userIdentifier: key },
+          where: {
+            OR: [...orConditions, ...(customerId ? [{ customerId }] : [])],
+          },
         });
-        logger.info(`✓ Cleared wishlist in Prisma for user ${key}`);
+
+        if (customerId) {
+          await prisma.customer.updateMany({
+            where: { id: customerId },
+            data: { wishlistData: [] },
+          });
+        }
+
+        await prisma.guestSession.updateMany({
+          where: {
+            OR: [{ sessionToken: key }, { deviceFingerprint: key }],
+          },
+          data: { wishlistData: [] },
+        });
+
+        logger.info(`✓ Cleared wishlist across all tables for user ${key}`);
       } catch (err) {
         logger.warn('Failed to clear wishlist in Prisma', { error: err });
       }

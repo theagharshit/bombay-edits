@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { AddressModel, CreateAddressDTO, UpdateAddressDTO } from '../models/addressModel';
+import { AuthModel } from '../models/authModel';
 import { ApiResponse } from '../utils/apiResponse';
 import { Validator } from '../middlewares/validatorMiddleware';
 import { RequestContext } from '../types/api';
@@ -8,26 +9,53 @@ import { logger } from '../utils/logger';
 export class AddressController {
   /**
    * GET /api/addresses
-   * List all saved addresses
+   * List saved addresses for the authenticated customer only.
    */
   public async getAddresses(req: NextRequest) {
+    const customer = await AuthModel.getCustomerFromRequest(req);
+
+    if (!customer) {
+      // Unauthenticated requests never see private addresses
+      return ApiResponse.success([]);
+    }
+
     const { searchParams } = new URL(req.url);
-    const email = searchParams.get('email') || undefined;
-    const addresses = await AddressModel.getAll(email);
+    const queryEmail = searchParams.get('email')?.trim().toLowerCase();
+
+    // Admin can query by email; regular customer sees only their own addresses
+    if (customer.role === 'admin' && queryEmail) {
+      const addresses = await AddressModel.getAll({ customerEmail: queryEmail });
+      return ApiResponse.success(addresses);
+    }
+
+    const addresses = await AddressModel.getAll({
+      customerId: customer.id,
+      customerEmail: customer.email,
+    });
+
     return ApiResponse.success(addresses);
   }
 
   /**
    * GET /api/addresses/[id]
-   * Get single address by ID
+   * Get single address by ID (with customer ownership validation)
    */
-  public async getAddressById(_req: NextRequest, context: RequestContext) {
+  public async getAddressById(req: NextRequest, context: RequestContext) {
+    const customer = await AuthModel.getCustomerFromRequest(req);
+    if (!customer) {
+      return ApiResponse.error('Unauthorized', { status: 401 });
+    }
+
     const id = context.params?.id as string;
     if (!id) {
       return ApiResponse.error('Address ID is required', { status: 400 });
     }
 
-    const address = await AddressModel.getById(id);
+    const address = await AddressModel.getById(
+      id,
+      customer.role === 'admin' ? undefined : customer.id
+    );
+
     if (!address) {
       return ApiResponse.error('Address not found', { status: 404 });
     }
@@ -37,9 +65,14 @@ export class AddressController {
 
   /**
    * POST /api/addresses
-   * Create new address
+   * Create new address bound to authenticated customer
    */
   public async createAddress(req: NextRequest, context: RequestContext) {
+    const customer = await AuthModel.getCustomerFromRequest(req);
+    if (!customer) {
+      return ApiResponse.error('Please sign in to save an address.', { status: 401 });
+    }
+
     const body = (await req.json()) as CreateAddressDTO;
     Validator.requireFields(body as unknown as Record<string, unknown>, [
       'name',
@@ -48,8 +81,15 @@ export class AddressController {
       'city',
     ]);
 
-    const created = await AddressModel.create(body);
-    logger.info(`Address added successfully (${created.id})`, { requestId: context.requestId });
+    const created = await AddressModel.create({
+      ...body,
+      customerId: customer.id,
+      customerEmail: customer.email,
+    });
+
+    logger.info(`Address added successfully (${created.id}) for customer (${customer.id})`, {
+      requestId: context.requestId,
+    });
 
     return ApiResponse.success(created, {
       message: 'Address saved successfully',
@@ -59,16 +99,26 @@ export class AddressController {
 
   /**
    * PUT/PATCH /api/addresses/[id]
-   * Update address
+   * Update address (with customer ownership validation)
    */
   public async updateAddress(req: NextRequest, context: RequestContext) {
+    const customer = await AuthModel.getCustomerFromRequest(req);
+    if (!customer) {
+      return ApiResponse.error('Unauthorized', { status: 401 });
+    }
+
     const id = context.params?.id as string;
     if (!id) {
       return ApiResponse.error('Address ID is required', { status: 400 });
     }
 
     const body = (await req.json()) as UpdateAddressDTO;
-    const updated = await AddressModel.update(id, body);
+    const updated = await AddressModel.update(
+      id,
+      body,
+      customer.role === 'admin' ? undefined : customer.id
+    );
+
     if (!updated) {
       return ApiResponse.error('Address not found', { status: 404 });
     }
@@ -78,15 +128,24 @@ export class AddressController {
 
   /**
    * PATCH /api/addresses/[id]/default
-   * Set address as primary default
+   * Set address as primary default (with customer ownership validation)
    */
-  public async setDefaultAddress(_req: NextRequest, context: RequestContext) {
+  public async setDefaultAddress(req: NextRequest, context: RequestContext) {
+    const customer = await AuthModel.getCustomerFromRequest(req);
+    if (!customer) {
+      return ApiResponse.error('Unauthorized', { status: 401 });
+    }
+
     const id = context.params?.id as string;
     if (!id) {
       return ApiResponse.error('Address ID is required', { status: 400 });
     }
 
-    const updated = await AddressModel.setDefault(id);
+    const updated = await AddressModel.setDefault(
+      id,
+      customer.role === 'admin' ? undefined : customer.id
+    );
+
     if (!updated) {
       return ApiResponse.error('Address not found', { status: 404 });
     }
@@ -96,15 +155,24 @@ export class AddressController {
 
   /**
    * DELETE /api/addresses/[id]
-   * Remove address
+   * Remove address (with customer ownership validation)
    */
-  public async deleteAddress(_req: NextRequest, context: RequestContext) {
+  public async deleteAddress(req: NextRequest, context: RequestContext) {
+    const customer = await AuthModel.getCustomerFromRequest(req);
+    if (!customer) {
+      return ApiResponse.error('Unauthorized', { status: 401 });
+    }
+
     const id = context.params?.id as string;
     if (!id) {
       return ApiResponse.error('Address ID is required', { status: 400 });
     }
 
-    const deleted = await AddressModel.delete(id);
+    const deleted = await AddressModel.delete(
+      id,
+      customer.role === 'admin' ? undefined : customer.id
+    );
+
     if (!deleted) {
       return ApiResponse.error('Address not found', { status: 404 });
     }

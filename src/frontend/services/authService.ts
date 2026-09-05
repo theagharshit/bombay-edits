@@ -1,4 +1,6 @@
 import { ApiClient } from './apiClient';
+import { CartItem, WishlistItem } from '@/types/cart';
+import { getDeviceFingerprint } from '../utils/deviceFingerprint';
 
 export interface CustomerProfile {
   id: string;
@@ -20,11 +22,48 @@ export interface AuthStatusResponse {
 export interface AuthSuccessPayload {
   customer: CustomerProfile;
   token: string;
+  cart?: CartItem[];
+  wishlist?: WishlistItem[];
+}
+
+function getLocalGuestData() {
+  let guestCart: CartItem[] = [];
+  let guestWishlist: WishlistItem[] = [];
+  if (typeof window !== 'undefined') {
+    try {
+      const c = localStorage.getItem('tbe-cart');
+      if (c) guestCart = JSON.parse(c);
+    } catch {
+      // ignore
+    }
+    try {
+      const w = localStorage.getItem('tbe-wishlist');
+      if (w) guestWishlist = JSON.parse(w);
+    } catch {
+      // ignore
+    }
+  }
+  const deviceFingerprint = getDeviceFingerprint();
+  return { guestCart, guestWishlist, deviceFingerprint };
+}
+
+function handleAuthSync(payload: AuthSuccessPayload) {
+  if (typeof window === 'undefined') return;
+
+  if (Array.isArray(payload.cart)) {
+    localStorage.setItem('tbe-cart', JSON.stringify(payload.cart));
+    window.dispatchEvent(new CustomEvent('tbe-cart-sync', { detail: payload.cart }));
+  }
+
+  if (Array.isArray(payload.wishlist)) {
+    localStorage.setItem('tbe-wishlist', JSON.stringify(payload.wishlist));
+    window.dispatchEvent(new CustomEvent('tbe-wishlist-sync', { detail: payload.wishlist }));
+  }
 }
 
 export class AuthService {
   /**
-   * Register a new member account
+   * Register a new member account and merge existing guest cart
    */
   public static async register(data: {
     email: string;
@@ -33,17 +72,29 @@ export class AuthService {
     lastName?: string;
     phone?: string;
   }): Promise<AuthSuccessPayload> {
-    return ApiClient.post<AuthSuccessPayload>('/api/auth/register', data);
+    const guestData = getLocalGuestData();
+    const payload = await ApiClient.post<AuthSuccessPayload>('/api/auth/register', {
+      ...data,
+      ...guestData,
+    });
+    handleAuthSync(payload);
+    return payload;
   }
 
   /**
-   * Log in with existing credentials
+   * Log in with existing credentials and join existing guest cart with account cart
    */
   public static async login(data: {
     email: string;
     password: string;
   }): Promise<AuthSuccessPayload> {
-    return ApiClient.post<AuthSuccessPayload>('/api/auth/login', data);
+    const guestData = getLocalGuestData();
+    const payload = await ApiClient.post<AuthSuccessPayload>('/api/auth/login', {
+      ...data,
+      ...guestData,
+    });
+    handleAuthSync(payload);
+    return payload;
   }
 
   /**
