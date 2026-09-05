@@ -24,7 +24,8 @@ const BASE_SLIDES: ExploreSlide[] = [
     subtitle: 'Experiments, accidents, and ideas – the textile as sketchbook.',
     ctaText: 'EXPLORE',
     href: '/the-craft',
-    image: 'https://images.unsplash.com/photo-1524228529766-4d7fe5dc55ca?auto=format&fit=crop&w=2400&h=1400&q=85',
+    image:
+      'https://images.unsplash.com/photo-1524228529766-4d7fe5dc55ca?auto=format&fit=crop&w=2400&h=1400&q=85',
     imageAlt: 'Inside Bombay Edits – Textile craft atelier and story',
   },
   {
@@ -34,27 +35,32 @@ const BASE_SLIDES: ExploreSlide[] = [
     subtitle: "Bringing Bombay's finest handcrafted silhouettes and heritage couture to Nepal.",
     ctaText: 'EXPLORE',
     href: '/collections',
-    image: 'https://images.unsplash.com/photo-1616583936499-d4116e7e2e76?auto=format&fit=crop&w=2400&h=1600&q=80',
+    image:
+      'https://images.unsplash.com/photo-1616583936499-d4116e7e2e76?auto=format&fit=crop&w=2400&h=1600&q=80',
     imageAlt: 'Bombay Edits Collections – Handcrafted Indian ethnic wear',
   },
   {
     id: 'shop',
     navLabel: 'Shop',
     title: 'THE SHOP',
-    subtitle: 'From our atelier to your wardrobe. Discover curated kurta sets, co-ords, and separates.',
+    subtitle:
+      'From our atelier to your wardrobe. Discover curated kurta sets, co-ords, and separates.',
     ctaText: 'EXPLORE',
     href: '/shop',
-    image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=2400&h=1400&q=85',
+    image:
+      'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=2400&h=1400&q=85',
     imageAlt: 'The Shop – Complete collection of luxury ethnic fashion',
   },
   {
     id: 'contact',
     navLabel: 'Contact Us',
     title: 'BESPOKE & ATELIER',
-    subtitle: 'Custom couture stitching, private styling appointments, and bespoke design commissions.',
+    subtitle:
+      'Custom couture stitching, private styling appointments, and bespoke design commissions.',
     ctaText: 'EXPLORE',
     href: '/contact',
-    image: 'https://images.unsplash.com/photo-1503160865267-af4660ce7bf2?auto=format&fit=crop&w=2400&h=1400&q=85',
+    image:
+      'https://images.unsplash.com/photo-1503160865267-af4660ce7bf2?auto=format&fit=crop&w=2400&h=1400&q=85',
     imageAlt: 'Contact Us – Private styling consultations and bespoke couture',
   },
 ];
@@ -62,8 +68,8 @@ const BASE_SLIDES: ExploreSlide[] = [
 // Infinite loop slides: prepend clone of last slide, append clone of first slide
 const SLIDES_WITH_CLONES: ExploreSlide[] = [
   BASE_SLIDES[BASE_SLIDES.length - 1], // Clone of last slide at index 0
-  ...BASE_SLIDES,                      // Real slides at index 1..4
-  BASE_SLIDES[0],                      // Clone of first slide at index 5
+  ...BASE_SLIDES, // Real slides at index 1..4
+  BASE_SLIDES[0], // Clone of first slide at index 5
 ];
 
 export function ExploreCarousel() {
@@ -124,7 +130,8 @@ export function ExploreCarousel() {
   };
 
   // Active slide indicator (0..3)
-  const activeIndicatorIndex = ((currentIndex - 1) % numRealSlides + numRealSlides) % numRealSlides;
+  const activeIndicatorIndex =
+    (((currentIndex - 1) % numRealSlides) + numRealSlides) % numRealSlides;
 
   // Jump to specific slide via indicator pills
   const goToSlide = (slideIndex: number) => {
@@ -180,9 +187,7 @@ export function ExploreCarousel() {
         onTransitionEnd={handleTransitionEnd}
         style={{
           transform: `translate3d(-${currentIndex * 100}%, 0, 0)`,
-          transition: isTransitioning
-            ? 'transform 800ms cubic-bezier(0.22, 1, 0.36, 1)'
-            : 'none',
+          transition: isTransitioning ? 'transform 800ms cubic-bezier(0.22, 1, 0.36, 1)' : 'none',
         }}
       >
         {SLIDES_WITH_CLONES.map((slide, index) => {

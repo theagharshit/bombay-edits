@@ -106,9 +106,7 @@ export function CategoryPageContent({
                   Newest arrivals in {title}
                 </span>
               </div>
-              <div
-                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-12"
-              >
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-12">
                 {trendingProducts.map((product) => (
                   <ProductCard key={`trending-${product.id}`} product={product} priority={true} />
                 ))}
@@ -134,9 +132,7 @@ export function CategoryPageContent({
                   Loved by our clients
                 </span>
               </div>
-              <div
-                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-12"
-              >
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-12">
                 {bestsellers.map((product) => (
                   <ProductCard key={`bestseller-${product.id}`} product={product} />
                 ))}
@@ -162,9 +158,7 @@ export function CategoryPageContent({
                   The Archive
                 </span>
               </div>
-              <div
-                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-12"
-              >
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-12">
                 {specialOffers.map((product) => (
                   <ProductCard key={`offer-${product.id}`} product={product} />
                 ))}
@@ -285,9 +279,7 @@ export function CategoryPageContent({
                   </button>
                 </div>
               ) : (
-                <div
-                  className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10"
-                >
+                <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
                   {visibleProducts.map((product) => (
                     <ProductCard key={`grid-${product.id}`} product={product} />
                   ))}

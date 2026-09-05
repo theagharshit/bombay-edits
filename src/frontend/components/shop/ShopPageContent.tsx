@@ -96,9 +96,7 @@ export function ShopPageContent({
                 </span>
               </div>
 
-              <div
-                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-12"
-              >
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-12">
                 {trendingProducts.map((product) => (
                   <ProductCard key={`trending-${product.id}`} product={product} priority={true} />
                 ))}
@@ -125,9 +123,7 @@ export function ShopPageContent({
                 </span>
               </div>
 
-              <div
-                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-12"
-              >
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-12">
                 {bestsellers.map((product) => (
                   <ProductCard key={`bestseller-${product.id}`} product={product} />
                 ))}
@@ -161,9 +157,7 @@ export function ShopPageContent({
                   </span>
                 </div>
 
-                <div
-                  className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-12"
-                >
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-12">
                   {categoryProducts.map((product) => (
                     <ProductCard key={`${cat.id}-${product.id}`} product={product} />
                   ))}
@@ -202,9 +196,7 @@ export function ShopPageContent({
               </span>
             </div>
 
-            <div
-              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-12"
-            >
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-12">
               {specialOffers.map((product) => (
                 <ProductCard key={`offer-${product.id}`} product={product} />
               ))}

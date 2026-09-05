@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 export function CraftBanner() {
   return (
-    <section 
+    <section
       className="relative w-full min-h-[360px] md:min-h-[420px] lg:min-h-[560px] bg-[var(--color-ink)] overflow-hidden"
       style={{ aspectRatio: '21/9' }}
     >
@@ -13,15 +13,19 @@ export function CraftBanner() {
         className="object-cover object-center"
       />
       <div className="absolute inset-0 bg-[#1E1612] opacity-[0.30]" />
-      
+
       <div className="absolute inset-0 flex items-center justify-center px-6">
         <div className="w-full max-w-[560px] mx-auto">
-          <h2 
+          <h2
             className="text-white text-center"
             style={{ fontFamily: 'var(--font-display)', fontWeight: 400, lineHeight: 1.35 }}
           >
-            <span className="block text-[24px] md:text-[38px] lg:text-[32px] xl:text-[38px]">Made Slowly.</span>
-            <span className="block text-[24px] md:text-[38px] lg:text-[32px] xl:text-[38px]">Crafted Beautifully.</span>
+            <span className="block text-[24px] md:text-[38px] lg:text-[32px] xl:text-[38px]">
+              Made Slowly.
+            </span>
+            <span className="block text-[24px] md:text-[38px] lg:text-[32px] xl:text-[38px]">
+              Crafted Beautifully.
+            </span>
           </h2>
         </div>
       </div>

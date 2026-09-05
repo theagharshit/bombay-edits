@@ -98,13 +98,10 @@ const FOOTER_SECTIONS = [
 export function Footer() {
   return (
     <footer className="bg-[var(--color-ivory)]">
-
       {/* ═══ Upper Section: Info Columns + Embroidery Art ═══ */}
       <div className="bg-[#e8e2da] border-t border-[var(--color-line)]">
-
         <Container>
           <div className="relative z-10 grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr_1.2fr] gap-x-[32px] gap-y-[32px] py-[48px] md:py-[56px]">
-
             {/* Info Columns */}
             {UPPER_COLUMNS.map((col) => (
               <div key={col.title} className="flex flex-col">
@@ -139,16 +136,19 @@ export function Footer() {
               </h3>
               <div className="flex flex-col gap-[10px] font-body text-[13px] text-[var(--color-muted)]">
                 <p>
-                  <span className="font-medium text-[var(--color-ink)]">Address:</span> 123 Fashion Street, Mumbai, Maharashtra 400001, India
+                  <span className="font-medium text-[var(--color-ink)]">Address:</span> 123 Fashion
+                  Street, Mumbai, Maharashtra 400001, India
                 </p>
                 <p>
-                  <span className="font-medium text-[var(--color-ink)]">Email:</span> support@bombayedits.com
+                  <span className="font-medium text-[var(--color-ink)]">Email:</span>{' '}
+                  support@bombayedits.com
                 </p>
                 <p>
                   <span className="font-medium text-[var(--color-ink)]">Mob:</span> +91 9876543210
                 </p>
                 <p>
-                  <span className="font-medium text-[var(--color-ink)]">Opening Hours:</span> Mon to Sat: 10:30AM - 8:30PM
+                  <span className="font-medium text-[var(--color-ink)]">Opening Hours:</span> Mon to
+                  Sat: 10:30AM - 8:30PM
                 </p>
               </div>
             </div>
@@ -174,8 +174,6 @@ export function Footer() {
                 ))}
               </div>
             </div>
-
-
           </div>
         </Container>
 
@@ -194,10 +192,7 @@ export function Footer() {
         <Container>
           <div className="flex flex-col">
             {FOOTER_SECTIONS.map((section) => (
-              <div
-                key={section.title}
-                className="py-[20px] border-b border-[var(--color-line)]"
-              >
+              <div key={section.title} className="py-[20px] border-b border-[var(--color-line)]">
                 <h3
                   className="text-[var(--color-ink)] mb-[8px]"
                   style={{
@@ -219,7 +214,9 @@ export function Footer() {
                         {link.label}
                       </Link>
                       {index < section.links.length - 1 && (
-                        <span className="mx-[8px] text-[var(--color-line)] text-[13px] select-none">|</span>
+                        <span className="mx-[8px] text-[var(--color-line)] text-[13px] select-none">
+                          |
+                        </span>
                       )}
                     </span>
                   ))}
@@ -239,7 +236,6 @@ export function Footer() {
           </div>
         </Container>
       </div>
-
     </footer>
   );
 }

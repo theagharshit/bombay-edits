@@ -71,12 +71,14 @@ const PROMO_TILES = [
   {
     title: 'The Festive Edit',
     href: '/collections/festive',
-    image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=600&h=800&q=80',
+    image:
+      'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=600&h=800&q=80',
   },
   {
     title: 'New Arrivals',
     href: '/new-arrivals',
-    image: 'https://images.unsplash.com/photo-1616583936499-d4116e7e2e76?auto=format&fit=crop&w=600&h=800&q=80',
+    image:
+      'https://images.unsplash.com/photo-1616583936499-d4116e7e2e76?auto=format&fit=crop&w=600&h=800&q=80',
   },
 ];
 
@@ -85,14 +87,13 @@ export function MegaMenu({ onClose }: MegaMenuProps) {
     <div className="w-full bg-[var(--color-ivory)] border-t border-[var(--color-line)] shadow-sm">
       <Container>
         <div className="py-12 grid grid-cols-12 gap-8">
-          
           {/* Columns 1-8: Link Groups (4 per row) */}
           <div className="col-span-8">
             <div className="grid grid-cols-4 gap-y-10 gap-x-6">
               {LINK_GROUPS.map((group) => (
                 <div key={group.title} className="flex flex-col gap-[12px]">
-                  <h4 
-                    className="text-[var(--color-ink)]" 
+                  <h4
+                    className="text-[var(--color-ink)]"
                     style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '18px' }}
                   >
                     {group.title}
@@ -119,11 +120,7 @@ export function MegaMenu({ onClose }: MegaMenuProps) {
           <div className="col-span-4 flex gap-6">
             {PROMO_TILES.map((tile) => (
               <div key={tile.title} className="flex-1 flex flex-col gap-4">
-                <Link 
-                  href={tile.href} 
-                  onClick={onClose}
-                  className="group block"
-                >
+                <Link href={tile.href} onClick={onClose} className="group block">
                   <div className="relative w-full overflow-hidden" style={{ aspectRatio: '3/4' }}>
                     <Image
                       src={tile.image}
@@ -139,7 +136,6 @@ export function MegaMenu({ onClose }: MegaMenuProps) {
               </div>
             ))}
           </div>
-
         </div>
       </Container>
 
@@ -149,13 +145,41 @@ export function MegaMenu({ onClose }: MegaMenuProps) {
           <div className="flex justify-between items-center font-body text-[12px] text-[var(--color-muted)]">
             <div className="flex gap-8">
               <span>Order Support: Mon - Sat, 10 AM to 7 PM IST</span>
-              <a href="tel:+919876543210" className="hover:text-[var(--color-ink)] transition-colors">+91 98765 43210</a>
-              <a href="https://wa.me/919876543210" className="hover:text-[var(--color-ink)] transition-colors">WhatsApp Us</a>
+              <a
+                href="tel:+919876543210"
+                className="hover:text-[var(--color-ink)] transition-colors"
+              >
+                +91 98765 43210
+              </a>
+              <a
+                href="https://wa.me/919876543210"
+                className="hover:text-[var(--color-ink)] transition-colors"
+              >
+                WhatsApp Us
+              </a>
             </div>
             <div className="flex gap-6">
-              <Link href="/faqs" onClick={onClose} className="hover:text-[var(--color-ink)] transition-colors">FAQs</Link>
-              <Link href="/policies/shipping" onClick={onClose} className="hover:text-[var(--color-ink)] transition-colors">Shipping</Link>
-              <Link href="/policies/refund-policy" onClick={onClose} className="hover:text-[var(--color-ink)] transition-colors">Returns</Link>
+              <Link
+                href="/faqs"
+                onClick={onClose}
+                className="hover:text-[var(--color-ink)] transition-colors"
+              >
+                FAQs
+              </Link>
+              <Link
+                href="/policies/shipping"
+                onClick={onClose}
+                className="hover:text-[var(--color-ink)] transition-colors"
+              >
+                Shipping
+              </Link>
+              <Link
+                href="/policies/refund-policy"
+                onClick={onClose}
+                className="hover:text-[var(--color-ink)] transition-colors"
+              >
+                Returns
+              </Link>
             </div>
           </div>
         </Container>

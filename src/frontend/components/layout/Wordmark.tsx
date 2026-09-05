@@ -10,7 +10,7 @@ export function Wordmark({ id }: { id?: string }) {
       style={{
         fontFamily: 'var(--font-display)',
         fontWeight: 400,
-        fontSize: 'clamp(32px, 11vw, 180px)', 
+        fontSize: 'clamp(32px, 11vw, 180px)',
         lineHeight: 1,
         color: 'var(--color-ivory)',
         transformOrigin: 'top left',

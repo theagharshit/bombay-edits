@@ -137,9 +137,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
                     <ChevronDown
                       size={18}
                       strokeWidth={1}
-                      className={`transition-transform duration-200 ${
-                        isOpen ? 'rotate-180' : ''
-                      }`}
+                      className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
                     />
                   </button>
                   <div
@@ -170,16 +168,16 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
         {/* Pinned Bottom Block */}
         <div className="shrink-0 bg-[var(--color-shell)] border-t border-[var(--color-line)]">
           <div className="grid grid-cols-2 border-b border-[var(--color-line)]">
-            <Link 
-              href="/account" 
+            <Link
+              href="/account"
               onClick={onClose}
               className="flex flex-col items-center justify-center p-4 gap-2 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors border-r border-[var(--color-line)]"
             >
               <User size={18} strokeWidth={1} />
               <span className="font-body text-[11px] uppercase tracking-[0.1em]">Account</span>
             </Link>
-            <Link 
-              href="/wishlist" 
+            <Link
+              href="/wishlist"
               onClick={onClose}
               className="flex flex-col items-center justify-center p-4 gap-2 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors"
             >
@@ -188,16 +186,16 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
             </Link>
           </div>
           <div className="grid grid-cols-2">
-            <Link 
-              href="/orders" 
+            <Link
+              href="/orders"
               onClick={onClose}
               className="flex flex-col items-center justify-center p-4 gap-2 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors border-r border-[var(--color-line)]"
             >
               <Package size={18} strokeWidth={1} />
               <span className="font-body text-[11px] uppercase tracking-[0.1em]">Track Order</span>
             </Link>
-            <a 
-              href="tel:+919876543210" 
+            <a
+              href="tel:+919876543210"
               className="flex flex-col items-center justify-center p-4 gap-2 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors"
             >
               <Phone size={18} strokeWidth={1} />

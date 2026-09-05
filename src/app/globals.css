@@ -5,13 +5,13 @@
 
 @theme {
   /* Accents & Primary Brand Colors - New Specs */
-  --color-ivory: #FBF8F4;
-  --color-sand: #F2EBE1;
-  --color-shell: #F7F2EA;
-  --color-ink: #2A211C;
-  --color-muted: #7A6E64;
-  --color-line: #E3D9CC;
-  
+  --color-ivory: #fbf8f4;
+  --color-sand: #f2ebe1;
+  --color-shell: #f7f2ea;
+  --color-ink: #2a211c;
+  --color-muted: #7a6e64;
+  --color-line: #e3d9cc;
+
   /* Fallback legacy colors to not break existing pages */
   --color-chalk: #faf7f2;
   --color-brass: #c1a68d;
@@ -269,16 +269,24 @@ a {
   line-height: 1.12;
   font-family: var(--font-display);
   font-weight: 400;
-  @media (max-width: 1279px) { font-size: 52px; }
-  @media (max-width: 767px) { font-size: 36px; }
+  @media (max-width: 1279px) {
+    font-size: 52px;
+  }
+  @media (max-width: 767px) {
+    font-size: 36px;
+  }
 }
 @utility font-h2 {
   font-size: 46px;
   line-height: 1.15;
   font-family: var(--font-display);
   font-weight: 400;
-  @media (max-width: 1279px) { font-size: 38px; }
-  @media (max-width: 767px) { font-size: 30px; }
+  @media (max-width: 1279px) {
+    font-size: 38px;
+  }
+  @media (max-width: 767px) {
+    font-size: 30px;
+  }
 }
 @utility font-h3 {
   font-size: 24px;
@@ -308,15 +316,15 @@ a {
 }
 @utility font-eyebrow {
   font-size: 11px;
-  line-height: 1.0;
+  line-height: 1;
   font-family: var(--font-body);
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.20em;
+  letter-spacing: 0.2em;
 }
 @utility font-btn {
   font-size: 11px;
-  line-height: 1.0;
+  line-height: 1;
   font-family: var(--font-body);
   font-weight: 500;
   text-transform: uppercase;
@@ -324,7 +332,7 @@ a {
 }
 @utility font-price {
   font-size: 13px;
-  line-height: 1.0;
+  line-height: 1;
   font-family: var(--font-body);
   font-weight: 400;
 }

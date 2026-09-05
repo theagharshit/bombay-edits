@@ -11,12 +11,54 @@ const FREE_SHIPPING_THRESHOLD = 5000;
 
 // Hardcoded recommendations for the empty state
 const RECOMMENDED_PRODUCTS = [
-  { id: '1', slug: 'festive-kurta', name: 'Festive Kurta', image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=300&h=400&q=80', price: 2999 },
-  { id: '2', slug: 'silk-coord', name: 'Silk Co-ord', image: 'https://images.unsplash.com/photo-1616583936499-d4116e7e2e76?auto=format&fit=crop&w=300&h=400&q=80', price: 4500 },
-  { id: '3', slug: 'embroidered-shirt', name: 'Embroidered Shirt', image: 'https://images.unsplash.com/photo-1503160865267-af4660ce7bf2?auto=format&fit=crop&w=300&h=400&q=80', price: 1800 },
-  { id: '4', slug: 'zari-sharara', name: 'Zari Sharara', image: 'https://images.unsplash.com/photo-1583391733958-6925e0a6d091?auto=format&fit=crop&w=300&h=400&q=80', price: 3200 },
-  { id: '5', slug: 'velvet-tunic', name: 'Velvet Tunic', image: 'https://images.unsplash.com/photo-1619516388835-2b60acc4049e?auto=format&fit=crop&w=300&h=400&q=80', price: 2500 },
-  { id: '6', slug: 'classic-dupatta', name: 'Classic Dupatta', image: 'https://images.unsplash.com/photo-1571587289339-cb7da03fb5a6?auto=format&fit=crop&w=300&h=400&q=80', price: 900 },
+  {
+    id: '1',
+    slug: 'festive-kurta',
+    name: 'Festive Kurta',
+    image:
+      'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=300&h=400&q=80',
+    price: 2999,
+  },
+  {
+    id: '2',
+    slug: 'silk-coord',
+    name: 'Silk Co-ord',
+    image:
+      'https://images.unsplash.com/photo-1616583936499-d4116e7e2e76?auto=format&fit=crop&w=300&h=400&q=80',
+    price: 4500,
+  },
+  {
+    id: '3',
+    slug: 'embroidered-shirt',
+    name: 'Embroidered Shirt',
+    image:
+      'https://images.unsplash.com/photo-1503160865267-af4660ce7bf2?auto=format&fit=crop&w=300&h=400&q=80',
+    price: 1800,
+  },
+  {
+    id: '4',
+    slug: 'zari-sharara',
+    name: 'Zari Sharara',
+    image:
+      'https://images.unsplash.com/photo-1583391733958-6925e0a6d091?auto=format&fit=crop&w=300&h=400&q=80',
+    price: 3200,
+  },
+  {
+    id: '5',
+    slug: 'velvet-tunic',
+    name: 'Velvet Tunic',
+    image:
+      'https://images.unsplash.com/photo-1619516388835-2b60acc4049e?auto=format&fit=crop&w=300&h=400&q=80',
+    price: 2500,
+  },
+  {
+    id: '6',
+    slug: 'classic-dupatta',
+    name: 'Classic Dupatta',
+    image:
+      'https://images.unsplash.com/photo-1571587289339-cb7da03fb5a6?auto=format&fit=crop&w=300&h=400&q=80',
+    price: 900,
+  },
 ];
 
 export function CartDrawer() {
@@ -57,7 +99,7 @@ export function CartDrawer() {
       {/* Drawer */}
       <div
         className={`fixed inset-y-0 right-0 w-full md:w-[480px] bg-ivory shadow-drawer z-[100] transform transition-transform duration-slow ease-out ${
-        isOpen ? 'translate-x-0' : 'translate-x-full'
+          isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
         role="dialog"
         aria-modal="true"
@@ -98,7 +140,9 @@ export function CartDrawer() {
           {items.length === 0 ? (
             <div className="flex flex-col h-full">
               <div className="flex flex-col items-center justify-center p-8 text-center flex-1">
-                <p className="font-display text-[22px] text-[var(--color-ink)] mb-3">Your bag is empty</p>
+                <p className="font-display text-[22px] text-[var(--color-ink)] mb-3">
+                  Your bag is empty
+                </p>
                 <p className="font-body text-[14px] text-[var(--color-muted)]">
                   Discover our collection of handcrafted Indian ethnic wear.
                 </p>
@@ -113,7 +157,9 @@ export function CartDrawer() {
 
               {/* Recommended Products (Horizontal Scroll) */}
               <div className="pb-8 border-t border-[var(--color-line)] pt-8">
-                <h3 className="font-display text-[18px] text-[var(--color-ink)] px-6 mb-6">Recommended for you</h3>
+                <h3 className="font-display text-[18px] text-[var(--color-ink)] px-6 mb-6">
+                  Recommended for you
+                </h3>
                 <div className="flex overflow-x-auto px-6 gap-4 pb-4 snap-x hide-scrollbar">
                   {RECOMMENDED_PRODUCTS.map((product) => (
                     <Link
@@ -130,8 +176,12 @@ export function CartDrawer() {
                           className="object-cover group-hover:opacity-90 transition-opacity"
                         />
                       </div>
-                      <p className="font-display text-[14px] text-[var(--color-ink)] truncate">{product.name}</p>
-                      <p className="font-body text-[12px] text-[var(--color-muted)] mt-1">{format(product.price)}</p>
+                      <p className="font-display text-[14px] text-[var(--color-ink)] truncate">
+                        {product.name}
+                      </p>
+                      <p className="font-body text-[12px] text-[var(--color-muted)] mt-1">
+                        {format(product.price)}
+                      </p>
                     </Link>
                   ))}
                 </div>
@@ -149,12 +199,7 @@ export function CartDrawer() {
                     onClick={closeCart}
                     className="relative w-[100px] aspect-[3/4] flex-shrink-0 bg-[var(--color-shell)] hover:opacity-90 transition-opacity"
                   >
-                    <Image
-                      src={item.image}
-                      alt={item.name}
-                      fill
-                      className="object-cover"
-                    />
+                    <Image src={item.image} alt={item.name} fill className="object-cover" />
                   </Link>
                   <div className="flex flex-col justify-between flex-1">
                     <div>
@@ -179,7 +224,9 @@ export function CartDrawer() {
                       {/* Quantity Selector */}
                       <div className="flex items-center gap-4 border border-[var(--color-line)] px-2 py-1">
                         <button
-                          onClick={() => updateQuantity(item.productId, item.size, item.quantity - 1)}
+                          onClick={() =>
+                            updateQuantity(item.productId, item.size, item.quantity - 1)
+                          }
                           className="p-1 text-[var(--color-muted)] hover:text-[var(--color-ink)] transition-colors focus-visible:outline-none"
                           aria-label="Decrease quantity"
                         >
@@ -189,14 +236,16 @@ export function CartDrawer() {
                           {item.quantity}
                         </span>
                         <button
-                          onClick={() => updateQuantity(item.productId, item.size, item.quantity + 1)}
+                          onClick={() =>
+                            updateQuantity(item.productId, item.size, item.quantity + 1)
+                          }
                           className="p-1 text-[var(--color-muted)] hover:text-[var(--color-ink)] transition-colors focus-visible:outline-none"
                           aria-label="Increase quantity"
                         >
                           <Plus size={12} strokeWidth={1.5} />
                         </button>
                       </div>
-                      
+
                       <div className="flex flex-col items-end gap-2">
                         <span className="font-body text-[14px] text-[var(--color-ink)]">
                           {format(item.price * item.quantity)}
@@ -220,14 +269,18 @@ export function CartDrawer() {
         {items.length > 0 && (
           <div className="shrink-0 bg-[var(--color-shell)] p-6 border-t border-[var(--color-line)]">
             <div className="flex items-end justify-between mb-4">
-              <span className="font-body text-[12px] uppercase tracking-[0.1em] text-[var(--color-ink)]">Subtotal</span>
-              <span className="font-display text-[22px] text-[var(--color-ink)]">{format(subtotal)}</span>
+              <span className="font-body text-[12px] uppercase tracking-[0.1em] text-[var(--color-ink)]">
+                Subtotal
+              </span>
+              <span className="font-display text-[22px] text-[var(--color-ink)]">
+                {format(subtotal)}
+              </span>
             </div>
-            
+
             <p className="font-body text-[11px] text-[var(--color-muted)] mb-6 text-center">
               Tax calculated at checkout
             </p>
-            
+
             <Link
               href="/checkout"
               onClick={closeCart}

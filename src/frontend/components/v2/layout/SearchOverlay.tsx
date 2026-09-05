@@ -37,7 +37,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
               className="w-full bg-transparent text-[var(--color-ink)] font-body text-base md:text-lg focus:outline-none placeholder:text-[var(--color-muted)]"
               autoFocus
             />
-            <button 
+            <button
               onClick={onClose}
               className="p-1 text-[var(--color-ink)] hover:opacity-70 transition-opacity ml-4"
               aria-label="Close search"

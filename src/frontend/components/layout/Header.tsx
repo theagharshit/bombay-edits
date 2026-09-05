@@ -312,7 +312,11 @@ export function Header() {
           </div>
 
           {/* Centre Zone Grid Spacer (maintains grid 1fr auto 1fr balance) */}
-          <div className="col-start-2 h-full pointer-events-none" style={{ width: '180px' }} aria-hidden="true" />
+          <div
+            className="col-start-2 h-full pointer-events-none"
+            style={{ width: '180px' }}
+            aria-hidden="true"
+          />
 
           {/* Centre Zone — Absolute Dead Center Brand Logo linking to Landing Page */}
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-auto z-20 flex items-center justify-center">
@@ -337,10 +341,19 @@ export function Header() {
 
           {/* Right Zone */}
           <div className="flex items-center justify-end gap-[6px] h-full">
-            <button className={iconButtonClass} aria-label="Currency" style={{ borderWidth: '0px' }}>
+            <button
+              className={iconButtonClass}
+              aria-label="Currency"
+              style={{ borderWidth: '0px' }}
+            >
               <span className="font-body text-[11px] font-medium tracking-wide">Rs</span>
             </button>
-            <Link href="/wishlist" className={iconButtonClass} aria-label="Wishlist" style={{ borderWidth: '0px' }}>
+            <Link
+              href="/wishlist"
+              className={iconButtonClass}
+              aria-label="Wishlist"
+              style={{ borderWidth: '0px' }}
+            >
               <Heart size={14} strokeWidth={1.2} />
             </Link>
             <button
@@ -351,7 +364,12 @@ export function Header() {
             >
               <Search size={14} strokeWidth={1.2} />
             </button>
-            <Link href="/account" className={iconButtonClass} aria-label="Account" style={{ borderWidth: '0px' }}>
+            <Link
+              href="/account"
+              className={iconButtonClass}
+              aria-label="Account"
+              style={{ borderWidth: '0px' }}
+            >
               <User size={14} strokeWidth={1.2} />
             </Link>
 

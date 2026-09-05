@@ -7,33 +7,40 @@ const COLLECTIONS = [
     name: 'The Ivory Edit',
     href: '/collections/ivory',
     spanClass: 'col-span-12 md:col-span-5 row-span-1 md:row-span-2',
-    image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=800&h=1200&q=80',
+    image:
+      'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=800&h=1200&q=80',
   },
   {
     name: 'Wedding Guest',
     href: '/collections/wedding-guest',
     spanClass: 'col-span-12 md:col-span-7 row-span-1',
-    image: 'https://images.unsplash.com/photo-1616583936499-d4116e7e2e76?auto=format&fit=crop&w=1200&h=600&q=80',
+    image:
+      'https://images.unsplash.com/photo-1616583936499-d4116e7e2e76?auto=format&fit=crop&w=1200&h=600&q=80',
   },
   {
     name: 'Evening Silhouettes',
     href: '/collections/evening',
     spanClass: 'col-span-12 md:col-span-4 row-span-1',
-    image: 'https://images.unsplash.com/photo-1503160865267-af4660ce7bf2?auto=format&fit=crop&w=800&h=600&q=80',
+    image:
+      'https://images.unsplash.com/photo-1503160865267-af4660ce7bf2?auto=format&fit=crop&w=800&h=600&q=80',
   },
   {
     name: 'Heritage Handloom',
     href: '/collections/handloom',
     spanClass: 'col-span-12 md:col-span-3 row-span-1',
-    image: 'https://images.unsplash.com/photo-1571908599407-cdb918ed83bf?auto=format&fit=crop&w=600&h=600&q=80',
-  }
+    image:
+      'https://images.unsplash.com/photo-1571908599407-cdb918ed83bf?auto=format&fit=crop&w=600&h=600&q=80',
+  },
 ];
 
 export function CuratedCollections() {
   return (
     <section className="bg-[var(--color-sand)] py-[96px] md:py-[160px]">
       <Container>
-        <h3 className="font-h3 text-center text-[var(--color-ink)] mb-[48px]" style={{ paddingTop: '48px' }}>
+        <h3
+          className="font-h3 text-center text-[var(--color-ink)] mb-[48px]"
+          style={{ paddingTop: '48px' }}
+        >
           Curated Collections
         </h3>
 
@@ -51,8 +58,8 @@ export function CuratedCollections() {
                 sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover transition-transform duration-600 ease-in-out group-hover:scale-[1.05]"
               />
-              <div 
-                className="absolute inset-0 z-10 pointer-events-none transition-opacity duration-300" 
+              <div
+                className="absolute inset-0 z-10 pointer-events-none transition-opacity duration-300"
                 style={{ backgroundColor: 'var(--color-ink)', opacity: 0.15 }}
               />
               <div className="absolute bottom-[20px] left-[20px] z-20 pointer-events-none">

@@ -9,33 +9,37 @@ const PRODUCTS = [
     price: '₹ 45,000',
     aspect: 'aspect-[2/3]',
     badge: 'NEW IN',
-    image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=800&h=1200&q=80',
-    href: '/shop/malabar-gown'
+    image:
+      'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=800&h=1200&q=80',
+    href: '/shop/malabar-gown',
   },
   {
     name: 'Colaba Drape',
     fabric: 'Structured Georgette',
     price: '₹ 32,500',
     aspect: 'aspect-[2/3]',
-    image: 'https://images.unsplash.com/photo-1616583936499-d4116e7e2e76?auto=format&fit=crop&w=800&h=1200&q=80',
-    href: '/shop/colaba-drape'
+    image:
+      'https://images.unsplash.com/photo-1616583936499-d4116e7e2e76?auto=format&fit=crop&w=800&h=1200&q=80',
+    href: '/shop/colaba-drape',
   },
   {
     name: 'Marine Pearl Cape',
     fabric: 'Sheer Organza & Pearls',
     price: '₹ 28,000',
     aspect: 'aspect-[2/3]',
-    image: 'https://images.unsplash.com/photo-1503160865267-af4660ce7bf2?auto=format&fit=crop&w=800&h=1200&q=80',
-    href: '/shop/marine-pearl-cape'
+    image:
+      'https://images.unsplash.com/photo-1503160865267-af4660ce7bf2?auto=format&fit=crop&w=800&h=1200&q=80',
+    href: '/shop/marine-pearl-cape',
   },
   {
     name: 'Heritage Brocade',
     fabric: 'Woven Metallic Zari',
     price: '₹ 18,000',
     aspect: 'aspect-[2/3]',
-    image: 'https://images.unsplash.com/photo-1571908599407-cdb918ed83bf?auto=format&fit=crop&w=800&h=1200&q=80',
-    href: '/shop/heritage-brocade'
-  }
+    image:
+      'https://images.unsplash.com/photo-1571908599407-cdb918ed83bf?auto=format&fit=crop&w=800&h=1200&q=80',
+    href: '/shop/heritage-brocade',
+  },
 ];
 
 export function LatestEdit() {
@@ -47,7 +51,8 @@ export function LatestEdit() {
           <div className="flex flex-col" style={{ gap: '14px' }}>
             <h2 className="font-h2 text-[var(--color-ink)]">The Latest Edit</h2>
             <p className="font-caption text-[var(--color-muted)] max-w-[420px]">
-              Curated pieces from our newest collection, blending heritage craftsmanship with contemporary silhouettes.
+              Curated pieces from our newest collection, blending heritage craftsmanship with
+              contemporary silhouettes.
             </p>
           </div>
           <Link
@@ -69,12 +74,12 @@ export function LatestEdit() {
                 key={product.name}
                 className={`flex flex-col w-full ${isStaggered ? 'md:mt-[32px]' : ''}`}
               >
-                <Link href={product.href} className="group flex flex-col focus-visible:outline-none">
+                <Link
+                  href={product.href}
+                  className="group flex flex-col focus-visible:outline-none"
+                >
                   {/* Image Wrapper */}
-                  <div 
-                    className="relative w-full overflow-hidden" 
-                    style={{ aspectRatio: '2/3' }}
-                  >
+                  <div className="relative w-full overflow-hidden" style={{ aspectRatio: '2/3' }}>
                     <Image
                       src={product.image}
                       alt={product.name}
@@ -90,7 +95,7 @@ export function LatestEdit() {
                           fontSize: '9px',
                           textTransform: 'uppercase',
                           letterSpacing: '0.16em',
-                          padding: '4px 8px'
+                          padding: '4px 8px',
                         }}
                       >
                         {product.badge}

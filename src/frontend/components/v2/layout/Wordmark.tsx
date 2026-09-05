@@ -8,7 +8,7 @@ export function Wordmark({ id }: { id?: string }) {
       style={{
         fontFamily: 'var(--font-display)',
         fontWeight: 400,
-        fontSize: 'clamp(2.5rem, 11vw, 9rem)', 
+        fontSize: 'clamp(2.5rem, 11vw, 9rem)',
         lineHeight: 1,
         left: 'max(24px, calc((100vw - var(--max-content)) / 2 + 24px))',
         top: '120px',

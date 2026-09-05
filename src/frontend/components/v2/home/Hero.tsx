@@ -21,18 +21,18 @@ export function Hero() {
       <div className="absolute inset-0 z-10" style={{ backgroundColor: 'rgba(30,22,18,0.32)' }} />
 
       {/* Top gradient overlay specifically for header visibility */}
-      <div 
-        className="absolute inset-0 z-[15] pointer-events-none" 
+      <div
+        className="absolute inset-0 z-[15] pointer-events-none"
         style={{
-          background: 'linear-gradient(to bottom, rgba(30,22,18,0.6) 0%, rgba(30,22,18,0) 20%)'
+          background: 'linear-gradient(to bottom, rgba(30,22,18,0.6) 0%, rgba(30,22,18,0) 20%)',
         }}
       />
 
       {/* Bottom gradient overlay to ivory */}
-      <div 
-        className="absolute inset-0 z-20 pointer-events-none" 
+      <div
+        className="absolute inset-0 z-20 pointer-events-none"
         style={{
-          background: 'linear-gradient(to bottom, transparent 78%, var(--color-ivory) 100%)'
+          background: 'linear-gradient(to bottom, transparent 78%, var(--color-ivory) 100%)',
         }}
       />
 
@@ -58,7 +58,10 @@ export function Hero() {
           >
             Indian craft, reimagined.
           </p>
-          <div className="flex flex-col gap-2" style={{ marginTop: 'calc(clamp(2.5rem, 11vw, 9rem) + 60px)' }}>
+          <div
+            className="flex flex-col gap-2"
+            style={{ marginTop: 'calc(clamp(2.5rem, 11vw, 9rem) + 60px)' }}
+          >
             <h1 className="font-hero-1 text-white">An Edit of</h1>
             <h1 className="font-hero-1 text-white italic">Modern Romance</h1>
           </div>

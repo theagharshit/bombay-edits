@@ -17,15 +17,17 @@ export function Heritage() {
               className="object-cover"
             />
           </div>
-          
+
           {/* Right - Text (Cols 7-11) */}
           <div className="md:col-start-7 md:col-span-5 flex flex-col justify-center">
             <h2 className="font-hero-1 text-[var(--color-ink)]">Born from Bombay</h2>
-            
+
             <p className="font-body-text mt-[24px]">
-              The Bombay Edit was born out of a desire to bring the unmatched heritage of Indian craftsmanship to the modern woman. Every piece is a celebration of intricate techniques, woven into silhouettes that move with grace and intent.
+              The Bombay Edit was born out of a desire to bring the unmatched heritage of Indian
+              craftsmanship to the modern woman. Every piece is a celebration of intricate
+              techniques, woven into silhouettes that move with grace and intent.
             </p>
-            
+
             <div className="mt-[32px]">
               <Link
                 href="/our-story"

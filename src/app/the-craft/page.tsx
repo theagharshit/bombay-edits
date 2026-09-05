@@ -46,7 +46,6 @@ export default function TheCraftPage() {
         className="w-full px-6 md:px-10 lg:px-16 pt-12 md:pt-16 pb-[96px] md:pb-[200px]"
         style={{ maxWidth: '1200px', margin: '0 auto', paddingBottom: '200px' }}
       >
-
         {/* 4.5: Space between intro and timeline - Apply as padding on wrapper */}
         <section
           className="relative pt-[96px] md:pt-[200px]"

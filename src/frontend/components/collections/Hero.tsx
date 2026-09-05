@@ -11,20 +11,24 @@ export function Hero() {
         className="object-cover object-center"
       />
       <div className="absolute inset-0 bg-[#1E1612] opacity-[0.28]" />
-      
+
       <div className="absolute left-0 right-0 top-[44%] -translate-y-1/2 flex flex-col items-center justify-center px-6">
-        <h1 
+        <h1
           className="text-white text-center tracking-[0.01em] uppercase"
           style={{ fontFamily: 'var(--font-display)', fontWeight: 400, lineHeight: 1.18 }}
         >
-          <span className="block text-[28px] md:text-[38px] lg:text-[46px] xl:text-[56px]">BRINGING BOMBAY'S</span>
-          <span className="block text-[28px] md:text-[38px] lg:text-[46px] xl:text-[56px]">FINEST</span>
-          <span className="block text-[28px] md:text-[38px] lg:text-[46px] xl:text-[56px]">TO NEPAL</span>
+          <span className="block text-[28px] md:text-[38px] lg:text-[46px] xl:text-[56px]">
+            BRINGING BOMBAY'S
+          </span>
+          <span className="block text-[28px] md:text-[38px] lg:text-[46px] xl:text-[56px]">
+            FINEST
+          </span>
+          <span className="block text-[28px] md:text-[38px] lg:text-[46px] xl:text-[56px]">
+            TO NEPAL
+          </span>
         </h1>
-        
-        <button 
-          className="mt-[30px] font-body text-[11px] tracking-[0.1em] uppercase text-white px-[30px] py-[13px] border border-[rgba(255,255,255,0.55)] bg-[rgba(30,22,18,0.35)] hover:bg-white hover:text-[var(--color-ink)] transition-colors duration-200"
-        >
+
+        <button className="mt-[30px] font-body text-[11px] tracking-[0.1em] uppercase text-white px-[30px] py-[13px] border border-[rgba(255,255,255,0.55)] bg-[rgba(30,22,18,0.35)] hover:bg-white hover:text-[var(--color-ink)] transition-colors duration-200">
           EXPLORE COLLECTION
         </button>
       </div>
