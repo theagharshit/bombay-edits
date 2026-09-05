@@ -7,38 +7,18 @@ import { useNewsletter } from '@/frontend/hooks/useNewsletter';
 
 export default function NewsletterPage() {
   const [email, setEmail] = useState('');
-  const [mode, setMode] = useState<'subscribe' | 'unsubscribe'>('subscribe');
-  const {
-    isLoading,
-    isSuccess,
-    isAlreadySubscribed,
-    isUnsubscribed,
-    message,
-    error,
-    subscribe,
-    unsubscribe,
-    reset,
-  } = useNewsletter();
-
-  const handleToggleMode = (newMode: 'subscribe' | 'unsubscribe') => {
-    setMode(newMode);
-    reset();
-  };
+  const { isLoading, isSuccess, isAlreadySubscribed, message, error, subscribe, reset } =
+    useNewsletter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim() || isLoading) return;
 
-    if (mode === 'subscribe') {
-      const success = await subscribe({
-        email: email.trim(),
-        source: 'newsletter_page',
-      });
-      if (success) setEmail('');
-    } else {
-      const success = await unsubscribe(email.trim());
-      if (success) setEmail('');
-    }
+    const success = await subscribe({
+      email: email.trim(),
+      source: 'newsletter_page',
+    });
+    if (success) setEmail('');
   };
 
   return (
@@ -63,43 +43,16 @@ export default function NewsletterPage() {
               className="text-3xl md:text-5xl text-[var(--color-ink)] italic mb-4 font-normal"
               style={{ fontFamily: 'var(--font-display)' }}
             >
-              {mode === 'subscribe' ? 'Sign In For The News Letter' : 'Manage Subscription'}
+              Sign In For The News Letter
             </h1>
             <p className="font-body text-[15px] text-[var(--color-muted)] max-w-lg mx-auto leading-relaxed">
-              {mode === 'subscribe'
-                ? 'Experience the quiet beauty of modern Indian craft. Receive exclusive invitations to private edits, artisan notes, and first access to new collections.'
-                : 'Need to pause or leave our mailing list? Enter your email address below to unsubscribe from all Bombay Edit newsletters.'}
+              Experience the quiet beauty of modern Indian craft. Receive exclusive invitations to
+              private edits, artisan notes, and first access to new collections.
             </p>
           </div>
 
           {/* Subscription Card */}
           <div className="bg-[#f3ede4] border border-[var(--color-line)] p-8 md:p-12 shadow-sm mb-12">
-            {/* Tabs for Subscribe vs Unsubscribe */}
-            <div className="flex items-center justify-center gap-8 border-b border-[var(--color-line)] pb-4 mb-8">
-              <button
-                type="button"
-                onClick={() => handleToggleMode('subscribe')}
-                className={`text-[12px] uppercase tracking-[0.2em] font-medium pb-2 border-b-2 transition-all cursor-pointer ${
-                  mode === 'subscribe'
-                    ? 'border-[var(--color-ink)] text-[var(--color-ink)]'
-                    : 'border-transparent text-[var(--color-muted)] hover:text-[var(--color-ink)]'
-                }`}
-              >
-                Subscribe
-              </button>
-              <button
-                type="button"
-                onClick={() => handleToggleMode('unsubscribe')}
-                className={`text-[12px] uppercase tracking-[0.2em] font-medium pb-2 border-b-2 transition-all cursor-pointer ${
-                  mode === 'unsubscribe'
-                    ? 'border-[var(--color-ink)] text-[var(--color-ink)]'
-                    : 'border-transparent text-[var(--color-muted)] hover:text-[var(--color-ink)]'
-                }`}
-              >
-                Unsubscribe
-              </button>
-            </div>
-
             {isSuccess ? (
               <div
                 data-testid="newsletter-page-success"
@@ -120,17 +73,13 @@ export default function NewsletterPage() {
                     className="text-2xl text-[var(--color-ink)] italic mb-2"
                     style={{ fontFamily: 'var(--font-display)' }}
                   >
-                    {isUnsubscribed
-                      ? 'You Have Been Unsubscribed'
-                      : isAlreadySubscribed
-                        ? 'You Are Already On The List'
-                        : 'Welcome to The Bombay Edit'}
+                    {isAlreadySubscribed
+                      ? 'You Are Already On The List'
+                      : 'Welcome to The Bombay Edit'}
                   </h3>
                   <p className="font-body text-[14px] text-[var(--color-muted)] max-w-md mx-auto">
                     {message ||
-                      (isUnsubscribed
-                        ? 'Your email address has been removed from our newsletter list.'
-                        : 'Thank you for subscribing. We look forward to sharing our latest stories and designs with you.')}
+                      'Thank you for subscribing. We look forward to sharing our latest stories and designs with you.'}
                   </p>
                 </div>
                 <button
@@ -138,7 +87,7 @@ export default function NewsletterPage() {
                   onClick={reset}
                   className="mt-4 border border-[var(--color-ink)] text-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-[var(--color-ivory)] px-6 py-2.5 text-[11px] uppercase tracking-[0.18em] transition-colors cursor-pointer"
                 >
-                  Manage Another Email
+                  Subscribe Another Email
                 </button>
               </div>
             ) : (
@@ -163,9 +112,7 @@ export default function NewsletterPage() {
                       setEmail(e.target.value);
                       if (error) reset();
                     }}
-                    placeholder={
-                      mode === 'subscribe' ? 'name@example.com' : 'Enter email to unsubscribe'
-                    }
+                    placeholder="Enter your email address"
                     required
                     disabled={isLoading}
                     className="w-full bg-transparent border border-[var(--color-line)] focus:border-[var(--color-ink)] text-[14px] font-body text-[var(--color-ink)] placeholder:text-[var(--color-muted)]/60 px-4 py-3 focus:outline-none transition-colors disabled:opacity-50"
@@ -176,19 +123,9 @@ export default function NewsletterPage() {
                 <button
                   type="submit"
                   disabled={isLoading || !email.trim()}
-                  className={`w-full border py-3.5 text-[11px] uppercase tracking-[0.2em] font-medium transition-all disabled:opacity-50 cursor-pointer ${
-                    mode === 'subscribe'
-                      ? 'bg-[var(--color-ink)] text-[var(--color-ivory)] border-[var(--color-ink)] hover:bg-[#322018]'
-                      : 'bg-transparent text-[var(--color-ink)] border-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-[var(--color-ivory)]'
-                  }`}
+                  className="w-full border border-[var(--color-ink)] bg-[var(--color-ink)] text-[var(--color-ivory)] hover:bg-[#322018] py-3.5 text-[11px] uppercase tracking-[0.2em] font-medium transition-all disabled:opacity-50 cursor-pointer"
                 >
-                  {isLoading
-                    ? mode === 'subscribe'
-                      ? 'Joining The List...'
-                      : 'Unsubscribing...'
-                    : mode === 'subscribe'
-                      ? 'Join The Bombay Edit Dispatch'
-                      : 'Unsubscribe Email'}
+                  {isLoading ? 'Joining The List...' : 'Join The Bombay Edit Dispatch'}
                 </button>
 
                 {error && (
@@ -212,7 +149,7 @@ export default function NewsletterPage() {
                   >
                     Privacy Policy
                   </Link>
-                  . You can unsubscribe at any time.
+                  .
                 </p>
               </form>
             )}
@@ -247,10 +184,10 @@ export default function NewsletterPage() {
                 className="text-[17px] text-[var(--color-ink)] italic mb-1"
                 style={{ fontFamily: 'var(--font-display)' }}
               >
-                Zero Noise
+                Curated Edits
               </h4>
               <p className="font-body text-[12px] text-[var(--color-muted)] leading-relaxed">
-                No relentless spam. Easy one-click unsubscribe whenever you wish.
+                Thoughtfully considered editions only when we have craft news worth sharing.
               </p>
             </div>
           </div>

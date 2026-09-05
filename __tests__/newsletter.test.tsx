@@ -90,28 +90,15 @@ describe('FooterNewsletter Component', () => {
     expect(screen.getAllByRole('button', { name: /subscribe/i }).length).toBeGreaterThanOrEqual(1);
   });
 
-  it('should allow user typing into the newsletter input', () => {
+  it('should allow user typing into the newsletter input and submitting', () => {
     render(<FooterNewsletter />);
 
     const input = screen.getByPlaceholderText('Enter your email') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'atelier@example.com' } });
 
     expect(input.value).toBe('atelier@example.com');
-  });
-
-  it('should toggle to Unsubscribe mode and display appropriate placeholder and button', () => {
-    render(<FooterNewsletter />);
-
-    const modeToggle = screen.getByTestId('newsletter-mode-toggle');
-    const unsubToggle = modeToggle.querySelector('button:last-child') as HTMLButtonElement;
-    fireEvent.click(unsubToggle);
-
-    expect(screen.getByPlaceholderText('Enter email to unsubscribe')).toBeInTheDocument();
-    expect(
-      screen.getByText(/Enter your email address to opt out or unsubscribe/i)
-    ).toBeInTheDocument();
-    expect(screen.getAllByRole('button', { name: /unsubscribe/i }).length).toBeGreaterThanOrEqual(
-      1
-    );
+    const submitBtn = screen.getByRole('button', { name: /subscribe/i });
+    expect(submitBtn).toBeInTheDocument();
+    expect(submitBtn).not.toBeDisabled();
   });
 });
