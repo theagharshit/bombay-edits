@@ -9,3 +9,4 @@ export const POST = withMiddlewares(
   contactController.handleContactSubmission.bind(contactController)
 );
 export const GET = withMiddlewares(contactController.getSubmissions.bind(contactController));
+export const PATCH = withMiddlewares(contactController.updateStatus.bind(contactController));

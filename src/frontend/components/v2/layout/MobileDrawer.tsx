@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { X, ChevronDown, User, Heart, Package, Phone } from 'lucide-react';
+import { X, ChevronDown, User, BookOpen, Package, Phone } from 'lucide-react';
 import { useAuth } from '@/frontend/context/AuthContext';
 
 interface MobileDrawerProps {
@@ -173,18 +173,18 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
             <Link
               href="/account"
               onClick={onClose}
-              className="flex flex-col items-center justify-center p-4 gap-2 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors border-r border-[var(--color-line)]"
+              className="flex flex-col items-center justify-center p-4 gap-2 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors border-r border-[var(--color-line)] cursor-pointer"
             >
               <User size={18} strokeWidth={1} />
               <span className="font-body text-[11px] uppercase tracking-[0.1em]">Account</span>
             </Link>
             <Link
-              href="/wishlist"
+              href="/the-craft"
               onClick={onClose}
-              className="flex flex-col items-center justify-center p-4 gap-2 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors"
+              className="flex flex-col items-center justify-center p-4 gap-2 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors cursor-pointer"
             >
-              <Heart size={18} strokeWidth={1} />
-              <span className="font-body text-[11px] uppercase tracking-[0.1em]">Wishlist</span>
+              <BookOpen size={18} strokeWidth={1} />
+              <span className="font-body text-[11px] uppercase tracking-[0.1em]">Our Story</span>
             </Link>
           </div>
           <div className="grid grid-cols-2">
@@ -196,13 +196,14 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
               <Package size={18} strokeWidth={1} />
               <span className="font-body text-[11px] uppercase tracking-[0.1em]">Track Order</span>
             </Link>
-            <a
-              href="tel:+919876543210"
+            <Link
+              href="/contact"
+              onClick={onClose}
               className="flex flex-col items-center justify-center p-4 gap-2 text-[var(--color-ink)] hover:bg-[var(--color-sand)] transition-colors cursor-pointer"
             >
               <Phone size={18} strokeWidth={1} />
               <span className="font-body text-[11px] uppercase tracking-[0.1em]">Support</span>
-            </a>
+            </Link>
           </div>
         </div>
       </div>

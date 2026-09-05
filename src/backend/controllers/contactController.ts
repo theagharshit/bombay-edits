@@ -34,7 +34,11 @@ export class ContactController {
     });
 
     return ApiResponse.success(
-      { submissionId: submission.id },
+      {
+        submissionId: submission.id,
+        status: submission.status,
+        createdAt: submission.createdAt,
+      },
       {
         message: 'Your message has been received. Our team will get back to you shortly.',
         status: 200,
@@ -49,6 +53,23 @@ export class ContactController {
   public async getSubmissions() {
     const submissions = await ContactModel.getAll();
     return ApiResponse.success(submissions, { status: 200 });
+  }
+
+  /**
+   * Update submission status
+   * PATCH /api/contact
+   */
+  public async updateStatus(req: NextRequest) {
+    const body = await req.json();
+    const { id, status } = body;
+    if (!id || !status) {
+      return ApiResponse.error('Missing id or status', { status: 400 });
+    }
+    const updated = await ContactModel.updateStatus(id, status);
+    if (!updated) {
+      return ApiResponse.error('Submission not found', { status: 404 });
+    }
+    return ApiResponse.success(updated, { message: 'Status updated successfully', status: 200 });
   }
 }
 

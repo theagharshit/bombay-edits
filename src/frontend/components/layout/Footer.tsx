@@ -27,7 +27,7 @@ const UPPER_COLUMNS = [
   {
     title: 'We Are Bombay Edits',
     links: [
-      { label: 'Our story', href: '/our-story' },
+      { label: 'Our story', href: '/the-craft' },
       { label: 'Contact us', href: '/contact' },
       { label: 'Newsletter', href: '/newsletter' },
     ],
