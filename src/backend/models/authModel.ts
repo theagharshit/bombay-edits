@@ -47,9 +47,7 @@ export class AuthModel {
   /**
    * Register a new member account or upgrade an existing guest account
    */
-  public static async register(
-    dto: RegisterDTO
-  ): Promise<{
+  public static async register(dto: RegisterDTO): Promise<{
     customer: SanitizedCustomer;
     token: string;
     cart: CartItem[];
@@ -184,9 +182,7 @@ export class AuthModel {
   /**
    * Log in an existing member and join any guest items into their account
    */
-  public static async login(
-    dto: LoginDTO
-  ): Promise<{
+  public static async login(dto: LoginDTO): Promise<{
     customer: SanitizedCustomer;
     token: string;
     cart: CartItem[];

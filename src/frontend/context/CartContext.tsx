@@ -27,21 +27,52 @@ type CartAction =
   | { type: 'CLOSE_CART' }
   | { type: 'HYDRATE'; payload: CartItem[] };
 
+function isSameCartItem(
+  a?: { productId?: string; slug?: string; size?: string; colour?: string },
+  b?: { productId?: string; slug?: string; size?: string; colour?: string }
+): boolean {
+  if (!a || !b) return false;
+  const matchId =
+    (a.productId && b.productId && a.productId === b.productId) ||
+    (a.slug && b.slug && a.slug === b.slug) ||
+    (a.productId && b.slug && a.productId === b.slug) ||
+    (a.slug && b.productId && a.slug === b.productId);
+
+  const sizeA = (a.size || 'standard').toLowerCase().trim();
+  const sizeB = (b.size || 'standard').toLowerCase().trim();
+
+  const colourA = (a.colour || '').toLowerCase().trim();
+  const colourB = (b.colour || '').toLowerCase().trim();
+  const matchColour = !colourA || !colourB || colourA === colourB;
+
+  return Boolean(matchId && sizeA === sizeB && matchColour);
+}
+
 function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
     case 'ADD_ITEM': {
-      const existing = state.items.find(
-        (i) => i.productId === action.payload.productId && i.size === action.payload.size
-      );
-      if (existing) {
+      const existingIndex = state.items.findIndex((i) => isSameCartItem(i, action.payload));
+      if (existingIndex >= 0) {
+        const existing = state.items[existingIndex];
+        const max = action.payload.maxQuantity || existing.maxQuantity || 10;
+        const addQty = action.payload.quantity || 1;
+        const newQty = Math.min(existing.quantity + addQty, max);
+
+        const updatedItems = [...state.items];
+        updatedItems[existingIndex] = {
+          ...existing,
+          productId: existing.productId || action.payload.productId,
+          slug: existing.slug || action.payload.slug,
+          name: action.payload.name || existing.name,
+          image: action.payload.image || existing.image,
+          price: action.payload.price || existing.price,
+          quantity: newQty,
+        };
+
         return {
           ...state,
           isOpen: true,
-          items: state.items.map((i) =>
-            i.productId === action.payload.productId && i.size === action.payload.size
-              ? { ...i, quantity: Math.min(i.quantity + action.payload.quantity, i.maxQuantity) }
-              : i
-          ),
+          items: updatedItems,
         };
       }
       return { ...state, isOpen: true, items: [...state.items, action.payload] };
@@ -49,17 +80,18 @@ function cartReducer(state: CartState, action: CartAction): CartState {
     case 'REMOVE_ITEM':
       return {
         ...state,
-        items: state.items.filter(
-          (i) => !(i.productId === action.payload.productId && i.size === action.payload.size)
-        ),
+        items: state.items.filter((i) => !isSameCartItem(i, action.payload)),
       };
     case 'UPDATE_QUANTITY':
       return {
         ...state,
         items: state.items
           .map((i) =>
-            i.productId === action.payload.productId && i.size === action.payload.size
-              ? { ...i, quantity: Math.max(0, Math.min(action.payload.quantity, i.maxQuantity)) }
+            isSameCartItem(i, action.payload)
+              ? {
+                  ...i,
+                  quantity: Math.max(0, Math.min(action.payload.quantity, i.maxQuantity || 10)),
+                }
               : i
           )
           .filter((i) => i.quantity > 0),

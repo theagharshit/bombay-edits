@@ -9,34 +9,43 @@ export function mergeCarts(
   existingItems: CartItem[] = [],
   incomingItems: CartItem[] = []
 ): CartItem[] {
-  const map = new Map<string, CartItem>();
+  const merged: CartItem[] = [];
 
-  const makeKey = (item: CartItem) =>
-    `${item.productId}__${item.size || 'standard'}__${(item.colour || '').toLowerCase().trim()}`;
+  const allItems = [...existingItems, ...incomingItems].filter(
+    (i) => i && (i.productId || i.slug) && i.quantity > 0
+  );
 
-  for (const item of existingItems) {
-    if (!item || !item.productId) continue;
-    map.set(makeKey(item), { ...item });
-  }
+  for (const item of allItems) {
+    const existingIndex = merged.findIndex((m) =>
+      Boolean(
+        ((m.productId && item.productId && m.productId === item.productId) ||
+          (m.slug && item.slug && m.slug === item.slug) ||
+          (m.productId && item.slug && m.productId === item.slug) ||
+          (m.slug && item.productId && m.slug === item.productId)) &&
+        (m.size || 'standard').toLowerCase().trim() ===
+          (item.size || 'standard').toLowerCase().trim()
+      )
+    );
 
-  for (const incoming of incomingItems) {
-    if (!incoming || !incoming.productId) continue;
-    const key = makeKey(incoming);
-    const existing = map.get(key);
-
-    if (existing) {
-      const max = incoming.maxQuantity || existing.maxQuantity || 10;
-      const combinedQuantity = Math.min(existing.quantity + incoming.quantity, max);
-      map.set(key, {
+    if (existingIndex >= 0) {
+      const existing = merged[existingIndex];
+      const max = item.maxQuantity || existing.maxQuantity || 10;
+      merged[existingIndex] = {
         ...existing,
-        quantity: combinedQuantity,
-      });
+        productId: existing.productId || item.productId,
+        slug: existing.slug || item.slug,
+        name: existing.name || item.name,
+        price: existing.price || item.price,
+        image: existing.image || item.image,
+        colour: existing.colour || item.colour,
+        quantity: Math.min(existing.quantity + item.quantity, max),
+      };
     } else {
-      map.set(key, { ...incoming });
+      merged.push({ ...item });
     }
   }
 
-  return Array.from(map.values());
+  return merged;
 }
 
 /**

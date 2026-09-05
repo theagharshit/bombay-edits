@@ -100,9 +100,7 @@ export class CartModel {
    * Persist complete cart state into relational cart_items table and snapshot columns
    */
   public static async setCart(filter: CartFilter, items: CartItem[]): Promise<CartItem[]> {
-    const cleanItems = (Array.isArray(items) ? items : []).filter(
-      (i) => i && (i.productId || i.slug) && i.quantity > 0
-    );
+    const cleanItems = mergeCarts([], Array.isArray(items) ? items : []);
 
     memoryCartStore.set(getMemoryKey(filter), cleanItems);
 
