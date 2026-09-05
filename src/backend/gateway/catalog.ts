@@ -137,20 +137,6 @@ export const API_CATALOG: ApiEndpointDoc[] = [
     },
   },
   {
-    path: '/api/v1/newsletter',
-    method: 'DELETE',
-    summary: 'Unsubscribe from Newsletter',
-    description: 'Unsubscribe customer email from curated newsletter editions.',
-    rateLimit: '30 req/min',
-    authenticated: false,
-    requestBody: {
-      email: 'Subscriber email address to unsubscribe',
-    },
-    responses: {
-      200: 'Unsubscribe status and confirmation message',
-    },
-  },
-  {
     path: '/api/v1/contact',
     method: 'POST',
     summary: 'Submit Contact Inquiry',

@@ -20,7 +20,6 @@ export const ApiRouter = {
       newsletterController.handleNewsletterSubscription.bind(newsletterController)
     ),
     get: withMiddlewares(newsletterController.getSubscribers.bind(newsletterController)),
-    delete: withMiddlewares(newsletterController.handleUnsubscribe.bind(newsletterController)),
   },
   products: {
     list: withMiddlewares(productController.getProducts.bind(productController)),

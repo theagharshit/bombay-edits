@@ -145,9 +145,9 @@ export function Header() {
   }, []);
 
   const pillClass =
-    'bg-[var(--color-ivory)] text-[var(--color-ink)] text-[13.5px] font-medium font-body rounded-full px-5 h-[36px] flex items-center justify-center transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ink)] origin-center whitespace-nowrap tracking-wide';
+    'bg-[var(--color-ivory)] text-[var(--color-ink)] text-[13.5px] font-medium font-body rounded-full px-5 h-[36px] flex items-center justify-center transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ink)] origin-center whitespace-nowrap tracking-wide cursor-pointer';
   const iconButtonClass =
-    'bg-[var(--color-ivory)] text-[var(--color-ink)] w-[36px] h-[36px] rounded-full flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ink)] shrink-0';
+    'bg-[var(--color-ivory)] text-[var(--color-ink)] w-[36px] h-[36px] rounded-full flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ink)] shrink-0 cursor-pointer';
 
   return (
     <header className="fixed top-0 w-full z-50 bg-transparent pointer-events-none px-6">

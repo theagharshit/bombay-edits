@@ -253,9 +253,9 @@ export function Header() {
   }, [isHomePage, measure]);
 
   const pillClass =
-    'bg-[var(--color-ivory)] text-[var(--color-ink)] text-[11.5px] uppercase tracking-[0.08em] font-medium font-body rounded-full px-[20px] h-[32px] flex items-center justify-center border-0 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-ink)] origin-center whitespace-nowrap transition-transform hover:scale-105 active:scale-95';
+    'bg-[var(--color-ivory)] text-[var(--color-ink)] text-[11.5px] uppercase tracking-[0.08em] font-medium font-body rounded-full px-[20px] h-[32px] flex items-center justify-center border-0 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-ink)] origin-center whitespace-nowrap transition-transform hover:scale-105 active:scale-95 cursor-pointer';
   const iconButtonClass =
-    'bg-[var(--color-ivory)] text-[var(--color-ink)] w-[32px] h-[32px] rounded-full flex items-center justify-center border-0 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-ink)] shrink-0 transition-transform hover:scale-105 active:scale-95';
+    'bg-[var(--color-ivory)] text-[var(--color-ink)] w-[32px] h-[32px] rounded-full flex items-center justify-center border-0 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-ink)] shrink-0 transition-transform hover:scale-105 active:scale-95 cursor-pointer';
 
   return (
     <>
@@ -301,7 +301,7 @@ export function Header() {
               <button
                 ref={menuPillRef}
                 onClick={() => setDrawerOpen(true)}
-                className="bg-[var(--color-ink)] text-[var(--color-ivory)] text-[11.5px] uppercase tracking-[0.08em] font-medium font-body rounded-full px-[20px] h-[32px] flex items-center justify-center gap-[6px] border-0 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-ivory)] opacity-0 pointer-events-none origin-center whitespace-nowrap transition-transform hover:scale-105 active:scale-95"
+                className="bg-[var(--color-ink)] text-[var(--color-ivory)] text-[11.5px] uppercase tracking-[0.08em] font-medium font-body rounded-full px-[20px] h-[32px] flex items-center justify-center gap-[6px] border-0 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-ivory)] opacity-0 pointer-events-none origin-center whitespace-nowrap transition-transform hover:scale-105 active:scale-95 cursor-pointer"
                 style={{ transform: 'scale(0.94)', borderWidth: '0px' }}
                 aria-label="Open menu"
               >

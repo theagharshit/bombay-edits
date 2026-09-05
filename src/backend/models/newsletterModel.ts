@@ -63,34 +63,6 @@ export class NewsletterModel {
     return { subscriber: subscriberRecord, isNew };
   }
 
-  public static async unsubscribe(email: string): Promise<boolean> {
-    const normalizedEmail = email.toLowerCase().trim();
-    if (subscriberStore.has(normalizedEmail)) {
-      const existing = subscriberStore.get(normalizedEmail)!;
-      subscriberStore.set(normalizedEmail, {
-        ...existing,
-        isActive: false,
-      });
-    }
-
-    if (await isPrismaConnected()) {
-      try {
-        await prisma.newsletterSubscriber.update({
-          where: { email: normalizedEmail },
-          data: { isActive: false },
-        });
-        logger.info(
-          `✓ Marked newsletter subscriber as unsubscribed in Prisma (${normalizedEmail})`
-        );
-        return true;
-      } catch (err) {
-        logger.warn('Failed to unsubscribe in Prisma, updated in-memory only', { error: err });
-      }
-    }
-
-    return true;
-  }
-
   public static async isSubscribed(email: string): Promise<boolean> {
     const normalizedEmail = email.toLowerCase().trim();
 

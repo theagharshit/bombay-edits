@@ -76,9 +76,6 @@ async function dispatch(req: NextRequest, context: RequestContext) {
     if (method === 'GET') {
       return newsletterController.getSubscribers();
     }
-    if (method === 'DELETE') {
-      return newsletterController.handleUnsubscribe(req, context);
-    }
   }
 
   // 6. /api/v1/contact

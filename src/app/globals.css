@@ -113,6 +113,44 @@ a {
   text-decoration: none;
 }
 
+/* ─── Global Button & Interactive Cursors ─────────────────────────────────── */
+
+a,
+button,
+[role='button'],
+input[type='button'],
+input[type='submit'],
+input[type='reset'],
+summary,
+select,
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+a *,
+button *,
+[role='button'] *,
+input[type='button'] *,
+input[type='submit'] *,
+input[type='reset'] *,
+summary *,
+select *,
+.cursor-pointer * {
+  cursor: pointer !important;
+}
+
+button:disabled,
+button:disabled *,
+[role='button'][aria-disabled='true'],
+[role='button'][aria-disabled='true'] *,
+input[type='button']:disabled,
+input[type='submit']:disabled,
+input[type='reset']:disabled,
+.cursor-not-allowed,
+.cursor-not-allowed * {
+  cursor: not-allowed !important;
+}
+
 /* ─── Focus Styles ─────────────────────────────────────────── */
 
 :focus-visible {

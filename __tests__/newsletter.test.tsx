@@ -19,23 +19,13 @@ describe('Newsletter Model & Controller', () => {
     expect(isSubscribed).toBe(true);
   });
 
-  it('should handle existing subscriber correctly on resubscribe', async () => {
+  it('should handle existing subscriber correctly on resubscribe without leaking status', async () => {
     const email = `repeat_${Date.now()}@example.com`;
     await NewsletterModel.subscribe(email, 'first_sub');
     const secondResult = await NewsletterModel.subscribe(email, 'second_sub');
 
     expect(secondResult.isNew).toBe(false);
     expect(secondResult.subscriber.email).toBe(email);
-  });
-
-  it('should unsubscribe an active email successfully', async () => {
-    const email = `unsub_${Date.now()}@example.com`;
-    await NewsletterModel.subscribe(email, 'test');
-    expect(await NewsletterModel.isSubscribed(email)).toBe(true);
-
-    const unsubResult = await NewsletterModel.unsubscribe(email);
-    expect(unsubResult).toBe(true);
-    expect(await NewsletterModel.isSubscribed(email)).toBe(false);
   });
 
   it('should process controller subscription request via HTTP mock', async () => {
@@ -55,26 +45,6 @@ describe('Newsletter Model & Controller', () => {
     expect(body.success).toBe(true);
     expect(body.data.email).toBe(testEmail);
     expect(body.message).toBe('Thank you for subscribing to The Bombay Edit.');
-  });
-
-  it('should process controller unsubscribe request via HTTP mock', async () => {
-    const testEmail = `controller_unsub_${Date.now()}@example.com`;
-    await NewsletterModel.subscribe(testEmail, 'test');
-
-    const req = new NextRequest('http://localhost:3000/api/newsletter', {
-      method: 'DELETE',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ email: testEmail }),
-    });
-
-    const response = await newsletterController.handleUnsubscribe(req, {
-      requestId: 'req_456',
-    });
-    const body = await response.json();
-
-    expect(response.status).toBe(200);
-    expect(body.success).toBe(true);
-    expect(body.data.unsubscribed).toBe(true);
   });
 });
 

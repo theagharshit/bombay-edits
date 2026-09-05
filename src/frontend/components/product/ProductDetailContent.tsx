@@ -174,13 +174,13 @@ export function ProductDetailContent({ product }: Props) {
               <div className="space-y-6 text-center">
                 <button
                   onClick={handleAddToBag}
-                  className="w-full bg-chocolate text-ivory py-4 text-[10px] uppercase tracking-[0.2em] hover:bg-deep-brown transition-colors"
+                  className="w-full bg-chocolate text-ivory py-4 text-[10px] uppercase tracking-[0.2em] hover:bg-deep-brown transition-colors cursor-pointer"
                 >
                   {added ? 'Added to Bag' : 'Bespoke Tailoring Inquiry'}
                 </button>
                 <button
                   onClick={() => toggleWishlist(product.id)}
-                  className="w-full text-[10px] uppercase tracking-[0.2em] text-text-muted hover:text-chocolate transition-colors"
+                  className="w-full text-[10px] uppercase tracking-[0.2em] text-text-muted hover:text-chocolate transition-colors cursor-pointer"
                 >
                   {wishlisted ? 'Remove from Archive' : 'Add to Archive (Wishlist)'}
                 </button>
