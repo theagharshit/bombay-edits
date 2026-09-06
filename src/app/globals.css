@@ -4,20 +4,44 @@
 /* ─── Design Token Layer ─────────────────────────────────────────── */
 
 @theme {
-  /* Accents & Primary Brand Colors - New Specs */
-  --color-ivory: #fbf8f4;
+  /* ── Brand Color Palette ── */
+  /* Warm Foundations */
+  --color-ivory: #faf8f5;
+  --color-cream: #f5efeb;
+  --color-beige: #ebe1d5;
+  --color-champagne: #dfd1b8;
+  --color-champagne-light: #f7f3eb;
   --color-sand: #f2ebe1;
   --color-shell: #f7f2ea;
-  --color-ink: #2a211c;
-  --color-muted: #7a6e64;
   --color-line: #e3d9cc;
+
+  /* Deep Anchors */
+  --color-black: #141210;
+  --color-ink: #2a211c;
+  --color-deep-brown: #3a241a;
+  --color-espresso: #2c1d16;
+
+  /* Feminine & Jewel / Earthy Accents */
+  --color-soft-pink: #deb5ac;
+  --color-soft-pink-light: #faf2f0;
+  --color-soft-pink-dark: #b87a6e;
+  --color-wine: #641c2e;
+  --color-wine-light: #f9f1f3;
+  --color-wine-muted: #823445;
+  --color-muted-green: #546252;
+  --color-muted-green-light: #edf2ee;
+  --color-terracotta: #a95c42;
+  --color-gold: #c79f63;
+
+  /* Muted & Secondary */
+  --color-muted: #7a6e64;
 
   /* Fallback legacy colors to not break existing pages */
   --color-chalk: #faf7f2;
   --color-brass: #c1a68d;
-  --color-bottle: #526154;
-  --color-sindoor: #722f37;
-  --color-rose: #d1b8b4;
+  --color-bottle: #546252;
+  --color-sindoor: #641c2e;
+  --color-rose: #deb5ac;
 
   /* Borders / Dividers */
   --color-border: #e5e5e5;
@@ -56,6 +80,32 @@
 
   /* Content */
   --max-content: 90rem;
+}
+ 
+:root {
+  --color-ivory: #faf8f5;
+  --color-cream: #f5efeb;
+  --color-beige: #ebe1d5;
+  --color-champagne: #dfd1b8;
+  --color-champagne-light: #f7f3eb;
+  --color-sand: #f2ebe1;
+  --color-shell: #f7f2ea;
+  --color-line: #e3d9cc;
+  --color-black: #141210;
+  --color-ink: #2a211c;
+  --color-deep-brown: #3a241a;
+  --color-espresso: #2c1d16;
+  --color-soft-pink: #deb5ac;
+  --color-soft-pink-light: #faf2f0;
+  --color-soft-pink-dark: #b87a6e;
+  --color-wine: #641c2e;
+  --color-wine-light: #f9f1f3;
+  --color-wine-muted: #823445;
+  --color-muted-green: #546252;
+  --color-muted-green-light: #edf2ee;
+  --color-terracotta: #a95c42;
+  --color-gold: #c79f63;
+  --color-muted: #7a6e64;
 }
 
 /* ─── Base Styles ─────────────────────────────────────────── */

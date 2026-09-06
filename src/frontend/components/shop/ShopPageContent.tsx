@@ -44,7 +44,7 @@ export function ShopPageContent({
 
   return (
     <div
-      className="bg-[#FAF6F0] min-h-screen text-[#4A3025] font-body"
+      className="bg-[var(--color-ivory)] min-h-screen text-[var(--color-deep-brown)] font-body"
       style={{ paddingBottom: '80px' }}
     >
       {/* Cinematic Hero Banner */}
@@ -65,7 +65,7 @@ export function ShopPageContent({
           }}
         />
         <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-[800px] mt-12">
-          <span className="text-[11px] uppercase tracking-[0.24em] font-medium text-white/70 mb-3 font-body">
+          <span className="text-[11px] uppercase tracking-[0.24em] font-medium text-[var(--color-champagne)] mb-3 font-body">
             Bombay Edits / Ready-to-Wear
           </span>
           <h1 className="font-display text-[44px] md:text-[68px] text-white leading-none whitespace-nowrap mb-6 drop-shadow-sm">
@@ -90,10 +90,10 @@ export function ShopPageContent({
                 className="flex flex-col items-center text-center"
                 style={{ marginBottom: '40px' }}
               >
-                <h2 className="font-display text-[36px] text-[#4A3025] mb-2">Trending Now</h2>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-[#8A817C]">
+                <span className="text-[10px] uppercase tracking-[0.22em] text-[var(--color-wine)] font-medium mb-2">
                   Our newest arrivals
                 </span>
+                <h2 className="font-display text-[36px] text-[var(--color-deep-brown)]">Trending Now</h2>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10">
@@ -103,7 +103,7 @@ export function ShopPageContent({
               </div>
             </section>
             <hr
-              className="border-t border-[#E5DFD5]"
+              className="border-t border-[var(--color-line)]"
               style={{ marginTop: '80px', marginBottom: '80px' }}
             />
           </>
@@ -117,10 +117,10 @@ export function ShopPageContent({
                 className="flex flex-col items-center text-center"
                 style={{ marginBottom: '40px' }}
               >
-                <h2 className="font-display text-[36px] text-[#4A3025] mb-2">The Bestsellers</h2>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-[#8A817C]">
+                <span className="text-[10px] uppercase tracking-[0.22em] text-[var(--color-muted-green)] font-medium mb-2">
                   Loved by our clients
                 </span>
+                <h2 className="font-display text-[36px] text-[var(--color-deep-brown)]">The Bestsellers</h2>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10">
@@ -130,7 +130,7 @@ export function ShopPageContent({
               </div>
             </section>
             <hr
-              className="border-t border-[#E5DFD5]"
+              className="border-t border-[var(--color-line)]"
               style={{ marginTop: '80px', marginBottom: '80px' }}
             />
           </>
@@ -151,10 +151,10 @@ export function ShopPageContent({
                   className="flex flex-col items-center text-center"
                   style={{ marginBottom: '40px' }}
                 >
-                  <h2 className="font-display text-[36px] text-[#4A3025] mb-2">{cat.title}</h2>
-                  <span className="text-[10px] uppercase tracking-[0.2em] text-[#8A817C]">
+                  <span className="text-[10px] uppercase tracking-[0.22em] text-[#8A6A2C] font-medium mb-2">
                     {cat.subtitle}
                   </span>
+                  <h2 className="font-display text-[36px] text-[var(--color-deep-brown)]">{cat.title}</h2>
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10">
@@ -166,17 +166,17 @@ export function ShopPageContent({
                 <div className="text-center" style={{ marginTop: '48px' }}>
                   <Link
                     href={`/category/${cat.id}`}
-                    className="inline-block border border-[#4A3025] text-[#4A3025] text-[10px] uppercase tracking-[0.2em] hover:bg-[#4A3025] hover:text-white transition-colors"
-                    style={{ padding: '16px 40px' }}
+                    className="inline-block border border-[var(--color-deep-brown)] text-[var(--color-deep-brown)] text-[10px] uppercase tracking-[0.2em] rounded-none hover:bg-[var(--color-deep-brown)] hover:text-[var(--color-champagne-light)] transition-colors"
+                    style={{ padding: '14px 36px' }}
                   >
                     Explore All {cat.title.replace('The ', '').replace(' Collection', '')}
                   </Link>
                 </div>
               </section>
 
-              {/* Only render horizontal rule if it's not the very last item in the page (assuming Special Offers is next, or this is the last category) */}
+              {/* Only render horizontal rule if it's not the very last item in the page */}
               <hr
-                className="border-t border-[#E5DFD5]"
+                className="border-t border-[var(--color-line)]"
                 style={{ marginTop: '80px', marginBottom: '80px' }}
               />
             </div>
@@ -190,10 +190,10 @@ export function ShopPageContent({
               className="flex flex-col items-center text-center"
               style={{ marginBottom: '40px' }}
             >
-              <h2 className="font-display text-[36px] text-[#4A3025] mb-2">The Archive</h2>
-              <span className="text-[10px] uppercase tracking-[0.2em] text-[#8A817C]">
+              <span className="text-[10px] uppercase tracking-[0.22em] text-[var(--color-terracotta)] font-medium mb-2">
                 Special client privileges
               </span>
+              <h2 className="font-display text-[36px] text-[var(--color-deep-brown)]">The Archive</h2>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10">

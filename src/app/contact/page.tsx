@@ -249,7 +249,7 @@ function ContactContent() {
                 data-testid="contact-success-state"
                 className="py-4 flex flex-col items-center text-center font-body"
               >
-                <div className="w-9 h-9 rounded-full border border-[var(--color-ink)] flex items-center justify-center text-[var(--color-ink)] mb-2.5 bg-[var(--color-ivory)]">
+                <div className="w-9 h-9 rounded-none border border-[var(--color-ink)] flex items-center justify-center text-[var(--color-ink)] mb-2.5 bg-[var(--color-ivory)]">
                   <CheckCircle2 size={18} strokeWidth={1.5} />
                 </div>
 
@@ -291,6 +291,27 @@ function ContactContent() {
                 className="flex flex-col gap-2.5 font-body text-[12.5px]"
                 data-testid="contact-form"
               >
+                {/* Prefilled Banner with Clear All Button */}
+                {isPrefilled && form.orderNumber && (
+                  <div className="flex items-center justify-between px-3 py-2 bg-[#eadecd]/80 border border-[var(--color-line)] text-[11px] text-[var(--color-ink)] rounded-none">
+                    <div className="flex items-center gap-1.5">
+                      <Package size={13} className="text-[var(--color-ink)] shrink-0" />
+                      <span>
+                        Order Reference:{' '}
+                        <strong className="font-mono font-semibold">{form.orderNumber}</strong>
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleClearAll}
+                      className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider text-[var(--color-ink)] hover:underline font-semibold cursor-pointer ml-2"
+                      title="Clear prefilled details"
+                    >
+                      <X size={11} strokeWidth={2} />
+                      <span>Clear all</span>
+                    </button>
+                  </div>
+                )}
                 {/* Topic Select */}
                 <div>
                   <div className="flex items-center justify-between mb-0.5">

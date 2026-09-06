@@ -36,7 +36,7 @@ export default function TheCraftPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 items-center mb-16 md:mb-24 relative">
           {/* Timeline Node on Center Line */}
           <div
-            className="hidden md:block absolute left-1/2 -translate-x-1/2 top-6 w-2.5 h-2.5 rounded-full border border-[#D9CDBC] bg-[#FAF7F2] z-10"
+            className="hidden md:block absolute left-1/2 -translate-x-1/2 top-6 w-2.5 h-2.5 rounded-none rotate-45 border border-[#D9CDBC] bg-[#FAF7F2] z-10"
             aria-hidden="true"
           />
 
@@ -76,7 +76,7 @@ export default function TheCraftPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 items-center mb-16 md:mb-24 relative">
           {/* Timeline Node on Center Line */}
           <div
-            className="hidden md:block absolute left-1/2 -translate-x-1/2 top-6 w-2.5 h-2.5 rounded-full border border-[#D9CDBC] bg-[#FAF7F2] z-10"
+            className="hidden md:block absolute left-1/2 -translate-x-1/2 top-6 w-2.5 h-2.5 rounded-none rotate-45 border border-[#D9CDBC] bg-[#FAF7F2] z-10"
             aria-hidden="true"
           />
 
@@ -115,7 +115,7 @@ export default function TheCraftPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 items-center relative">
           {/* Timeline Node on Center Line */}
           <div
-            className="hidden md:block absolute left-1/2 -translate-x-1/2 top-6 w-2.5 h-2.5 rounded-full border border-[#D9CDBC] bg-[#FAF7F2] z-10"
+            className="hidden md:block absolute left-1/2 -translate-x-1/2 top-6 w-2.5 h-2.5 rounded-none rotate-45 border border-[#D9CDBC] bg-[#FAF7F2] z-10"
             aria-hidden="true"
           />
 
