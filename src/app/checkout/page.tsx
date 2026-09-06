@@ -99,6 +99,8 @@ export default function CheckoutPage() {
           state: defaultAddr.state || '',
           postalCode: defaultAddr.postalCode || '',
           country: defaultAddr.country || 'India',
+          phone:
+            defaultAddr.phone && defaultAddr.phone !== 'N/A' ? defaultAddr.phone : prev.phone || '',
         }));
         setShowNewAddressForm(false);
       } else {
@@ -129,6 +131,7 @@ export default function CheckoutPage() {
       state: addr.state || '',
       postalCode: addr.postalCode || '',
       country: addr.country || 'India',
+      phone: addr.phone && addr.phone !== 'N/A' ? addr.phone : prev.phone || '',
     }));
     setErrors((prev) => ({
       ...prev,
@@ -517,27 +520,32 @@ export default function CheckoutPage() {
                 <h2 className="text-sm uppercase tracking-widest text-chocolate font-medium">
                   2. Shipping Address
                 </h2>
-                {isAuthenticated &&
-                  customer &&
-                  savedAddresses.length > 0 &&
-                  !showNewAddressForm && (
-                    <button
-                      type="button"
-                      onClick={() => setShowNewAddressForm(true)}
-                      className="text-xs uppercase tracking-widest text-ink hover:underline inline-flex items-center gap-1 font-medium cursor-pointer"
-                    >
-                      <Plus size={12} />
-                      <span>Deliver to New Address</span>
-                    </button>
-                  )}
+                {isAuthenticated && customer && (
+                  <Link
+                    href="/account/addresses?returnUrl=/checkout"
+                    className="text-xs uppercase tracking-widest text-ink hover:text-chocolate hover:underline inline-flex items-center gap-1 font-medium"
+                  >
+                    <span>Manage in Account</span>
+                    <ChevronRight size={13} />
+                  </Link>
+                )}
               </div>
 
               {/* Logged in with saved addresses: Display interactive address selection cards */}
               {isAuthenticated && customer && savedAddresses.length > 0 && !showNewAddressForm ? (
                 <div className="space-y-4">
-                  <span className="text-xs uppercase tracking-wider text-text-muted font-body block">
-                    Choose Destination Address:
-                  </span>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs uppercase tracking-wider text-text-muted font-body block">
+                      Choose Destination Address:
+                    </span>
+                    <Link
+                      href="/account/addresses?returnUrl=/checkout&action=new"
+                      className="text-xs uppercase tracking-wider text-chocolate hover:text-ink hover:underline inline-flex items-center gap-1 font-medium"
+                    >
+                      <Plus size={12} />
+                      <span>Add to Account</span>
+                    </Link>
+                  </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {savedAddresses.map((addr) => {
@@ -557,11 +565,22 @@ export default function CheckoutPage() {
                             <span className="font-display text-sm text-ink font-medium">
                               {addr.name}
                             </span>
-                            {isSelected && (
-                              <span className="inline-flex items-center gap-1 text-[9px] uppercase tracking-wider bg-ink text-ivory px-2 py-0.5 font-medium">
-                                <Check size={10} /> Selected
-                              </span>
-                            )}
+                            <div className="flex items-center gap-2">
+                              {isSelected && (
+                                <span className="inline-flex items-center gap-1 text-[9px] uppercase tracking-wider bg-ink text-ivory px-2 py-0.5 font-medium">
+                                  <Check size={10} /> Selected
+                                </span>
+                              )}
+                              <Link
+                                href={`/account/addresses?returnUrl=/checkout&edit=${addr.id}`}
+                                onClick={(e) => e.stopPropagation()}
+                                className="inline-flex items-center gap-0.5 text-[10px] uppercase tracking-wider text-chocolate hover:text-ink hover:underline font-medium py-0.5 px-1 cursor-pointer"
+                                title="Edit this address in your account"
+                              >
+                                <Edit3 size={10} />
+                                <span>Edit</span>
+                              </Link>
+                            </div>
                           </div>
 
                           <p className="text-xs text-deep-brown leading-relaxed">
@@ -582,18 +601,21 @@ export default function CheckoutPage() {
                     })}
 
                     {/* Add new address card option */}
-                    <div
-                      onClick={() => setShowNewAddressForm(true)}
-                      className="p-4 border border-dashed border-border hover:border-chocolate bg-cream/30 flex flex-col items-center justify-center text-center cursor-pointer transition-colors min-h-[120px]"
+                    <Link
+                      href="/account/addresses?returnUrl=/checkout&action=new"
+                      className="p-4 border border-dashed border-border hover:border-chocolate bg-cream/30 flex flex-col items-center justify-center text-center cursor-pointer transition-colors min-h-[120px] group"
                     >
-                      <Plus size={18} className="text-chocolate mb-1.5" />
+                      <Plus
+                        size={18}
+                        className="text-chocolate mb-1.5 group-hover:scale-110 transition-transform"
+                      />
                       <span className="text-xs uppercase tracking-wider text-ink font-medium">
                         Add New Address
                       </span>
                       <span className="text-[11px] text-text-muted mt-0.5">
-                        Save to your atelier account
+                        Manage in your account & return to checkout
                       </span>
-                    </div>
+                    </Link>
                   </div>
                 </div>
               ) : null}
@@ -604,6 +626,27 @@ export default function CheckoutPage() {
                 savedAddresses.length === 0 ||
                 showNewAddressForm) && (
                 <div className="space-y-6">
+                  {isAuthenticated && customer && savedAddresses.length === 0 && (
+                    <div className="p-4 bg-cream/70 border border-border flex items-center justify-between flex-wrap gap-3 font-body">
+                      <div>
+                        <p className="text-xs uppercase tracking-wider text-chocolate font-medium">
+                          No Saved Addresses Found
+                        </p>
+                        <p className="text-xs text-text-muted mt-0.5">
+                          Enter your shipping details below, or add an address to your atelier
+                          account.
+                        </p>
+                      </div>
+                      <Link
+                        href="/account/addresses?returnUrl=/checkout&action=new"
+                        className="text-xs uppercase tracking-widest bg-ink text-ivory px-3.5 py-1.5 hover:bg-chocolate transition-colors font-medium inline-flex items-center gap-1 cursor-pointer"
+                      >
+                        <Plus size={12} />
+                        <span>Manage in Account</span>
+                      </Link>
+                    </div>
+                  )}
+
                   {isAuthenticated && customer && savedAddresses.length > 0 && (
                     <div className="flex items-center justify-between pb-2">
                       <span className="text-xs uppercase tracking-wider text-chocolate font-medium">

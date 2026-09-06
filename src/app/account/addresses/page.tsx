@@ -1,7 +1,9 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
 import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { ArrowRight, Check } from 'lucide-react';
 import { Input } from '@/frontend/components/ui/Input';
 import { REGIONS, SupportedCountry } from '@/frontend/utils/geoRegions';
 import { useAuth } from '@/frontend/context/AuthContext';
@@ -20,7 +22,14 @@ interface AddressItem {
   isDefault: boolean;
 }
 
-export default function AddressesPage() {
+function AddressesContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const returnUrl = searchParams.get('returnUrl');
+  const action = searchParams.get('action');
+  const editId = searchParams.get('edit');
+  const [hasAutoOpened, setHasAutoOpened] = useState(false);
+
   const { customer, isAuthenticated, isLoading: authLoading } = useAuth();
   const [addresses, setAddresses] = useState<AddressItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -177,6 +186,21 @@ export default function AddressesPage() {
     }
   }, [authLoading, isAuthenticated, fetchAddresses]);
 
+  useEffect(() => {
+    if (!loading && !hasAutoOpened && isAuthenticated) {
+      if (action === 'new') {
+        openModal();
+        setHasAutoOpened(true);
+      } else if (editId && addresses.length > 0) {
+        const target = addresses.find((a) => a.id === editId);
+        if (target) {
+          openEditModal(target);
+          setHasAutoOpened(true);
+        }
+      }
+    }
+  }, [loading, action, editId, addresses, hasAutoOpened, isAuthenticated]);
+
   const handleCountryChange = (country: SupportedCountry) => {
     setNewAddr((prev) => ({
       ...prev,
@@ -287,6 +311,13 @@ export default function AddressesPage() {
           country: 'India',
           isDefault: false,
         });
+
+        if (returnUrl) {
+          showNotification('Address saved! Returning to checkout...');
+          setTimeout(() => {
+            router.push(returnUrl);
+          }, 750);
+        }
       } else {
         showNotification(json.error || 'Failed to save address', 'error');
       }
@@ -324,7 +355,7 @@ export default function AddressesPage() {
     <div className="w-full min-h-screen bg-ivory text-dark-espresso font-body pt-12 pb-20 md:pt-16 md:pb-28">
       <div className="container-site max-w-6xl mx-auto px-6 sm:px-10 lg:px-12">
         {/* Navigation Breadcrumb */}
-        <nav aria-label="Breadcrumb" className="mb-10 sm:mb-12">
+        <nav aria-label="Breadcrumb" className="mb-8 sm:mb-10">
           <div className="flex items-center gap-2.5 text-[11px] uppercase tracking-[0.2em] text-muted-taupe">
             <Link href="/" className="hover:text-dark-espresso transition-colors">
               Home
@@ -337,6 +368,27 @@ export default function AddressesPage() {
             <span className="text-dark-espresso font-medium">Saved Addresses</span>
           </div>
         </nav>
+
+        {/* Returning to Checkout banner */}
+        {returnUrl && (
+          <div className="mb-8 p-4 sm:p-5 bg-cream/90 border border-champagne-gold/60 flex items-center justify-between flex-wrap gap-4 text-sm font-body shadow-xs">
+            <div className="flex items-center gap-2.5">
+              <span className="font-display font-medium text-dark-espresso text-base">
+                Managing Address for Checkout
+              </span>
+              <span className="text-xs text-muted-taupe hidden sm:inline">
+                • Updates will reflect immediately in checkout
+              </span>
+            </div>
+            <Link
+              href={returnUrl}
+              className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] bg-dark-espresso text-cream px-5 py-2.5 hover:bg-chocolate-brown transition-colors font-medium cursor-pointer"
+            >
+              <span>Return to Checkout</span>
+              <ArrowRight size={13} />
+            </Link>
+          </div>
+        )}
 
         {/* Status Notification Banner */}
         {statusMessage && (
@@ -482,6 +534,20 @@ export default function AddressesPage() {
                   )}
 
                   <div className="flex items-center gap-4">
+                    {returnUrl && (
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          if (!addr.isDefault) {
+                            await handleSetDefault(addr.id);
+                          }
+                          router.push(returnUrl);
+                        }}
+                        className="text-[11px] uppercase tracking-[0.18em] text-champagne-gold hover:text-dark-espresso transition-colors font-semibold cursor-pointer py-1"
+                      >
+                        Use for Checkout →
+                      </button>
+                    )}
                     <button
                       onClick={() => openEditModal(addr)}
                       className="text-[11px] uppercase tracking-[0.18em] text-dark-espresso hover:text-champagne-gold transition-colors font-semibold cursor-pointer py-1"
@@ -701,5 +767,24 @@ export default function AddressesPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function AddressesPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="bg-[#FAF6F0] min-h-screen font-body flex items-center justify-center py-24">
+          <div className="text-center">
+            <div className="w-8 h-8 border-2 border-[#4A3025] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+            <span className="text-[10px] uppercase tracking-[0.25em] text-[#8A817C] font-medium">
+              Entering The Atelier...
+            </span>
+          </div>
+        </div>
+      }
+    >
+      <AddressesContent />
+    </Suspense>
   );
 }
