@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { X, ChevronDown, User, BookOpen, Package, Phone } from 'lucide-react';
+import { X, ChevronDown, User, BookOpen, Package, Phone, Search } from 'lucide-react';
 import { useAuth } from '@/frontend/context/AuthContext';
 
 interface MobileDrawerProps {
   isOpen: boolean;
   onClose: () => void;
+  onOpenSearch?: () => void;
 }
 
 const MENU_GROUPS = [
@@ -69,7 +70,7 @@ const MENU_GROUPS = [
   },
 ];
 
-export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
+export function MobileDrawer({ isOpen, onClose, onOpenSearch }: MobileDrawerProps) {
   const [openGroup, setOpenGroup] = useState<string | null>(null);
   const { isAuthenticated } = useAuth();
 
@@ -122,6 +123,22 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
             <X size={18} strokeWidth={1} />
           </button>
         </div>
+
+        {/* Quick Search Trigger */}
+        {onOpenSearch && (
+          <button
+            type="button"
+            onClick={() => {
+              onClose();
+              onOpenSearch();
+            }}
+            className="flex items-center gap-3 px-5 py-3 bg-white border-b border-[var(--color-line)] text-[var(--color-muted)] hover:text-[var(--color-ink)] hover:bg-[var(--color-sand)]/50 transition-colors text-xs font-body tracking-wider uppercase text-left cursor-pointer rounded-none"
+            aria-label="Search Bombay Edits"
+          >
+            <Search size={15} className="text-[var(--color-wine)] shrink-0" />
+            <span className="truncate">Search garments, bespoke services, orders...</span>
+          </button>
+        )}
 
         {/* Scrollable Nav Accordions - Filling Whole Space */}
         <div className="flex-1 overflow-y-auto overflow-x-hidden flex flex-col">

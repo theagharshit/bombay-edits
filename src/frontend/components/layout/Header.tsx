@@ -3,10 +3,10 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Search, User, Heart, Menu } from 'lucide-react';
+import { User, Heart, Menu } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { MobileDrawer } from './MobileDrawer';
-import { SearchOverlay } from '@/frontend/components/v2/layout/SearchOverlay';
+import { HeaderSearch } from '@/frontend/components/v2/layout/SearchOverlay';
 
 interface NavPill {
   label: string;
@@ -28,6 +28,18 @@ export function Header() {
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+
+  // Global Cmd+K / Ctrl+K shortcut to open search
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setSearchOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   // Refs for animation
   const headerBgRef = useRef<HTMLDivElement>(null);
@@ -335,13 +347,12 @@ export function Header() {
             <Link href="/wishlist" className={iconButtonClass} aria-label="Wishlist">
               <Heart size={14} strokeWidth={1.2} />
             </Link>
-            <button
-              className={iconButtonClass}
-              aria-label="Search"
-              onClick={() => setSearchOpen(true)}
-            >
-              <Search size={14} strokeWidth={1.2} />
-            </button>
+            {/* In-place Compact Search */}
+            <HeaderSearch
+              isOpen={searchOpen}
+              onOpen={() => setSearchOpen(true)}
+              onClose={() => setSearchOpen(false)}
+            />
             <Link href="/account" className={iconButtonClass} aria-label="Account">
               <User size={14} strokeWidth={1.2} />
             </Link>
@@ -364,13 +375,14 @@ export function Header() {
             </button>
           </div>
         </div>
-
-        {/* Search Overlay */}
-        <SearchOverlay isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
       </header>
 
       {/* Mobile / Navigation Drawer */}
-      <MobileDrawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)} />
+      <MobileDrawer
+        isOpen={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        onOpenSearch={() => setSearchOpen(true)}
+      />
     </>
   );
 }
