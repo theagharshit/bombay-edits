@@ -115,7 +115,7 @@ export function CartDrawer() {
             <h2 className="font-display text-[22px] sm:text-[24px] text-[#4A3025] tracking-tight">
               Your Bag
             </h2>
-            <span className="font-body text-[11px] uppercase tracking-[0.15em] px-2.5 py-0.5 bg-[#F4EFEA] text-[#8A817C] rounded-full font-medium">
+            <span className="font-body text-[11px] uppercase tracking-[0.15em] px-2.5 py-0.5 bg-[#F4EFEA] text-[#8A817C] rounded-none font-medium">
               {itemCount} {itemCount === 1 ? 'item' : 'items'}
             </span>
           </div>
@@ -138,9 +138,9 @@ export function CartDrawer() {
             </span>
             <span className="text-[10px] text-[#8A817C]">{Math.round(freeShippingProgress)}%</span>
           </div>
-          <div className="w-full h-1 bg-[#E5DFD5] overflow-hidden rounded-full">
+          <div className="w-full h-1 bg-[#E5DFD5] overflow-hidden rounded-none">
             <div
-              className="h-full bg-[#4A3025] transition-all duration-500 ease-out rounded-full"
+              className="h-full bg-[#4A3025] transition-all duration-500 ease-out rounded-none"
               style={{ width: `${freeShippingProgress}%` }}
             />
           </div>
@@ -151,7 +151,7 @@ export function CartDrawer() {
           {items.length === 0 ? (
             <div className="flex flex-col h-full py-12">
               <div className="flex flex-col items-center justify-center text-center py-10">
-                <div className="w-16 h-16 rounded-full bg-[#F4EFEA] border border-[#E5DFD5] flex items-center justify-center text-[#8A817C] mb-5">
+                <div className="w-16 h-16 rounded-none bg-[#F4EFEA] border border-[#E5DFD5] flex items-center justify-center text-[#8A817C] mb-5">
                   <ShoppingBag size={24} strokeWidth={1.2} />
                 </div>
                 <p className="font-display text-[22px] sm:text-[24px] text-[#4A3025] mb-2">
@@ -193,7 +193,7 @@ export function CartDrawer() {
                       onClick={closeCart}
                       className="flex-none w-[130px] group snap-start"
                     >
-                      <div className="relative w-full aspect-[3/4] mb-2.5 bg-[#F4EFEA] overflow-hidden rounded-[2px]">
+                      <div className="relative w-full aspect-[3/4] mb-2.5 bg-[#F4EFEA] overflow-hidden rounded-none">
                         <Image
                           src={product.image}
                           alt={product.name}
@@ -224,7 +224,7 @@ export function CartDrawer() {
                   <Link
                     href={`/shop/${item.slug || item.productId}`}
                     onClick={closeCart}
-                    className="relative w-[95px] sm:w-[105px] aspect-[3/4] flex-shrink-0 bg-[#F4EFEA] overflow-hidden rounded-[2px] border border-[#E5DFD5]/60 hover:opacity-95 transition-opacity"
+                    className="relative w-[95px] sm:w-[105px] aspect-[3/4] flex-shrink-0 bg-[#F4EFEA] overflow-hidden rounded-none border border-[#E5DFD5]/60 hover:opacity-95 transition-opacity"
                   >
                     <Image
                       src={item.image || '/images/placeholder.jpg'}
@@ -273,7 +273,7 @@ export function CartDrawer() {
                     {/* Quantity Selector & Remove Action */}
                     <div className="flex items-center justify-between mt-5 pt-2">
                       {/* Quantity Controls */}
-                      <div className="inline-flex items-center border border-[#E5DFD5] bg-[#FAF6F0] rounded-[2px]">
+                      <div className="inline-flex items-center border border-[#E5DFD5] bg-[#FAF6F0] rounded-none">
                         <button
                           onClick={() =>
                             updateQuantity(item.productId, item.size, item.quantity - 1)
@@ -338,7 +338,7 @@ export function CartDrawer() {
             <Link
               href="/checkout"
               onClick={closeCart}
-              className="flex items-center justify-center gap-3 w-full bg-[#4A3025] text-[#FAF6F0] font-body text-[11px] uppercase tracking-[0.22em] font-medium py-4 px-6 hover:bg-[#382319] active:scale-[0.99] transition-all duration-300 shadow-md hover:shadow-lg rounded-[2px] group"
+              className="flex items-center justify-center gap-3 w-full bg-[#4A3025] text-[#FAF6F0] font-body text-[11px] uppercase tracking-[0.22em] font-medium py-4 px-6 hover:bg-[#382319] active:scale-[0.99] transition-all duration-300 shadow-md hover:shadow-lg rounded-none group"
             >
               <span>Proceed to Checkout</span>
               <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />

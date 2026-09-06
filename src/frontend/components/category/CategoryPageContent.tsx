@@ -50,12 +50,12 @@ export function CategoryPageContent({
 
   return (
     <div
-      className="bg-[#FAF6F0] min-h-screen text-[#4A3025] font-body"
+      className="bg-[var(--color-ivory)] min-h-screen text-[var(--color-deep-brown)] font-body"
       style={{ paddingBottom: '80px' }}
     >
       {/* Header */}
       <div
-        className="border-b border-[#E5DFD5]"
+        className="border-b border-[var(--color-line)]"
         style={{
           display: 'flex',
           flexDirection: 'column',
@@ -69,18 +69,18 @@ export function CategoryPageContent({
           paddingRight: '24px',
         }}
       >
-        <span className="text-[10px] uppercase tracking-[0.25em] text-[#8A817C] mb-4 block font-medium">
+        <span className="text-[10px] uppercase tracking-[0.25em] text-[#8A6A2C] mb-4 block font-medium">
           Bombay Edits / Category
         </span>
         <h1
-          className="font-display text-[48px] text-[#4A3025] mb-4 leading-tight text-center"
+          className="font-display text-[48px] text-[var(--color-deep-brown)] mb-4 leading-tight text-center"
           style={{ textAlign: 'center', width: '100%' }}
         >
           {title}
         </h1>
         {description && (
           <p
-            className="text-sm uppercase tracking-widest text-[#8A817C] text-center"
+            className="text-sm uppercase tracking-widest text-[var(--color-muted)] text-center"
             style={{ maxWidth: '36rem', margin: '0 auto', textAlign: 'center' }}
           >
             {description}
@@ -101,10 +101,10 @@ export function CategoryPageContent({
                 className="flex flex-col items-center text-center"
                 style={{ marginBottom: '40px' }}
               >
-                <h2 className="font-display text-[36px] text-[#4A3025] mb-2">Trending</h2>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-[#8A817C]">
+                <span className="text-[10px] uppercase tracking-[0.22em] text-[var(--color-wine)] font-medium mb-2">
                   Newest arrivals in {title}
                 </span>
+                <h2 className="font-display text-[36px] text-[var(--color-deep-brown)]">Trending</h2>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10">
                 {trendingProducts.map((product) => (
@@ -113,7 +113,7 @@ export function CategoryPageContent({
               </div>
             </section>
             <hr
-              className="border-t border-[#E5DFD5]"
+              className="border-t border-[var(--color-line)]"
               style={{ marginTop: '80px', marginBottom: '80px' }}
             />
           </>
@@ -127,10 +127,10 @@ export function CategoryPageContent({
                 className="flex flex-col items-center text-center"
                 style={{ marginBottom: '40px' }}
               >
-                <h2 className="font-display text-[36px] text-[#4A3025] mb-2">The Bestsellers</h2>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-[#8A817C]">
+                <span className="text-[10px] uppercase tracking-[0.22em] text-[var(--color-muted-green)] font-medium mb-2">
                   Loved by our clients
                 </span>
+                <h2 className="font-display text-[36px] text-[var(--color-deep-brown)]">The Bestsellers</h2>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10">
                 {bestsellers.map((product) => (
@@ -139,7 +139,7 @@ export function CategoryPageContent({
               </div>
             </section>
             <hr
-              className="border-t border-[#E5DFD5]"
+              className="border-t border-[var(--color-line)]"
               style={{ marginTop: '80px', marginBottom: '80px' }}
             />
           </>
@@ -153,10 +153,10 @@ export function CategoryPageContent({
                 className="flex flex-col items-center text-center"
                 style={{ marginBottom: '40px' }}
               >
-                <h2 className="font-display text-[36px] text-[#4A3025] mb-2">Special Offers</h2>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-[#8A817C]">
+                <span className="text-[10px] uppercase tracking-[0.22em] text-[var(--color-terracotta)] font-medium mb-2">
                   The Archive
                 </span>
+                <h2 className="font-display text-[36px] text-[var(--color-deep-brown)]">Special Offers</h2>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10">
                 {specialOffers.map((product) => (
@@ -165,7 +165,7 @@ export function CategoryPageContent({
               </div>
             </section>
             <hr
-              className="border-t border-[#E5DFD5]"
+              className="border-t border-[var(--color-line)]"
               style={{ marginTop: '80px', marginBottom: '80px' }}
             />
           </>
@@ -174,22 +174,22 @@ export function CategoryPageContent({
         {/* The Complete Collection Grid with Filters */}
         <section style={{ paddingTop: '40px' }}>
           <div className="flex flex-col items-center text-center" style={{ marginBottom: '40px' }}>
-            <h2 className="font-display text-[36px] text-[#4A3025] mb-2">
-              The Complete Collection
-            </h2>
-            <span className="text-[10px] uppercase tracking-[0.2em] text-[#8A817C]">
+            <span className="text-[10px] uppercase tracking-[0.22em] text-[#8A6A2C] font-medium mb-2">
               Browse all {title}
             </span>
+            <h2 className="font-display text-[36px] text-[var(--color-deep-brown)]">
+              The Complete Collection
+            </h2>
           </div>
 
           {/* Toolbar */}
           <div
-            className="flex items-center justify-between border-y border-[#E5DFD5]"
+            className="flex items-center justify-between border-y border-[var(--color-line)]"
             style={{ paddingTop: '24px', paddingBottom: '24px', marginBottom: '40px' }}
           >
             <button
               onClick={() => setFiltersOpen(!filtersOpen)}
-              className="flex items-center gap-2 text-xs uppercase tracking-widest text-[#4A3025] hover:text-[#8A817C] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass p-1"
+              className="flex items-center gap-2 text-xs uppercase tracking-widest text-[var(--color-deep-brown)] hover:text-[var(--color-wine)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass p-1 cursor-pointer"
             >
               <svg
                 width="18"
@@ -212,18 +212,18 @@ export function CategoryPageContent({
               {filtersOpen ? 'Hide Filters' : 'Filter'}
             </button>
             <div className="flex items-center gap-4 text-sm">
-              <span className="hidden md:inline text-[#8A817C]">
+              <span className="hidden md:inline text-[var(--color-muted)]">
                 {filteredGridProducts.length} Results
               </span>
               <div className="flex items-center gap-2">
-                <label htmlFor="sort" className="text-xs uppercase tracking-widest text-[#8A817C]">
+                <label htmlFor="sort" className="text-xs uppercase tracking-widest text-[var(--color-muted)]">
                   Sort
                 </label>
                 <select
                   id="sort"
                   value={activeSort}
                   onChange={(e) => setActiveSort(e.target.value)}
-                  className="bg-transparent border-none focus:ring-0 text-[#4A3025] font-medium cursor-pointer"
+                  className="bg-transparent border-none focus:ring-0 text-[var(--color-deep-brown)] font-medium cursor-pointer"
                 >
                   <option value="newest">Newest</option>
                   <option value="price-high">Price: High to Low</option>
@@ -239,9 +239,9 @@ export function CategoryPageContent({
               className={`${filtersOpen ? 'block' : 'hidden'} md:w-64 flex-shrink-0 transition-all duration-300`}
             >
               <div className="sticky top-32 space-y-8">
-                {/* Status Filter (Example) */}
+                {/* Status Filter */}
                 <div>
-                  <h3 className="text-xs font-semibold uppercase tracking-widest mb-4">
+                  <h3 className="text-xs font-semibold uppercase tracking-widest mb-4 text-[var(--color-deep-brown)]">
                     Availability
                   </h3>
                   <ul className="space-y-3">
@@ -250,9 +250,9 @@ export function CategoryPageContent({
                         <label className="flex items-center gap-3 cursor-pointer group">
                           <input
                             type="checkbox"
-                            className="w-4 h-4 rounded-none border-[#E5DFD5] text-[#4A3025] focus:ring-[#4A3025]"
+                            className="w-4 h-4 rounded-none border-[var(--color-line)] text-[var(--color-wine)] focus:ring-[var(--color-wine)]"
                           />
-                          <span className="text-sm group-hover:text-[#4A3025] transition-colors">
+                          <span className="text-sm group-hover:text-[var(--color-wine)] transition-colors text-[var(--color-deep-brown)]">
                             {status}
                           </span>
                         </label>
@@ -260,7 +260,6 @@ export function CategoryPageContent({
                     ))}
                   </ul>
                 </div>
-                {/* Additional static filters can be added here */}
               </div>
             </aside>
 
@@ -268,12 +267,12 @@ export function CategoryPageContent({
             <div className="flex-1">
               {visibleProducts.length === 0 ? (
                 <div className="text-center py-24">
-                  <p className="text-lg text-[#8A817C]">No products found matching your filters.</p>
+                  <p className="text-lg text-[var(--color-muted)]">No products found matching your filters.</p>
                   <button
                     onClick={() => {
                       setActiveSort('newest');
                     }}
-                    className="mt-6 border-b border-[#4A3025] text-[#4A3025] text-sm font-medium pb-1"
+                    className="mt-6 border-b border-[var(--color-deep-brown)] text-[var(--color-deep-brown)] hover:text-[var(--color-wine)] text-sm font-medium pb-1 cursor-pointer"
                   >
                     Clear all filters
                   </button>
@@ -290,8 +289,8 @@ export function CategoryPageContent({
                 <div className="text-center" style={{ marginTop: '80px' }}>
                   <button
                     onClick={() => setVisibleCount((prev) => prev + 12)}
-                    className="inline-block border border-[#4A3025] text-[#4A3025] text-[10px] uppercase tracking-[0.2em] hover:bg-[#4A3025] hover:text-white transition-colors"
-                    style={{ padding: '16px 40px' }}
+                    className="inline-block border border-[var(--color-deep-brown)] text-[var(--color-deep-brown)] text-[10px] uppercase tracking-[0.2em] rounded-none hover:bg-[var(--color-deep-brown)] hover:text-[var(--color-champagne-light)] transition-colors cursor-pointer"
+                    style={{ padding: '14px 36px' }}
                   >
                     Load More
                   </button>

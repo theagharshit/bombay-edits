@@ -19,7 +19,7 @@ export function FooterNewsletter() {
   return (
     <div className="flex flex-col" data-testid="footer-newsletter">
       <h3
-        className="text-[var(--color-ink)] mb-[14px] italic tracking-wide"
+        className="text-[var(--color-deep-brown)] mb-[14px] italic tracking-wide"
         style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: '15px' }}
       >
         News Letter
@@ -33,11 +33,11 @@ export function FooterNewsletter() {
       {isSuccess ? (
         <div
           data-testid="newsletter-success-state"
-          className="min-h-[56px] flex flex-col justify-center gap-1 font-body text-[12px] text-[var(--color-ink)]"
+          className="min-h-[56px] flex flex-col justify-center gap-1 font-body text-[12px] text-[var(--color-deep-brown)]"
         >
           <div className="flex items-center gap-1.5 font-medium">
             <svg
-              className="w-3.5 h-3.5 text-[var(--color-ink)] shrink-0"
+              className="w-3.5 h-3.5 text-[var(--color-wine)] shrink-0"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -57,7 +57,7 @@ export function FooterNewsletter() {
             <button
               type="button"
               onClick={reset}
-              className="underline hover:text-[var(--color-ink)] cursor-pointer"
+              className="underline hover:text-[var(--color-wine)] cursor-pointer"
             >
               Subscribe another
             </button>
@@ -82,12 +82,12 @@ export function FooterNewsletter() {
               required
               disabled={isLoading}
               aria-label="Email address to subscribe"
-              className="w-full bg-transparent border-b border-[var(--color-ink)]/30 focus:border-[var(--color-ink)] text-[13px] font-body text-[var(--color-ink)] placeholder:text-[var(--color-muted)] focus:outline-none py-1.5 transition-colors disabled:opacity-50"
+              className="w-full bg-transparent border-b border-[var(--color-deep-brown)]/30 focus:border-[var(--color-deep-brown)] text-[13px] font-body text-[var(--color-deep-brown)] placeholder:text-[var(--color-muted)] focus:outline-none py-1.5 transition-colors disabled:opacity-50"
             />
             <button
               type="submit"
               disabled={isLoading || !email.trim()}
-              className="self-start sm:self-auto lg:self-start xl:self-auto shrink-0 border border-[var(--color-ink)] bg-[var(--color-ink)] text-[var(--color-ivory)] hover:bg-[#322018] px-4 py-1.5 text-[10px] uppercase tracking-[0.18em] transition-colors disabled:opacity-40 cursor-pointer font-medium"
+              className="self-start sm:self-auto lg:self-start xl:self-auto shrink-0 border border-[var(--color-deep-brown)] bg-[var(--color-deep-brown)] text-[var(--color-champagne-light)] hover:bg-[var(--color-wine)] hover:border-[var(--color-wine)] px-4 py-1.5 text-[10px] uppercase tracking-[0.18em] transition-colors disabled:opacity-40 cursor-pointer font-medium"
             >
               {isLoading ? 'Joining...' : 'Subscribe'}
             </button>
@@ -96,24 +96,24 @@ export function FooterNewsletter() {
           {error && (
             <p
               data-testid="newsletter-error-message"
-              className="text-[11px] text-rose-800 font-body"
+              className="text-[11px] text-[var(--color-wine)] font-body"
             >
               {error}
             </p>
           )}
 
-          <p className="text-[11px] text-[var(--color-muted)]/80 font-body leading-tight pt-0.5">
+          <p className="text-[11px] text-[var(--color-muted)] font-body leading-tight pt-0.5">
             By continuing, you accept our{' '}
             <Link
               href="/policies/terms-of-service"
-              className="underline hover:text-[var(--color-ink)] transition-colors"
+              className="underline hover:text-[var(--color-wine)] transition-colors"
             >
               Terms
             </Link>{' '}
             &{' '}
             <Link
               href="/policies/refund-policy"
-              className="underline hover:text-[var(--color-ink)] transition-colors"
+              className="underline hover:text-[var(--color-wine)] transition-colors"
             >
               Privacy
             </Link>

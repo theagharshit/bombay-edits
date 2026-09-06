@@ -12,11 +12,11 @@ export function Newsletter() {
   };
 
   return (
-    <section className="bg-[var(--color-shell)] py-[96px] border-t border-[var(--color-line)]">
+    <section className="bg-[var(--color-cream)] py-[96px] border-t border-[var(--color-line)]">
       <Container>
         <div className="max-w-[520px] mx-auto text-center flex flex-col items-center">
           <h2
-            className="text-[var(--color-ink)]"
+            className="text-[var(--color-deep-brown)]"
             style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: '30px' }}
           >
             Become Part of Bombay Edits
@@ -43,12 +43,12 @@ export function Newsletter() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="YOUR EMAIL ADDRESS"
-              className="bg-[var(--color-ivory)] border border-[var(--color-line)] h-[42px] px-[16px] w-full md:w-[260px] text-[10px] tracking-[0.14em] uppercase text-[var(--color-ink)] placeholder-[var(--color-muted)] focus:outline-none focus:border-[var(--color-ink)] focus:ring-0 transition-colors"
+              className="bg-[var(--color-ivory)] border border-[var(--color-champagne)] h-[42px] px-[16px] w-full md:w-[260px] text-[10px] tracking-[0.14em] uppercase text-[var(--color-deep-brown)] placeholder-[var(--color-muted)] focus:outline-none focus:border-[var(--color-deep-brown)] focus:ring-0 transition-colors"
               required
             />
             <button
               type="submit"
-              className="font-body text-[11px] tracking-[0.1em] uppercase text-[var(--color-ink)] border border-[var(--color-line)] bg-transparent h-[42px] px-[26px] w-full md:w-auto hover:bg-[var(--color-ink)] hover:text-[var(--color-ivory)] transition-colors duration-200"
+              className="font-body text-[11px] tracking-[0.12em] uppercase text-[var(--color-champagne-light)] border border-[var(--color-deep-brown)] bg-[var(--color-deep-brown)] h-[42px] px-[26px] w-full md:w-auto hover:bg-[var(--color-wine)] hover:border-[var(--color-wine)] transition-colors duration-200 cursor-pointer"
             >
               SUBSCRIBE
             </button>

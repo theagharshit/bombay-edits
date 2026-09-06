@@ -50,8 +50,8 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         setIsHovered(false);
       }}
     >
-      {/* Image Container (3:4 Portrait Aspect Ratio, Refined & Compact) */}
-      <div className="relative aspect-[3/4] w-full rounded-[2px] overflow-hidden bg-[#F7F5F0]">
+      {/* Image Container (2:3 Editorial Portrait Aspect Ratio, Large & Immersive) */}
+      <div className="relative aspect-[2/3] w-full rounded-none overflow-hidden bg-[#F7F5F0]">
         <Link
           href={`/product/${product.slug}`}
           className="relative block w-full h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
@@ -62,7 +62,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             src={product.images[0]?.src || ''}
             alt={product.images[0]?.alt || product.name}
             fill
-            sizes="(max-width: 640px) 56vw, (max-width: 1024px) 24vw, 18vw"
+            sizes="(max-width: 640px) 80vw, (max-width: 1024px) 40vw, 340px"
             className={`object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.04] ${
               isHovered && product.images.length > 1 ? 'opacity-0 hidden md:block' : 'opacity-100'
             }`}
@@ -76,7 +76,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
               src={product.images[1]?.src || ''}
               alt={product.images[1]?.alt || product.name}
               fill
-              sizes="(max-width: 640px) 56vw, (max-width: 1024px) 24vw, 18vw"
+              sizes="(max-width: 640px) 80vw, (max-width: 1024px) 40vw, 340px"
               className={`object-cover object-top absolute inset-0 transition-opacity duration-500 hidden md:block ${
                 isHovered ? 'opacity-100' : 'opacity-0'
               }`}
@@ -85,21 +85,33 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           )}
         </Link>
 
-        {/* Badge (Top Left) — Chic Rounded Pill */}
+        {/* Badge (Top Left) — Pointed Luxury Tag */}
         {badgeText && (
-          <span className="absolute top-3 left-3 z-10 bg-white/95 backdrop-blur-md text-[9.5px] uppercase tracking-[0.16em] font-medium font-body text-[var(--color-ink)] px-2.5 py-1 rounded-full shadow-2xs select-none pointer-events-none">
+          <span
+            className={`absolute top-3 left-3 z-10 text-[9.5px] uppercase tracking-[0.16em] font-medium font-body px-2.5 py-1 rounded-none shadow-2xs select-none pointer-events-none border backdrop-blur-md transition-colors ${
+              product.isNewArrival
+                ? 'bg-[#FAF2F0]/95 text-[#641C2E] border-[#DEB5AC]/60'
+                : product.isBestseller
+                  ? 'bg-[#EDF2EE]/95 text-[#3D523F] border-[#CAD8CC]/70'
+                  : 'bg-[#F9F4EB]/95 text-[#7A5B28] border-[#DFD1B8]/80'
+            }`}
+          >
             {badgeText}
           </span>
         )}
 
-        {/* Wishlist Button (Top Right) */}
+        {/* Wishlist Button (Top Right) with Pointed Edges */}
         <button
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
             toggleWishlist(product.id);
           }}
-          className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-[var(--color-ink)] hover:bg-white hover:scale-110 active:scale-95 transition-all shadow-2xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass cursor-pointer"
+          className={`absolute top-3 right-3 z-10 w-8 h-8 rounded-none backdrop-blur-md flex items-center justify-center transition-all shadow-2xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass cursor-pointer ${
+            wishlisted
+              ? 'bg-[#FAF2F0]/95 text-[var(--color-wine)] border border-[var(--color-wine)]/30 hover:scale-110 active:scale-95'
+              : 'bg-white/90 text-[var(--color-deep-brown)] hover:bg-[#FAF2F0] hover:text-[var(--color-wine)] hover:scale-110 active:scale-95'
+          }`}
           aria-label={wishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
         >
           <svg
@@ -116,19 +128,19 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           </svg>
         </button>
 
-        {/* Size Selection Overlay (Clean slide-up overlay inside image) */}
+        {/* Size Selection Overlay (Warm Ivory/Cream with Deep Brown accents) */}
         {showQuickAdd && (
           <div
-            className="absolute inset-x-0 bottom-0 z-20 bg-[var(--color-ivory)]/95 backdrop-blur-md p-3 border-t border-[var(--color-line)] flex flex-col gap-2 transition-all duration-200"
+            className="absolute inset-x-0 bottom-0 z-20 bg-[#FAF8F5]/95 backdrop-blur-md p-3 border-t border-[var(--color-line)] flex flex-col gap-2 transition-all duration-200"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between">
-              <span className="text-[10px] uppercase tracking-[0.16em] font-medium font-body text-[var(--color-ink)]/70">
+              <span className="text-[10px] uppercase tracking-[0.16em] font-medium font-body text-[var(--color-deep-brown)]/80">
                 Select Size
               </span>
               <button
                 onClick={() => setShowQuickAdd(false)}
-                className="text-[var(--color-ink)]/60 hover:text-[var(--color-ink)] transition-colors p-1 cursor-pointer"
+                className="text-[var(--color-deep-brown)]/60 hover:text-[var(--color-wine)] transition-colors p-1 cursor-pointer"
                 aria-label="Close size selector"
               >
                 <svg
@@ -156,7 +168,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                     onClick={() => handleQuickAdd(size)}
                     className={`flex-1 min-w-[32px] h-7 text-[10.5px] font-medium font-body uppercase border flex items-center justify-center transition-all ${
                       isAvailable
-                        ? 'border-[var(--color-line)] text-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-[var(--color-ivory)] hover:border-[var(--color-ink)] active:scale-95 cursor-pointer'
+                        ? 'border-[var(--color-line)] text-[var(--color-deep-brown)] bg-white hover:bg-[var(--color-deep-brown)] hover:text-[var(--color-champagne-light)] hover:border-[var(--color-deep-brown)] active:scale-95 cursor-pointer'
                         : 'border-[var(--color-line)]/40 text-[var(--color-muted)]/40 cursor-not-allowed line-through'
                     }`}
                   >
@@ -175,7 +187,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           href={`/product/${product.slug}`}
           className="block group/title focus-visible:outline-none"
         >
-          <h3 className="text-[13.5px] font-normal text-[var(--color-ink)] font-body truncate leading-snug group-hover/title:opacity-75 transition-opacity">
+          <h3 className="text-[13.5px] font-normal text-[var(--color-deep-brown)] font-body truncate leading-snug group-hover/title:text-[var(--color-wine)] transition-colors">
             {product.name}
           </h3>
         </Link>
@@ -183,7 +195,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         <div className="flex items-center justify-between gap-2">
           {/* Price */}
           <div className="flex items-baseline gap-2">
-            <span className="text-[12.5px] font-medium text-[var(--color-ink)] font-body tracking-tight">
+            <span className="text-[12.5px] font-medium text-[var(--color-deep-brown)] font-body tracking-tight">
               {formatPrice(product.price).replace('₹', 'Rs. ')}
             </span>
             {product.compareAtPrice && product.compareAtPrice > product.price && (
@@ -193,16 +205,16 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             )}
           </div>
 
-          {/* Nishorama-Style + Add Pill Button */}
+          {/* Pointed Editorial + Add Button in Champagne / Deep Brown */}
           <button
             onClick={(e) => {
               e.preventDefault();
               setShowQuickAdd(!showQuickAdd);
             }}
-            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-[11px] uppercase tracking-[0.1em] font-medium transition-all duration-200 active:scale-95 focus-visible:outline-none cursor-pointer ${
+            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-none border text-[11px] uppercase tracking-[0.1em] font-medium transition-all duration-200 active:scale-95 focus-visible:outline-none cursor-pointer ${
               showQuickAdd
-                ? 'bg-[var(--color-ink)] text-[var(--color-ivory)] border-[var(--color-ink)]'
-                : 'border-[var(--color-line)] bg-white/70 text-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-[var(--color-ivory)] hover:border-[var(--color-ink)] shadow-2xs'
+                ? 'bg-[var(--color-deep-brown)] text-[var(--color-champagne-light)] border-[var(--color-deep-brown)]'
+                : 'border-[var(--color-champagne)] bg-[#FAF8F5]/90 text-[var(--color-deep-brown)] hover:bg-[var(--color-deep-brown)] hover:text-[var(--color-champagne-light)] hover:border-[var(--color-deep-brown)] shadow-2xs'
             }`}
             aria-label={`Quick add ${product.name}`}
           >

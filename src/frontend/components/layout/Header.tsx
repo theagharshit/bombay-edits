@@ -142,9 +142,9 @@ export function Header() {
             wordmarkEl.style.willChange = p > 0 && p < 1 ? 'transform' : 'auto';
           }
 
-          // Color interpolation: ivory -> ink
+          // Color interpolation: ivory -> deep brown
           const colorP = Math.min(Math.max((targetP - 0.2) / 0.6, 0), 1);
-          wordmarkEl.style.color = `color-mix(in srgb, var(--color-ink) ${colorP * 100}%, var(--color-ivory))`;
+          wordmarkEl.style.color = `color-mix(in srgb, var(--color-deep-brown) ${colorP * 100}%, var(--color-ivory))`;
 
           // As it settles into the header (targetP >= 0.9), hand off to real header logo
           const wordmarkOpacity = targetP >= 0.92 ? Math.max(1 - (targetP - 0.92) / 0.08, 0) : 1;
@@ -241,9 +241,9 @@ export function Header() {
   }, [isHomePage, measure]);
 
   const pillClass =
-    'bg-[var(--color-ivory)] text-[var(--color-ink)] text-[11.5px] uppercase tracking-[0.08em] font-medium font-body rounded-full px-[20px] h-[32px] flex items-center justify-center border-0 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-ink)] origin-center whitespace-nowrap transition-transform hover:scale-105 active:scale-95 cursor-pointer';
+    'bg-[#FAF8F5]/95 text-[var(--color-deep-brown)] text-[11.5px] uppercase tracking-[0.08em] font-medium font-body rounded-full px-[20px] h-[32px] flex items-center justify-center border border-[var(--color-line)]/60 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-deep-brown)] origin-center whitespace-nowrap transition-all hover:bg-white hover:border-[var(--color-champagne)] hover:text-[var(--color-wine)] hover:scale-105 active:scale-95 cursor-pointer shadow-2xs';
   const iconButtonClass =
-    'bg-[var(--color-ivory)] text-[var(--color-ink)] w-[32px] h-[32px] rounded-full flex items-center justify-center border-0 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-ink)] shrink-0 transition-transform hover:scale-105 active:scale-95 cursor-pointer';
+    'bg-[#FAF8F5]/95 text-[var(--color-deep-brown)] w-[32px] h-[32px] rounded-full flex items-center justify-center border border-[var(--color-line)]/60 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-deep-brown)] shrink-0 transition-all hover:bg-white hover:border-[var(--color-champagne)] hover:text-[var(--color-wine)] hover:scale-105 active:scale-95 cursor-pointer shadow-2xs';
 
   return (
     <>
@@ -251,7 +251,7 @@ export function Header() {
         {/* Luxury Frosted Ivory Header Background */}
         <div
           ref={headerBgRef}
-          className="absolute inset-0 bg-[var(--color-ivory)]/95 backdrop-blur-md border-b border-[var(--color-line)] shadow-sm pointer-events-none transition-none"
+          className="absolute inset-0 bg-[var(--color-ivory)]/95 backdrop-blur-md border-b border-[var(--color-line)] shadow-2xs pointer-events-none transition-none"
           style={{
             opacity: isHomePage ? 0 : 1,
           }}
@@ -269,7 +269,6 @@ export function Header() {
                     key={link.label}
                     href={link.href}
                     className={pillClass}
-                    style={{ borderWidth: '0px' }}
                     ref={(el) => {
                       navPillsRefs.current[index] = el;
                     }}
@@ -277,7 +276,7 @@ export function Header() {
                     {link.label}
                     {link.hasDot && (
                       <span
-                        className="w-[6px] h-[6px] rounded-full bg-[#c1a68d] shrink-0"
+                        className="w-[6px] h-[6px] rounded-full bg-[var(--color-wine)] shrink-0"
                         style={{ marginLeft: '8px', borderRadius: '50%' }}
                       />
                     )}
@@ -291,10 +290,10 @@ export function Header() {
               <button
                 ref={menuPillRef}
                 onClick={() => setDrawerOpen(true)}
-                className={`bg-[var(--color-ink)] text-[var(--color-ivory)] text-[11.5px] uppercase tracking-[0.08em] font-medium font-body rounded-full px-[20px] h-[32px] flex items-center justify-center gap-[6px] border-0 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-ivory)] origin-center whitespace-nowrap transition-transform hover:scale-105 active:scale-95 cursor-pointer ${
+                className={`bg-[var(--color-deep-brown)] text-[var(--color-champagne-light)] text-[11.5px] uppercase tracking-[0.08em] font-medium font-body rounded-full px-[20px] h-[32px] flex items-center justify-center gap-[6px] border border-[var(--color-deep-brown)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-champagne)] origin-center whitespace-nowrap transition-all hover:bg-[var(--color-wine)] hover:border-[var(--color-wine)] hover:scale-105 active:scale-95 cursor-pointer ${
                   isHomePage ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
                 }`}
-                style={{ transform: isHomePage ? 'scale(0.94)' : 'scale(1)', borderWidth: '0px' }}
+                style={{ transform: isHomePage ? 'scale(0.94)' : 'scale(1)' }}
                 aria-label="Open menu"
               >
                 <Menu size={14} strokeWidth={1.5} />
@@ -316,7 +315,7 @@ export function Header() {
               href="/"
               ref={headerLogoRef}
               onClick={handleLogoClick}
-              className="whitespace-nowrap text-[var(--color-ink)] tracking-tight hover:opacity-75 transition-opacity select-none cursor-pointer"
+              className="whitespace-nowrap text-[var(--color-deep-brown)] hover:text-[var(--color-wine)] tracking-tight transition-colors select-none cursor-pointer"
               style={{
                 fontFamily: 'var(--font-display)',
                 fontSize: '28px',
@@ -337,14 +336,12 @@ export function Header() {
               href="/wishlist"
               className={iconButtonClass}
               aria-label="Wishlist"
-              style={{ borderWidth: '0px' }}
             >
               <Heart size={14} strokeWidth={1.2} />
             </Link>
             <button
               className={iconButtonClass}
               aria-label="Search"
-              style={{ borderWidth: '0px' }}
               onClick={() => setSearchOpen(true)}
             >
               <Search size={14} strokeWidth={1.2} />
@@ -353,7 +350,6 @@ export function Header() {
               href="/account"
               className={iconButtonClass}
               aria-label="Account"
-              style={{ borderWidth: '0px' }}
             >
               <User size={14} strokeWidth={1.2} />
             </Link>
@@ -361,13 +357,18 @@ export function Header() {
             {/* Cart Pill */}
             <button
               className={`${pillClass} flex items-center gap-[8px]`}
-              style={{ borderWidth: '0px' }}
               onClick={toggleCart}
               aria-label="Cart"
             >
               <span className="pt-px">CART</span>
-              <span className="w-px h-[10px] bg-[var(--color-ink)] opacity-20" />
-              <span className="pt-px">{itemCount}</span>
+              <span className="w-px h-[10px] bg-[var(--color-deep-brown)] opacity-20" />
+              {itemCount > 0 ? (
+                <span className="min-w-[18px] h-[18px] px-1 rounded-full bg-[var(--color-wine)] text-white text-[10px] font-medium flex items-center justify-center">
+                  {itemCount}
+                </span>
+              ) : (
+                <span className="pt-px">{itemCount}</span>
+              )}
             </button>
           </div>
         </div>

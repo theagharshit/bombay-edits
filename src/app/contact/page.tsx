@@ -246,7 +246,7 @@ function ContactContent() {
                 data-testid="contact-success-state"
                 className="py-4 flex flex-col items-center text-center font-body"
               >
-                <div className="w-9 h-9 rounded-full border border-[var(--color-ink)] flex items-center justify-center text-[var(--color-ink)] mb-2.5 bg-[var(--color-ivory)]">
+                <div className="w-9 h-9 rounded-none border border-[var(--color-ink)] flex items-center justify-center text-[var(--color-ink)] mb-2.5 bg-[var(--color-ivory)]">
                   <CheckCircle2 size={18} strokeWidth={1.5} />
                 </div>
 
@@ -290,7 +290,7 @@ function ContactContent() {
               >
                 {/* Prefilled Banner with Clear All Button */}
                 {isPrefilled && form.orderNumber && (
-                  <div className="flex items-center justify-between px-3 py-2 bg-[#eadecd]/80 border border-[var(--color-line)] text-[11px] text-[var(--color-ink)] rounded-xs">
+                  <div className="flex items-center justify-between px-3 py-2 bg-[#eadecd]/80 border border-[var(--color-line)] text-[11px] text-[var(--color-ink)] rounded-none">
                     <div className="flex items-center gap-1.5">
                       <Package size={13} className="text-[var(--color-ink)] shrink-0" />
                       <span>

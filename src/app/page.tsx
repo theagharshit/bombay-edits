@@ -15,43 +15,46 @@ export default async function HomePage() {
   const festiveProducts = getProductsByOccasion('festive');
 
   return (
-    <div
-      className="m-0 p-0 flex flex-col w-full bg-[var(--color-ivory)]"
-      style={{ gap: '96px', paddingBottom: '120px' }}
-    >
+    <div className="m-0 p-0 flex flex-col w-full bg-[var(--color-ivory)] pb-[120px]">
       {/* 1. Hero Showcase */}
       <Hero />
 
-      {/* 2. Most Wanted (Bestsellers Slider — Nishorama Inspired) */}
-      <CollectionRail
-        title="Most Wanted"
-        subtitle="Loved by Our Clients"
-        href="/shop?collection=bestsellers"
-        products={bestsellers}
-      />
+      {/* 2. Most Wanted (Bestsellers Slider — Warm Cream Brand Band) */}
+      <div className="w-full bg-[#F5EFEB] py-14 md:py-20 border-y border-[var(--color-line)]/50">
+        <CollectionRail
+          title="Most Wanted"
+          subtitle="Loved by Our Clients"
+          href="/shop?collection=bestsellers"
+          products={bestsellers}
+        />
+      </div>
 
       {/* 3. Editorial Category Showcase Carousel */}
       <ExploreCarousel />
 
-      {/* 4. New In Collection (New Arrivals Slider — Nishorama Inspired) */}
-      <CollectionRail
-        title="New In Collection"
-        subtitle="The Latest Silhouettes"
-        href="/shop?collection=new-in"
-        products={newArrivals}
-      />
+      {/* 4. New In Collection (New Arrivals Slider — Delicate Feminine Soft Pink Wash) */}
+      <div className="w-full bg-[#FAF2F0] py-14 md:py-20 border-y border-[#F0DFDC]/70">
+        <CollectionRail
+          title="New In Collection"
+          subtitle="The Latest Silhouettes"
+          href="/shop?collection=new-in"
+          products={newArrivals}
+        />
+      </div>
 
-      {/* 5. Editorial Curated Collections Grid */}
+      {/* 5. Editorial Curated Collections Grid (Warm Beige / Sand) */}
       <CuratedCollections />
 
-      {/* 6. Festive Edit (Occasion & Bridal Wear Slider) */}
+      {/* 6. Festive Edit (Occasion & Bridal Wear Slider — Celebration Wine Wash) */}
       {festiveProducts.length > 0 && (
-        <CollectionRail
-          title="Festive Edit"
-          subtitle="Celebration & Bridal Archives"
-          href="/collections/festive-edit"
-          products={festiveProducts}
-        />
+        <div className="w-full bg-[#F9F1F3] py-14 md:py-20 border-y border-[#F0DEE2]/70">
+          <CollectionRail
+            title="Festive Edit"
+            subtitle="Celebration & Bridal Archives"
+            href="/collections/festive-edit"
+            products={festiveProducts}
+          />
+        </div>
       )}
 
       {/* 7. Brand Story */}

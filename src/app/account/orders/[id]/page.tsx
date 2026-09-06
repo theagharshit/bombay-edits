@@ -310,8 +310,8 @@ function OrderDetailContent() {
                     <span className="font-mono text-base sm:text-lg font-bold text-[var(--color-ink)] tracking-tight">
                       {order.orderNumber}
                     </span>
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[9.5px] uppercase tracking-wider font-semibold bg-[#eadecd] border border-[var(--color-line)] text-[var(--color-ink)] rounded-xs">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-ink)]" />
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[9.5px] uppercase tracking-wider font-semibold bg-[#eadecd] border border-[var(--color-line)] text-[var(--color-ink)] rounded-none">
+                      <span className="w-1.5 h-1.5 rounded-none bg-[var(--color-ink)]" />
                       {order.status === 'shipped'
                         ? 'Dispatched • In Transit'
                         : order.status === 'delivered'
@@ -422,7 +422,7 @@ function OrderDetailContent() {
                               {step.label}
                             </span>
                             <span
-                              className={`text-[9px] px-1 py-0.2 rounded-xs font-mono ${
+                              className={`text-[9px] px-1 py-0.2 rounded-none font-mono ${
                                 isCompleted
                                   ? 'bg-[var(--color-ink)] text-[var(--color-ivory)]'
                                   : 'bg-[var(--color-line)] text-[var(--color-muted)]'

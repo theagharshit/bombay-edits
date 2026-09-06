@@ -110,15 +110,15 @@ function ConsultationsContent() {
     switch (status.toLowerCase()) {
       case 'in_progress':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-amber-50 text-amber-900 border border-amber-200 text-[10px] uppercase tracking-wider font-semibold">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-amber-50 text-amber-900 border border-amber-200 text-[10px] uppercase tracking-wider font-semibold rounded-none">
+            <span className="w-1.5 h-1.5 rounded-none bg-amber-500 animate-pulse" />
             In Review
           </span>
         );
       case 'replied':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-sky-50 text-sky-900 border border-sky-200 text-[10px] uppercase tracking-wider font-semibold">
-            <span className="w-1.5 h-1.5 rounded-full bg-sky-600" />
+          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-sky-50 text-sky-900 border border-sky-200 text-[10px] uppercase tracking-wider font-semibold rounded-none">
+            <span className="w-1.5 h-1.5 rounded-none bg-sky-600" />
             Replied
           </span>
         );
@@ -360,7 +360,7 @@ function ConsultationsContent() {
                       </h3>
                     </div>
 
-                    <p className="text-[12.5px] text-[#4A3025] leading-relaxed bg-[var(--color-ivory)] border border-[var(--color-line)] p-3 rounded-xs">
+                    <p className="text-[12.5px] text-[#4A3025] leading-relaxed bg-[var(--color-ivory)] border border-[var(--color-line)] p-3 rounded-none">
                       {ticket.message}
                     </p>
                   </div>

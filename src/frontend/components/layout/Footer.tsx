@@ -37,7 +37,7 @@ const UPPER_COLUMNS = [
 
 export function Footer() {
   return (
-    <footer className="bg-[#e8e2da] mt-auto w-full border-t border-[var(--color-line)]">
+    <footer className="bg-[#EAE2D7] mt-auto w-full border-t border-[var(--color-line)]">
       {/* ═══ Main Section: Info Columns + Company Info + News Letter ═══ */}
       <div>
         <Container>
@@ -46,7 +46,7 @@ export function Footer() {
             {UPPER_COLUMNS.map((col) => (
               <div key={col.title} className="flex flex-col">
                 <h3
-                  className="text-[var(--color-ink)] mb-[14px] italic"
+                  className="text-[var(--color-deep-brown)] mb-[14px] italic"
                   style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: '15px' }}
                 >
                   {col.title}
@@ -56,7 +56,7 @@ export function Footer() {
                     <li key={link.label}>
                       <Link
                         href={link.href}
-                        className="font-body text-[13px] text-[var(--color-muted)] hover:text-[var(--color-ink)] transition-colors"
+                        className="font-body text-[13px] text-[var(--color-muted)] hover:text-[var(--color-wine)] transition-colors"
                       >
                         {link.label}
                       </Link>
@@ -69,30 +69,30 @@ export function Footer() {
             {/* Company Info Column */}
             <div className="flex flex-col">
               <h3
-                className="text-[var(--color-ink)] mb-[14px] italic"
+                className="text-[var(--color-deep-brown)] mb-[14px] italic"
                 style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: '15px' }}
               >
                 Bombay Edits Pvt Ltd
               </h3>
               <div className="flex flex-col gap-[10px] font-body text-[13px] text-[var(--color-muted)]">
                 <p>
-                  <span className="font-medium text-[var(--color-ink)]">Address:</span> 123 Fashion
+                  <span className="font-medium text-[var(--color-deep-brown)]">Address:</span> 123 Fashion
                   Street, Mumbai, Maharashtra 400001, India
                 </p>
                 <p>
-                  <span className="font-medium text-[var(--color-ink)]">Email:</span>{' '}
+                  <span className="font-medium text-[var(--color-deep-brown)]">Email:</span>{' '}
                   <a
                     href="mailto:support@bombayedits.com"
-                    className="hover:text-[var(--color-ink)] hover:underline transition-colors"
+                    className="hover:text-[var(--color-wine)] hover:underline transition-colors"
                   >
                     support@bombayedits.com
                   </a>
                 </p>
                 <p>
-                  <span className="font-medium text-[var(--color-ink)]">Mob:</span>{' '}
+                  <span className="font-medium text-[var(--color-deep-brown)]">Mob:</span>{' '}
                   <a
                     href="tel:+919876543210"
-                    className="hover:text-[var(--color-ink)] hover:underline transition-colors"
+                    className="hover:text-[var(--color-wine)] hover:underline transition-colors"
                   >
                     +91 9876543210
                   </a>
@@ -106,10 +106,10 @@ export function Footer() {
         </Container>
 
         {/* Bottom Bar: Brand & Credit Line */}
-        <div className="border-t border-[var(--color-line)]">
+        <div className="border-t border-[var(--color-line)]/70">
           <Container>
             <div className="py-[18px] flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
-              <p className="font-body text-[11px] uppercase tracking-[0.14em] text-[var(--color-muted)]">
+              <p className="font-body text-[11px] uppercase tracking-[0.14em] text-[var(--color-deep-brown)]/70">
                 Indian Craft, Reimagined
               </p>
               <p className="font-body text-[11px] text-[var(--color-muted)] tracking-wide">

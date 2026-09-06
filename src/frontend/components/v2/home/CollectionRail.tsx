@@ -53,11 +53,19 @@ export function CollectionRail({ title, subtitle, href, products }: CollectionRa
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-10 gap-4">
           <div>
             {subtitle && (
-              <span className="text-[10px] md:text-[11px] uppercase tracking-[0.22em] text-[var(--color-muted)] font-medium block mb-2">
+              <span
+                className={`text-[10px] md:text-[11px] uppercase tracking-[0.22em] font-medium block mb-2 ${
+                  title.toLowerCase().includes('new in')
+                    ? 'text-[var(--color-wine)]'
+                    : title.toLowerCase().includes('festive')
+                      ? 'text-[#8A6A2C]'
+                      : 'text-[var(--color-muted-green)]'
+                }`}
+              >
                 {subtitle}
               </span>
             )}
-            <h2 className="font-display text-3xl md:text-4xl lg:text-[42px] text-[var(--color-ink)] tracking-tight leading-tight">
+            <h2 className="font-display text-3xl md:text-4xl lg:text-[42px] text-[var(--color-deep-brown)] tracking-tight leading-tight">
               {title}
             </h2>
           </div>
@@ -66,7 +74,7 @@ export function CollectionRail({ title, subtitle, href, products }: CollectionRa
           <div className="hidden md:flex items-center gap-4">
             <Link
               href={href}
-              className="inline-flex items-center justify-center rounded-full border border-[var(--color-ink)] text-[var(--color-ink)] px-6 py-2.5 text-[11px] uppercase tracking-[0.14em] font-medium hover:bg-[var(--color-ink)] hover:text-[var(--color-ivory)] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
+              className="inline-flex items-center justify-center rounded-none border border-[var(--color-deep-brown)] text-[var(--color-deep-brown)] px-6 py-2.5 text-[11px] uppercase tracking-[0.14em] font-medium hover:bg-[var(--color-deep-brown)] hover:text-[var(--color-champagne-light)] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
             >
               Discover More
             </Link>
@@ -75,7 +83,7 @@ export function CollectionRail({ title, subtitle, href, products }: CollectionRa
               <button
                 onClick={() => scroll('left')}
                 disabled={!canScrollLeft}
-                className="w-10 h-10 rounded-full border border-[var(--color-line)] flex items-center justify-center text-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-[var(--color-ivory)] hover:border-[var(--color-ink)] disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-[var(--color-ink)] disabled:hover:border-[var(--color-line)] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
+                className="w-10 h-10 rounded-none border border-[var(--color-line)] bg-white/60 flex items-center justify-center text-[var(--color-deep-brown)] hover:bg-[var(--color-deep-brown)] hover:text-[var(--color-champagne-light)] hover:border-[var(--color-deep-brown)] disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-white/60 disabled:hover:text-[var(--color-deep-brown)] disabled:hover:border-[var(--color-line)] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass cursor-pointer"
                 aria-label={`Scroll left in ${title}`}
               >
                 <ChevronLeft size={18} strokeWidth={1.5} />
@@ -83,7 +91,7 @@ export function CollectionRail({ title, subtitle, href, products }: CollectionRa
               <button
                 onClick={() => scroll('right')}
                 disabled={!canScrollRight}
-                className="w-10 h-10 rounded-full border border-[var(--color-line)] flex items-center justify-center text-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-[var(--color-ivory)] hover:border-[var(--color-ink)] disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-[var(--color-ink)] disabled:hover:border-[var(--color-line)] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
+                className="w-10 h-10 rounded-none border border-[var(--color-line)] bg-white/60 flex items-center justify-center text-[var(--color-deep-brown)] hover:bg-[var(--color-deep-brown)] hover:text-[var(--color-champagne-light)] hover:border-[var(--color-deep-brown)] disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-white/60 disabled:hover:text-[var(--color-deep-brown)] disabled:hover:border-[var(--color-line)] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass cursor-pointer"
                 aria-label={`Scroll right in ${title}`}
               >
                 <ChevronRight size={18} strokeWidth={1.5} />
@@ -103,7 +111,7 @@ export function CollectionRail({ title, subtitle, href, products }: CollectionRa
             {products.map((product) => (
               <div
                 key={product.id}
-                className="snap-start flex-none w-[56vw] sm:w-[34vw] md:w-[24vw] lg:w-[18vw] max-w-[240px]"
+                className="snap-start flex-none w-[76vw] sm:w-[48vw] md:w-[36vw] lg:w-[28vw] xl:w-[320px] max-w-[340px]"
               >
                 <ProductCard product={product} />
               </div>
@@ -115,7 +123,7 @@ export function CollectionRail({ title, subtitle, href, products }: CollectionRa
         <div className="mt-6 text-center md:hidden">
           <Link
             href={href}
-            className="inline-flex items-center justify-center rounded-full border border-[var(--color-ink)] text-[var(--color-ink)] px-8 py-3 text-[11px] uppercase tracking-[0.14em] font-medium hover:bg-[var(--color-ink)] hover:text-[var(--color-ivory)] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
+            className="inline-flex items-center justify-center rounded-none border border-[var(--color-deep-brown)] text-[var(--color-deep-brown)] px-8 py-3 text-[11px] uppercase tracking-[0.14em] font-medium hover:bg-[var(--color-deep-brown)] hover:text-[var(--color-champagne-light)] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
           >
             Discover More
           </Link>
