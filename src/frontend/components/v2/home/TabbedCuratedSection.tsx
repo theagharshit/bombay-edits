@@ -117,7 +117,7 @@ export function TabbedCuratedSection({ products }: TabbedCuratedSectionProps) {
           {/* Left Arrow */}
           <button
             onClick={() => scroll('left')}
-            className={`hidden md:flex absolute -left-6 top-1/3 -translate-y-1/2 z-10 p-3 bg-chalk border border-border text-ink rounded-none shadow-sm hover:border-brass hover:text-brass transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass ${
+            className={`hidden md:flex absolute -left-6 top-1/3 -translate-y-1/2 z-10 p-3 bg-chalk text-ink rounded-none shadow-sm hover:text-brass transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass ${
               canScrollLeft ? 'opacity-0 group-hover:opacity-100' : 'opacity-0 pointer-events-none'
             }`}
             aria-label="Scroll left"
@@ -161,7 +161,7 @@ export function TabbedCuratedSection({ products }: TabbedCuratedSectionProps) {
           {/* Right Arrow */}
           <button
             onClick={() => scroll('right')}
-            className={`hidden md:flex absolute -right-6 top-1/3 -translate-y-1/2 z-10 p-3 bg-chalk border border-border text-ink rounded-none shadow-sm hover:border-brass hover:text-brass transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass ${
+            className={`hidden md:flex absolute -right-6 top-1/3 -translate-y-1/2 z-10 p-3 bg-chalk text-ink rounded-none shadow-sm hover:text-brass transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass ${
               canScrollRight ? 'opacity-0 group-hover:opacity-100' : 'opacity-0 pointer-events-none'
             }`}
             aria-label="Scroll right"

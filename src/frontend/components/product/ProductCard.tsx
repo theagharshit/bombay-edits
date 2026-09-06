@@ -48,6 +48,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
         setIsHovered(false);
+        setShowQuickAdd(false);
       }}
     >
       {/* Image Container (2:3 Editorial Portrait Aspect Ratio, Large & Immersive) */}
@@ -100,17 +101,17 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           </span>
         )}
 
-        {/* Wishlist Button (Top Right) with Jewel Wine Accent */}
+        {/* Wishlist / Save Button (Top Right) with Translucent Background & Rounded Border */}
         <button
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
             toggleWishlist(product.id);
           }}
-          className={`absolute top-3 right-3 z-10 w-8 h-8 rounded-none backdrop-blur-md flex items-center justify-center transition-all shadow-2xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass cursor-pointer ${
+          className={`absolute top-3 right-3 z-10 w-8 h-8 rounded-full border backdrop-blur-md flex items-center justify-center transition-all shadow-2xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass cursor-pointer ${
             wishlisted
-              ? 'bg-[#FAF2F0]/95 text-[var(--color-wine)] border border-[var(--color-wine)]/30 hover:scale-110 active:scale-95'
-              : 'bg-white/90 text-[var(--color-deep-brown)] hover:bg-[#FAF2F0] hover:text-[var(--color-wine)] hover:scale-110 active:scale-95'
+              ? 'bg-[#FAF2F0]/50 text-[var(--color-wine)] border-[var(--color-wine)]/40 hover:scale-110 active:scale-95'
+              : 'bg-white/40 text-[var(--color-deep-brown)] border-white/60 hover:bg-white/60 hover:border-[var(--color-wine)]/40 hover:text-[var(--color-wine)] hover:scale-110 active:scale-95'
           }`}
           aria-label={wishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
         >
@@ -128,111 +129,102 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           </svg>
         </button>
 
-        {/* Size Selection Overlay (Warm Ivory/Cream with Deep Brown accents) */}
-        {showQuickAdd && (
-          <div
-            className="absolute inset-x-0 bottom-0 z-20 bg-[#FAF8F5]/95 backdrop-blur-md p-3 border-t border-[var(--color-line)] flex flex-col gap-2 transition-all duration-200"
-            onClick={(e) => e.stopPropagation()}
+        {/* Details & Quick-Add Popup Overlay (Translucent frosted glass matching the save icon) */}
+        <div
+          className={`absolute inset-x-0 bottom-0 z-20 bg-white/40 backdrop-blur-md px-3.5 py-3 border-t border-white/60 rounded-none shadow-lg transition-all duration-300 ease-out flex flex-col items-start text-left gap-1.5 ${
+            isHovered || showQuickAdd
+              ? 'opacity-100 translate-y-0 pointer-events-auto'
+              : 'opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto'
+          }`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Product Name (12px, All-Caps, Tracked, Left-Aligned) */}
+          <Link
+            href={`/product/${product.slug}`}
+            className="block group/title focus-visible:outline-none w-full text-left"
           >
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] uppercase tracking-[0.16em] font-medium font-body text-[var(--color-deep-brown)]/80">
+            <h3
+              className="text-[12px] !text-[12px] font-normal uppercase tracking-[0.18em] text-[var(--color-deep-brown)] font-body truncate leading-snug group-hover/title:text-[var(--color-wine)] transition-colors text-left"
+              style={{ fontSize: '12px' }}
+            >
+              {product.name}
+            </h3>
+          </Link>
+
+          {/* Price & Add Button Row (Left-aligned price, right-aligned add button) */}
+          <div className="flex items-center justify-between w-full gap-2 font-body">
+            <div className="flex items-baseline gap-1.5 text-left">
+              <span
+                className="text-[12px] !text-[12px] font-normal text-[var(--color-deep-brown)] tracking-wide"
+                style={{ fontSize: '12px' }}
+              >
+                Rs. {product.price.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </span>
+              {product.compareAtPrice && product.compareAtPrice > product.price && (
+                <span className="text-[11px] text-[var(--color-muted)] line-through">
+                  Rs. {product.compareAtPrice.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                </span>
+              )}
+            </div>
+
+            {/* + Add Button (Translucent styling matching save icon) */}
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setShowQuickAdd(!showQuickAdd);
+              }}
+              className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-none border text-[10px] uppercase tracking-[0.14em] font-medium transition-all duration-200 active:scale-95 focus-visible:outline-none cursor-pointer shrink-0 ${
+                showQuickAdd
+                  ? 'bg-[var(--color-deep-brown)]/85 text-[var(--color-champagne-light)] border-[var(--color-deep-brown)]'
+                  : 'border-white/60 bg-white/40 text-[var(--color-deep-brown)] hover:bg-white/65 hover:text-[var(--color-wine)] hover:border-[var(--color-wine)]/40 shadow-2xs'
+              }`}
+              aria-label={`Quick add ${product.name}`}
+            >
+              <svg
+                width="8"
+                height="8"
+                viewBox="0 0 10 10"
+                fill="currentColor"
+                className={`transition-transform duration-200 ${showQuickAdd ? 'rotate-45' : ''}`}
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5 1a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 5 1z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              {showQuickAdd ? 'Close' : 'Add'}
+            </button>
+          </div>
+
+          {/* Size Selection Area (Revealed when + Add is clicked) */}
+          {showQuickAdd && (
+            <div className="w-full pt-2 border-t border-white/50 flex flex-col gap-1.5 animate-in fade-in duration-200">
+              <span className="text-[9.5px] uppercase tracking-[0.16em] font-medium font-body text-[var(--color-deep-brown)]/80 text-left">
                 Select Size
               </span>
-              <button
-                onClick={() => setShowQuickAdd(false)}
-                className="text-[var(--color-deep-brown)]/60 hover:text-[var(--color-wine)] transition-colors p-1 cursor-pointer"
-                aria-label="Close size selector"
-              >
-                <svg
-                  width="12"
-                  height="12"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <line x1="18" y1="6" x2="6" y2="18" />
-                  <line x1="6" y1="6" x2="18" y2="18" />
-                </svg>
-              </button>
+              <div className="flex flex-wrap gap-1">
+                {SIZES.map((size) => {
+                  const isAvailable = (product.stockBySize?.[size] ?? 1) > 0;
+                  return (
+                    <button
+                      key={size}
+                      disabled={!isAvailable}
+                      onClick={() => handleQuickAdd(size)}
+                      className={`flex-1 min-w-[28px] h-6 text-[10px] font-medium font-body uppercase border flex items-center justify-center transition-all rounded-none ${
+                        isAvailable
+                          ? 'border-white/60 text-[var(--color-deep-brown)] bg-white/50 hover:bg-white/80 hover:text-[var(--color-wine)] hover:border-[var(--color-wine)]/40 active:scale-95 cursor-pointer'
+                          : 'border-white/30 text-[var(--color-muted)]/40 cursor-not-allowed line-through'
+                      }`}
+                    >
+                      {size}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-            <div className="flex flex-wrap gap-1.5">
-              {SIZES.map((size) => {
-                const isAvailable = (product.stockBySize?.[size] ?? 1) > 0;
-                return (
-                  <button
-                    key={size}
-                    disabled={!isAvailable}
-                    onClick={() => handleQuickAdd(size)}
-                    className={`flex-1 min-w-[32px] h-7 text-[10.5px] font-medium font-body uppercase border flex items-center justify-center transition-all ${
-                      isAvailable
-                        ? 'border-[var(--color-line)] text-[var(--color-deep-brown)] bg-white hover:bg-[var(--color-deep-brown)] hover:text-[var(--color-champagne-light)] hover:border-[var(--color-deep-brown)] active:scale-95 cursor-pointer'
-                        : 'border-[var(--color-line)]/40 text-[var(--color-muted)]/40 cursor-not-allowed line-through'
-                    }`}
-                  >
-                    {size}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Details Area — Refined, Airy, Editorial Layout */}
-      <div className="mt-3 px-1 flex flex-col gap-1.5">
-        <Link
-          href={`/product/${product.slug}`}
-          className="block group/title focus-visible:outline-none"
-        >
-          <h3 className="text-[13.5px] font-normal text-[var(--color-deep-brown)] font-body truncate leading-snug group-hover/title:text-[var(--color-wine)] transition-colors">
-            {product.name}
-          </h3>
-        </Link>
-
-        <div className="flex items-center justify-between gap-2">
-          {/* Price */}
-          <div className="flex items-baseline gap-2">
-            <span className="text-[12.5px] font-medium text-[var(--color-deep-brown)] font-body tracking-tight">
-              {formatPrice(product.price).replace('₹', 'Rs. ')}
-            </span>
-            {product.compareAtPrice && product.compareAtPrice > product.price && (
-              <span className="text-[11px] text-[var(--color-muted)] line-through font-body">
-                {formatPrice(product.compareAtPrice).replace('₹', 'Rs. ')}
-              </span>
-            )}
-          </div>
-
-          {/* + Add Button in Champagne / Deep Brown with Pointed Edges */}
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              setShowQuickAdd(!showQuickAdd);
-            }}
-            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-none border text-[11px] uppercase tracking-[0.1em] font-medium transition-all duration-200 active:scale-95 focus-visible:outline-none cursor-pointer ${
-              showQuickAdd
-                ? 'bg-[var(--color-deep-brown)] text-[var(--color-champagne-light)] border-[var(--color-deep-brown)]'
-                : 'border-[var(--color-champagne)] bg-[#FAF8F5]/90 text-[var(--color-deep-brown)] hover:bg-[var(--color-deep-brown)] hover:text-[var(--color-champagne-light)] hover:border-[var(--color-deep-brown)] shadow-2xs'
-            }`}
-            aria-label={`Quick add ${product.name}`}
-          >
-            <svg
-              width="9"
-              height="9"
-              viewBox="0 0 10 10"
-              fill="currentColor"
-              className={`transition-transform duration-200 ${showQuickAdd ? 'rotate-45' : ''}`}
-            >
-              <path
-                fillRule="evenodd"
-                d="M5 1a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 5 1z"
-                clipRule="evenodd"
-              />
-            </svg>
-            Add
-          </button>
+          )}
         </div>
       </div>
     </div>

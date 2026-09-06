@@ -192,14 +192,14 @@ export function HeroCarousel() {
           <div className="flex gap-2">
             <button
               onClick={handlePrev}
-              className="p-2 border border-chalk/30 text-chalk hover:bg-chalk/10 hover:border-chalk transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
+              className="p-2 text-chalk hover:text-white hover:scale-110 active:scale-95 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass cursor-pointer"
               aria-label="Previous slide"
             >
               <ChevronLeft size={24} strokeWidth={1} />
             </button>
             <button
               onClick={handleNext}
-              className="p-2 border border-chalk/30 text-chalk hover:bg-chalk/10 hover:border-chalk transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
+              className="p-2 text-chalk hover:text-white hover:scale-110 active:scale-95 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass cursor-pointer"
               aria-label="Next slide"
             >
               <ChevronRight size={24} strokeWidth={1} />

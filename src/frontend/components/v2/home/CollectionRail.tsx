@@ -79,22 +79,30 @@ export function CollectionRail({ title, subtitle, href, products }: CollectionRa
               Discover More
             </Link>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
               <button
                 onClick={() => scroll('left')}
                 disabled={!canScrollLeft}
-                className="w-10 h-10 rounded-none border border-[var(--color-line)] bg-white/60 flex items-center justify-center text-[var(--color-deep-brown)] hover:bg-[var(--color-deep-brown)] hover:text-[var(--color-champagne-light)] hover:border-[var(--color-deep-brown)] disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-white/60 disabled:hover:text-[var(--color-deep-brown)] disabled:hover:border-[var(--color-line)] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass cursor-pointer"
+                className="w-9 h-9 flex items-center justify-center text-[var(--color-deep-brown)] hover:text-[var(--color-wine)] active:text-[var(--color-wine)] transition-colors duration-200 focus-visible:outline-none cursor-pointer group/arrow disabled:opacity-20 disabled:cursor-not-allowed"
                 aria-label={`Scroll left in ${title}`}
               >
-                <ChevronLeft size={18} strokeWidth={1.5} />
+                <ChevronLeft
+                  size={20}
+                  strokeWidth={1.5}
+                  className="transition-transform duration-200 ease-out group-hover/arrow:-translate-x-1 group-hover/arrow:scale-115 group-active/arrow:-translate-x-1.5 group-active/arrow:scale-90"
+                />
               </button>
               <button
                 onClick={() => scroll('right')}
                 disabled={!canScrollRight}
-                className="w-10 h-10 rounded-none border border-[var(--color-line)] bg-white/60 flex items-center justify-center text-[var(--color-deep-brown)] hover:bg-[var(--color-deep-brown)] hover:text-[var(--color-champagne-light)] hover:border-[var(--color-deep-brown)] disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-white/60 disabled:hover:text-[var(--color-deep-brown)] disabled:hover:border-[var(--color-line)] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass cursor-pointer"
+                className="w-9 h-9 flex items-center justify-center text-[var(--color-deep-brown)] hover:text-[var(--color-wine)] active:text-[var(--color-wine)] transition-colors duration-200 focus-visible:outline-none cursor-pointer group/arrow disabled:opacity-20 disabled:cursor-not-allowed"
                 aria-label={`Scroll right in ${title}`}
               >
-                <ChevronRight size={18} strokeWidth={1.5} />
+                <ChevronRight
+                  size={20}
+                  strokeWidth={1.5}
+                  className="transition-transform duration-200 ease-out group-hover/arrow:translate-x-1 group-hover/arrow:scale-115 group-active/arrow:translate-x-1.5 group-active/arrow:scale-90"
+                />
               </button>
             </div>
           </div>
