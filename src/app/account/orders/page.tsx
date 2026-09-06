@@ -285,7 +285,7 @@ function OrdersContent() {
                 <div className="space-y-4">
                   {order.items.map((item, idx) => (
                     <div
-                      key={item.productId || `${order.orderNumber}-${idx}`}
+                      key={`${order.orderNumber}-${item.productId || 'item'}-${idx}-${item.size || ''}-${item.colour || ''}`}
                       className="flex items-center gap-4 bg-cream/60 border border-beige-line/50 p-4"
                     >
                       <div className="relative w-16 h-20 bg-sand flex-shrink-0">

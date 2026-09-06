@@ -464,10 +464,11 @@ function OrderDetailContent() {
                 <div className="space-y-2">
                   {order.items.map((item, idx) => {
                     const itemTotal = item.price * item.quantity;
+                    const itemUniqueKey = `${order.orderNumber || 'ord'}-${item.productId || 'item'}-${idx}-${item.size || ''}-${item.colour || ''}`;
 
                     return (
                       <div
-                        key={item.productId || `${order.orderNumber}-${idx}`}
+                        key={itemUniqueKey}
                         className="bg-[#f7f2ea] border border-[var(--color-line)] p-3 flex gap-3 hover:border-[var(--color-ink)]/40 transition-colors"
                       >
                         {/* Compact Product Thumbnail */}
