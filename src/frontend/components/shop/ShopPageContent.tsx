@@ -93,7 +93,9 @@ export function ShopPageContent({
                 <span className="text-[10px] uppercase tracking-[0.22em] text-[var(--color-wine)] font-medium mb-2">
                   Our newest arrivals
                 </span>
-                <h2 className="font-display text-[36px] text-[var(--color-deep-brown)]">Trending Now</h2>
+                <h2 className="font-display text-[36px] text-[var(--color-deep-brown)]">
+                  Trending Now
+                </h2>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10">
@@ -120,7 +122,9 @@ export function ShopPageContent({
                 <span className="text-[10px] uppercase tracking-[0.22em] text-[var(--color-muted-green)] font-medium mb-2">
                   Loved by our clients
                 </span>
-                <h2 className="font-display text-[36px] text-[var(--color-deep-brown)]">The Bestsellers</h2>
+                <h2 className="font-display text-[36px] text-[var(--color-deep-brown)]">
+                  The Bestsellers
+                </h2>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10">
@@ -154,7 +158,9 @@ export function ShopPageContent({
                   <span className="text-[10px] uppercase tracking-[0.22em] text-[#8A6A2C] font-medium mb-2">
                     {cat.subtitle}
                   </span>
-                  <h2 className="font-display text-[36px] text-[var(--color-deep-brown)]">{cat.title}</h2>
+                  <h2 className="font-display text-[36px] text-[var(--color-deep-brown)]">
+                    {cat.title}
+                  </h2>
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10">
@@ -193,7 +199,9 @@ export function ShopPageContent({
               <span className="text-[10px] uppercase tracking-[0.22em] text-[var(--color-terracotta)] font-medium mb-2">
                 Special client privileges
               </span>
-              <h2 className="font-display text-[36px] text-[var(--color-deep-brown)]">The Archive</h2>
+              <h2 className="font-display text-[36px] text-[var(--color-deep-brown)]">
+                The Archive
+              </h2>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10">

@@ -76,8 +76,8 @@ export function Footer() {
               </h3>
               <div className="flex flex-col gap-[10px] font-body text-[13px] text-[var(--color-muted)]">
                 <p>
-                  <span className="font-medium text-[var(--color-deep-brown)]">Address:</span> 123 Fashion
-                  Street, Mumbai, Maharashtra 400001, India
+                  <span className="font-medium text-[var(--color-deep-brown)]">Address:</span> 123
+                  Fashion Street, Mumbai, Maharashtra 400001, India
                 </p>
                 <p>
                   <span className="font-medium text-[var(--color-deep-brown)]">Email:</span>{' '}

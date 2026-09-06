@@ -332,11 +332,7 @@ export function Header() {
 
           {/* Right Zone */}
           <div className="flex items-center justify-end gap-[6px] h-full">
-            <Link
-              href="/wishlist"
-              className={iconButtonClass}
-              aria-label="Wishlist"
-            >
+            <Link href="/wishlist" className={iconButtonClass} aria-label="Wishlist">
               <Heart size={14} strokeWidth={1.2} />
             </Link>
             <button
@@ -346,11 +342,7 @@ export function Header() {
             >
               <Search size={14} strokeWidth={1.2} />
             </button>
-            <Link
-              href="/account"
-              className={iconButtonClass}
-              aria-label="Account"
-            >
+            <Link href="/account" className={iconButtonClass} aria-label="Account">
               <User size={14} strokeWidth={1.2} />
             </Link>
 

@@ -60,11 +60,11 @@ export function CuratedCollections() {
                 sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover transition-transform duration-600 ease-in-out group-hover:scale-[1.05]"
               />
-              <div
-                className="absolute inset-0 z-10 pointer-events-none transition-opacity duration-300 bg-gradient-to-t from-[var(--color-espresso)]/70 via-black/20 to-transparent opacity-80 group-hover:opacity-90"
-              />
+              <div className="absolute inset-0 z-10 pointer-events-none transition-opacity duration-300 bg-gradient-to-t from-[var(--color-espresso)]/70 via-black/20 to-transparent opacity-80 group-hover:opacity-90" />
               <div className="absolute bottom-[20px] left-[20px] z-20 pointer-events-none">
-                <h3 className="font-h3 text-[var(--color-champagne-light)] tracking-wide">{collection.name}</h3>
+                <h3 className="font-h3 text-[var(--color-champagne-light)] tracking-wide">
+                  {collection.name}
+                </h3>
               </div>
             </Link>
           ))}

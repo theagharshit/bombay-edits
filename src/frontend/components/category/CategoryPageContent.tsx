@@ -104,7 +104,9 @@ export function CategoryPageContent({
                 <span className="text-[10px] uppercase tracking-[0.22em] text-[var(--color-wine)] font-medium mb-2">
                   Newest arrivals in {title}
                 </span>
-                <h2 className="font-display text-[36px] text-[var(--color-deep-brown)]">Trending</h2>
+                <h2 className="font-display text-[36px] text-[var(--color-deep-brown)]">
+                  Trending
+                </h2>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10">
                 {trendingProducts.map((product) => (
@@ -130,7 +132,9 @@ export function CategoryPageContent({
                 <span className="text-[10px] uppercase tracking-[0.22em] text-[var(--color-muted-green)] font-medium mb-2">
                   Loved by our clients
                 </span>
-                <h2 className="font-display text-[36px] text-[var(--color-deep-brown)]">The Bestsellers</h2>
+                <h2 className="font-display text-[36px] text-[var(--color-deep-brown)]">
+                  The Bestsellers
+                </h2>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10">
                 {bestsellers.map((product) => (
@@ -156,7 +160,9 @@ export function CategoryPageContent({
                 <span className="text-[10px] uppercase tracking-[0.22em] text-[var(--color-terracotta)] font-medium mb-2">
                   The Archive
                 </span>
-                <h2 className="font-display text-[36px] text-[var(--color-deep-brown)]">Special Offers</h2>
+                <h2 className="font-display text-[36px] text-[var(--color-deep-brown)]">
+                  Special Offers
+                </h2>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-10">
                 {specialOffers.map((product) => (
@@ -216,7 +222,10 @@ export function CategoryPageContent({
                 {filteredGridProducts.length} Results
               </span>
               <div className="flex items-center gap-2">
-                <label htmlFor="sort" className="text-xs uppercase tracking-widest text-[var(--color-muted)]">
+                <label
+                  htmlFor="sort"
+                  className="text-xs uppercase tracking-widest text-[var(--color-muted)]"
+                >
                   Sort
                 </label>
                 <select
@@ -267,7 +276,9 @@ export function CategoryPageContent({
             <div className="flex-1">
               {visibleProducts.length === 0 ? (
                 <div className="text-center py-24">
-                  <p className="text-lg text-[var(--color-muted)]">No products found matching your filters.</p>
+                  <p className="text-lg text-[var(--color-muted)]">
+                    No products found matching your filters.
+                  </p>
                   <button
                     onClick={() => {
                       setActiveSort('newest');
