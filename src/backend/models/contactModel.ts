@@ -7,8 +7,11 @@ export type ContactStatus = 'new' | 'in_progress' | 'replied' | 'resolved';
 export interface ContactMessageRecord extends ContactSubmissionDTO {
   id: string;
   createdAt: string;
+  updatedAt?: string;
   status: ContactStatus;
 }
+
+export type ContactSubmission = ContactMessageRecord;
 
 const contactStore: ContactMessageRecord[] = [];
 

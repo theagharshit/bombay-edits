@@ -5,15 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/frontend/context/AuthContext';
 import { ContactService, ContactTicketRecord } from '@/frontend/services/contactService';
-import {
-  MessageSquare,
-  Clock,
-  Package,
-  CheckCircle2,
-  ArrowRight,
-  ShieldCheck,
-  Mail,
-} from 'lucide-react';
+import { MessageSquare, Clock, Package, CheckCircle2, ArrowRight, Mail } from 'lucide-react';
 
 function ConsultationsContent() {
   const { customer, isAuthenticated, isLoading: authLoading } = useAuth();

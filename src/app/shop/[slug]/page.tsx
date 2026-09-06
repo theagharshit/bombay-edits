@@ -31,8 +31,12 @@ export default async function ProductPage({ params }: PageProps) {
   const product = getProductBySlug(slug);
   if (!product) notFound();
 
-  const categoryRelated = getProductsByCategory(product.category).filter((p) => p.id !== product.id);
-  const otherRelated = products.filter((p) => p.id !== product.id && p.category !== product.category);
+  const categoryRelated = getProductsByCategory(product.category).filter(
+    (p) => p.id !== product.id
+  );
+  const otherRelated = products.filter(
+    (p) => p.id !== product.id && p.category !== product.category
+  );
   const related = [...categoryRelated, ...otherRelated].slice(0, 8);
 
   return (

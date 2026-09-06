@@ -43,7 +43,14 @@ export function SizeGuideModal({ isOpen, onClose }: SizeGuideModalProps) {
           className="absolute top-5 right-5 text-[var(--color-muted)] hover:text-[var(--color-deep-brown)] p-1.5 rounded-none transition-colors cursor-pointer"
           aria-label="Close size guide"
         >
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 14 14"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          >
             <path d="M1 1l12 12M13 1L1 13" />
           </svg>
         </button>
@@ -52,7 +59,8 @@ export function SizeGuideModal({ isOpen, onClose }: SizeGuideModalProps) {
           Size Guide
         </h2>
         <p className="text-xs text-[var(--color-muted)] font-body mb-6">
-          Measurements are in inches. If you are between sizes, we recommend sizing up for a relaxed luxury drape.
+          Measurements are in inches. If you are between sizes, we recommend sizing up for a relaxed
+          luxury drape.
         </p>
 
         {/* Table */}
@@ -70,7 +78,9 @@ export function SizeGuideModal({ isOpen, onClose }: SizeGuideModalProps) {
             <tbody className="divide-y divide-[var(--color-line)]/50">
               {sizeChart.map((row) => (
                 <tr key={row.size} className="hover:bg-[var(--color-cream)]/50 transition-colors">
-                  <td className="py-2.5 pr-4 font-medium text-[var(--color-deep-brown)]">{row.size}</td>
+                  <td className="py-2.5 pr-4 font-medium text-[var(--color-deep-brown)]">
+                    {row.size}
+                  </td>
                   <td className="py-2.5 pr-4 text-[var(--color-deep-brown)]/80">{row.bust}</td>
                   <td className="py-2.5 pr-4 text-[var(--color-deep-brown)]/80">{row.waist}</td>
                   <td className="py-2.5 pr-4 text-[var(--color-deep-brown)]/80">{row.hip}</td>
@@ -86,7 +96,8 @@ export function SizeGuideModal({ isOpen, onClose }: SizeGuideModalProps) {
             Bespoke Tailoring
           </h3>
           <p className="text-[11px] text-[var(--color-muted)] leading-relaxed font-body">
-            All our silhouettes are individually cut and finished. Complimentary custom alterations and personalized fittings are available upon request after checkout.
+            All our silhouettes are individually cut and finished. Complimentary custom alterations
+            and personalized fittings are available upon request after checkout.
           </p>
         </div>
       </div>

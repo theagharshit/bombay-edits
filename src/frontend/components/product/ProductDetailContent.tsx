@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Product } from '@/types/product';
+import { Product, Size } from '@/types/product';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 import { SizeGuideModal } from './SizeGuideModal';
@@ -21,9 +21,7 @@ export function ProductDetailContent({ product, relatedProducts }: Props) {
   const wishlisted = isWishlisted(product.id);
 
   // Interaction States
-  const [selectedSize, setSelectedSize] = useState<string>(
-    product.availableSizes?.[0] || 'S'
-  );
+  const [selectedSize, setSelectedSize] = useState<string>(product.availableSizes?.[0] || 'S');
   const [selectedColor, setSelectedColor] = useState<{ name: string; hex: string }>({
     name: product.colour?.name || 'Ivory Gold',
     hex: product.colour?.hex || '#DFD1B8',
@@ -45,14 +43,15 @@ export function ProductDetailContent({ product, relatedProducts }: Props) {
   ];
 
   // Guaranteed 5-image editorial gallery (1 large hero + 2x2 grid)
-  const baseImages = product.images.length > 0
-    ? product.images.map((img) => img.src)
-    : [
-        '/images/products/placeholder-1.jpg',
-        '/images/products/placeholder-2.jpg',
-        '/images/products/placeholder-3.jpg',
-        '/images/products/placeholder-4.jpg',
-      ];
+  const baseImages =
+    product.images.length > 0
+      ? product.images.map((img) => img.src)
+      : [
+          '/images/products/placeholder-1.jpg',
+          '/images/products/placeholder-2.jpg',
+          '/images/products/placeholder-3.jpg',
+          '/images/products/placeholder-4.jpg',
+        ];
 
   // Fill up to 5 distinct images for full layout
   const galleryImages: string[] = [
@@ -67,9 +66,8 @@ export function ProductDetailContent({ product, relatedProducts }: Props) {
   const completeTheLookItems = relatedProducts.slice(0, 2);
 
   // Recommended Products (next 4-6 items)
-  const recommendedItems = relatedProducts.length > 2
-    ? relatedProducts.slice(2, 6)
-    : relatedProducts;
+  const recommendedItems =
+    relatedProducts.length > 2 ? relatedProducts.slice(2, 6) : relatedProducts;
 
   // Handle Add to Cart
   const handleAddToCart = () => {
@@ -148,8 +146,8 @@ export function ProductDetailContent({ product, relatedProducts }: Props) {
                   {product.compareAtPrice && product.compareAtPrice > product.price
                     ? `${Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)}% off`
                     : product.isMadeToOrder
-                    ? 'Bespoke Order'
-                    : 'Handcrafted'}
+                      ? 'Bespoke Order'
+                      : 'Handcrafted'}
                 </span>
               </div>
             </div>
@@ -208,11 +206,19 @@ export function ProductDetailContent({ product, relatedProducts }: Props) {
               {/* Price */}
               <div className="flex flex-col items-end shrink-0 font-body">
                 <span className="text-xl md:text-2xl font-normal text-[var(--color-deep-brown)] tracking-wide">
-                  Rs. {product.price.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  Rs.{' '}
+                  {product.price.toLocaleString('en-IN', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
                 </span>
                 {product.compareAtPrice && product.compareAtPrice > product.price && (
                   <span className="text-xs text-[var(--color-muted)] line-through">
-                    Rs. {product.compareAtPrice.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    Rs.{' '}
+                    {product.compareAtPrice.toLocaleString('en-IN', {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
                   </span>
                 )}
               </div>
@@ -263,7 +269,7 @@ export function ProductDetailContent({ product, relatedProducts }: Props) {
               {/* Size Buttons Grid */}
               <div className="grid grid-cols-7 gap-1.5">
                 {sizes.map((s) => {
-                  const isAvailable = product.availableSizes?.includes(s as any) ?? true;
+                  const isAvailable = product.availableSizes?.includes(s as Size) ?? true;
                   const isSelected = selectedSize === s;
                   return (
                     <button
@@ -274,8 +280,8 @@ export function ProductDetailContent({ product, relatedProducts }: Props) {
                         isSelected
                           ? 'bg-[var(--color-deep-brown)] text-[var(--color-champagne-light)] border-[var(--color-deep-brown)]'
                           : isAvailable
-                          ? 'border-[var(--color-line)] text-[var(--color-deep-brown)] bg-white/40 hover:border-[var(--color-deep-brown)] hover:bg-white/80 active:scale-95'
-                          : 'border-[var(--color-line)]/40 text-[var(--color-muted)]/40 cursor-not-allowed line-through bg-transparent'
+                            ? 'border-[var(--color-line)] text-[var(--color-deep-brown)] bg-white/40 hover:border-[var(--color-deep-brown)] hover:bg-white/80 active:scale-95'
+                            : 'border-[var(--color-line)]/40 text-[var(--color-muted)]/40 cursor-not-allowed line-through bg-transparent'
                       }`}
                     >
                       {s}
@@ -295,7 +301,14 @@ export function ProductDetailContent({ product, relatedProducts }: Props) {
               >
                 {addedToCart ? (
                   <>
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
                       <path d="M2 6l3 3 5-5" />
                     </svg>
                     Added To Bag
@@ -332,7 +345,8 @@ export function ProductDetailContent({ product, relatedProducts }: Props) {
             {/* Editorial Tagline & Narrative Description */}
             <div className="flex flex-col gap-2 mt-4 pt-4 border-t border-[var(--color-line)]/50">
               <p className="font-display italic text-lg md:text-xl text-[var(--color-wine)]/90 leading-snug">
-                {product.shortDescription || 'A handcrafted architectural silhouette tailored in heritage textiles.'}
+                {product.shortDescription ||
+                  'A handcrafted architectural silhouette tailored in heritage textiles.'}
               </p>
               <p className="font-body text-xs leading-relaxed text-[var(--color-muted)]">
                 {product.longDescription ||
@@ -347,7 +361,7 @@ export function ProductDetailContent({ product, relatedProducts }: Props) {
                   Model
                 </span>
                 <span className="text-[var(--color-muted)]">
-                  {product.modelHeightAndSize || "Model is 5'9\", wearing size S"}
+                  {product.modelHeightAndSize || 'Model is 5\'9", wearing size S'}
                 </span>
               </div>
               <div className="flex items-baseline gap-4">
@@ -355,7 +369,8 @@ export function ProductDetailContent({ product, relatedProducts }: Props) {
                   Materials
                 </span>
                 <span className="text-[var(--color-muted)]">
-                  Shell: 100% {product.fabric || 'Chanderi Silk'} • {product.embroideryType || 'Hand Embroidered'}
+                  Shell: 100% {product.fabric || 'Chanderi Silk'} •{' '}
+                  {product.embroideryType || 'Hand Embroidered'}
                 </span>
               </div>
             </div>
@@ -397,7 +412,8 @@ export function ProductDetailContent({ product, relatedProducts }: Props) {
                   )}
                   <div>
                     <strong className="text-[var(--color-deep-brown)]">Shipping: </strong>
-                    {product.deliveryEstimate || 'Complimentary insured domestic shipping. Dispatched in 5-7 business days.'}
+                    {product.deliveryEstimate ||
+                      'Complimentary insured domestic shipping. Dispatched in 5-7 business days.'}
                   </div>
                 </div>
               )}
@@ -446,7 +462,8 @@ export function ProductDetailContent({ product, relatedProducts }: Props) {
           <section className="border-t border-[var(--color-line)]/60 pt-16 mt-8">
             <div className="flex items-center justify-between mb-8">
               <h2 className="font-display text-xl md:text-2xl uppercase tracking-[0.14em] text-[var(--color-deep-brown)]">
-                <span className="italic font-normal text-[var(--color-wine)]">Recommended</span> Products
+                <span className="italic font-normal text-[var(--color-wine)]">Recommended</span>{' '}
+                Products
               </h2>
 
               {/* Previous & Next Text Navigation (Directly Matching Reference) */}
@@ -485,10 +502,7 @@ export function ProductDetailContent({ product, relatedProducts }: Props) {
       </div>
 
       {/* Size Guide Modal Popup */}
-      <SizeGuideModal
-        isOpen={isSizeGuideOpen}
-        onClose={() => setIsSizeGuideOpen(false)}
-      />
+      <SizeGuideModal isOpen={isSizeGuideOpen} onClose={() => setIsSizeGuideOpen(false)} />
     </div>
   );
 }

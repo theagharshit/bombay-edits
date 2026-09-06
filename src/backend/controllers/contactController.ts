@@ -5,6 +5,7 @@ import { ApiResponse } from '../utils/apiResponse';
 import { Validator } from '../middlewares/validatorMiddleware';
 import { logger } from '../utils/logger';
 import { RequestContext } from '../types/api';
+import { NotificationService } from '../services/notification';
 
 export class ContactController {
   /**
@@ -32,6 +33,14 @@ export class ContactController {
       message: message.trim(),
       phone: phone?.trim(),
       orderNumber: orderNumber?.trim(),
+    });
+
+    // Asynchronously dispatch concierge acknowledgment (fire-and-forget)
+    NotificationService.sendContactAcknowledgment(submission).catch((err) => {
+      logger.error(
+        `Failed to dispatch contact acknowledgment for submission #${submission.id}:`,
+        err
+      );
     });
 
     return ApiResponse.success(

@@ -4,6 +4,7 @@ import { ApiResponse } from '../utils/apiResponse';
 import { Validator } from '../middlewares/validatorMiddleware';
 import { logger } from '../utils/logger';
 import { RequestContext } from '../types/api';
+import { NotificationService } from '../services/notification';
 
 export class NewsletterController {
   /**
@@ -23,6 +24,11 @@ export class NewsletterController {
     });
 
     const { subscriber } = await NewsletterModel.subscribe(email, source);
+
+    // Asynchronously dispatch luxury welcome email (fire-and-forget)
+    NotificationService.sendNewsletterWelcome(subscriber.email).catch((err) => {
+      logger.error(`Failed to dispatch newsletter welcome to ${subscriber.email}:`, err);
+    });
 
     return ApiResponse.success(
       {

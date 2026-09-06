@@ -17,12 +17,10 @@ import {
   ShieldCheck,
   ChevronDown,
   ShoppingBag,
-  Info,
   Clock,
   ExternalLink,
   ChevronRight,
   Receipt,
-  RotateCcw,
   Sparkles,
 } from 'lucide-react';
 

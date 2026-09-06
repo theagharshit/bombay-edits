@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Product, Size } from '@/types/product';
-import { formatPrice } from '@/frontend/utils/formatters';
 import { useWishlist } from '@/context/WishlistContext';
 import { useCart } from '@/context/CartContext';
 
@@ -158,11 +157,19 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                 className="text-[12px] !text-[12px] font-normal text-[var(--color-deep-brown)] tracking-wide"
                 style={{ fontSize: '12px' }}
               >
-                Rs. {product.price.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                Rs.{' '}
+                {product.price.toLocaleString('en-IN', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
               </span>
               {product.compareAtPrice && product.compareAtPrice > product.price && (
                 <span className="text-[11px] text-[var(--color-muted)] line-through">
-                  Rs. {product.compareAtPrice.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  Rs.{' '}
+                  {product.compareAtPrice.toLocaleString('en-IN', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
                 </span>
               )}
             </div>

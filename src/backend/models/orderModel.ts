@@ -8,12 +8,16 @@ import { logger } from '../utils/logger';
 export interface OrderRecord extends CreateOrderDTO {
   orderId: string;
   orderNumber: string;
+  customerId?: string;
   subtotal: number;
   shippingCost: number;
   total: number;
   currency: string;
   status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+  trackingNumber?: string;
   createdAt: string;
+  updatedAt?: string;
+  id?: string;
 }
 
 export const INITIAL_ORDERS: OrderRecord[] = [

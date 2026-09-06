@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { ArrowRight, Check } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Input } from '@/frontend/components/ui/Input';
 import { REGIONS, SupportedCountry } from '@/frontend/utils/geoRegions';
 import { useAuth } from '@/frontend/context/AuthContext';
@@ -199,6 +199,7 @@ function AddressesContent() {
         }
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading, action, editId, addresses, hasAutoOpened, isAuthenticated]);
 
   const handleCountryChange = (country: SupportedCountry) => {

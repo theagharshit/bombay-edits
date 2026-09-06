@@ -1,0 +1,90 @@
+[
+  {
+    "success": false,
+    "error": "Invalid template name. Trial accounts can only use predefined SMS templates. [Twilio Code 572006 - https://www.twilio.com/docs/errors/572006]",
+    "provider": "twilio",
+    "channel": "sms",
+    "recipient": "+919559159933",
+    "timestamp": "2026-09-06T22:12:50.353Z"
+  },
+  {
+    "success": true,
+    "messageId": "33578aa2-33f0-4f4c-8195-9fdf6214d820",
+    "provider": "resend",
+    "channel": "email",
+    "recipient": "ya828197@gmail.com",
+    "timestamp": "2026-09-06T22:12:50.352Z"
+  },
+  {
+    "success": false,
+    "error": "You can only send testing emails to your own email address (ya828197@gmail.com). To send emails to other recipients, please verify a domain at resend.com/domains, and change the `from` address to an email using this domain.",
+    "provider": "resend",
+    "channel": "email",
+    "recipient": "ayash955915@gmail.com",
+    "timestamp": "2026-09-06T22:11:04.332Z"
+  },
+  {
+    "success": false,
+    "error": "No Twilio trial phone number is assigned for messaging to this destination number. Please add the 'to' number as a verified recipient. [Twilio Code 572002 - https://www.twilio.com/docs/errors/572002]",
+    "provider": "twilio",
+    "channel": "sms",
+    "recipient": "+91955915993",
+    "timestamp": "2026-09-06T22:09:20.512Z"
+  },
+  {
+    "success": true,
+    "messageId": "4d63138a-9f8d-425d-80c9-29258b84478d",
+    "provider": "resend",
+    "channel": "email",
+    "recipient": "ya828197@gmail.com",
+    "timestamp": "2026-09-06T22:09:20.510Z"
+  },
+  {
+    "success": true,
+    "messageId": "40bd2b0e-cf16-4745-9eca-b6719d951aca",
+    "provider": "resend",
+    "channel": "email",
+    "recipient": "ya828197@gmail.com",
+    "timestamp": "2026-09-06T22:00:43.448Z"
+  },
+  {
+    "success": false,
+    "error": "Authenticate [Twilio Code 20003 - https://www.twilio.com/docs/errors/20003]",
+    "provider": "twilio",
+    "channel": "sms",
+    "recipient": "+91955915993",
+    "timestamp": "2026-09-06T22:00:43.449Z"
+  },
+  {
+    "success": true,
+    "messageId": "1afb943f-8407-4656-92cf-be6de7dd3585",
+    "provider": "resend",
+    "channel": "email",
+    "recipient": "ya828197@gmail.com",
+    "timestamp": "2026-09-06T22:00:00.170Z"
+  },
+  {
+    "success": false,
+    "error": "Authenticate [Twilio Code 20003 - https://www.twilio.com/docs/errors/20003]",
+    "provider": "twilio",
+    "channel": "sms",
+    "recipient": "+91955915993",
+    "timestamp": "2026-09-06T22:00:00.172Z"
+  },
+  {
+    "success": true,
+    "messageId": "7d50584f-bc0f-4741-b7ff-e277543531ca",
+    "provider": "resend",
+    "channel": "email",
+    "recipient": "ya828197@gmail.com",
+    "timestamp": "2026-09-06T21:54:59.020Z"
+  },
+  {
+    "success": false,
+    "error": "Authorization Error: no requested permission",
+    "provider": "twilio",
+    "channel": "sms",
+    "recipient": "+91955915993",
+    "timestamp": "2026-09-06T21:54:59.018Z"
+  }
+]

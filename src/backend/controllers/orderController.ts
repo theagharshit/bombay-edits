@@ -6,6 +6,7 @@ import { Validator } from '../middlewares/validatorMiddleware';
 import { AppError } from '../middlewares/errorHandlerMiddleware';
 import { logger } from '../utils/logger';
 import { RequestContext } from '../types/api';
+import { NotificationService } from '../services/notification';
 
 export class OrderController {
   /**
@@ -37,6 +38,11 @@ export class OrderController {
     });
 
     const order = await OrderModel.createOrder(body);
+
+    // Asynchronously dispatch luxury email & SMS confirmation (fire-and-forget)
+    NotificationService.sendOrderConfirmation(order).catch((err) => {
+      logger.error(`Failed to dispatch confirmation notifications for #${order.orderNumber}:`, err);
+    });
 
     return ApiResponse.success(
       {

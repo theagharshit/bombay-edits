@@ -14,7 +14,7 @@ import { AddressService } from '@/frontend/services/addressService';
 import { AddressRecord } from '@/backend/models/addressModel';
 import { useAuth } from '@/frontend/context/AuthContext';
 import { CreateOrderDTO } from '@/backend/types/api';
-import { Plus, Check, MapPin, User, ChevronRight, Edit3 } from 'lucide-react';
+import { Plus, Check, User, ChevronRight, Edit3 } from 'lucide-react';
 
 const steps: { key: CheckoutStep; label: string }[] = [
   { key: 'contact', label: 'Contact' },
@@ -34,7 +34,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { items, subtotal, clearCart } = useCart();
   const { format } = useCurrency();
-  const { customer, isAuthenticated, isLoading: authLoading } = useAuth();
+  const { customer, isAuthenticated, isLoading: _authLoading } = useAuth();
 
   const [currentStep, setCurrentStep] = useState<CheckoutStep>('contact');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -42,11 +42,11 @@ export default function CheckoutPage() {
 
   // Saved addresses state for logged-in users
   const [savedAddresses, setSavedAddresses] = useState<AddressRecord[]>([]);
-  const [loadingAddresses, setLoadingAddresses] = useState(false);
+  const [_loadingAddresses, setLoadingAddresses] = useState(false);
   const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
   const [showNewAddressForm, setShowNewAddressForm] = useState(false);
   const [savingNewAddress, setSavingNewAddress] = useState(false);
-  const [addressSaveError, setAddressSaveError] = useState<string | null>(null);
+  const [_addressSaveError, setAddressSaveError] = useState<string | null>(null);
   const [isEditingContact, setIsEditingContact] = useState(false);
 
   const [form, setForm] = useState({
