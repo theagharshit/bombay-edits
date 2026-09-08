@@ -37,11 +37,19 @@ const UPPER_COLUMNS = [
 
 export function Footer() {
   return (
-    <footer className="bg-[#EAE2D7] mt-auto w-full border-t border-[var(--color-line)]">
+    <footer className="bg-[#EAE2D7] mt-auto w-full border-t border-[var(--color-line)] relative overflow-hidden">
+      {/* Background Image Layer */}
+      <div 
+        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/images/footer-bg.jpeg')" }}
+      />
+      {/* Solid Beige Overlay for Text Legibility (Watermark effect) */}
+      <div className="absolute inset-0 z-0 bg-[#EAE2D7]/85 pointer-events-none" />
+      
       {/* ═══ Main Section: Info Columns + Company Info + News Letter ═══ */}
-      <div>
+      <div className="relative z-10">
         <Container>
-          <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_1.05fr_1fr_1.15fr_1.4fr] gap-x-[32px] gap-y-[36px] py-[48px] md:py-[56px]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_1.05fr_1fr_1.15fr_1.4fr] gap-x-[32px] gap-y-[36px] py-[80px] md:py-[100px]">
             {/* Info Columns */}
             {UPPER_COLUMNS.map((col) => (
               <div key={col.title} className="flex flex-col">

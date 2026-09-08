@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useCallback, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { User, Heart, Menu } from 'lucide-react';
@@ -145,7 +146,7 @@ export function Header() {
 
         const p = ease(targetP);
 
-        // 2. FLIP Transform on Hero Wordmark
+        // 2. FLIP Transform on Hero Wordmark (the h1 element only)
         const wordmarkEl = document.getElementById('hero-wordmark');
         if (wordmarkEl) {
           const { dx, dy, scale, ready } = deltasRef.current;
@@ -164,6 +165,20 @@ export function Header() {
           wordmarkEl.style.pointerEvents = 'none';
         }
 
+        // 2b. Hero Tagline — mirrors wordmark transform, fades out early
+        const heroTaglineEl = document.getElementById('hero-tagline');
+        if (heroTaglineEl) {
+          const { dx, dy, scale, ready } = deltasRef.current;
+          if (ready) {
+            heroTaglineEl.style.transform = `translate3d(${dx * p}px, ${dy * p}px, 0) scale(${1 + (scale - 1) * p})`;
+            heroTaglineEl.style.willChange = p > 0 && p < 1 ? 'transform' : 'auto';
+          }
+          // Fade out tagline faster than the wordmark (gone by 35% scroll)
+          const tagFade = Math.min(Math.max(targetP / 0.35, 0), 1);
+          heroTaglineEl.style.opacity = (0.85 * (1 - tagFade)).toString();
+          heroTaglineEl.style.visibility = tagFade >= 1 ? 'hidden' : 'visible';
+        }
+
         // 3. Center Header Logo (linking to landing page)
         if (headerLogoRef.current) {
           let logoOpacity = 0;
@@ -174,17 +189,7 @@ export function Header() {
           headerLogoRef.current.style.pointerEvents = logoOpacity > 0.5 ? 'auto' : 'none';
         }
 
-        // 4. Hero Tagline Fade Out (cleanly disappears between scroll 0 and 100px)
-        const heroTagline = document.getElementById('hero-tagline');
-        if (heroTagline) {
-          const tagFade = Math.min(Math.max(scrollY / 100, 0), 1);
-          const tagOpacity = 0.7 * (1 - tagFade);
-          heroTagline.style.opacity = tagOpacity.toString();
-          heroTagline.style.pointerEvents = 'none';
-          heroTagline.style.visibility = tagFade >= 1 ? 'hidden' : 'visible';
-        }
-
-        // 5. Nav Pills vs Menu Button Fade (Desktop)
+        // 4. Nav Pills vs Menu Button Fade (Desktop)
         if (isMobile) {
           if (menuPillRef.current) {
             menuPillRef.current.style.opacity = '1';
@@ -260,11 +265,12 @@ export function Header() {
   return (
     <>
       <header className="fixed top-0 w-full z-50 pointer-events-none">
-        {/* Luxury Frosted Ivory Header Background */}
+        {/* Header Background — matches logo background color */}
         <div
           ref={headerBgRef}
-          className="absolute inset-0 bg-[var(--color-ivory)]/95 backdrop-blur-md border-b border-[var(--color-line)] shadow-2xs pointer-events-none transition-none"
+          className="absolute inset-0 backdrop-blur-md border-b border-[#e8d5c8] shadow-2xs pointer-events-none transition-none"
           style={{
+            backgroundColor: 'rgba(249, 236, 226, 0.97)',
             opacity: isHomePage ? 0 : 1,
           }}
           aria-hidden="true"
@@ -321,24 +327,29 @@ export function Header() {
             aria-hidden="true"
           />
 
-          {/* Centre Zone — Absolute Dead Center Brand Logo linking to Landing Page */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-auto z-20 flex items-center justify-center">
+          {/* Centre Zone — Absolute Dead Center Logo Image linking to Landing Page */}
+          <div
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-auto z-20 flex items-center justify-center"
+            style={{ mixBlendMode: 'multiply' }}
+          >
             <Link
               href="/"
               ref={headerLogoRef}
               onClick={handleLogoClick}
-              className="whitespace-nowrap text-[var(--color-deep-brown)] hover:text-[var(--color-wine)] tracking-tight transition-colors select-none cursor-pointer"
+              className="flex items-center justify-center select-none cursor-pointer transition-opacity duration-200 hover:opacity-75"
               style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: '28px',
-                lineHeight: 1,
-                textDecoration: 'none',
-                letterSpacing: '-0.01em',
                 opacity: isHomePage ? 0 : 1,
               }}
               aria-label="Bombay Edits — Home"
             >
-              Bombay Edits
+              <Image
+                src="/images/logo.jpeg"
+                alt="Bombay Edits"
+                width={56}
+                height={56}
+                className="object-contain"
+                priority
+              />
             </Link>
           </div>
 

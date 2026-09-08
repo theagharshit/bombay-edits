@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useCallback } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { Search, User, Heart, Menu } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
@@ -22,6 +23,7 @@ export function Header() {
   const placeholderRef = useRef<HTMLSpanElement>(null);
   const menuPillRef = useRef<HTMLButtonElement>(null);
   const taglineRef = useRef<HTMLDivElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
   const navPillsRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
   // We need to measure the deltas
@@ -87,9 +89,16 @@ export function Header() {
 
         wordmarkRef.current.style.transform = `translate3d(${dx * p}px, ${dy * p}px, 0) scale(${1 + (scale - 1) * p})`;
 
-        // p=0.45 to 1.0 for color interpolation (ivory to --color-ink)
-        const colorP = Math.min(Math.max((p - 0.45) / 0.55, 0), 1);
-        wordmarkRef.current.style.color = `color-mix(in srgb, var(--color-ink) ${colorP * 100}%, var(--color-ivory))`;
+        // Fade out the wordmark text as it reaches the header — logo takes over
+        const wordmarkFadeOut = Math.min(Math.max((targetP - 0.88) / 0.12, 0), 1);
+        wordmarkRef.current.style.opacity = (1 - wordmarkFadeOut).toString();
+      }
+
+      // 1b. Logo fade in — appears as wordmark fades out
+      if (logoRef.current) {
+        const logoFadeIn = Math.min(Math.max((targetP - 0.88) / 0.12, 0), 1);
+        logoRef.current.style.opacity = logoFadeIn.toString();
+        logoRef.current.style.pointerEvents = logoFadeIn > 0.5 ? 'auto' : 'none';
       }
 
       // 2. Nav Pills Fade (0 to 0.35, staggered)
@@ -130,7 +139,7 @@ export function Header() {
         }
       }
 
-      // 4. Tagline Fade Out (0 to 0.25)
+      // 4. Tagline in header centre: Fade Out (0 to 0.25)
       if (taglineRef.current) {
         let taglineP = targetP / 0.25;
         taglineP = Math.min(Math.max(taglineP, 0), 1);
@@ -189,6 +198,7 @@ export function Header() {
 
         {/* Centre Zone */}
         <div className="grid place-items-center h-full">
+          {/* Tagline fades out on scroll */}
           <div
             ref={taglineRef}
             className="col-start-1 row-start-1 text-[var(--color-ivory)] text-[15px] italic whitespace-nowrap opacity-90 tracking-wide"
@@ -196,15 +206,32 @@ export function Header() {
           >
             Indian craft, reimagined.
           </div>
-          {/* The Hidden Logo Placeholder */}
+
+          {/* Invisible placeholder — sized to logo so FLIP animation lands correctly */}
           <span
             ref={placeholderRef}
-            className="col-start-1 row-start-1 invisible whitespace-nowrap text-[var(--color-ink)] tracking-tight"
-            style={{ fontFamily: 'var(--font-display)', fontSize: '22px', lineHeight: 1 }}
+            className="col-start-1 row-start-1 invisible whitespace-nowrap"
             aria-hidden="true"
           >
-            Bombay Edits
+            <Image src="/images/logo.jpeg" alt="Bombay Edits" width={120} height={36} className="object-contain" />
           </span>
+
+          {/* Actual logo — fades in once wordmark reaches the header */}
+          <div
+            ref={logoRef}
+            className="col-start-1 row-start-1 opacity-0 pointer-events-none"
+          >
+            <Link href="/">
+              <Image
+                src="/images/logo.jpeg"
+                alt="Bombay Edits"
+                width={120}
+                height={36}
+                className="object-contain"
+                priority
+              />
+            </Link>
+          </div>
         </div>
 
         {/* Right Zone */}
