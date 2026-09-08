@@ -5,6 +5,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/cart/CartDrawer';
 import { Providers } from './providers';
+import { Analytics } from '@vercel/analytics/next';
 
 const cormorantGaramond = Cormorant_Garamond({
   variable: '--font-display',
@@ -66,6 +67,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className="m-0 p-0 flex-1 w-full flex flex-col">{children}</main>
           <Footer />
           <CartDrawer />
+          <Analytics />
         </Providers>
       </body>
     </html>
