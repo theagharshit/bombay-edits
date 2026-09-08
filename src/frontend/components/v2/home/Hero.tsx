@@ -38,7 +38,6 @@ export function Hero() {
 
       {/* Content Block */}
       <div className="relative z-30 flex flex-col flex-1 w-full max-w-[var(--max-content)] mx-auto px-6">
-
         {/* Wordmark + tagline — both animated together by Header.tsx scroll animation via id="hero-wordmark" */}
         <Wordmark id="hero-wordmark" />
 

@@ -39,13 +39,13 @@ export function Footer() {
   return (
     <footer className="bg-[#EAE2D7] mt-auto w-full border-t border-[var(--color-line)] relative overflow-hidden">
       {/* Background Image Layer */}
-      <div 
+      <div
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url('/images/footer-bg.jpeg')" }}
       />
       {/* Solid Beige Overlay for Text Legibility (Watermark effect) */}
       <div className="absolute inset-0 z-0 bg-[#EAE2D7]/85 pointer-events-none" />
-      
+
       {/* ═══ Main Section: Info Columns + Company Info + News Letter ═══ */}
       <div className="relative z-10">
         <Container>

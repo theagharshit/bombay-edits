@@ -213,14 +213,17 @@ export function Header() {
             className="col-start-1 row-start-1 invisible whitespace-nowrap"
             aria-hidden="true"
           >
-            <Image src="/images/logo.jpeg" alt="Bombay Edits" width={120} height={36} className="object-contain" />
+            <Image
+              src="/images/logo.jpeg"
+              alt="Bombay Edits"
+              width={120}
+              height={36}
+              className="object-contain"
+            />
           </span>
 
           {/* Actual logo — fades in once wordmark reaches the header */}
-          <div
-            ref={logoRef}
-            className="col-start-1 row-start-1 opacity-0 pointer-events-none"
-          >
+          <div ref={logoRef} className="col-start-1 row-start-1 opacity-0 pointer-events-none">
             <Link href="/">
               <Image
                 src="/images/logo.jpeg"
