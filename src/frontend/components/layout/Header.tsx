@@ -270,7 +270,7 @@ export function Header() {
           ref={headerBgRef}
           className="absolute inset-0 backdrop-blur-md border-b border-[#e8d5c8] shadow-2xs pointer-events-none transition-none"
           style={{
-            backgroundColor: 'rgba(249, 236, 226, 0.97)',
+            backgroundColor: 'rgba(254, 251, 244, 0.97)',
             opacity: isHomePage ? 0 : 1,
           }}
           aria-hidden="true"
@@ -340,11 +340,11 @@ export function Header() {
               style={{
                 opacity: isHomePage ? 0 : 1,
               }}
-              aria-label="Bombay Edits — Home"
+              aria-label="House of Baneri — Home"
             >
               <Image
-                src="/images/logo.jpeg"
-                alt="Bombay Edits"
+                src="/images/house-of-baneri-logo.jpeg"
+                alt="House of Baneri"
                 width={56}
                 height={56}
                 className="object-contain"

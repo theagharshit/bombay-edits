@@ -20,7 +20,7 @@ export function Wordmark({ id }: { id?: string }) {
         }}
         aria-hidden="true"
       >
-        Bombay Edits
+        HOUSE OF BANERI
       </h1>
 
       {/* Tagline — fixed directly below the wordmark h1 */}

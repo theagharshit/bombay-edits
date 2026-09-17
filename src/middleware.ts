@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { auth } from '@/auth';
 
-export function middleware(request: NextRequest) {
+export const middleware = auth((request) => {
   const start = Date.now();
   const requestId = crypto.randomUUID().slice(0, 8);
   const { pathname } = request.nextUrl;
@@ -22,6 +22,22 @@ export function middleware(request: NextRequest) {
 
   response.headers.set('x-request-id', requestId);
 
+  const isAdminRoute = pathname.startsWith('/admin');
+  const isLoginRoute = pathname === '/admin/login';
+  const session = request.auth;
+
+  if (isAdminRoute && !isLoginRoute) {
+    if (!session || (session.user as any)?.role !== 'admin') {
+      const loginUrl = new URL('/admin/login', request.url);
+      return NextResponse.redirect(loginUrl);
+    }
+  }
+
+  if (isLoginRoute && session && (session.user as any)?.role === 'admin') {
+    const adminUrl = new URL('/admin', request.url);
+    return NextResponse.redirect(adminUrl);
+  }
+
   if (!isStaticOrInternal) {
     const method = request.method;
     const time = new Date().toISOString();
@@ -32,7 +48,7 @@ export function middleware(request: NextRequest) {
   }
 
   return response;
-}
+});
 
 export const config = {
   matcher: [

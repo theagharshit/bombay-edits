@@ -33,7 +33,7 @@ export class CartModel {
           productId: string | null;
           productSlug: string;
           name: string;
-          price: Prisma.Decimal;
+          price: number;
           image: string;
           colour: string;
           size: string;
@@ -128,7 +128,7 @@ export class CartModel {
                   productId: validProductIdSet.has(i.productId) ? i.productId : null,
                   productSlug: i.slug || i.productId,
                   name: i.name || 'Artisanal Piece',
-                  price: new Prisma.Decimal(i.price || 0),
+                  price: i.price || 0,
                   image: i.image || '',
                   colour: i.colour || 'Default',
                   size: i.size || 'Free Size',
@@ -164,7 +164,7 @@ export class CartModel {
                     productId: validProductIdSet.has(i.productId) ? i.productId : null,
                     productSlug: i.slug || i.productId,
                     name: i.name || 'Artisanal Piece',
-                    price: new Prisma.Decimal(i.price || 0),
+                    price: i.price || 0,
                     image: i.image || '',
                     colour: i.colour || 'Default',
                     size: i.size || 'Free Size',

@@ -1,12 +1,6 @@
 import type { Metadata } from 'next';
 import { Cormorant_Garamond, Jost } from 'next/font/google';
 import './globals.css';
-import { Header } from '@/components/layout/Header';
-import { Footer } from '@/components/layout/Footer';
-import { CartDrawer } from '@/components/cart/CartDrawer';
-import { Providers } from './providers';
-import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const cormorantGaramond = Cormorant_Garamond({
   variable: '--font-display',
@@ -63,14 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${cormorantGaramond.variable} ${jost.variable} h-full`}
     >
       <body className="m-0 p-0 min-h-screen min-h-dvh w-full flex flex-col antialiased overflow-x-hidden">
-        <Providers>
-          <Header />
-          <main className="m-0 p-0 flex-1 w-full flex flex-col">{children}</main>
-          <Footer />
-          <CartDrawer />
-          <Analytics />
-          <SpeedInsights />
-        </Providers>
+        {children}
       </body>
     </html>
   );

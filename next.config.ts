@@ -24,15 +24,22 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  async rewrites() {
+  async redirects() {
     return [
       {
-        source: '/product/:slug',
-        destination: '/shop/:slug',
+        source: '/shop/:slug',
+        destination: '/product/:slug',
+        permanent: true,
       },
       {
         source: '/products/:slug',
-        destination: '/shop/:slug',
+        destination: '/product/:slug',
+        permanent: true,
+      },
+      {
+        source: '/our-story',
+        destination: '/the-craft',
+        permanent: true,
       },
     ];
   },

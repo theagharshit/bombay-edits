@@ -1,0 +1,28 @@
+.admin-root {
+  --admin-bg:        #ffffff;
+  --admin-surface:   #fafaf9;
+  --admin-panel:     #ffffff;
+  --admin-border:    #e7e5e4;
+  --admin-border-str:#d6d3d1;
+  --admin-text:      #1c1917;
+  --admin-text-mute: #78716c;
+  --admin-text-faint:#a8a29e;
+  --admin-accent:    var(--color-wine);
+  --admin-accent-fg: #ffffff;
+  --admin-focus:     #0f766e;
+
+  --admin-ok:        #15803d;
+  --admin-warn:      #b45309;
+  --admin-danger:    #b91c1c;
+  --admin-info:      #1d4ed8;
+
+  --admin-radius:    6px;
+  --admin-row-h:     44px;
+  --admin-font:      var(--font-jost), ui-sans-serif, system-ui, sans-serif;
+  
+  font-family: var(--admin-font);
+  background-color: var(--admin-bg);
+  color: var(--admin-text);
+  font-size: 14px;
+  line-height: 1.45;
+}

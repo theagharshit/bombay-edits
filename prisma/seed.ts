@@ -166,6 +166,21 @@ export async function main() {
   }
   console.log(`✓ Seeded ${currencies.length} currencies.`);
 
+  // 8.5 Seed Sizes
+  console.log('8.5 Seeding sizes...');
+  const sizeMap = new Map<string, string>();
+  const sizeCodes = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL'];
+  for (let i = 0; i < sizeCodes.length; i++) {
+    const code = sizeCodes[i];
+    const record = await prisma.productSize.upsert({
+      where: { sizeCode: code },
+      update: { sortOrder: i },
+      create: { sizeCode: code, sortOrder: i },
+    });
+    sizeMap.set(code, record.id);
+  }
+  console.log(`✓ Seeded ${sizeCodes.length} sizes.`);
+
   // 9. Seed Products & Child Relational Tables
   console.log('9. Seeding products with full relational normalisation...');
   for (const prod of products) {
@@ -243,13 +258,24 @@ export async function main() {
     await prisma.productSizeStock.deleteMany({ where: { productId: productRecord.id } });
     if (prod.stockBySize) {
       const sizeEntries = Object.entries(prod.stockBySize as Record<string, number>);
-      await prisma.productSizeStock.createMany({
-        data: sizeEntries.map(([size, stockQuantity]) => ({
-          productId: productRecord.id,
-          size,
-          stockQuantity,
-        })),
-      });
+      
+      const stockData = sizeEntries
+        .map(([size, stockQuantity]) => {
+          const sizeId = sizeMap.get(size);
+          if (!sizeId) return null;
+          return {
+            productId: productRecord.id,
+            sizeId,
+            stockQuantity,
+          };
+        })
+        .filter((entry): entry is NonNullable<typeof entry> => entry !== null);
+        
+      if (stockData.length > 0) {
+        await prisma.productSizeStock.createMany({
+          data: stockData,
+        });
+      }
     }
 
     // Child Table: ProductComponents
@@ -351,6 +377,7 @@ export async function main() {
           shippingCost: orderData.shippingCost,
           total: orderData.total,
           currency: orderData.currency || 'INR',
+          exchangeRateSnapshot: 1.0,
           paymentMethod: orderData.paymentMethod,
           status: orderData.status,
           createdAt: new Date(orderData.createdAt),
@@ -359,6 +386,8 @@ export async function main() {
               productId: item.productId,
               productSlug: item.slug,
               productName: item.name,
+              productSlugSnapshot: item.slug,
+              productNameSnapshot: item.name,
               unitPrice: item.price,
               quantity: item.quantity,
               size: item.size,
