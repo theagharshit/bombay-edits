@@ -9,10 +9,34 @@ import Link from 'next/link';
 import { formatMoney } from '@/lib/admin/money';
 import { formatDistanceToNow, format } from 'date-fns';
 
+export type CustomerListItem = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string | null;
+  orderCount: number;
+  ltv: number;
+  lastOrderDate?: Date | string | null;
+  createdAt: Date | string;
+};
+
+export type ZoneItem = {
+  id: string;
+  label?: string;
+  name?: string;
+};
+
 type CustomersListProps = {
-  data: any[];
-  meta: any;
-  zones: any[];
+  data: CustomerListItem[];
+  meta: {
+    page: number;
+    totalPages: number;
+    hasNext: boolean;
+    hasPrev: boolean;
+    total: number;
+  };
+  zones: ZoneItem[];
 };
 
 export function CustomersClient({ data, meta, zones }: CustomersListProps) {
@@ -33,43 +57,52 @@ export function CustomersClient({ data, meta, zones }: CustomersListProps) {
   const columns = [
     {
       header: 'Customer',
-      cell: (item: any) => (
+      cell: (item: CustomerListItem) => (
         <div className="flex flex-col">
-          <Link href={`/admin/customers/${item.id}`} className="font-medium hover:underline text-[var(--admin-accent)]">
+          <Link
+            href={`/admin/customers/${item.id}`}
+            className="font-medium hover:underline text-[var(--admin-accent)]"
+          >
             {item.firstName} {item.lastName}
           </Link>
           <span className="text-xs text-gray-500">{item.email}</span>
         </div>
-      )
+      ),
     },
     {
       header: 'Phone',
-      cell: (item: any) => <span className="text-sm">{item.phone || '-'}</span>
+      cell: (item: CustomerListItem) => <span className="text-sm">{item.phone || '-'}</span>,
     },
     {
       header: 'Orders',
-      cell: (item: any) => <span className="text-gray-600 font-medium">{item.orderCount}</span>
+      cell: (item: CustomerListItem) => (
+        <span className="text-gray-600 font-medium">{item.orderCount}</span>
+      ),
     },
     {
       header: 'Lifetime Value',
-      cell: (item: any) => <span className="font-semibold">{formatMoney(item.ltv, 'NPR')}</span>
+      cell: (item: CustomerListItem) => (
+        <span className="font-semibold">{formatMoney(item.ltv, 'NPR')}</span>
+      ),
     },
     {
       header: 'Last Order',
-      cell: (item: any) => (
+      cell: (item: CustomerListItem) => (
         <span className="text-gray-600 text-sm">
-          {item.lastOrderDate ? formatDistanceToNow(new Date(item.lastOrderDate), { addSuffix: true }) : 'Never'}
+          {item.lastOrderDate
+            ? formatDistanceToNow(new Date(item.lastOrderDate), { addSuffix: true })
+            : 'Never'}
         </span>
-      )
+      ),
     },
     {
       header: 'Joined',
-      cell: (item: any) => (
+      cell: (item: CustomerListItem) => (
         <span title={new Date(item.createdAt).toLocaleString()} className="text-sm text-gray-600">
           {format(new Date(item.createdAt), 'MMM d, yyyy')}
         </span>
-      )
-    }
+      ),
+    },
   ];
 
   return (
@@ -78,7 +111,13 @@ export function CustomersClient({ data, meta, zones }: CustomersListProps) {
         <h1 className="text-2xl font-[var(--font-jost)] font-semibold">Customers</h1>
         <div className="flex flex-wrap items-center gap-2">
           {/* CSV export stub for now, matching the standard API route pattern */}
-          <a href={`/api/admin/customers/export?${searchParams.toString()}`} className="px-4 py-2 border rounded hover:bg-gray-50 text-sm" download>CSV Export</a>
+          <a
+            href={`/api/admin/customers/export?${searchParams.toString()}`}
+            className="px-4 py-2 border rounded hover:bg-gray-50 text-sm"
+            download
+          >
+            CSV Export
+          </a>
         </div>
       </div>
 
@@ -119,15 +158,15 @@ export function CustomersClient({ data, meta, zones }: CustomersListProps) {
           className="px-3 py-2 border rounded text-sm bg-white"
         >
           <option value="">Any Zone</option>
-          {zones.map(z => <option key={z.id} value={z.id}>{z.name}</option>)}
+          {zones.map((z) => (
+            <option key={z.id} value={z.id}>
+              {z.name}
+            </option>
+          ))}
         </select>
       </div>
 
-      <DataTable
-        data={data}
-        columns={columns}
-        keyExtractor={(item: any) => item.id}
-      />
+      <DataTable data={data} columns={columns} keyExtractor={(item: CustomerListItem) => item.id} />
 
       <Pagination {...meta} />
     </div>

@@ -17,7 +17,7 @@ export function ConfirmDialog({
   description,
   confirmLabel = 'Confirm',
   cancelLabel = 'Cancel',
-  onConfirm
+  onConfirm,
 }: ConfirmDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isWorking, setIsWorking] = useState(false);
@@ -43,7 +43,7 @@ export function ConfirmDialog({
           <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-2">{title}</h3>
             <p className="text-sm text-gray-600 mb-6">{description}</p>
-            
+
             <div className="flex justify-end gap-3">
               <button
                 disabled={isWorking}

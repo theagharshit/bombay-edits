@@ -1,4 +1,5 @@
 import { prisma } from '@/backend/db/prisma';
+import { Prisma } from '@prisma/client';
 import { requireAdmin } from '@/lib/admin/auth';
 import { parsePagination, buildPaginationMeta } from '@/lib/admin/pagination';
 import { AuditLogClient } from './AuditLogClient';
@@ -16,7 +17,7 @@ export default async function AuditLogPage({
   const q = (searchParams.q as string) || '';
   const entityType = (searchParams.entityType as string) || '';
 
-  const where: any = {};
+  const where: Prisma.AuditLogWhereInput = {};
   if (q) {
     where.OR = [
       { action: { contains: q, mode: 'insensitive' } },
@@ -35,10 +36,6 @@ export default async function AuditLogPage({
   const meta = buildPaginationMeta(total, page, take);
 
   return (
-    <AuditLogClient
-      data={logs}
-      meta={meta}
-      entityTypes={entityTypes.map((e: any) => e.entityType)}
-    />
+    <AuditLogClient data={logs} meta={meta} entityTypes={entityTypes.map((e) => e.entityType)} />
   );
 }

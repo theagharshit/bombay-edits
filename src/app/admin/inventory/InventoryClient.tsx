@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
-import { DataTable } from '@/app/admin/_components/DataTable';
+import { DataTable, type ColumnDef } from '@/app/admin/_components/DataTable';
 import { Pagination } from '@/app/admin/_components/Pagination';
 import { updateStockQuantity, updateLowStockThreshold } from '@/app/actions/admin/inventory';
 import { useDebouncedCallback } from 'use-debounce';
@@ -10,15 +10,42 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { CsvImportDialog } from './CsvImportDialog';
 
-export function InventoryClient({ data, meta, allCount }: { data: any[], meta: any, allCount: number }) {
+export type StockRowItem = {
+  productId: string;
+  sizeId: string;
+  stockQuantity: number;
+  reservedQuantity: number;
+  product: {
+    id: string;
+    name: string;
+    sku: string | null;
+    lowStockThreshold: number;
+    images?: { url?: string; src?: string }[];
+  };
+  size: {
+    sizeCode: string;
+  };
+};
+
+interface InventoryClientProps {
+  data: StockRowItem[];
+  meta: {
+    page: number;
+    totalPages: number;
+    hasNext: boolean;
+    hasPrev: boolean;
+    total: number;
+  };
+  allCount: number;
+}
+
+export function InventoryClient({ data, meta, allCount }: InventoryClientProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [editingRow, setEditingRow] = useState<string | null>(null);
 
-  const view = searchParams.get('view') || 'stock';
   const stateTab = searchParams.get('state') || 'ALL';
 
   const handleSearch = useDebouncedCallback((val: string) => {
@@ -37,13 +64,18 @@ export function InventoryClient({ data, meta, allCount }: { data: any[], meta: a
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
-  const updateQuantity = async (productId: string, sizeId: string, newQty: number, currentQty: number) => {
+  const updateQuantity = async (
+    productId: string,
+    sizeId: string,
+    newQty: number,
+    currentQty: number
+  ) => {
     if (newQty === currentQty) return;
     const delta = newQty - currentQty;
     try {
       await updateStockQuantity(productId, sizeId, delta, 'MANUAL_ADJUSTMENT', 'Inline edit');
-    } catch (e: any) {
-      alert(e.message || 'Failed to update stock');
+    } catch (e: unknown) {
+      alert(e instanceof Error ? e.message : 'Failed to update stock');
       router.refresh();
     }
   };
@@ -51,65 +83,97 @@ export function InventoryClient({ data, meta, allCount }: { data: any[], meta: a
   const updateThreshold = async (productId: string, newThreshold: number) => {
     try {
       await updateLowStockThreshold(productId, newThreshold);
-    } catch (e: any) {
+    } catch {
       alert('Failed to update threshold');
     }
   };
 
-  const columns = [
+  const columns: ColumnDef<StockRowItem>[] = [
     {
       header: 'Product',
-      cell: (item: any) => (
+      cell: (item: StockRowItem) => (
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 relative bg-gray-100 rounded overflow-hidden">
             {item.product.images?.[0]?.url && (
-              <Image src={item.product.images[0].url} alt={item.product.name} fill className="object-cover" />
+              <Image
+                src={item.product.images[0].url}
+                alt={item.product.name}
+                fill
+                className="object-cover"
+              />
             )}
           </div>
           <div className="flex flex-col">
-            <Link href={`/admin/products/${item.product.id}`} className="font-medium hover:underline text-[var(--admin-accent)]">
+            <Link
+              href={`/admin/products/${item.product.id}`}
+              className="font-medium hover:underline text-[var(--admin-accent)]"
+            >
               {item.product.name}
             </Link>
             <span className="text-xs text-gray-500">{item.product.sku}</span>
           </div>
         </div>
-      )
+      ),
     },
-    { header: 'Size', accessorKey: 'sizeCode', cell: (item: any) => item.size.sizeCode },
+    { header: 'Size', cell: (item: StockRowItem) => item.size.sizeCode },
     {
       header: 'On Hand',
-      cell: (item: any) => (
+      cell: (item: StockRowItem) => (
         <input
           type="number"
           defaultValue={item.stockQuantity}
-          onBlur={(e) => updateQuantity(item.productId, item.sizeId, parseInt(e.target.value, 10), item.stockQuantity)}
+          onBlur={(e) =>
+            updateQuantity(
+              item.productId,
+              item.sizeId,
+              parseInt(e.target.value, 10),
+              item.stockQuantity
+            )
+          }
           className="w-20 px-2 py-1 border rounded"
         />
-      )
+      ),
     },
     { header: 'Reserved', accessorKey: 'reservedQuantity' },
-    { header: 'Available', cell: (item: any) => item.stockQuantity - item.reservedQuantity },
+    {
+      header: 'Available',
+      cell: (item: StockRowItem) => item.stockQuantity - item.reservedQuantity,
+    },
     {
       header: 'Threshold',
-      cell: (item: any) => (
+      cell: (item: StockRowItem) => (
         <input
           type="number"
           defaultValue={item.product.lowStockThreshold}
           onBlur={(e) => updateThreshold(item.productId, parseInt(e.target.value, 10))}
           className="w-20 px-2 py-1 border rounded text-xs"
         />
-      )
+      ),
     },
     {
       header: 'State',
-      cell: (item: any) => {
+      cell: (item: StockRowItem) => {
         const qty = item.stockQuantity;
         const thresh = item.product.lowStockThreshold;
-        if (qty <= 0) return <span className="px-2 py-1 text-xs uppercase bg-red-100 text-red-800 rounded-full font-medium">Out of Stock</span>;
-        if (qty <= thresh) return <span className="px-2 py-1 text-xs uppercase bg-orange-100 text-orange-800 rounded-full font-medium">Low Stock</span>;
-        return <span className="px-2 py-1 text-xs uppercase bg-green-100 text-green-800 rounded-full font-medium">In Stock</span>;
-      }
-    }
+        if (qty <= 0)
+          return (
+            <span className="px-2 py-1 text-xs uppercase bg-red-100 text-red-800 rounded-full font-medium">
+              Out of Stock
+            </span>
+          );
+        if (qty <= thresh)
+          return (
+            <span className="px-2 py-1 text-xs uppercase bg-orange-100 text-orange-800 rounded-full font-medium">
+              Low Stock
+            </span>
+          );
+        return (
+          <span className="px-2 py-1 text-xs uppercase bg-green-100 text-green-800 rounded-full font-medium">
+            In Stock
+          </span>
+        );
+      },
+    },
   ];
 
   return (
@@ -117,8 +181,19 @@ export function InventoryClient({ data, meta, allCount }: { data: any[], meta: a
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-2xl font-[var(--font-jost)] font-semibold">Inventory</h1>
         <div className="flex items-center gap-4">
-          <Link href="/admin/inventory?view=movements" className="px-4 py-2 border rounded hover:bg-gray-50 text-sm">View Ledger</Link>
-          <a href={`/api/admin/inventory/export?${searchParams.toString()}`} className="px-4 py-2 border rounded hover:bg-gray-50 text-sm" download>CSV Export</a>
+          <Link
+            href="/admin/inventory?view=movements"
+            className="px-4 py-2 border rounded hover:bg-gray-50 text-sm"
+          >
+            View Ledger
+          </Link>
+          <a
+            href={`/api/admin/inventory/export?${searchParams.toString()}`}
+            className="px-4 py-2 border rounded hover:bg-gray-50 text-sm"
+            download
+          >
+            CSV Export
+          </a>
           <CsvImportDialog />
         </div>
       </div>
@@ -157,10 +232,14 @@ export function InventoryClient({ data, meta, allCount }: { data: any[], meta: a
       <DataTable
         data={data}
         columns={columns}
-        keyExtractor={(item: any) => `${item.productId}-${item.sizeId}`}
+        keyExtractor={(item: StockRowItem) => `${item.productId}-${item.sizeId}`}
         selectedIds={selectedIds}
-        onSelectChange={(id: string, checked: boolean) => setSelectedIds(prev => checked ? [...prev, id] : prev.filter(x => x !== id))}
-        onSelectAll={(checked: boolean) => setSelectedIds(checked ? data.map(i => `${i.productId}-${i.sizeId}`) : [])}
+        onSelectChange={(id: string, checked: boolean) =>
+          setSelectedIds((prev) => (checked ? [...prev, id] : prev.filter((x) => x !== id)))
+        }
+        onSelectAll={(checked: boolean) =>
+          setSelectedIds(checked ? data.map((i) => `${i.productId}-${i.sizeId}`) : [])
+        }
       />
 
       <Pagination {...meta} />

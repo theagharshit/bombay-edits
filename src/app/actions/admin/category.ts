@@ -26,8 +26,12 @@ export async function createCategory(formData: FormData) {
 
   // Depth check: parent must be top-level (no grandparents)
   if (parentId) {
-    const parent = await prisma.category.findUnique({ where: { id: parentId }, select: { parentId: true } });
-    if (parent?.parentId) throw new ValidationError('parentId', 'Maximum 2 levels of nesting allowed.');
+    const parent = await prisma.category.findUnique({
+      where: { id: parentId },
+      select: { parentId: true },
+    });
+    if (parent?.parentId)
+      throw new ValidationError('parentId', 'Maximum 2 levels of nesting allowed.');
   }
 
   const cat = await prisma.category.create({
@@ -71,11 +75,16 @@ export async function updateCategory(id: string, formData: FormData) {
   await checkSlugUnique(slug, id);
 
   const parentId = String(formData.get('parentId') ?? '').trim() || null;
-  if (parentId === id) throw new ValidationError('parentId', 'A category cannot be its own parent.');
+  if (parentId === id)
+    throw new ValidationError('parentId', 'A category cannot be its own parent.');
 
   if (parentId) {
-    const parent = await prisma.category.findUnique({ where: { id: parentId }, select: { parentId: true } });
-    if (parent?.parentId) throw new ValidationError('parentId', 'Maximum 2 levels of nesting allowed.');
+    const parent = await prisma.category.findUnique({
+      where: { id: parentId },
+      select: { parentId: true },
+    });
+    if (parent?.parentId)
+      throw new ValidationError('parentId', 'Maximum 2 levels of nesting allowed.');
   }
 
   const data = {
@@ -117,12 +126,15 @@ export async function updateCategory(id: string, formData: FormData) {
 
 export async function toggleCategoryActive(id: string, isActive: boolean) {
   const session = await requireAdmin();
-  const cat = await prisma.category.findUniqueOrThrow({ where: { id }, select: { slug: true, children: { select: { id: true } } } });
+  const cat = await prisma.category.findUniqueOrThrow({
+    where: { id },
+    select: { slug: true, children: { select: { id: true } } },
+  });
 
   // Cascade to children
   await prisma.$transaction([
     prisma.category.update({ where: { id }, data: { isActive } }),
-    ...(cat.children.map(c => prisma.category.update({ where: { id: c.id }, data: { isActive } }))),
+    ...cat.children.map((c) => prisma.category.update({ where: { id: c.id }, data: { isActive } })),
   ]);
 
   await writeAuditLog({
@@ -149,7 +161,9 @@ export async function deleteCategory(id: string) {
 
   const childCount = await prisma.category.count({ where: { parentId: id } });
   if (childCount > 0) {
-    throw new ConflictError(`Cannot delete: this category has ${childCount} subcategories. Delete them first.`);
+    throw new ConflictError(
+      `Cannot delete: this category has ${childCount} subcategories. Delete them first.`
+    );
   }
 
   await prisma.category.delete({ where: { id } });
@@ -171,8 +185,8 @@ export async function reorderCategories(orderedIds: string[]) {
   await requireAdmin();
   await prisma.$transaction(
     orderedIds.map((id, index) =>
-      prisma.category.update({ where: { id }, data: { sortOrder: index } }),
-    ),
+      prisma.category.update({ where: { id }, data: { sortOrder: index } })
+    )
   );
   revalidatePath('/admin/categories');
   revalidatePath('/');

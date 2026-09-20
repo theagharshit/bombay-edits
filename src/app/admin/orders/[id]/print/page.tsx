@@ -11,14 +11,16 @@ export default async function OrderPrintPage({ params }: { params: { id: string 
 
   const order = await prisma.order.findUnique({
     where: { id: params.id },
-    include: { items: true }
+    include: { items: true },
   });
 
   if (!order) throw new NotFoundError('Order', params.id);
 
   return (
     <div className="bg-white text-black min-h-screen">
-      <style dangerouslySetInnerHTML={{__html: `
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
         @page { size: A4; margin: 20mm; }
         @media print {
           body * { visibility: hidden; }
@@ -27,8 +29,10 @@ export default async function OrderPrintPage({ params }: { params: { id: string 
           /* Hide admin chrome if it wraps this */
           nav, aside, header { display: none !important; }
         }
-      `}} />
-      
+      `,
+        }}
+      />
+
       <div id="print-area" className="max-w-[800px] mx-auto p-8 font-sans">
         <div className="flex justify-between items-start border-b pb-8 mb-8">
           <div>
@@ -37,30 +41,48 @@ export default async function OrderPrintPage({ params }: { params: { id: string 
           </div>
           <div className="text-right">
             <h2 className="text-xl font-bold mb-1">Order {order.orderNumber}</h2>
-            <p className="text-sm text-gray-600">Placed: {format(new Date(order.createdAt), 'PPP')}</p>
+            <p className="text-sm text-gray-600">
+              Placed: {format(new Date(order.createdAt), 'PPP')}
+            </p>
           </div>
         </div>
 
         <div className="flex gap-16 mb-8">
           <div className="flex-1">
-            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Ship To</h3>
+            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+              Ship To
+            </h3>
             <div className="text-sm leading-relaxed">
-              <strong>{order.customerFirstName} {order.customerLastName}</strong><br />
-              {order.shippingAddress}<br />
-              {order.shippingCity}, {order.shippingState} {order.shippingPostalCode}<br />
-              {order.shippingCountry}<br />
+              <strong>
+                {order.customerFirstName} {order.customerLastName}
+              </strong>
+              <br />
+              {order.shippingAddress}
+              <br />
+              {order.shippingCity}, {order.shippingState} {order.shippingPostalCode}
+              <br />
+              {order.shippingCountry}
+              <br />
               <div className="mt-2 text-gray-600">
-                Email: {order.customerEmail}<br />
+                Email: {order.customerEmail}
+                <br />
                 Phone: {order.customerPhone}
               </div>
             </div>
           </div>
           <div className="flex-1">
-            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Order Details</h3>
+            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+              Order Details
+            </h3>
             <div className="text-sm leading-relaxed">
-              <strong>Payment Method:</strong> <span className="capitalize">{order.paymentMethod}</span><br />
-              <strong>Payment Status:</strong> <span className="capitalize">{order.paymentStatus}</span><br />
-              <strong>Shipping Zone:</strong> {order.shippingZoneName || '-'}<br />
+              <strong>Payment Method:</strong>{' '}
+              <span className="capitalize">{order.paymentMethod}</span>
+              <br />
+              <strong>Payment Status:</strong>{' '}
+              <span className="capitalize">{order.paymentStatus}</span>
+              <br />
+              <strong>Shipping Zone:</strong> {order.shippingZoneName || '-'}
+              <br />
             </div>
           </div>
         </div>
@@ -76,19 +98,23 @@ export default async function OrderPrintPage({ params }: { params: { id: string 
             </tr>
           </thead>
           <tbody>
-            {order.items.map((item: any) => (
+            {order.items.map((item) => (
               <tr key={item.id} className="border-b">
                 <td className="py-4">
                   <div className="font-medium">{item.productNameSnapshot}</div>
                   <div className="text-xs text-gray-500">
-                    {item.sizeCodeSnapshot && <span className="mr-2">Size: {item.sizeCodeSnapshot}</span>}
-                    {item.colourNameSnapshot && <span>Color: {item.colourNameSnapshot}</span>}
+                    {item.size && <span className="mr-2">Size: {item.size}</span>}
+                    {item.colour && <span>Color: {item.colour}</span>}
                   </div>
                 </td>
-                <td className="py-4 text-gray-600">{item.productSkuSnapshot || '-'}</td>
+                <td className="py-4 text-gray-600">{item.productSlugSnapshot || '-'}</td>
                 <td className="py-4 text-center">{item.quantity}</td>
-                <td className="py-4 text-right text-gray-600">{formatMoney(item.unitPrice, order.currency)}</td>
-                <td className="py-4 text-right font-medium">{formatMoney(item.unitPrice * item.quantity, order.currency)}</td>
+                <td className="py-4 text-right text-gray-600">
+                  {formatMoney(item.unitPrice, order.currency)}
+                </td>
+                <td className="py-4 text-right font-medium">
+                  {formatMoney(item.unitPrice * item.quantity, order.currency)}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -116,9 +142,11 @@ export default async function OrderPrintPage({ params }: { params: { id: string 
           <p>If you have any questions, please contact support.</p>
         </div>
       </div>
-      
+
       {/* Auto-print script for convenience */}
-      <script dangerouslySetInnerHTML={{__html: `window.onload = function() { window.print(); }`}} />
+      <script
+        dangerouslySetInnerHTML={{ __html: `window.onload = function() { window.print(); }` }}
+      />
     </div>
   );
 }

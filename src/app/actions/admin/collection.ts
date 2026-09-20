@@ -102,10 +102,15 @@ export async function updateCollection(id: string, formData: FormData) {
 
 export async function deleteCollection(id: string) {
   const session = await requireAdmin();
-  const col = await prisma.collection.findUniqueOrThrow({ where: { id }, select: { slug: true, _count: { select: { productCollections: true } } } });
+  const col = await prisma.collection.findUniqueOrThrow({
+    where: { id },
+    select: { slug: true, _count: { select: { productCollections: true } } },
+  });
 
   if (col._count.productCollections > 0) {
-    throw new ConflictError(`Cannot delete: ${col._count.productCollections} product(s) are in this collection. Remove them first.`);
+    throw new ConflictError(
+      `Cannot delete: ${col._count.productCollections} product(s) are in this collection. Remove them first.`
+    );
   }
 
   await prisma.collection.delete({ where: { id } });

@@ -1,33 +1,47 @@
 import { prisma } from '@/backend/db/prisma';
 import { requireAdmin } from '@/lib/admin/auth';
-import { parsePagination } from '@/lib/admin/pagination';
+import { parsePagination, buildPaginationMeta } from '@/lib/admin/pagination';
 import { CustomersClient } from './CustomersClient';
-import { Prisma } from '@prisma/client';
 
 export const dynamic = 'force-dynamic';
 
+export type CustomerRow = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string | null;
+  createdAt: Date;
+  role: string;
+  orderCount: number;
+  ltv: number;
+  lastOrderDate: Date | null;
+};
+
 export default async function CustomersPage({
-  searchParams
+  searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined }
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
   await requireAdmin();
 
   const { skip, take, page } = parsePagination(searchParams);
-  
-  const qSearch = searchParams.q as string || '';
-  const qHasOrders = searchParams.hasOrders as string || '';
-  const qNewsletter = searchParams.newsletter as string || '';
-  const qZone = searchParams.shippingZone as string || '';
-  const sort = searchParams.sort as string || 'joined_desc';
+
+  const qSearch = (searchParams.q as string) || '';
+  const qHasOrders = (searchParams.hasOrders as string) || '';
+  const _qNewsletter = (searchParams.newsletter as string) || '';
+  const qZone = (searchParams.shippingZone as string) || '';
+  const sort = (searchParams.sort as string) || 'joined_desc';
 
   // Construct raw query conditions
   const conditions: string[] = ['1=1'];
-  
+
   if (qSearch) {
-    conditions.push(`(c."firstName" ILIKE '%${qSearch}%' OR c."lastName" ILIKE '%${qSearch}%' OR c."email" ILIKE '%${qSearch}%' OR c."phone" ILIKE '%${qSearch}%')`);
+    conditions.push(
+      `(c."firstName" ILIKE '%${qSearch}%' OR c."lastName" ILIKE '%${qSearch}%' OR c."email" ILIKE '%${qSearch}%' OR c."phone" ILIKE '%${qSearch}%')`
+    );
   }
-  
+
   if (qHasOrders === 'true') {
     conditions.push(`EXISTS (SELECT 1 FROM orders o WHERE o."customerId" = c.id)`);
   } else if (qHasOrders === 'false') {
@@ -39,7 +53,9 @@ export default async function CustomersPage({
 
   if (qZone) {
     // Has an order in this zone, or address in this zone (Address doesn't have shippingZoneId, only Order does). We filter by orders shipped to this zone.
-    conditions.push(`EXISTS (SELECT 1 FROM orders o WHERE o."customerId" = c.id AND o."shippingZoneId" = '${qZone}')`);
+    conditions.push(
+      `EXISTS (SELECT 1 FROM orders o WHERE o."customerId" = c.id AND o."shippingZoneId" = '${qZone}')`
+    );
   }
 
   const whereClause = conditions.join(' AND ');
@@ -81,18 +97,18 @@ export default async function CustomersPage({
   `;
 
   const [customers, countResult] = await Promise.all([
-    prisma.$queryRawUnsafe<any[]>(sql),
-    prisma.$queryRawUnsafe<any[]>(countSql)
+    prisma.$queryRawUnsafe<CustomerRow[]>(sql),
+    prisma.$queryRawUnsafe<{ count: number }[]>(countSql),
   ]);
 
   const totalCount = countResult[0]?.count || 0;
-  
+
   const zones = await prisma.shippingZone.findMany({ select: { id: true, label: true } });
 
   return (
-    <CustomersClient 
+    <CustomersClient
       data={customers}
-      meta={{ total: totalCount, page, pageSize: take }}
+      meta={buildPaginationMeta(totalCount, page, take)}
       zones={zones}
     />
   );

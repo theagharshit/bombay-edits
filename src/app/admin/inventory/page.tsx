@@ -1,7 +1,7 @@
 import { requireAdmin } from '@/lib/admin/auth';
 import { prisma } from '@/backend/db/prisma';
 import { parsePagination, buildPaginationMeta } from '@/lib/admin/pagination';
-import { Prisma } from '@prisma/client';
+import { Prisma, InventoryReason, ProductStatus } from '@prisma/client';
 import { InventoryClient } from './InventoryClient';
 import { MovementsClient } from './MovementsClient';
 
@@ -24,10 +24,21 @@ export default async function InventoryPage({
 
     const where: Prisma.InventoryMovementWhereInput = {};
     if (qProduct) {
-      where.productId = { in: await prisma.product.findMany({ where: { OR: [{ name: { contains: qProduct, mode: 'insensitive' } }, { sku: { contains: qProduct, mode: 'insensitive' } }] } }).then(ps => ps.map(p => p.id)) };
+      where.productId = {
+        in: await prisma.product
+          .findMany({
+            where: {
+              OR: [
+                { name: { contains: qProduct, mode: 'insensitive' } },
+                { sku: { contains: qProduct, mode: 'insensitive' } },
+              ],
+            },
+          })
+          .then((ps) => ps.map((p) => p.id)),
+      };
     }
     if (qReason) {
-      where.reason = qReason as any;
+      where.reason = qReason as InventoryReason;
     }
     if (qActor) {
       where.actorId = qActor;
@@ -42,9 +53,9 @@ export default async function InventoryPage({
         take,
         include: {
           product: { select: { name: true, sku: true } },
-          size: { select: { sizeCode: true } }
-        }
-      })
+          size: { select: { sizeCode: true } },
+        },
+      }),
     ]);
 
     const meta = buildPaginationMeta(total, page, take);
@@ -62,15 +73,15 @@ export default async function InventoryPage({
 
   const where: Prisma.ProductSizeStockWhereInput = {};
   const productWhere: Prisma.ProductWhereInput = {};
-  
+
   if (qSearch) {
     productWhere.OR = [
       { name: { contains: qSearch, mode: 'insensitive' } },
-      { sku: { contains: qSearch, mode: 'insensitive' } }
+      { sku: { contains: qSearch, mode: 'insensitive' } },
     ];
   }
   if (qStatus) {
-    productWhere.status = qStatus as any;
+    productWhere.status = qStatus as ProductStatus;
   }
   if (qCategory) {
     productWhere.categoryId = qCategory;
@@ -95,30 +106,35 @@ export default async function InventoryPage({
       skip,
       take,
       include: {
-        product: { select: { id: true, name: true, sku: true, lowStockThreshold: true, status: true, images: { select: { src: true }, take: 1, orderBy: { sortOrder: 'asc' } } } },
-        size: { select: { sizeCode: true } }
-      }
-    })
+        product: {
+          select: {
+            id: true,
+            name: true,
+            sku: true,
+            lowStockThreshold: true,
+            status: true,
+            images: { select: { src: true }, take: 1, orderBy: { sortOrder: 'asc' } },
+          },
+        },
+        size: { select: { sizeCode: true } },
+      },
+    }),
   ]);
 
   // Apply state filter in JS since it requires calculating against threshold
   let filteredStock = rawStock;
   if (qState === 'LOW') {
-    filteredStock = rawStock.filter(r => r.stockQuantity > 0 && r.stockQuantity <= r.product.lowStockThreshold);
+    filteredStock = rawStock.filter(
+      (r) => r.stockQuantity > 0 && r.stockQuantity <= r.product.lowStockThreshold
+    );
   } else if (qState === 'OUT') {
-    filteredStock = rawStock.filter(r => r.stockQuantity <= 0);
+    filteredStock = rawStock.filter((r) => r.stockQuantity <= 0);
   }
 
   const meta = buildPaginationMeta(total, page, take);
 
   // We need counts for tabs
   const allCount = total;
-  const lowStockCount = await prisma.productSizeStock.count({
-    where: { ...where, stockQuantity: { gt: 0 } }
-  }); // Note: precise low stock count requires joining threshold, so we approximate or use raw SQL.
-  // For simplicity and speed, we will compute precise tabs via a small raw query or just pass the records
-  // Let's pass the counts from JS over the page if we want, or a raw query.
-  // Given Prisma's limitations, we'll just pass '?' if we don't have exact counts.
 
   return <InventoryClient data={filteredStock} meta={meta} allCount={allCount} />;
 }

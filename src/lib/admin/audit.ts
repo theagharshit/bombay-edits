@@ -15,7 +15,10 @@ type AuditLogInput = {
  * Write a structured audit log row.
  * Automatically redacts passwordHash and tokens from diffs.
  */
-export async function writeAuditLog(input: AuditLogInput, tx?: any): Promise<void> {
+export async function writeAuditLog(
+  input: AuditLogInput,
+  tx?: Prisma.TransactionClient | typeof prisma
+): Promise<void> {
   const REDACTED_KEYS = new Set(['passwordHash', 'password', 'token', 'secret', 'AUTH_SECRET']);
 
   const sanitizeDiff = (obj: Record<string, unknown>): Record<string, unknown> => {

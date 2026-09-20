@@ -15,32 +15,104 @@ function isValidType(t: string | undefined): t is TaxonomyType {
 async function fetchRows(type: TaxonomyType) {
   switch (type) {
     case 'occasions':
-      return prisma.occasion.findMany({
-        select: { id: true, name: true, slug: true, description: true, createdAt: true, _count: { select: { productOccasions: true } } },
-        orderBy: { name: 'asc' },
-        take: 100,
-      }).then(rows => rows.map(r => ({ ...r, productCount: r._count.productOccasions, hex: null, sizeCode: null, sortOrder: 0, isActive: true })));
+      return prisma.occasion
+        .findMany({
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            description: true,
+            createdAt: true,
+            _count: { select: { productOccasions: true } },
+          },
+          orderBy: { name: 'asc' },
+          take: 100,
+        })
+        .then((rows) =>
+          rows.map((r) => ({
+            ...r,
+            productCount: r._count.productOccasions,
+            hex: null,
+            sizeCode: null,
+            sortOrder: 0,
+            isActive: true,
+          }))
+        );
 
     case 'fabrics':
-      return prisma.fabric.findMany({
-        select: { id: true, name: true, description: true, createdAt: true, _count: { select: { products: true } } },
-        orderBy: { name: 'asc' },
-        take: 100,
-      }).then(rows => rows.map(r => ({ ...r, slug: '', productCount: r._count.products, hex: null, sizeCode: null, sortOrder: 0, isActive: true })));
+      return prisma.fabric
+        .findMany({
+          select: {
+            id: true,
+            name: true,
+            description: true,
+            createdAt: true,
+            _count: { select: { products: true } },
+          },
+          orderBy: { name: 'asc' },
+          take: 100,
+        })
+        .then((rows) =>
+          rows.map((r) => ({
+            ...r,
+            slug: '',
+            productCount: r._count.products,
+            hex: null,
+            sizeCode: null,
+            sortOrder: 0,
+            isActive: true,
+          }))
+        );
 
     case 'embroidery-types':
-      return prisma.embroideryType.findMany({
-        select: { id: true, name: true, description: true, createdAt: true, _count: { select: { products: true } } },
-        orderBy: { name: 'asc' },
-        take: 100,
-      }).then(rows => rows.map(r => ({ ...r, slug: '', productCount: r._count.products, hex: null, sizeCode: null, sortOrder: 0, isActive: true })));
+      return prisma.embroideryType
+        .findMany({
+          select: {
+            id: true,
+            name: true,
+            description: true,
+            createdAt: true,
+            _count: { select: { products: true } },
+          },
+          orderBy: { name: 'asc' },
+          take: 100,
+        })
+        .then((rows) =>
+          rows.map((r) => ({
+            ...r,
+            slug: '',
+            productCount: r._count.products,
+            hex: null,
+            sizeCode: null,
+            sortOrder: 0,
+            isActive: true,
+          }))
+        );
 
     case 'colours':
-      return prisma.colour.findMany({
-        select: { id: true, name: true, hex: true, createdAt: true, _count: { select: { products: true } } },
-        orderBy: { name: 'asc' },
-        take: 100,
-      }).then(rows => rows.map(r => ({ ...r, slug: '', description: null, productCount: r._count.products, sizeCode: null, sortOrder: 0, isActive: true })));
+      return prisma.colour
+        .findMany({
+          select: {
+            id: true,
+            name: true,
+            hex: true,
+            createdAt: true,
+            _count: { select: { products: true } },
+          },
+          orderBy: { name: 'asc' },
+          take: 100,
+        })
+        .then((rows) =>
+          rows.map((r) => ({
+            ...r,
+            slug: '',
+            description: null,
+            productCount: r._count.products,
+            sizeCode: null,
+            sortOrder: 0,
+            isActive: true,
+          }))
+        );
 
     case 'sizes': {
       const sizes = await prisma.productSize.findMany({
@@ -53,8 +125,8 @@ async function fetchRows(type: TaxonomyType) {
         by: ['sizeId'],
         _count: { sizeId: true },
       });
-      const countMap = Object.fromEntries(stockCounts.map(s => [s.sizeId, s._count.sizeId]));
-      return sizes.map(r => ({
+      const countMap = Object.fromEntries(stockCounts.map((s) => [s.sizeId, s._count.sizeId]));
+      return sizes.map((r) => ({
         ...r,
         name: r.sizeCode,
         slug: '',

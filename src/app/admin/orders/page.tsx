@@ -1,26 +1,26 @@
 import { prisma } from '@/backend/db/prisma';
 import { requireAdmin } from '@/lib/admin/auth';
-import { parsePagination } from '@/lib/admin/pagination';
+import { parsePagination, buildPaginationMeta } from '@/lib/admin/pagination';
 import { OrdersListClient } from './OrdersListClient';
-import { Prisma } from '@prisma/client';
+import { Prisma, PaymentStatus } from '@prisma/client';
 
 export const dynamic = 'force-dynamic';
 
 export default async function OrdersPage({
-  searchParams
+  searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined }
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
   await requireAdmin();
 
   const { skip, take, page } = parsePagination(searchParams);
-  
-  const qSearch = searchParams.q as string || '';
-  const qStatus = searchParams.status as string || '';
-  const qPaymentStatus = searchParams.paymentStatus as string || '';
-  const qShippingZone = searchParams.shippingZone as string || '';
-  const qHasTracking = searchParams.hasTracking as string || '';
-  const sort = searchParams.sort as string || 'newest';
+
+  const qSearch = (searchParams.q as string) || '';
+  const qStatus = (searchParams.status as string) || '';
+  const qPaymentStatus = (searchParams.paymentStatus as string) || '';
+  const qShippingZone = (searchParams.shippingZone as string) || '';
+  const qHasTracking = (searchParams.hasTracking as string) || '';
+  const sort = (searchParams.sort as string) || 'newest';
 
   const where: Prisma.OrderWhereInput = {};
 
@@ -30,16 +30,16 @@ export default async function OrdersPage({
       { customerEmail: { contains: qSearch, mode: 'insensitive' } },
       { customerFirstName: { contains: qSearch, mode: 'insensitive' } },
       { customerLastName: { contains: qSearch, mode: 'insensitive' } },
-      { customerPhone: { contains: qSearch, mode: 'insensitive' } }
+      { customerPhone: { contains: qSearch, mode: 'insensitive' } },
     ];
   }
 
   if (qStatus && qStatus !== 'all') {
     where.status = qStatus.toLowerCase();
   }
-  
+
   if (qPaymentStatus) {
-    where.paymentStatus = qPaymentStatus as any;
+    where.paymentStatus = qPaymentStatus as PaymentStatus;
   }
 
   if (qShippingZone) {
@@ -64,20 +64,21 @@ export default async function OrdersPage({
       take,
       orderBy,
       include: {
-        items: { select: { id: true } }
-      }
+        items: { select: { id: true } },
+      },
     }),
-    prisma.order.count({ where })
+    prisma.order.count({ where }),
   ]);
 
-  const [allCount, newCount, confirmedCount, shippedCount, deliveredCount, cancelledCount] = await Promise.all([
-    prisma.order.count(),
-    prisma.order.count({ where: { status: 'new' } }),
-    prisma.order.count({ where: { status: 'confirmed' } }),
-    prisma.order.count({ where: { status: 'shipped' } }),
-    prisma.order.count({ where: { status: 'delivered' } }),
-    prisma.order.count({ where: { status: 'cancelled' } })
-  ]);
+  const [allCount, newCount, confirmedCount, shippedCount, deliveredCount, cancelledCount] =
+    await Promise.all([
+      prisma.order.count(),
+      prisma.order.count({ where: { status: 'new' } }),
+      prisma.order.count({ where: { status: 'confirmed' } }),
+      prisma.order.count({ where: { status: 'shipped' } }),
+      prisma.order.count({ where: { status: 'delivered' } }),
+      prisma.order.count({ where: { status: 'cancelled' } }),
+    ]);
 
   const counts = {
     all: allCount,
@@ -85,15 +86,15 @@ export default async function OrdersPage({
     confirmed: confirmedCount,
     shipped: shippedCount,
     delivered: deliveredCount,
-    cancelled: cancelledCount
+    cancelled: cancelledCount,
   };
 
   const zones = await prisma.shippingZone.findMany({ select: { id: true, label: true } });
 
   return (
-    <OrdersListClient 
+    <OrdersListClient
       data={orders}
-      meta={{ total: totalCount, page, pageSize: take }}
+      meta={buildPaginationMeta(totalCount, page, take)}
       counts={counts}
       zones={zones}
     />

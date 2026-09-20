@@ -11,7 +11,13 @@ type Props = {
   maxItems?: number;
 };
 
-export function RepeatableList({ label, values, onChange, placeholder = 'Add item…', maxItems = 30 }: Props) {
+export function RepeatableList({
+  label,
+  values,
+  onChange,
+  placeholder = 'Add item…',
+  maxItems = 30,
+}: Props) {
   const add = useCallback(() => {
     if (values.length >= maxItems) return;
     onChange([...values, '']);
@@ -21,7 +27,7 @@ export function RepeatableList({ label, values, onChange, placeholder = 'Add ite
     (index: number) => {
       onChange(values.filter((_, i) => i !== index));
     },
-    [values, onChange],
+    [values, onChange]
   );
 
   const update = useCallback(
@@ -30,12 +36,14 @@ export function RepeatableList({ label, values, onChange, placeholder = 'Add ite
       next[index] = value;
       onChange(next);
     },
-    [values, onChange],
+    [values, onChange]
   );
 
   return (
     <div>
-      <p className="text-xs font-medium text-[var(--admin-text-mute)] mb-2 uppercase tracking-wide">{label}</p>
+      <p className="text-xs font-medium text-[var(--admin-text-mute)] mb-2 uppercase tracking-wide">
+        {label}
+      </p>
       <div className="space-y-1.5">
         {values.map((val, i) => (
           <div key={i} className="flex items-center gap-2 group">

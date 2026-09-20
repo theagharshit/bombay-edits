@@ -1,4 +1,5 @@
 import { prisma } from '@/backend/db/prisma';
+import { Prisma, PageStatus } from '@prisma/client';
 import { requireAdmin } from '@/lib/admin/auth';
 import { parsePagination, buildPaginationMeta } from '@/lib/admin/pagination';
 import { PagesClient } from './PagesClient';
@@ -16,9 +17,15 @@ export default async function PagesPage({
   const q = (searchParams.q as string) || '';
   const status = (searchParams.status as string) || '';
 
-  const where: any = {};
-  if (q) where.OR = [{ title: { contains: q, mode: 'insensitive' } }, { slug: { contains: q, mode: 'insensitive' } }];
-  if (status) where.status = status;
+  const where: Prisma.PageWhereInput = {};
+  if (q)
+    where.OR = [
+      { title: { contains: q, mode: 'insensitive' } },
+      { slug: { contains: q, mode: 'insensitive' } },
+    ];
+  if (status && Object.values(PageStatus).includes(status as PageStatus)) {
+    where.status = status as PageStatus;
+  }
 
   const [pages, total] = await Promise.all([
     prisma.page.findMany({ where, skip, take, orderBy: { updatedAt: 'desc' } }),

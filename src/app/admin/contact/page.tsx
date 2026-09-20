@@ -1,4 +1,5 @@
 import { prisma } from '@/backend/db/prisma';
+import { Prisma } from '@prisma/client';
 import { requireAdmin } from '@/lib/admin/auth';
 import { parsePagination, buildPaginationMeta } from '@/lib/admin/pagination';
 import { ContactInboxClient } from './ContactInboxClient';
@@ -16,7 +17,7 @@ export default async function ContactPage({
   const q = (searchParams.q as string) || '';
   const status = (searchParams.status as string) || '';
 
-  const where: any = {};
+  const where: Prisma.ContactSubmissionWhereInput = {};
   if (q) {
     where.OR = [
       { name: { contains: q, mode: 'insensitive' } },

@@ -18,10 +18,13 @@ export function formatMoney(amountMinor: number, currencyCode = 'NPR'): string {
   const major = amountMinor / Math.pow(10, decimals);
   const symbols: Record<string, string> = { NPR: 'Rs. ', INR: '₹', USD: '$' };
   const symbol = symbols[currencyCode] ?? currencyCode + ' ';
-  return symbol + major.toLocaleString('en-IN', {
-    minimumFractionDigits: decimals,
-    maximumFractionDigits: decimals,
-  });
+  return (
+    symbol +
+    major.toLocaleString('en-IN', {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+    })
+  );
 }
 
 /**

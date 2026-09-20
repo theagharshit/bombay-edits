@@ -26,7 +26,7 @@ export type CategoryWithChildren = {
     parentId: string | null;
     description: string | null;
     image: string | null;
-  
+
     metaTitle: string | null;
     metaDescription: string | null;
     _count: { products: number };
@@ -61,7 +61,7 @@ export default async function CategoriesPage() {
           parentId: true,
           description: true,
           image: true,
-    
+
           metaTitle: true,
           metaDescription: true,
           _count: { select: { products: true } },

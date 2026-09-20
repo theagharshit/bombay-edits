@@ -1,4 +1,5 @@
 import { prisma } from '@/backend/db/prisma';
+import { Prisma } from '@prisma/client';
 import { requireAdmin } from '@/lib/admin/auth';
 import { parsePagination, buildPaginationMeta } from '@/lib/admin/pagination';
 import { NewsletterClient } from './NewsletterClient';
@@ -16,7 +17,7 @@ export default async function NewsletterPage({
   const q = (searchParams.q as string) || '';
   const active = searchParams.active as string;
 
-  const where: any = {};
+  const where: Prisma.NewsletterSubscriberWhereInput = {};
   if (q) where.email = { contains: q, mode: 'insensitive' };
   if (active === 'true') where.isActive = true;
   if (active === 'false') where.isActive = false;

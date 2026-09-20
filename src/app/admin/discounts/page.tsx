@@ -1,4 +1,5 @@
 import { prisma } from '@/backend/db/prisma';
+import { Prisma } from '@prisma/client';
 import { requireAdmin } from '@/lib/admin/auth';
 import { parsePagination, buildPaginationMeta } from '@/lib/admin/pagination';
 import { DiscountsClient } from './DiscountsClient';
@@ -15,7 +16,7 @@ export default async function DiscountsPage({
   const { skip, take, page } = parsePagination(searchParams);
   const q = (searchParams.q as string) || '';
 
-  const where: any = {};
+  const where: Prisma.DiscountWhereInput = {};
   if (q) where.code = { contains: q, mode: 'insensitive' };
 
   const [discounts, total] = await Promise.all([

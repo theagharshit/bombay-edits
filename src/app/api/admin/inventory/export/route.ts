@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/backend/db/prisma';
 import { requireAdmin } from '@/lib/admin/auth';
-import { Prisma } from '@prisma/client';
+import { Prisma, InventoryReason, ProductStatus } from '@prisma/client';
 
 export const dynamic = 'force-dynamic';
 
@@ -22,10 +22,21 @@ export async function GET(req: NextRequest) {
 
       const where: Prisma.InventoryMovementWhereInput = {};
       if (qProduct) {
-        where.productId = { in: await prisma.product.findMany({ where: { OR: [{ name: { contains: qProduct, mode: 'insensitive' } }, { sku: { contains: qProduct, mode: 'insensitive' } }] } }).then(ps => ps.map(p => p.id)) };
+        where.productId = {
+          in: await prisma.product
+            .findMany({
+              where: {
+                OR: [
+                  { name: { contains: qProduct, mode: 'insensitive' } },
+                  { sku: { contains: qProduct, mode: 'insensitive' } },
+                ],
+              },
+            })
+            .then((ps) => ps.map((p) => p.id)),
+        };
       }
       if (qReason) {
-        where.reason = qReason as any;
+        where.reason = qReason as InventoryReason;
       }
       if (qActor) {
         where.actorId = qActor;
@@ -36,12 +47,12 @@ export async function GET(req: NextRequest) {
         orderBy: { createdAt: 'desc' },
         include: {
           product: { select: { sku: true, name: true } },
-          size: { select: { sizeCode: true } }
-        }
+          size: { select: { sizeCode: true } },
+        },
       });
 
       csvContent += 'Date,SKU,Product Name,Size,Delta,Reason,Reference,Actor ID,Note\n';
-      
+
       for (const r of records) {
         const row = [
           r.createdAt.toISOString(),
@@ -52,7 +63,7 @@ export async function GET(req: NextRequest) {
           r.reason,
           r.referenceId || '',
           r.actorId || '',
-          `"${(r.note || '').replace(/"/g, '""')}"`
+          `"${(r.note || '').replace(/"/g, '""')}"`,
         ];
         csvContent += row.join(',') + '\n';
       }
@@ -61,10 +72,9 @@ export async function GET(req: NextRequest) {
         headers: {
           'Content-Type': 'text/csv',
           'Content-Disposition': `attachment; filename="inventory-movements-${dateStr}.csv"`,
-          'Cache-Control': 'no-store'
-        }
+          'Cache-Control': 'no-store',
+        },
       });
-
     } else {
       const qSearch = searchParams.get('search') || '';
       const qState = searchParams.get('state') || 'ALL';
@@ -73,16 +83,16 @@ export async function GET(req: NextRequest) {
       const qStatus = searchParams.get('status') || '';
 
       const where: Prisma.ProductSizeStockWhereInput = {};
-      
+
       const productWhere: Prisma.ProductWhereInput = {};
       if (qSearch) {
         productWhere.OR = [
           { name: { contains: qSearch, mode: 'insensitive' } },
-          { sku: { contains: qSearch, mode: 'insensitive' } }
+          { sku: { contains: qSearch, mode: 'insensitive' } },
         ];
       }
       if (qStatus) {
-        productWhere.status = qStatus as any;
+        productWhere.status = qStatus as ProductStatus;
       }
       if (qCategory) {
         productWhere.categoryId = qCategory;
@@ -98,15 +108,17 @@ export async function GET(req: NextRequest) {
         where,
         include: {
           product: { select: { sku: true, name: true, lowStockThreshold: true } },
-          size: { select: { sizeCode: true } }
-        }
+          size: { select: { sizeCode: true } },
+        },
       });
 
       let filtered = records;
       if (qState === 'LOW') {
-        filtered = records.filter(r => r.stockQuantity > 0 && r.stockQuantity <= r.product.lowStockThreshold);
+        filtered = records.filter(
+          (r) => r.stockQuantity > 0 && r.stockQuantity <= r.product.lowStockThreshold
+        );
       } else if (qState === 'OUT') {
-        filtered = records.filter(r => r.stockQuantity <= 0);
+        filtered = records.filter((r) => r.stockQuantity <= 0);
       }
 
       csvContent += 'SKU,Product Name,Size,On Hand,Reserved,Available,Threshold\n';
@@ -120,7 +132,7 @@ export async function GET(req: NextRequest) {
           r.stockQuantity,
           r.reservedQuantity,
           available,
-          r.product.lowStockThreshold
+          r.product.lowStockThreshold,
         ];
         csvContent += row.join(',') + '\n';
       }
@@ -129,11 +141,10 @@ export async function GET(req: NextRequest) {
         headers: {
           'Content-Type': 'text/csv',
           'Content-Disposition': `attachment; filename="inventory-stock-${dateStr}.csv"`,
-          'Cache-Control': 'no-store'
-        }
+          'Cache-Control': 'no-store',
+        },
       });
     }
-
   } catch (error) {
     console.error('Export failed:', error);
     return new NextResponse('Internal Server Error', { status: 500 });

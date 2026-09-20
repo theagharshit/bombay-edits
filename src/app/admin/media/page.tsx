@@ -1,11 +1,16 @@
 import { requireAdmin } from '@/lib/admin/auth';
 import { prisma } from '@/backend/db/prisma';
+import { Prisma } from '@prisma/client';
 import { parsePagination, buildPaginationMeta } from '@/lib/admin/pagination';
 import { MediaGalleryClient } from './MediaGalleryClient';
 
 export const metadata = { title: 'Media | Admin' };
 
-export default async function MediaPage({ searchParams }: { searchParams: Promise<Record<string, string>> }) {
+export default async function MediaPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string>>;
+}) {
   await requireAdmin();
   const sp = await searchParams;
 
@@ -16,7 +21,7 @@ export default async function MediaPage({ searchParams }: { searchParams: Promis
   const sort = sp.sort || 'newest';
 
   // Build where clause
-  const where: any = {};
+  const where: Prisma.MediaAssetWhereInput = {};
   if (q) {
     where.OR = [
       { filename: { contains: q, mode: 'insensitive' } },
@@ -27,7 +32,7 @@ export default async function MediaPage({ searchParams }: { searchParams: Promis
   if (mimeType) where.mimeType = mimeType;
 
   // Build orderBy
-  let orderBy: any = { createdAt: 'desc' };
+  let orderBy: Prisma.MediaAssetOrderByWithRelationInput = { createdAt: 'desc' };
   if (sort === 'name') orderBy = { filename: 'asc' };
   if (sort === 'size_desc') orderBy = { sizeBytes: 'desc' };
   if (sort === 'size_asc') orderBy = { sizeBytes: 'asc' };
@@ -50,11 +55,11 @@ export default async function MediaPage({ searchParams }: { searchParams: Promis
 
   // Extract facets
   const folders = rawFolders
-    .map(f => f.folder)
+    .map((f) => f.folder)
     .filter((f): f is string => f !== null)
     .sort();
   const mimeTypes = rawMimes
-    .map(m => m.mimeType)
+    .map((m) => m.mimeType)
     .filter(Boolean)
     .sort();
 
@@ -66,12 +71,12 @@ export default async function MediaPage({ searchParams }: { searchParams: Promis
           Manage product images, category banners, and other visual assets.
         </p>
       </div>
-      
-      <MediaGalleryClient 
-        assets={assets} 
-        meta={meta} 
-        folders={folders} 
-        mimeTypes={mimeTypes} 
+
+      <MediaGalleryClient
+        assets={assets}
+        meta={meta}
+        folders={folders}
+        mimeTypes={mimeTypes}
         currentSort={sort}
       />
     </div>

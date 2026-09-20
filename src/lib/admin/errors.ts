@@ -1,5 +1,8 @@
 export class InsufficientStockError extends Error {
-  constructor(public productId: string, public sizeId: string) {
+  constructor(
+    public productId: string,
+    public sizeId: string
+  ) {
     super(`Insufficient stock for product ${productId} size ${sizeId}`);
     this.name = 'InsufficientStockError';
   }
@@ -20,7 +23,10 @@ export class NotFoundError extends Error {
 }
 
 export class ValidationError extends Error {
-  constructor(public field: string, message: string) {
+  constructor(
+    public field: string,
+    message: string
+  ) {
     super(message);
     this.name = 'ValidationError';
   }

@@ -111,7 +111,9 @@ export function TaxonomyTable({ type, rows }: Props) {
       {error && (
         <div className="mb-4 p-3 bg-[var(--admin-danger)]/10 text-[var(--admin-danger)] text-sm rounded-[var(--admin-radius)]">
           {error}
-          <button className="ml-2 underline text-xs" onClick={() => setError('')}>Dismiss</button>
+          <button className="ml-2 underline text-xs" onClick={() => setError('')}>
+            Dismiss
+          </button>
         </div>
       )}
 
@@ -122,7 +124,10 @@ export function TaxonomyTable({ type, rows }: Props) {
           title={`No ${LABEL[type]}s yet`}
           description={`Create your first ${LABEL[type].toLowerCase()} to make it available in the product editor.`}
           action={
-            <button onClick={() => setEditing('new')} className="px-3 py-2 text-sm font-medium rounded-[var(--admin-radius)] bg-[var(--admin-accent)] text-white">
+            <button
+              onClick={() => setEditing('new')}
+              className="px-3 py-2 text-sm font-medium rounded-[var(--admin-radius)] bg-[var(--admin-accent)] text-white"
+            >
               Add {LABEL[type]}
             </button>
           }
@@ -132,18 +137,41 @@ export function TaxonomyTable({ type, rows }: Props) {
           <table className="w-full text-sm" aria-label={`${LABEL[type]}s table`}>
             <thead>
               <tr className="border-b border-[var(--admin-border)] bg-[var(--admin-surface)]">
-                {isColour && <th className="px-3 py-2 text-left text-xs font-medium text-[var(--admin-text-mute)] w-10">Swatch</th>}
-                <th className="px-3 py-2 text-left text-xs font-medium text-[var(--admin-text-mute)]">Name</th>
-                {hasSlug && <th className="px-3 py-2 text-left text-xs font-medium text-[var(--admin-text-mute)]">Slug</th>}
-                <th className="px-3 py-2 text-left text-xs font-medium text-[var(--admin-text-mute)]">Products</th>
-                {isSize && <th className="px-3 py-2 text-left text-xs font-medium text-[var(--admin-text-mute)]">Sort Order</th>}
-                {hasActive && <th className="px-3 py-2 text-left text-xs font-medium text-[var(--admin-text-mute)]">Status</th>}
+                {isColour && (
+                  <th className="px-3 py-2 text-left text-xs font-medium text-[var(--admin-text-mute)] w-10">
+                    Swatch
+                  </th>
+                )}
+                <th className="px-3 py-2 text-left text-xs font-medium text-[var(--admin-text-mute)]">
+                  Name
+                </th>
+                {hasSlug && (
+                  <th className="px-3 py-2 text-left text-xs font-medium text-[var(--admin-text-mute)]">
+                    Slug
+                  </th>
+                )}
+                <th className="px-3 py-2 text-left text-xs font-medium text-[var(--admin-text-mute)]">
+                  Products
+                </th>
+                {isSize && (
+                  <th className="px-3 py-2 text-left text-xs font-medium text-[var(--admin-text-mute)]">
+                    Sort Order
+                  </th>
+                )}
+                {hasActive && (
+                  <th className="px-3 py-2 text-left text-xs font-medium text-[var(--admin-text-mute)]">
+                    Status
+                  </th>
+                )}
                 <th className="px-3 py-2 w-20" />
               </tr>
             </thead>
             <tbody>
               {rows.map((row) => (
-                <tr key={row.id} className="border-b border-[var(--admin-border)] last:border-0 hover:bg-[var(--admin-surface)] h-[var(--admin-row-h)]">
+                <tr
+                  key={row.id}
+                  className="border-b border-[var(--admin-border)] last:border-0 hover:bg-[var(--admin-surface)] h-[var(--admin-row-h)]"
+                >
                   {isColour && (
                     <td className="px-3">
                       <span
@@ -153,7 +181,11 @@ export function TaxonomyTable({ type, rows }: Props) {
                     </td>
                   )}
                   <td className="px-3 font-medium text-[var(--admin-text)]">{row.name}</td>
-                  {hasSlug && <td className="px-3 text-[var(--admin-text-mute)] font-mono text-xs">{row.slug}</td>}
+                  {hasSlug && (
+                    <td className="px-3 text-[var(--admin-text-mute)] font-mono text-xs">
+                      {row.slug}
+                    </td>
+                  )}
                   <td className="px-3">
                     {row.productCount > 0 ? (
                       <a
@@ -171,7 +203,10 @@ export function TaxonomyTable({ type, rows }: Props) {
                   )}
                   {hasActive && (
                     <td className="px-3">
-                      <StatusBadge status={row.isActive ? 'ACTIVE' : 'ARCHIVED'} label={row.isActive ? 'Active' : 'Inactive'} />
+                      <StatusBadge
+                        status={row.isActive ? 'ACTIVE' : 'ARCHIVED'}
+                        label={row.isActive ? 'Active' : 'Inactive'}
+                      />
                     </td>
                   )}
                   <td className="px-3">
@@ -182,7 +217,11 @@ export function TaxonomyTable({ type, rows }: Props) {
                           title={row.isActive ? 'Deactivate' : 'Activate'}
                           className="p-1.5 text-[var(--admin-text-mute)] hover:text-[var(--admin-text)] rounded focus:outline-none focus:ring-2 focus:ring-[var(--admin-focus)]"
                         >
-                          {row.isActive ? <ToggleRight className="w-4 h-4 text-[var(--admin-ok)]" /> : <ToggleLeft className="w-4 h-4" />}
+                          {row.isActive ? (
+                            <ToggleRight className="w-4 h-4 text-[var(--admin-ok)]" />
+                          ) : (
+                            <ToggleLeft className="w-4 h-4" />
+                          )}
                         </button>
                       )}
                       <button
@@ -210,19 +249,31 @@ export function TaxonomyTable({ type, rows }: Props) {
 
       {/* Slide-over editor */}
       {editing !== null && (
-        <div className="fixed inset-0 z-40 flex" role="dialog" aria-modal="true" aria-label={`Edit ${LABEL[type]}`}>
+        <div
+          className="fixed inset-0 z-40 flex"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Edit ${LABEL[type]}`}
+        >
           <div className="absolute inset-0 bg-black/30" onClick={() => setEditing(null)} />
           <div className="relative ml-auto z-10 w-full max-w-md bg-[var(--admin-panel)] h-full shadow-xl flex flex-col">
             <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--admin-border)]">
               <h2 className="font-semibold text-base">
                 {editing === 'new' ? `Add ${LABEL[type]}` : `Edit ${LABEL[type]}`}
               </h2>
-              <button onClick={() => setEditing(null)} className="text-[var(--admin-text-mute)] hover:text-[var(--admin-text)] focus:outline-none focus:ring-2 focus:ring-[var(--admin-focus)] rounded p-1">
+              <button
+                onClick={() => setEditing(null)}
+                className="text-[var(--admin-text-mute)] hover:text-[var(--admin-text)] focus:outline-none focus:ring-2 focus:ring-[var(--admin-focus)] rounded p-1"
+              >
                 ✕
               </button>
             </div>
             <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-4">
-              <input type="hidden" name="isActive" value={String(editing !== 'new' ? editing.isActive : true)} />
+              <input
+                type="hidden"
+                name="isActive"
+                value={String(editing !== 'new' ? editing.isActive : true)}
+              />
 
               {/* Name */}
               <div>
@@ -241,15 +292,29 @@ export function TaxonomyTable({ type, rows }: Props) {
               {/* Slug */}
               {!isColour && !isSize && (
                 <div>
-                  <label className="block text-xs text-[var(--admin-text-mute)] mb-1" htmlFor="slug">Slug</label>
-                  <SlugInputInline id="slug" name="slug" defaultValue={editing !== 'new' ? editing.slug : ''} />
+                  <label
+                    className="block text-xs text-[var(--admin-text-mute)] mb-1"
+                    htmlFor="slug"
+                  >
+                    Slug
+                  </label>
+                  <SlugInputInline
+                    id="slug"
+                    name="slug"
+                    defaultValue={editing !== 'new' ? editing.slug : ''}
+                  />
                 </div>
               )}
 
               {/* Description */}
               {!isColour && !isSize && (
                 <div>
-                  <label className="block text-xs text-[var(--admin-text-mute)] mb-1" htmlFor="description">Description</label>
+                  <label
+                    className="block text-xs text-[var(--admin-text-mute)] mb-1"
+                    htmlFor="description"
+                  >
+                    Description
+                  </label>
                   <textarea
                     id="description"
                     name="description"
@@ -263,7 +328,9 @@ export function TaxonomyTable({ type, rows }: Props) {
               {/* Colour hex */}
               {isColour && (
                 <div>
-                  <label className="block text-xs text-[var(--admin-text-mute)] mb-1" htmlFor="hex">Hex Colour *</label>
+                  <label className="block text-xs text-[var(--admin-text-mute)] mb-1" htmlFor="hex">
+                    Hex Colour *
+                  </label>
                   <div className="flex gap-2 items-center">
                     <input
                       type="color"
@@ -284,7 +351,12 @@ export function TaxonomyTable({ type, rows }: Props) {
                       defaultValue={editing !== 'new' ? (editing.hex ?? '#000000') : '#000000'}
                       className="flex-1 px-3 py-2 text-sm border border-[var(--admin-border)] rounded-[var(--admin-radius)] bg-[var(--admin-bg)] font-mono focus:outline-none focus:ring-2 focus:ring-[var(--admin-focus)]"
                     />
-                    <input id="hex-hidden" type="hidden" name="hex" defaultValue={editing !== 'new' ? (editing.hex ?? '#000000') : '#000000'} />
+                    <input
+                      id="hex-hidden"
+                      type="hidden"
+                      name="hex"
+                      defaultValue={editing !== 'new' ? (editing.hex ?? '#000000') : '#000000'}
+                    />
                   </div>
                 </div>
               )}
@@ -292,7 +364,12 @@ export function TaxonomyTable({ type, rows }: Props) {
               {/* Sort order */}
               {isSize && (
                 <div>
-                  <label className="block text-xs text-[var(--admin-text-mute)] mb-1" htmlFor="sortOrder">Sort Order</label>
+                  <label
+                    className="block text-xs text-[var(--admin-text-mute)] mb-1"
+                    htmlFor="sortOrder"
+                  >
+                    Sort Order
+                  </label>
                   <input
                     id="sortOrder"
                     name="sortOrder"
@@ -354,7 +431,15 @@ export function TaxonomyTable({ type, rows }: Props) {
 }
 
 // Inline slug input with auto-populate
-function SlugInputInline({ id, name, defaultValue }: { id: string; name: string; defaultValue: string }) {
+function SlugInputInline({
+  id,
+  name,
+  defaultValue,
+}: {
+  id: string;
+  name: string;
+  defaultValue: string;
+}) {
   return (
     <input
       id={id}

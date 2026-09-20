@@ -1,4 +1,5 @@
 import { prisma } from '@/backend/db/prisma';
+import { Prisma, ProductStatus } from '@prisma/client';
 import { requireAdmin } from '@/lib/admin/auth';
 import { parsePagination, buildPaginationMeta } from '@/lib/admin/pagination';
 import { ProductsClient } from './ProductsClient';
@@ -17,7 +18,7 @@ export default async function ProductsPage({
   const status = (searchParams.status as string) || '';
   const categoryId = (searchParams.category as string) || '';
 
-  const where: any = {};
+  const where: Prisma.ProductWhereInput = {};
   if (q) {
     where.OR = [
       { name: { contains: q, mode: 'insensitive' } },
@@ -25,7 +26,7 @@ export default async function ProductsPage({
       { slug: { contains: q, mode: 'insensitive' } },
     ];
   }
-  if (status) where.status = status;
+  if (status) where.status = status as ProductStatus;
   if (categoryId) where.categoryId = categoryId;
 
   const [products, total, categories] = await Promise.all([

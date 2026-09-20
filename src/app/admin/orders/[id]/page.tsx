@@ -15,9 +15,9 @@ export default async function OrderDetailPage({ params }: { params: { id: string
       customer: true,
       shippingZone: true,
       statusEvents: {
-        orderBy: { createdAt: 'desc' }
-      }
-    }
+        orderBy: { createdAt: 'desc' },
+      },
+    },
   });
 
   if (!order) {
@@ -27,21 +27,21 @@ export default async function OrderDetailPage({ params }: { params: { id: string
   // Fetch some customer stats if the customer exists
   let customerLtv = 0;
   let customerOrderCount = 0;
-  
+
   if (order.customerId) {
     const agg = await prisma.order.aggregate({
       where: { customerId: order.customerId, status: { not: 'cancelled' } },
       _sum: { total: true },
-      _count: { id: true }
+      _count: { id: true },
     });
     customerLtv = agg._sum.total || 0;
     customerOrderCount = agg._count.id;
   }
 
   return (
-    <OrderDetailClient 
-      order={order} 
-      customerStats={{ ltv: customerLtv, orderCount: customerOrderCount }} 
+    <OrderDetailClient
+      order={order}
+      customerStats={{ ltv: customerLtv, orderCount: customerOrderCount }}
     />
   );
 }

@@ -11,7 +11,7 @@ export type PaginationParams = {
 export function parsePagination(
   searchParams: Record<string, string | string[] | undefined>,
   defaultTake = 50,
-  maxTake = 100,
+  maxTake = 100
 ): PaginationParams {
   const rawPage = parseInt(String(searchParams.page ?? '1'), 10);
   const rawTake = parseInt(String(searchParams.take ?? String(defaultTake)), 10);

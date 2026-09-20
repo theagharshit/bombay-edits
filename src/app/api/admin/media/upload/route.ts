@@ -92,7 +92,6 @@ export async function POST(request: Request): Promise<NextResponse> {
             entityId: asset.id,
             diff: { url: blob.url },
           });
-
         } catch (error) {
           console.error('Failed to create media asset in DB:', error);
           // In a fully robust system we might try to delete the blob here if the DB fails

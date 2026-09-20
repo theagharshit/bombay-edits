@@ -13,7 +13,7 @@ export async function anonymiseCustomer(customerId: string) {
 
   const customer = await prisma.customer.findUnique({
     where: { id: customerId },
-    include: { _count: { select: { orders: true } } }
+    include: { _count: { select: { orders: true } } },
   });
 
   if (!customer) throw new NotFoundError('Customer', customerId);
@@ -34,22 +34,25 @@ export async function anonymiseCustomer(customerId: string) {
         phone: null,
         passwordHash: null,
         cartData: Prisma.DbNull,
-        wishlistData: Prisma.DbNull
-      }
+        wishlistData: Prisma.DbNull,
+      },
     });
 
     // 3. Write Audit Log
-    await writeAuditLog({
-      actorId: session.user.id,
-      actorEmail: session.user.email as string,
-      action: 'ANONYMISE_CUSTOMER',
-      entityType: 'Customer',
-      entityId: customerId,
-      diff: { 
-        from: { email: customer.email, name: `${customer.firstName} ${customer.lastName}` },
-        to: 'ANONYMISED' 
-      }
-    }, tx);
+    await writeAuditLog(
+      {
+        actorId: session.user.id,
+        actorEmail: session.user.email as string,
+        action: 'ANONYMISE_CUSTOMER',
+        entityType: 'Customer',
+        entityId: customerId,
+        diff: {
+          from: { email: customer.email, name: `${customer.firstName} ${customer.lastName}` },
+          to: 'ANONYMISED',
+        },
+      },
+      tx
+    );
   });
 
   revalidatePath('/admin/customers');

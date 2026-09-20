@@ -12,12 +12,12 @@ export async function updateLowStockThreshold(productId: string, threshold: numb
   const session = await requireAdmin();
 
   const before = await prisma.product.findUniqueOrThrow({ where: { id: productId } });
-  
+
   if (before.lowStockThreshold === threshold) return { success: true };
 
   await prisma.product.update({
     where: { id: productId },
-    data: { lowStockThreshold: threshold }
+    data: { lowStockThreshold: threshold },
   });
 
   await writeAuditLog({
@@ -33,7 +33,13 @@ export async function updateLowStockThreshold(productId: string, threshold: numb
   return { success: true };
 }
 
-export async function updateStockQuantity(productId: string, sizeId: string, quantityDelta: number, reason: InventoryReason, note?: string) {
+export async function updateStockQuantity(
+  productId: string,
+  sizeId: string,
+  quantityDelta: number,
+  reason: InventoryReason,
+  note?: string
+) {
   const session = await requireAdmin();
 
   if (quantityDelta === 0) return { success: true };
@@ -44,16 +50,18 @@ export async function updateStockQuantity(productId: string, sizeId: string, qua
       where: {
         productId,
         sizeId,
-        ...(quantityDelta < 0 ? { stockQuantity: { gte: Math.abs(quantityDelta) } } : {})
+        ...(quantityDelta < 0 ? { stockQuantity: { gte: Math.abs(quantityDelta) } } : {}),
       },
       data: {
-        stockQuantity: { increment: quantityDelta }
-      }
+        stockQuantity: { increment: quantityDelta },
+      },
     });
 
     if (updateResult.count === 0) {
       if (quantityDelta < 0) {
-        throw new ConflictError(`Insufficient stock. Could not decrement by ${Math.abs(quantityDelta)}.`);
+        throw new ConflictError(
+          `Insufficient stock. Could not decrement by ${Math.abs(quantityDelta)}.`
+        );
       }
       throw new ConflictError('Record not found.');
     }
@@ -67,18 +75,21 @@ export async function updateStockQuantity(productId: string, sizeId: string, qua
         reason,
         note,
         actorId: session.user.id,
-      }
+      },
     });
 
     // Write audit log
-    await writeAuditLog({
-      actorId: session.user.id,
-      actorEmail: session.user.email ?? '',
-      action: 'UPDATE_STOCK',
-      entityType: 'ProductSizeStock',
-      entityId: `${productId}-${sizeId}`,
-      diff: { delta: quantityDelta, reason, note },
-    }, tx);
+    await writeAuditLog(
+      {
+        actorId: session.user.id,
+        actorEmail: session.user.email ?? '',
+        action: 'UPDATE_STOCK',
+        entityType: 'ProductSizeStock',
+        entityId: `${productId}-${sizeId}`,
+        diff: { delta: quantityDelta, reason, note },
+      },
+      tx
+    );
   });
 
   revalidatePath('/admin/inventory');
@@ -91,7 +102,11 @@ export type BulkAdjustmentItem = {
   delta: number;
 };
 
-export async function bulkAdjustStock(adjustments: BulkAdjustmentItem[], reason: InventoryReason, note?: string) {
+export async function bulkAdjustStock(
+  adjustments: BulkAdjustmentItem[],
+  reason: InventoryReason,
+  note?: string
+) {
   const session = await requireAdmin();
 
   if (adjustments.length === 0) return { success: true };
@@ -104,15 +119,17 @@ export async function bulkAdjustStock(adjustments: BulkAdjustmentItem[], reason:
         where: {
           productId: adj.productId,
           sizeId: adj.sizeId,
-          ...(adj.delta < 0 ? { stockQuantity: { gte: Math.abs(adj.delta) } } : {})
+          ...(adj.delta < 0 ? { stockQuantity: { gte: Math.abs(adj.delta) } } : {}),
         },
         data: {
-          stockQuantity: { increment: adj.delta }
-        }
+          stockQuantity: { increment: adj.delta },
+        },
       });
 
       if (updateResult.count === 0) {
-        throw new ConflictError(`Insufficient stock or missing record for Product ${adj.productId} Size ${adj.sizeId}. Bulk operation rolled back.`);
+        throw new ConflictError(
+          `Insufficient stock or missing record for Product ${adj.productId} Size ${adj.sizeId}. Bulk operation rolled back.`
+        );
       }
 
       await tx.inventoryMovement.create({
@@ -123,31 +140,44 @@ export async function bulkAdjustStock(adjustments: BulkAdjustmentItem[], reason:
           reason,
           note,
           actorId: session.user.id,
-        }
+        },
       });
     }
 
-    await writeAuditLog({
-      actorId: session.user.id,
-      actorEmail: session.user.email ?? '',
-      action: 'BULK_UPDATE_STOCK',
-      entityType: 'ProductSizeStock',
-      entityId: 'multiple',
-      diff: { items: adjustments.length, reason, note },
-    }, tx);
+    await writeAuditLog(
+      {
+        actorId: session.user.id,
+        actorEmail: session.user.email ?? '',
+        action: 'BULK_UPDATE_STOCK',
+        entityType: 'ProductSizeStock',
+        entityId: 'multiple',
+        diff: { items: adjustments.length, reason, note },
+      },
+      tx
+    );
   });
 
   revalidatePath('/admin/inventory');
   return { success: true };
 }
 
-export async function importCsvInventory(csvContent: string, reason: InventoryReason, note?: string) {
-  const session = await requireAdmin();
-  
-  const lines = csvContent.split('\n').map(l => l.trim()).filter(Boolean);
+export async function importCsvInventory(
+  csvContent: string,
+  reason: InventoryReason,
+  note?: string
+) {
+  await requireAdmin();
+
+  const lines = csvContent
+    .split('\n')
+    .map((l) => l.trim())
+    .filter(Boolean);
   if (lines.length < 2) throw new ValidationError('csv', 'CSV file is empty or missing headers.');
 
-  const headers = lines[0].toLowerCase().split(',').map(s => s.trim());
+  const headers = lines[0]
+    .toLowerCase()
+    .split(',')
+    .map((s) => s.trim());
   const skuIdx = headers.indexOf('sku');
   const sizeIdx = headers.indexOf('size');
   const qtyIdx = headers.indexOf('quantity');
@@ -159,30 +189,38 @@ export async function importCsvInventory(csvContent: string, reason: InventoryRe
   const parsedRows: { sku: string; sizeCode: string; newQuantity: number; rowNum: number }[] = [];
 
   for (let i = 1; i < lines.length; i++) {
-    const cols = lines[i].split(',').map(s => s.trim());
+    const cols = lines[i].split(',').map((s) => s.trim());
     if (cols.length < Math.max(skuIdx, sizeIdx, qtyIdx) + 1) continue;
 
     const sku = cols[skuIdx];
     const sizeCode = cols[sizeIdx];
     const newQuantity = parseInt(cols[qtyIdx], 10);
 
-    if (!sku || !sizeCode) throw new ValidationError('csv', `Row ${i + 1}: SKU and size cannot be empty.`);
-    if (isNaN(newQuantity) || newQuantity < 0) throw new ValidationError('csv', `Row ${i + 1}: Quantity must be a valid positive integer.`);
+    if (!sku || !sizeCode)
+      throw new ValidationError('csv', `Row ${i + 1}: SKU and size cannot be empty.`);
+    if (isNaN(newQuantity) || newQuantity < 0)
+      throw new ValidationError('csv', `Row ${i + 1}: Quantity must be a valid positive integer.`);
 
     parsedRows.push({ sku, sizeCode, newQuantity, rowNum: i + 1 });
   }
 
   // Pre-fetch all SKUs and Sizes to map them to productId and sizeId
-  const uniqueSkus = [...new Set(parsedRows.map(r => r.sku))];
-  const uniqueSizeCodes = [...new Set(parsedRows.map(r => r.sizeCode))];
+  const uniqueSkus = [...new Set(parsedRows.map((r) => r.sku))];
+  const uniqueSizeCodes = [...new Set(parsedRows.map((r) => r.sizeCode))];
 
   const [products, sizes] = await Promise.all([
-    prisma.product.findMany({ where: { sku: { in: uniqueSkus } }, select: { id: true, sku: true } }),
-    prisma.productSize.findMany({ where: { sizeCode: { in: uniqueSizeCodes } }, select: { id: true, sizeCode: true } })
+    prisma.product.findMany({
+      where: { sku: { in: uniqueSkus } },
+      select: { id: true, sku: true },
+    }),
+    prisma.productSize.findMany({
+      where: { sizeCode: { in: uniqueSizeCodes } },
+      select: { id: true, sizeCode: true },
+    }),
   ]);
 
-  const skuToProductId = new Map(products.map(p => [p.sku, p.id]));
-  const sizeCodeToId = new Map(sizes.map(s => [s.sizeCode, s.id]));
+  const skuToProductId = new Map(products.map((p) => [p.sku, p.id]));
+  const sizeCodeToId = new Map(sizes.map((s) => [s.sizeCode, s.id]));
 
   // Validate mapping and get current stock
   const stockQueries = [];
@@ -190,27 +228,39 @@ export async function importCsvInventory(csvContent: string, reason: InventoryRe
     const productId = skuToProductId.get(row.sku);
     const sizeId = sizeCodeToId.get(row.sizeCode);
 
-    if (!productId) throw new ValidationError('csv', `Row ${row.rowNum}: Product with SKU '${row.sku}' not found.`);
-    if (!sizeId) throw new ValidationError('csv', `Row ${row.rowNum}: Size '${row.sizeCode}' not found.`);
+    if (!productId)
+      throw new ValidationError(
+        'csv',
+        `Row ${row.rowNum}: Product with SKU '${row.sku}' not found.`
+      );
+    if (!sizeId)
+      throw new ValidationError('csv', `Row ${row.rowNum}: Size '${row.sizeCode}' not found.`);
 
-    stockQueries.push(prisma.productSizeStock.findUnique({
-      where: { productId_sizeId: { productId, sizeId } },
-      select: { productId: true, sizeId: true, stockQuantity: true }
-    }));
+    stockQueries.push(
+      prisma.productSizeStock.findUnique({
+        where: { productId_sizeId: { productId, sizeId } },
+        select: { productId: true, sizeId: true, stockQuantity: true },
+      })
+    );
   }
 
   const currentStocks = await Promise.all(stockQueries);
-  const stockMap = new Map(currentStocks.filter(Boolean).map(s => [`${s!.productId}-${s!.sizeId}`, s!.stockQuantity]));
+  const stockMap = new Map(
+    currentStocks.filter(Boolean).map((s) => [`${s!.productId}-${s!.sizeId}`, s!.stockQuantity])
+  );
 
   const adjustments: BulkAdjustmentItem[] = [];
 
   for (const row of parsedRows) {
     const productId = skuToProductId.get(row.sku)!;
     const sizeId = sizeCodeToId.get(row.sizeCode)!;
-    
+
     const currentQty = stockMap.get(`${productId}-${sizeId}`);
     if (currentQty === undefined) {
-      throw new ValidationError('csv', `Row ${row.rowNum}: No inventory record found for SKU '${row.sku}' and Size '${row.sizeCode}'. Create the size assignment on the product first.`);
+      throw new ValidationError(
+        'csv',
+        `Row ${row.rowNum}: No inventory record found for SKU '${row.sku}' and Size '${row.sizeCode}'. Create the size assignment on the product first.`
+      );
     }
 
     const delta = row.newQuantity - currentQty;

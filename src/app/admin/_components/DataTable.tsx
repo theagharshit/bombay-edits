@@ -25,7 +25,8 @@ export function DataTable<T>({
   onSelectAll,
 }: DataTableProps<T>) {
   const allSelected = data.length > 0 && selectedIds?.length === data.length;
-  const someSelected = data.length > 0 && selectedIds && selectedIds.length > 0 && selectedIds.length < data.length;
+  const someSelected =
+    data.length > 0 && selectedIds && selectedIds.length > 0 && selectedIds.length < data.length;
 
   return (
     <div className="w-full overflow-x-auto rounded-[var(--admin-radius)] border border-[var(--admin-border)] bg-[var(--admin-surface)]">
@@ -38,7 +39,7 @@ export function DataTable<T>({
                   type="checkbox"
                   className="rounded border-[var(--admin-border-str)] text-[var(--admin-focus)] focus:ring-[var(--admin-focus)]"
                   checked={allSelected}
-                  ref={input => {
+                  ref={(input) => {
                     if (input) input.indeterminate = !!someSelected;
                   }}
                   onChange={(e) => onSelectAll(e.target.checked)}
@@ -55,7 +56,10 @@ export function DataTable<T>({
         <tbody className="divide-y divide-[var(--admin-border)]">
           {data.length === 0 ? (
             <tr>
-              <td colSpan={columns.length + (onSelectAll ? 1 : 0)} className="px-4 py-8 text-center text-[var(--admin-text-mute)]">
+              <td
+                colSpan={columns.length + (onSelectAll ? 1 : 0)}
+                className="px-4 py-8 text-center text-[var(--admin-text-mute)]"
+              >
                 No results found.
               </td>
             </tr>
@@ -83,7 +87,11 @@ export function DataTable<T>({
                   )}
                   {columns.map((col, i) => (
                     <td key={i} className={`px-4 py-2 ${col.className || ''}`}>
-                      {col.cell ? col.cell(item) : col.accessorKey ? String(item[col.accessorKey]) : null}
+                      {col.cell
+                        ? col.cell(item)
+                        : col.accessorKey
+                          ? String(item[col.accessorKey])
+                          : null}
                     </td>
                   ))}
                 </tr>

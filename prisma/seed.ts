@@ -258,7 +258,7 @@ export async function main() {
     await prisma.productSizeStock.deleteMany({ where: { productId: productRecord.id } });
     if (prod.stockBySize) {
       const sizeEntries = Object.entries(prod.stockBySize as Record<string, number>);
-      
+
       const stockData = sizeEntries
         .map(([size, stockQuantity]) => {
           const sizeId = sizeMap.get(size);
@@ -270,7 +270,7 @@ export async function main() {
           };
         })
         .filter((entry): entry is NonNullable<typeof entry> => entry !== null);
-        
+
       if (stockData.length > 0) {
         await prisma.productSizeStock.createMany({
           data: stockData,

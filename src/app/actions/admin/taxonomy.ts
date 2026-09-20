@@ -84,7 +84,7 @@ export async function updateTaxonomy(type: TaxonomyType, id: string, formData: F
   // @ts-expect-error dynamic
   const before = await prisma[model].findUniqueOrThrow({ where: { id } });
 
-  let data: Record<string, unknown> = {};
+  const data: Record<string, unknown> = {};
   const name = String(formData.get('name') ?? '').trim();
   if (!name) throw new ValidationError('name', 'Name is required.');
   data.name = name;
@@ -108,7 +108,8 @@ export async function updateTaxonomy(type: TaxonomyType, id: string, formData: F
 
   const diff: Record<string, unknown> = {};
   for (const [k, v] of Object.entries(data)) {
-    if (String(v) !== String((before as Record<string, unknown>)[k])) diff[k] = { from: (before as Record<string, unknown>)[k], to: v };
+    if (String(v) !== String((before as Record<string, unknown>)[k]))
+      diff[k] = { from: (before as Record<string, unknown>)[k], to: v };
   }
 
   await writeAuditLog({
@@ -169,7 +170,9 @@ export async function deleteTaxonomy(type: TaxonomyType, id: string) {
   }
 
   if (productCount > 0) {
-    throw new ConflictError(`Cannot delete: ${productCount} product(s) use this ${type.slice(0, -1)}.`);
+    throw new ConflictError(
+      `Cannot delete: ${productCount} product(s) use this ${type.slice(0, -1)}.`
+    );
   }
 
   // @ts-expect-error dynamic
@@ -193,8 +196,8 @@ export async function reorderSizes(orderedIds: string[]) {
   await requireAdmin();
   await prisma.$transaction(
     orderedIds.map((id, index) =>
-      prisma.productSize.update({ where: { id }, data: { sortOrder: index } }),
-    ),
+      prisma.productSize.update({ where: { id }, data: { sortOrder: index } })
+    )
   );
   revalidatePath(`/admin/settings/taxonomies`);
   revalidatePath(`/product/[slug]`, 'layout');

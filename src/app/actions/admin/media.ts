@@ -7,11 +7,14 @@ import { writeAuditLog } from '@/lib/admin/audit';
 import { deleteBlob } from '@/lib/admin/blob';
 import { ConflictError } from '@/lib/admin/errors';
 
-export async function updateMediaAsset(id: string, data: { altText?: string | null; folder?: string | null }) {
+export async function updateMediaAsset(
+  id: string,
+  data: { altText?: string | null; folder?: string | null }
+) {
   const session = await requireAdmin();
   const before = await prisma.mediaAsset.findUniqueOrThrow({ where: { id } });
 
-  const updated = await prisma.mediaAsset.update({
+  await prisma.mediaAsset.update({
     where: { id },
     data: {
       altText: data.altText,
@@ -19,7 +22,7 @@ export async function updateMediaAsset(id: string, data: { altText?: string | nu
     },
   });
 
-  const diff: Record<string, any> = {};
+  const diff: Record<string, unknown> = {};
   if (data.altText !== undefined && data.altText !== before.altText) {
     diff.altText = { from: before.altText, to: data.altText };
   }
@@ -48,7 +51,7 @@ export async function deleteMediaAsset(id: string) {
 
   // 1. Check usages. Media can be used in Product (images.src), Category (image, heroImage), Collection (image, heroImage)
   // We need to count occurrences in these tables using the URL.
-  const [productImages, catImages, catHero, colImages, colHero] = await Promise.all([
+  const [productImages, catImages, _catHero, colImages, colHero] = await Promise.all([
     prisma.productImage.count({ where: { src: asset.url } }),
     prisma.category.count({ where: { image: asset.url } }),
     // Category doesn't have heroImage anymore
@@ -69,7 +72,7 @@ export async function deleteMediaAsset(id: string) {
   // 2. Delete from Vercel Blob
   const blobDeleted = await deleteBlob(asset.url);
   if (!blobDeleted) {
-    // We could either throw or proceed if the blob is already gone. 
+    // We could either throw or proceed if the blob is already gone.
     // Usually if it's missing from Blob, we want to allow DB cleanup anyway.
     // We'll proceed.
   }

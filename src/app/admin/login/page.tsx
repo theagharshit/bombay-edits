@@ -39,11 +39,18 @@ function LoginForm() {
   };
 
   return (
-    <div className="admin-root min-h-screen flex items-center justify-center p-6" style={{ background: '#fafaf9' }}>
+    <div
+      className="admin-root min-h-screen flex items-center justify-center p-6"
+      style={{ background: '#fafaf9' }}
+    >
       <div className="w-full max-w-sm bg-white border border-[#e7e5e4] rounded-xl shadow-sm p-8">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-semibold tracking-tight" style={{ color: '#1c1917' }}>Operator</h1>
-          <p className="text-sm mt-2" style={{ color: '#78716c' }}>Sign in to manage the store</p>
+          <h1 className="text-2xl font-semibold tracking-tight" style={{ color: '#1c1917' }}>
+            Operator
+          </h1>
+          <p className="text-sm mt-2" style={{ color: '#78716c' }}>
+            Sign in to manage the store
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -58,7 +65,11 @@ function LoginForm() {
           )}
 
           <div className="space-y-1.5">
-            <label className="block text-sm font-medium" style={{ color: '#1c1917' }} htmlFor="email">
+            <label
+              className="block text-sm font-medium"
+              style={{ color: '#1c1917' }}
+              htmlFor="email"
+            >
               Email
             </label>
             <input
@@ -78,7 +89,11 @@ function LoginForm() {
           </div>
 
           <div className="space-y-1.5">
-            <label className="block text-sm font-medium" style={{ color: '#1c1917' }} htmlFor="password">
+            <label
+              className="block text-sm font-medium"
+              style={{ color: '#1c1917' }}
+              htmlFor="password"
+            >
               Password
             </label>
             <input

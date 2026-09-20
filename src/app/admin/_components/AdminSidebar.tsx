@@ -122,7 +122,9 @@ export function AdminSidebar() {
                         : 'text-[var(--admin-text-mute)] hover:bg-[var(--admin-surface)] hover:text-[var(--admin-text)]'
                     }`}
                   >
-                    <item.icon className={`w-4 h-4 flex-shrink-0 ${active ? 'text-[var(--admin-accent)]' : ''}`} />
+                    <item.icon
+                      className={`w-4 h-4 flex-shrink-0 ${active ? 'text-[var(--admin-accent)]' : ''}`}
+                    />
                     {item.name}
                   </Link>
                 );

@@ -27,13 +27,13 @@ export const middleware = auth((request) => {
   const session = request.auth;
 
   if (isAdminRoute && !isLoginRoute) {
-    if (!session || (session.user as any)?.role !== 'admin') {
+    if (!session || (session.user as { role?: string })?.role !== 'admin') {
       const loginUrl = new URL('/admin/login', request.url);
       return NextResponse.redirect(loginUrl);
     }
   }
 
-  if (isLoginRoute && session && (session.user as any)?.role === 'admin') {
+  if (isLoginRoute && session && (session.user as { role?: string })?.role === 'admin') {
     const adminUrl = new URL('/admin', request.url);
     return NextResponse.redirect(adminUrl);
   }

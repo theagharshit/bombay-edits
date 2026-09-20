@@ -20,7 +20,9 @@ export function EmptyState({ icon: Icon, title, description, action, filtered = 
       <p className="text-sm text-[var(--admin-text-mute)] max-w-xs mb-5">{description}</p>
       {action && <div>{action}</div>}
       {filtered && !action && (
-        <p className="text-xs text-[var(--admin-text-faint)]">Try adjusting or clearing your filters.</p>
+        <p className="text-xs text-[var(--admin-text-faint)]">
+          Try adjusting or clearing your filters.
+        </p>
       )}
     </div>
   );

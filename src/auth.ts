@@ -1,12 +1,12 @@
-import NextAuth from "next-auth"
-import Credentials from "next-auth/providers/credentials"
+import NextAuth from 'next-auth';
+import Credentials from 'next-auth/providers/credentials';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
       credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" }
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
@@ -15,28 +15,28 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const ADMIN_PASSWORD = process.env.ADMIN_SEED_PASSWORD || 'password123';
 
         if (credentials.email === ADMIN_EMAIL && credentials.password === ADMIN_PASSWORD) {
-          return { id: "1", name: "Admin", email: ADMIN_EMAIL, role: "admin" }
+          return { id: '1', name: 'Admin', email: ADMIN_EMAIL, role: 'admin' };
         }
 
-        return null
-      }
-    })
+        return null;
+      },
+    }),
   ],
   callbacks: {
     jwt({ token, user }) {
       if (user) {
-        token.role = (user as any).role;
+        token.role = (user as { role?: string }).role;
       }
       return token;
     },
     session({ session, token }) {
       if (session.user) {
-        (session.user as any).role = token.role;
+        (session.user as { role?: string }).role = token.role as string;
       }
       return session;
-    }
+    },
   },
   pages: {
     signIn: '/admin/login',
-  }
-})
+  },
+});

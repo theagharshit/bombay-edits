@@ -54,7 +54,7 @@ export function StatusBadge({ status, label, className }: Props) {
       className={cn(
         'inline-flex items-center h-[22px] px-2 rounded-full text-[11px] font-semibold uppercase tracking-[0.04em]',
         styles,
-        className,
+        className
       )}
     >
       {displayLabel}

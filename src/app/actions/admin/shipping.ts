@@ -16,11 +16,25 @@ export async function upsertShippingZone(data: {
   if (data.id) {
     await prisma.shippingZone.update({
       where: { id: data.id },
-      data: { zone: data.zone, label: data.label, description: data.description || null, rate: data.rate, freeAbove: data.freeAbove || null, estimatedDays: data.estimatedDays },
+      data: {
+        zone: data.zone,
+        label: data.label,
+        description: data.description || null,
+        rate: data.rate,
+        freeAbove: data.freeAbove || null,
+        estimatedDays: data.estimatedDays,
+      },
     });
   } else {
     await prisma.shippingZone.create({
-      data: { zone: data.zone, label: data.label, description: data.description || null, rate: data.rate, freeAbove: data.freeAbove || null, estimatedDays: data.estimatedDays },
+      data: {
+        zone: data.zone,
+        label: data.label,
+        description: data.description || null,
+        rate: data.rate,
+        freeAbove: data.freeAbove || null,
+        estimatedDays: data.estimatedDays,
+      },
     });
   }
   revalidatePath('/admin/settings/shipping');
