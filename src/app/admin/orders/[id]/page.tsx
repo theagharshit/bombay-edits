@@ -5,11 +5,12 @@ import { OrderDetailClient } from './OrderDetailClient';
 
 export const dynamic = 'force-dynamic';
 
-export default async function OrderDetailPage({ params }: { params: { id: string } }) {
+export default async function OrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
   await requireAdmin();
+  const { id } = await params;
 
   const order = await prisma.order.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: {
       items: true,
       customer: true,
@@ -21,7 +22,7 @@ export default async function OrderDetailPage({ params }: { params: { id: string
   });
 
   if (!order) {
-    throw new NotFoundError('Order', params.id);
+    throw new NotFoundError('Order', id);
   }
 
   // Fetch some customer stats if the customer exists

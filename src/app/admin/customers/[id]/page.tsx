@@ -5,14 +5,15 @@ import { CustomerDetailClient } from './CustomerDetailClient';
 
 export const dynamic = 'force-dynamic';
 
-export default async function CustomerDetailPage({ params }: { params: { id: string } }) {
+export default async function CustomerDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const session = await requireAdmin();
+  const { id } = await params;
 
   // Check if current user is owner to show anonymise button
   const isOwner = session.user.role === 'OWNER' || session.user.role === 'admin';
 
   const customer = await prisma.customer.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: {
       addresses: true,
       orders: {
@@ -28,7 +29,7 @@ export default async function CustomerDetailPage({ params }: { params: { id: str
   });
 
   if (!customer) {
-    throw new NotFoundError('Customer', params.id);
+    throw new NotFoundError('Customer', id);
   }
 
   // Compute LTV and order count

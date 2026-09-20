@@ -10,12 +10,13 @@ export const metadata = { title: 'Newsletter | Admin' };
 export default async function NewsletterPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   await requireAdmin();
-  const { skip, take, page } = parsePagination(searchParams);
-  const q = (searchParams.q as string) || '';
-  const active = searchParams.active as string;
+  const sp = await searchParams;
+  const { skip, take, page } = parsePagination(sp);
+  const q = (sp.q as string) || '';
+  const active = sp.active as string;
 
   const where: Prisma.NewsletterSubscriberWhereInput = {};
   if (q) where.email = { contains: q, mode: 'insensitive' };

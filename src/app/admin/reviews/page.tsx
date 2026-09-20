@@ -10,12 +10,13 @@ export const metadata = { title: 'Reviews | Admin' };
 export default async function ReviewsPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   await requireAdmin();
-  const { skip, take, page } = parsePagination(searchParams);
-  const q = (searchParams.q as string) || '';
-  const status = (searchParams.status as string) || '';
+  const sp = await searchParams;
+  const { skip, take, page } = parsePagination(sp);
+  const q = (sp.q as string) || '';
+  const status = (sp.status as string) || '';
 
   const where: Prisma.ReviewWhereInput = {};
   if (q) {

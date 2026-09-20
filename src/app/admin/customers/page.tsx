@@ -21,17 +21,18 @@ export type CustomerRow = {
 export default async function CustomersPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   await requireAdmin();
+  const sp = await searchParams;
 
-  const { skip, take, page } = parsePagination(searchParams);
+  const { skip, take, page } = parsePagination(sp);
 
-  const qSearch = (searchParams.q as string) || '';
-  const qHasOrders = (searchParams.hasOrders as string) || '';
-  const _qNewsletter = (searchParams.newsletter as string) || '';
-  const qZone = (searchParams.shippingZone as string) || '';
-  const sort = (searchParams.sort as string) || 'joined_desc';
+  const qSearch = (sp.q as string) || '';
+  const qHasOrders = (sp.hasOrders as string) || '';
+  const _qNewsletter = (sp.newsletter as string) || '';
+  const qZone = (sp.shippingZone as string) || '';
+  const sort = (sp.sort as string) || 'joined_desc';
 
   // Construct raw query conditions
   const conditions: string[] = ['1=1'];

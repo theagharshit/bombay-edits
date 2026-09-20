@@ -10,12 +10,13 @@ export const metadata = { title: 'Audit Log | Admin' };
 export default async function AuditLogPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   await requireAdmin();
-  const { skip, take, page } = parsePagination(searchParams, 100);
-  const q = (searchParams.q as string) || '';
-  const entityType = (searchParams.entityType as string) || '';
+  const sp = await searchParams;
+  const { skip, take, page } = parsePagination(sp, 100);
+  const q = (sp.q as string) || '';
+  const entityType = (sp.entityType as string) || '';
 
   const where: Prisma.AuditLogWhereInput = {};
   if (q) {

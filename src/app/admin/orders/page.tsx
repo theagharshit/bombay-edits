@@ -9,18 +9,19 @@ export const dynamic = 'force-dynamic';
 export default async function OrdersPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   await requireAdmin();
+  const sp = await searchParams;
 
-  const { skip, take, page } = parsePagination(searchParams);
+  const { skip, take, page } = parsePagination(sp);
 
-  const qSearch = (searchParams.q as string) || '';
-  const qStatus = (searchParams.status as string) || '';
-  const qPaymentStatus = (searchParams.paymentStatus as string) || '';
-  const qShippingZone = (searchParams.shippingZone as string) || '';
-  const qHasTracking = (searchParams.hasTracking as string) || '';
-  const sort = (searchParams.sort as string) || 'newest';
+  const qSearch = (sp.q as string) || '';
+  const qStatus = (sp.status as string) || '';
+  const qPaymentStatus = (sp.paymentStatus as string) || '';
+  const qShippingZone = (sp.shippingZone as string) || '';
+  const qHasTracking = (sp.hasTracking as string) || '';
+  const sort = (sp.sort as string) || 'newest';
 
   const where: Prisma.OrderWhereInput = {};
 

@@ -10,11 +10,12 @@ export const metadata = { title: 'Discounts | Admin' };
 export default async function DiscountsPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   await requireAdmin();
-  const { skip, take, page } = parsePagination(searchParams);
-  const q = (searchParams.q as string) || '';
+  const sp = await searchParams;
+  const { skip, take, page } = parsePagination(sp);
+  const q = (sp.q as string) || '';
 
   const where: Prisma.DiscountWhereInput = {};
   if (q) where.code = { contains: q, mode: 'insensitive' };

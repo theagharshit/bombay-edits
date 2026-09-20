@@ -10,17 +10,18 @@ export const dynamic = 'force-dynamic';
 export default async function InventoryPage({
   searchParams,
 }: {
-  searchParams: Record<string, string | string[] | undefined>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   await requireAdmin();
+  const sp = await searchParams;
 
-  const view = searchParams.view === 'movements' ? 'movements' : 'stock';
-  const { skip, take, page } = parsePagination(searchParams, 50, 100);
+  const view = sp.view === 'movements' ? 'movements' : 'stock';
+  const { skip, take, page } = parsePagination(sp, 50, 100);
 
   if (view === 'movements') {
-    const qProduct = String(searchParams.product || '');
-    const qReason = String(searchParams.reason || '');
-    const qActor = String(searchParams.actor || '');
+    const qProduct = String(sp.product || '');
+    const qReason = String(sp.reason || '');
+    const qActor = String(sp.actor || '');
 
     const where: Prisma.InventoryMovementWhereInput = {};
     if (qProduct) {
@@ -64,12 +65,12 @@ export default async function InventoryPage({
   }
 
   // Stock view
-  const qSearch = String(searchParams.search || '');
-  const qState = String(searchParams.state || 'ALL');
-  const qCategory = String(searchParams.category || '');
-  const qCollection = String(searchParams.collection || '');
-  const qStatus = String(searchParams.status || '');
-  const qSort = String(searchParams.sort || 'available_asc');
+  const qSearch = String(sp.search || '');
+  const qState = String(sp.state || 'ALL');
+  const qCategory = String(sp.category || '');
+  const qCollection = String(sp.collection || '');
+  const qStatus = String(sp.status || '');
+  const qSort = String(sp.sort || 'available_asc');
 
   const where: Prisma.ProductSizeStockWhereInput = {};
   const productWhere: Prisma.ProductWhereInput = {};

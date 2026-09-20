@@ -6,15 +6,16 @@ import { format } from 'date-fns';
 
 export const dynamic = 'force-dynamic';
 
-export default async function OrderPrintPage({ params }: { params: { id: string } }) {
+export default async function OrderPrintPage({ params }: { params: Promise<{ id: string }> }) {
   await requireAdmin();
+  const { id } = await params;
 
   const order = await prisma.order.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: { items: true },
   });
 
-  if (!order) throw new NotFoundError('Order', params.id);
+  if (!order) throw new NotFoundError('Order', id);
 
   return (
     <div className="bg-white text-black min-h-screen">
