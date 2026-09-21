@@ -3,7 +3,6 @@ import { logger } from '../utils/logger';
 
 let poolInstance: Pool | null = null;
 let isConnectedCache: boolean | null = null;
-const lastCheckTime = 0;
 
 export function getDbPool(): Pool {
   if (poolInstance) {
