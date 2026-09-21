@@ -10,8 +10,10 @@ export default async function OrderPrintPage({ params }: { params: Promise<{ id:
   await requireAdmin();
   const { id } = await params;
 
-  const order = await prisma.order.findUnique({
-    where: { id },
+  const order = await prisma.order.findFirst({
+    where: {
+      OR: [{ id }, { orderNumber: id }],
+    },
     include: { items: true },
   });
 

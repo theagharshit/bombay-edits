@@ -1,6 +1,14 @@
 [
   {
     "success": false,
+    "error": "You can only send testing emails to your own email address (ya828197@gmail.com). To send emails to other recipients, please verify a domain at resend.com/domains, and change the `from` address to an email using this domain.",
+    "provider": "resend",
+    "channel": "email",
+    "recipient": "yash@gmail.com",
+    "timestamp": "2026-09-21T08:37:39.300Z"
+  },
+  {
+    "success": false,
     "error": "Invalid template name. Trial accounts can only use predefined SMS templates. [Twilio Code 572006 - https://www.twilio.com/docs/errors/572006]",
     "provider": "twilio",
     "channel": "sms",

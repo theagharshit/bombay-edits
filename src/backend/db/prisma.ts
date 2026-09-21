@@ -76,10 +76,12 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 let isConnectedCache: boolean | null = null;
-let lastCheckTime = 0;
+let inFlightPingPromise: Promise<boolean> | null = null;
 
 /**
- * Check if Prisma can connect to the PostgreSQL database
+ * Check if Prisma can connect to the PostgreSQL database.
+ * Deduplicates concurrent in-flight checks and caches successful connection
+ * to prevent redundant ~250ms roundtrip SELECT 1 pings on every request.
  */
 export async function isPrismaConnected(): Promise<boolean> {
   // If DATABASE_URL environment variable is not defined, avoid Prisma invocation
@@ -87,20 +89,38 @@ export async function isPrismaConnected(): Promise<boolean> {
     return false;
   }
 
-  const now = Date.now();
-  if (isConnectedCache !== null && now - lastCheckTime < 5000) {
-    return isConnectedCache;
+  // Once connected, trust the Prisma connection pool rather than querying SELECT 1
+  if (isConnectedCache === true) {
+    return true;
   }
 
-  try {
-    // Quick ping query
-    await prisma.$queryRaw`SELECT 1`;
-    isConnectedCache = true;
-    lastCheckTime = now;
-    return true;
-  } catch {
-    isConnectedCache = false;
-    lastCheckTime = now;
-    return false;
+  // Deduplicate in-flight checks to prevent stampeding concurrent requests
+  if (inFlightPingPromise) {
+    return inFlightPingPromise;
   }
+
+  inFlightPingPromise = (async () => {
+    try {
+      await prisma.$queryRaw`SELECT 1`;
+      isConnectedCache = true;
+      return true;
+    } catch (err) {
+      logger.warn('Prisma database ping failed', { error: err });
+      isConnectedCache = false;
+      // Allow retry after 30 seconds if it failed
+      setTimeout(() => {
+        isConnectedCache = null;
+      }, 30000);
+      return false;
+    } finally {
+      inFlightPingPromise = null;
+    }
+  })();
+
+  return inFlightPingPromise;
+}
+
+export function resetPrismaConnectionCache(): void {
+  isConnectedCache = null;
+  inFlightPingPromise = null;
 }

@@ -117,12 +117,12 @@ export class OrderController {
   public async getOrderById(req: NextRequest, context: RequestContext) {
     const id = context.params?.id as string;
     if (!id) {
-      throw new AppError('Order ID parameter is required.', 400);
+      return ApiResponse.error('Order ID parameter is required.', { status: 400 });
     }
 
     const order = await OrderModel.getById(id);
     if (!order) {
-      throw new AppError(`Order "${id}" not found.`, 404);
+      return ApiResponse.error(`Order "${id}" not found.`, { status: 404 });
     }
 
     // Privacy & Security Check:
@@ -132,12 +132,26 @@ export class OrderController {
 
     if (customer && customer.role !== 'admin') {
       if (order.customer.email.toLowerCase() !== customer.email.toLowerCase()) {
-        throw new AppError('Unauthorized access to this order.', 403);
+        return ApiResponse.error('Unauthorized access to this order.', {
+          status: 403,
+          code: 'FORBIDDEN',
+        });
       }
     } else if (!customer) {
-      // Guest access requires email verification matching the order
-      if (!verifyEmail || verifyEmail !== order.customer.email.toLowerCase()) {
-        throw new AppError('Verification email matching order required for guest access.', 403);
+      // Guest access: if no verification email provided, return verification prompt gracefully (HTTP 200)
+      if (!verifyEmail) {
+        return ApiResponse.success({
+          requiresVerification: true,
+          orderNumber: order.orderNumber,
+        });
+      }
+
+      // Guest access: if email is provided but does not match
+      if (verifyEmail !== order.customer.email.toLowerCase()) {
+        return ApiResponse.error('Verification email does not match this consignment.', {
+          status: 403,
+          code: 'VERIFICATION_FAILED',
+        });
       }
     }
 

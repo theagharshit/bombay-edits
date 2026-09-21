@@ -44,5 +44,15 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
 
   const stats = { ltv, orderCount, aov, firstOrderDate, lastOrderDate };
 
-  return <CustomerDetailClient customer={customer} stats={stats} isOwner={isOwner} />;
+  const serializedCustomer = JSON.parse(
+    JSON.stringify({
+      ...customer,
+      orders: customer.orders.map((o) => ({
+        ...o,
+        exchangeRateSnapshot: Number(o.exchangeRateSnapshot),
+      })),
+    })
+  );
+
+  return <CustomerDetailClient customer={serializedCustomer} stats={stats} isOwner={isOwner} />;
 }

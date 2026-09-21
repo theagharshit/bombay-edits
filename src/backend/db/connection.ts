@@ -3,7 +3,7 @@ import { logger } from '../utils/logger';
 
 let poolInstance: Pool | null = null;
 let isConnectedCache: boolean | null = null;
-let lastCheckTime = 0;
+const lastCheckTime = 0;
 
 export function getDbPool(): Pool {
   if (poolInstance) {
@@ -37,32 +37,48 @@ export function getDbPool(): Pool {
   return poolInstance;
 }
 
+let inFlightCheckPromise: Promise<boolean> | null = null;
+
 /**
  * Check if the PostgreSQL database is currently online and responding
  */
 export async function isDatabaseConnected(): Promise<boolean> {
-  const now = Date.now();
-  // Cache connection status for 5 seconds to avoid spamming ping queries
-  if (isConnectedCache !== null && now - lastCheckTime < 5000) {
-    return isConnectedCache;
-  }
-
-  try {
-    const pool = getDbPool();
-    const client = await pool.connect();
-    try {
-      await client.query('SELECT 1');
-      isConnectedCache = true;
-      lastCheckTime = now;
-      return true;
-    } finally {
-      client.release();
-    }
-  } catch {
-    isConnectedCache = false;
-    lastCheckTime = now;
+  if (!process.env.DATABASE_URL) {
     return false;
   }
+
+  // Once connected, trust the connection pool rather than querying SELECT 1
+  if (isConnectedCache === true) {
+    return true;
+  }
+
+  if (inFlightCheckPromise) {
+    return inFlightCheckPromise;
+  }
+
+  inFlightCheckPromise = (async () => {
+    try {
+      const pool = getDbPool();
+      const client = await pool.connect();
+      try {
+        await client.query('SELECT 1');
+        isConnectedCache = true;
+        return true;
+      } finally {
+        client.release();
+      }
+    } catch {
+      isConnectedCache = false;
+      setTimeout(() => {
+        isConnectedCache = null;
+      }, 30000);
+      return false;
+    } finally {
+      inFlightCheckPromise = null;
+    }
+  })();
+
+  return inFlightCheckPromise;
 }
 
 /**

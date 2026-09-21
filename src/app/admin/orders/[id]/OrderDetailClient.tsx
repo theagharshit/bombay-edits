@@ -38,6 +38,7 @@ export type OrderDetailData = {
   subtotal: number;
   shippingCost: number;
   total: number;
+  exchangeRateSnapshot?: number | null;
   internalNotes?: string | null;
   trackingNumber?: string | null;
   carrier?: string | null;

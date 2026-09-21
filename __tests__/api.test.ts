@@ -95,4 +95,83 @@ describe('API Gateway & Utility Checks', () => {
     expect(newOrder.status).toBe('confirmed');
     expect(newOrder.customer.email).toBe('test.shopper@example.com');
   });
+
+  it('should prompt guest for email verification without server error when no email is provided', async () => {
+    const { OrderModel } = await import('@/backend/models/orderModel');
+    const { orderController } = await import('@/backend/controllers/orderController');
+    const { NextRequest } = await import('next/server');
+
+    const created = await OrderModel.createOrder({
+      items: [
+        {
+          productId: 'ks-002',
+          slug: 'anarkali-set',
+          name: 'Silk Anarkali',
+          price: 21000,
+          quantity: 1,
+          size: 'S',
+          colour: 'Emerald',
+        },
+      ],
+      customer: {
+        email: 'guest.shopper@example.com',
+        firstName: 'Zoya',
+        lastName: 'Akhtar',
+        phone: '+91 98111 22334',
+        address: 'Bandra West',
+        city: 'Mumbai',
+        state: 'Maharashtra',
+        postalCode: '400050',
+        country: 'India',
+      },
+      shippingZone: 'mumbai',
+      paymentMethod: 'Credit Card',
+    });
+
+    // 1. Guest request with NO email param: should return 200 with requiresVerification: true
+    const guestReq = new NextRequest(`http://localhost:3000/api/orders/${created.orderNumber}`, {
+      method: 'GET',
+    });
+    const res = await orderController.getOrderById(guestReq, {
+      requestId: 'test_req',
+      params: { id: created.orderNumber },
+    });
+    const body = await res.json();
+
+    expect(res.status).toBe(200);
+    expect(body.success).toBe(true);
+    expect(body.data.requiresVerification).toBe(true);
+    expect(body.data.orderNumber).toBe(created.orderNumber);
+
+    // 2. Guest request with WRONG email: should return 403 VERIFICATION_FAILED
+    const wrongEmailReq = new NextRequest(
+      `http://localhost:3000/api/orders/${created.orderNumber}?email=wrong@example.com`,
+      { method: 'GET' }
+    );
+    const wrongRes = await orderController.getOrderById(wrongEmailReq, {
+      requestId: 'test_req',
+      params: { id: created.orderNumber },
+    });
+    const wrongBody = await wrongRes.json();
+
+    expect(wrongRes.status).toBe(403);
+    expect(wrongBody.success).toBe(false);
+    expect(wrongBody.code).toBe('VERIFICATION_FAILED');
+
+    // 3. Guest request with CORRECT matching email: should return 200 with order record
+    const matchReq = new NextRequest(
+      `http://localhost:3000/api/orders/${created.orderNumber}?email=guest.shopper@example.com`,
+      { method: 'GET' }
+    );
+    const matchRes = await orderController.getOrderById(matchReq, {
+      requestId: 'test_req',
+      params: { id: created.orderNumber },
+    });
+    const matchBody = await matchRes.json();
+
+    expect(matchRes.status).toBe(200);
+    expect(matchBody.success).toBe(true);
+    expect(matchBody.data.orderNumber).toBe(created.orderNumber);
+    expect(matchBody.data.customer.email).toBe('guest.shopper@example.com');
+  });
 });

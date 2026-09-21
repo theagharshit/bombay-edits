@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from '@/frontend/context/AuthContext';
 import { OrderService } from '@/frontend/services/orderService';
+import { ApiError } from '@/frontend/services/apiClient';
 import { OrderRecord } from '@/backend/models/orderModel';
 import { generatePlaceholderImage } from '@/frontend/utils/imageUtils';
 import {
@@ -36,6 +37,8 @@ function OrderDetailContent() {
   const [order, setOrder] = useState<OrderRecord | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [requiresVerification, setRequiresVerification] = useState<boolean>(false);
+  const [isUnauthorized, setIsUnauthorized] = useState<boolean>(false);
 
   // Guest email verification prompt if required
   const [guestVerifyEmail, setGuestVerifyEmail] = useState<string>(urlEmail);
@@ -73,19 +76,39 @@ function OrderDetailContent() {
       try {
         setLoading(true);
         setError(null);
+        setVerifyError(null);
+        setIsUnauthorized(false);
+        setRequiresVerification(false);
+
         const effectiveEmail = isAuthenticated && customer ? customer.email : urlEmail;
         const res = await OrderService.getOrderById(
           idOrNumber,
           effectiveEmail ? { email: effectiveEmail } : undefined
         );
-        setOrder(res);
+
+        if (res && 'requiresVerification' in res && res.requiresVerification) {
+          setOrder(null);
+          setRequiresVerification(true);
+          setVerifyError(null);
+        } else {
+          setOrder(res as OrderRecord);
+          setRequiresVerification(false);
+        }
       } catch (err: unknown) {
-        console.error('Failed to load order detail:', err);
-        const errMsg = err instanceof Error ? err.message : 'Order not found';
-        if (errMsg.includes('Verification email') || errMsg.includes('403')) {
-          setVerifyError(
-            'Please verify the billing or contact email associated with this consignment.'
-          );
+        if (err instanceof ApiError) {
+          if (err.status === 403) {
+            if (err.code === 'VERIFICATION_FAILED') {
+              setRequiresVerification(true);
+              setVerifyError('Email address does not match this consignment. Please try again.');
+            } else {
+              setIsUnauthorized(true);
+              setError('This order is associated with another atelier account.');
+            }
+          } else if (err.status === 404) {
+            setError('Order not found or unavailable. Please check the order reference number.');
+          } else {
+            setError(err.message || 'Unable to retrieve order details.');
+          }
         } else {
           setError('Order not found or unavailable. Please check the order reference number.');
         }
@@ -110,16 +133,27 @@ function OrderDetailContent() {
       const res = await OrderService.getOrderById(idOrNumber, {
         email: guestVerifyEmail.trim().toLowerCase(),
       });
-      setOrder(res);
-      router.replace(
-        `/account/orders/${encodeURIComponent(idOrNumber)}?email=${encodeURIComponent(
-          guestVerifyEmail.trim().toLowerCase()
-        )}`
-      );
-    } catch {
-      setVerifyError(
-        'Email address does not match this order record. Please re-enter the email used at checkout.'
-      );
+      if (res && 'requiresVerification' in res && res.requiresVerification) {
+        setRequiresVerification(true);
+        setVerifyError('Please enter the email address used at checkout.');
+      } else {
+        setOrder(res as OrderRecord);
+        setRequiresVerification(false);
+        setVerifyError(null);
+        router.replace(
+          `/account/orders/${encodeURIComponent(idOrNumber)}?email=${encodeURIComponent(
+            guestVerifyEmail.trim().toLowerCase()
+          )}`
+        );
+      }
+    } catch (err: unknown) {
+      if (err instanceof ApiError && (err.code === 'VERIFICATION_FAILED' || err.status === 403)) {
+        setVerifyError(
+          'Email address does not match this order record. Please re-enter the email used at checkout.'
+        );
+      } else {
+        setVerifyError('Unable to verify order. Please ensure the email address matches checkout.');
+      }
     } finally {
       setVerifyingGuest(false);
     }
@@ -224,7 +258,7 @@ function OrderDetailContent() {
             <div className="inline-block animate-spin rounded-full h-7 w-7 border-b-2 border-[var(--color-ink)] mb-3" />
             <p className="text-[12px] text-[var(--color-muted)]">Retrieving order details...</p>
           </div>
-        ) : verifyError && !order ? (
+        ) : (requiresVerification || verifyError) && !order ? (
           /* Guest Email Verification Screen */
           <div className="bg-[#f7f2ea] border border-[var(--color-line)] p-6 sm:p-8 max-w-md mx-auto text-center font-body">
             <ShieldCheck
@@ -239,8 +273,8 @@ function OrderDetailContent() {
               Verify Consignment
             </h2>
             <p className="text-[11.5px] text-[var(--color-muted)] mb-5 leading-relaxed">
-              Enter the email address provided at checkout for <strong>{idOrNumber}</strong> to view
-              order details.
+              For your privacy and security, enter the email address provided at checkout for{' '}
+              <strong>{idOrNumber}</strong> to view consignment details.
             </p>
 
             <form onSubmit={handleGuestVerify} className="space-y-3 text-left max-w-xs mx-auto">
@@ -259,7 +293,7 @@ function OrderDetailContent() {
               </div>
 
               {verifyError && (
-                <div className="p-2 bg-red-50 border border-red-200 text-red-900 text-[11px]">
+                <div className="p-2.5 bg-amber-50 border border-amber-200 text-amber-900 text-[11px] leading-relaxed">
                   {verifyError}
                 </div>
               )}
@@ -272,6 +306,33 @@ function OrderDetailContent() {
                 {verifyingGuest ? 'Verifying...' : 'Access Order Details'}
               </button>
             </form>
+          </div>
+        ) : isUnauthorized ? (
+          /* Unauthorized Order Access Screen */
+          <div className="bg-[#f7f2ea] border border-[var(--color-line)] p-8 text-center max-w-md mx-auto font-body">
+            <ShieldCheck
+              size={32}
+              strokeWidth={1.3}
+              className="mx-auto text-[var(--color-muted)] mb-2.5"
+            />
+            <h2
+              className="text-xl text-[var(--color-ink)] italic mb-1.5"
+              style={{ fontFamily: 'var(--font-display)' }}
+            >
+              Private Consignment
+            </h2>
+            <p className="text-[12px] text-[var(--color-muted)] mb-5 leading-relaxed">
+              This order is registered to a different customer profile. Please sign in with the
+              account used at checkout, or return to your orders.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-2 justify-center">
+              <Link
+                href="/account/orders"
+                className="inline-block bg-[var(--color-ink)] text-[var(--color-ivory)] px-5 py-2 text-[10.5px] uppercase tracking-[0.16em] font-medium hover:opacity-90"
+              >
+                My Orders
+              </Link>
+            </div>
           </div>
         ) : error || !order ? (
           /* Error State */

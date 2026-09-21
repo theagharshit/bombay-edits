@@ -92,9 +92,18 @@ export default async function OrdersPage({
 
   const zones = await prisma.shippingZone.findMany({ select: { id: true, label: true } });
 
+  const serializedOrders = JSON.parse(
+    JSON.stringify(
+      orders.map((o) => ({
+        ...o,
+        exchangeRateSnapshot: Number(o.exchangeRateSnapshot),
+      }))
+    )
+  );
+
   return (
     <OrdersListClient
-      data={orders}
+      data={serializedOrders}
       meta={buildPaginationMeta(totalCount, page, take)}
       counts={counts}
       zones={zones}

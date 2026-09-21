@@ -9,8 +9,10 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
   await requireAdmin();
   const { id } = await params;
 
-  const order = await prisma.order.findUnique({
-    where: { id },
+  const order = await prisma.order.findFirst({
+    where: {
+      OR: [{ id }, { orderNumber: id }],
+    },
     include: {
       items: true,
       customer: true,
@@ -39,9 +41,16 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
     customerOrderCount = agg._count.id;
   }
 
+  const serializedOrder = JSON.parse(
+    JSON.stringify({
+      ...order,
+      exchangeRateSnapshot: Number(order.exchangeRateSnapshot),
+    })
+  );
+
   return (
     <OrderDetailClient
-      order={order}
+      order={serializedOrder}
       customerStats={{ ltv: customerLtv, orderCount: customerOrderCount }}
     />
   );

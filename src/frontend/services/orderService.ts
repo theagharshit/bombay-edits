@@ -12,6 +12,13 @@ export interface OrderCreationResponse {
   status: string;
 }
 
+export type OrderLookupResponse =
+  | OrderRecord
+  | {
+      requiresVerification: true;
+      orderNumber: string;
+    };
+
 export class OrderService {
   public static async createOrder(data: CreateOrderDTO): Promise<OrderCreationResponse> {
     return ApiClient.post<OrderCreationResponse>('/api/orders', data);
@@ -29,10 +36,13 @@ export class OrderService {
     return ApiClient.get<OrderRecord[]>(endpoint);
   }
 
-  public static async getOrderById(id: string, params?: { email?: string }): Promise<OrderRecord> {
+  public static async getOrderById(
+    id: string,
+    params?: { email?: string }
+  ): Promise<OrderLookupResponse> {
     const query = params?.email
       ? `?email=${encodeURIComponent(params.email.toLowerCase().trim())}`
       : '';
-    return ApiClient.get<OrderRecord>(`/api/orders/${id}${query}`);
+    return ApiClient.get<OrderLookupResponse>(`/api/orders/${id}${query}`);
   }
 }
