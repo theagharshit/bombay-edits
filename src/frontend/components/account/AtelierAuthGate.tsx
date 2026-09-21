@@ -78,7 +78,7 @@ export function AtelierAuthGate() {
 
   return (
     <div className="w-full max-w-xl mx-auto py-8 sm:py-14 px-4 font-body">
-      {/* Header */}
+      {/* Header
       <div className="text-center mb-10">
         <span className="text-[10px] uppercase tracking-[0.25em] text-[#8A817C] mb-2 block font-medium">
           Private Client Access
@@ -89,7 +89,7 @@ export function AtelierAuthGate() {
         <p className="text-[13px] text-[#8A817C] mt-2 max-w-md mx-auto leading-relaxed">
           Sign in for personalized appointments, saved atelier measurements, and bespoke archives.
         </p>
-      </div>
+      </div> */}
 
       {/* Tabs */}
       <div className="flex border-b border-[#E5DFD5] mb-8">

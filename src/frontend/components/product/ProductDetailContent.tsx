@@ -318,15 +318,16 @@ export function ProductDetailContent({ product, relatedProducts }: Props) {
                 )}
               </button>
 
-              {/* Add to Wishlist Button */}
+              {/* Add to Wishlist Button with luxury hover mechanics and anti-jitter */}
               <button
                 type="button"
                 onClick={() => toggleWishlist(product.id)}
-                className={`flex-1 border py-3.5 px-4 text-[11px] uppercase tracking-[0.18em] font-medium transition-all duration-200 active:scale-98 rounded-none cursor-pointer flex items-center justify-center gap-2 ${
+                className={`flex-1 border py-3.5 px-4 text-[11px] uppercase tracking-[0.18em] font-medium transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 hover:shadow-xs active:translate-y-0 active:scale-98 rounded-none cursor-pointer select-none flex items-center justify-center gap-2 ${
                   wishlisted
-                    ? 'border-[var(--color-wine)] text-[var(--color-wine)] bg-[var(--color-wine-light)]'
-                    : 'border-[var(--color-deep-brown)]/50 text-[var(--color-deep-brown)] hover:border-[var(--color-wine)] hover:text-[var(--color-wine)] bg-transparent'
+                    ? 'border-[var(--color-wine)] text-white bg-[var(--color-wine)] hover:bg-[var(--color-wine)]/90 hover:border-[var(--color-wine)]'
+                    : 'border-[#DED8CF] text-[var(--color-deep-brown)] bg-white/95 hover:bg-[var(--color-deep-brown)] hover:text-[#FAF5EE] hover:border-[var(--color-deep-brown)]'
                 }`}
+                aria-label={wishlisted ? 'In Wishlist' : 'Add To Wishlist'}
               >
                 <svg
                   width="13"
@@ -335,10 +336,13 @@ export function ProductDetailContent({ product, relatedProducts }: Props) {
                   fill={wishlisted ? 'currentColor' : 'none'}
                   stroke="currentColor"
                   strokeWidth="1.5"
+                  className="pointer-events-none select-none"
                 >
                   <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                 </svg>
-                {wishlisted ? 'In Wishlist' : 'Add To Wishlist'}
+                <span className="pointer-events-none select-none">
+                  {wishlisted ? 'In Wishlist' : 'Add To Wishlist'}
+                </span>
               </button>
             </div>
 

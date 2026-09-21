@@ -16,8 +16,6 @@ const SIZES: Size[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
 export function ProductCard({ product, priority = false }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const [showQuickAdd, setShowQuickAdd] = useState(false);
-
   const { isWishlisted, toggleWishlist } = useWishlist();
   const { addItem, openCart } = useCart();
   const wishlisted = isWishlisted(product.id);
@@ -38,54 +36,35 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
       maxQuantity: 5,
     });
     openCart();
-    setShowQuickAdd(false);
   };
 
   return (
     <div
-      className="group flex flex-col relative w-full"
+      className="group flex flex-col relative w-full select-none"
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => {
-        setIsHovered(false);
-        setShowQuickAdd(false);
-      }}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Image Container (2:3 Editorial Portrait Aspect Ratio, Large & Immersive) */}
+      {/* Image Container (2:3 Editorial Portrait Aspect Ratio) */}
       <div className="relative aspect-[2/3] w-full rounded-none overflow-hidden bg-[#F7F5F0]">
+        {/* Clicking anywhere on the image container navigates to the product page */}
         <Link
           href={`/product/${product.slug}`}
-          className="relative block w-full h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
-          tabIndex={-1}
+          className="relative block w-full h-full cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
+          aria-label={`View ${product.name}`}
         >
-          {/* Primary Image */}
+          {/* Single Primary Image (No hover switch) */}
           <Image
             src={product.images[0]?.src || ''}
             alt={product.images[0]?.alt || product.name}
             fill
             sizes="(max-width: 640px) 80vw, (max-width: 1024px) 40vw, 340px"
-            className={`object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.04] ${
-              isHovered && product.images.length > 1 ? 'opacity-0 hidden md:block' : 'opacity-100'
-            }`}
+            className="object-cover object-top transition-transform duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04] pointer-events-none"
             priority={priority}
             unoptimized
           />
-
-          {/* Secondary Image (Hover Crossfade on Desktop) */}
-          {product.images.length > 1 && (
-            <Image
-              src={product.images[1]?.src || ''}
-              alt={product.images[1]?.alt || product.name}
-              fill
-              sizes="(max-width: 640px) 80vw, (max-width: 1024px) 40vw, 340px"
-              className={`object-cover object-top absolute inset-0 transition-opacity duration-500 hidden md:block ${
-                isHovered ? 'opacity-100' : 'opacity-0'
-              }`}
-              unoptimized
-            />
-          )}
         </Link>
 
-        {/* Badge (Top Left) — Sharp Editorial Tag with Brand Color Identity */}
+        {/* Badge (Top Left) — Sharp Editorial Tag */}
         {badgeText && (
           <span
             className={`absolute top-3 left-3 z-10 text-[9.5px] uppercase tracking-[0.16em] font-medium font-body px-2.5 py-1 rounded-none shadow-2xs select-none pointer-events-none border backdrop-blur-md transition-colors ${
@@ -100,17 +79,20 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           </span>
         )}
 
-        {/* Wishlist / Save Button (Top Right) with Translucent Background & Rounded Border */}
+        {/* Wishlist / Save Button (Top Right) with card-hover reveal and smooth tactile button hover */}
         <button
+          type="button"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
             toggleWishlist(product.id);
           }}
-          className={`absolute top-3 right-3 z-10 w-8 h-8 rounded-full border backdrop-blur-md flex items-center justify-center transition-all shadow-2xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass cursor-pointer ${
+          className={`absolute top-3 right-3 z-10 w-8 h-8 rounded-full border backdrop-blur-md flex items-center justify-center transition-all duration-300 ease-out shadow-2xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass cursor-pointer select-none ${
             wishlisted
-              ? 'bg-[#FAF2F0]/50 text-[var(--color-wine)] border-[var(--color-wine)]/40 hover:scale-110 active:scale-95'
-              : 'bg-white/40 text-[var(--color-deep-brown)] border-white/60 hover:bg-white/60 hover:border-[var(--color-wine)]/40 hover:text-[var(--color-wine)] hover:scale-110 active:scale-95'
+              ? 'opacity-100 bg-[#FAF2F0] text-[var(--color-wine)] border-[var(--color-wine)]/40 hover:bg-[var(--color-wine)] hover:text-white hover:border-[var(--color-wine)] active:scale-95'
+              : `${
+                  isHovered ? 'opacity-100' : 'opacity-100 md:opacity-0 md:group-hover:opacity-100'
+                } bg-white/90 text-[var(--color-deep-brown)] border-[#DED8CF] hover:bg-[var(--color-deep-brown)] hover:text-[#FAF5EE] hover:border-[var(--color-deep-brown)] active:scale-95`
           }`}
           aria-label={wishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
         >
@@ -123,40 +105,31 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
+            className="pointer-events-none select-none"
           >
             <path d="M19 23L10 16.5L1 23V3C1 2.46957 1.21071 1.96086 1.58579 1.58579C1.96086 1.21071 2.46957 1 3 1H17C17.5304 1 18.0391 1.21071 18.4142 1.58579C18.7893 1.96086 19 2.46957 19 3V23Z" />
           </svg>
         </button>
 
-        {/* Details & Quick-Add Popup Overlay (Translucent frosted glass matching the save icon) */}
+        {/* Bottom Details: Name & Money permanent beside each other; Size Selector below */}
         <div
-          className={`absolute inset-x-0 bottom-0 z-20 bg-white/40 backdrop-blur-md px-3.5 py-3 border-t border-white/60 rounded-none shadow-lg transition-all duration-300 ease-out flex flex-col items-start text-left gap-1.5 ${
-            isHovered || showQuickAdd
-              ? 'opacity-100 translate-y-0 pointer-events-auto'
-              : 'opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto'
-          }`}
+          className="absolute inset-x-0 bottom-0 z-20 bg-[#FAF7F2]/90 md:bg-white/85 backdrop-blur-md border-t border-white/80 px-3.5 py-2.5 transition-colors duration-500 ease-out select-none flex flex-col justify-center min-h-[64px] gap-1.5"
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Product Name (12px, All-Caps, Tracked, Left-Aligned) */}
-          <Link
-            href={`/product/${product.slug}`}
-            className="block group/title focus-visible:outline-none w-full text-left"
-          >
-            <h3
-              className="text-[12px] !text-[12px] font-normal uppercase tracking-[0.18em] text-[var(--color-deep-brown)] font-body truncate leading-snug group-hover/title:text-[var(--color-wine)] transition-colors text-left"
-              style={{ fontSize: '12px' }}
+          {/* Row 1: Product Name (Left) + Money / Price (Right beside it) — Permanent, never disappears */}
+          <div className="flex items-baseline justify-between gap-2 w-full">
+            <Link
+              href={`/product/${product.slug}`}
+              className="block truncate cursor-pointer select-none text-left focus-visible:outline-none flex-1 min-w-0"
+              aria-label={`View ${product.name}`}
             >
-              {product.name}
-            </h3>
-          </Link>
+              <h3 className="text-[12px] font-normal uppercase tracking-[0.16em] text-[var(--color-deep-brown)] font-body truncate leading-snug hover:text-[var(--color-wine)] transition-colors pointer-events-none select-none">
+                {product.name}
+              </h3>
+            </Link>
 
-          {/* Price & Add Button Row (Left-aligned price, right-aligned add button) */}
-          <div className="flex items-center justify-between w-full gap-2 font-body">
-            <div className="flex items-baseline gap-1.5 text-left">
-              <span
-                className="text-[12px] !text-[12px] font-normal text-[var(--color-deep-brown)] tracking-wide"
-                style={{ fontSize: '12px' }}
-              >
+            <div className="flex items-baseline gap-1.5 shrink-0 select-none pointer-events-none text-right font-body">
+              <span className="text-[12px] font-medium text-[var(--color-deep-brown)] tracking-tight">
                 Rs.{' '}
                 {product.price.toLocaleString('en-IN', {
                   minimumFractionDigits: 2,
@@ -164,7 +137,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                 })}
               </span>
               {product.compareAtPrice && product.compareAtPrice > product.price && (
-                <span className="text-[11px] text-[var(--color-muted)] line-through">
+                <span className="text-[10px] text-[var(--color-muted)] line-through">
                   Rs.{' '}
                   {product.compareAtPrice.toLocaleString('en-IN', {
                     minimumFractionDigits: 2,
@@ -173,65 +146,60 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                 </span>
               )}
             </div>
-
-            {/* + Add Button (Translucent styling matching save icon) */}
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setShowQuickAdd(!showQuickAdd);
-              }}
-              className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-none border text-[10px] uppercase tracking-[0.14em] font-medium transition-all duration-200 active:scale-95 focus-visible:outline-none cursor-pointer shrink-0 ${
-                showQuickAdd
-                  ? 'bg-[var(--color-deep-brown)]/85 text-[var(--color-champagne-light)] border-[var(--color-deep-brown)]'
-                  : 'border-white/60 bg-white/40 text-[var(--color-deep-brown)] hover:bg-white/65 hover:text-[var(--color-wine)] hover:border-[var(--color-wine)]/40 shadow-2xs'
-              }`}
-              aria-label={`Quick add ${product.name}`}
-            >
-              <svg
-                width="8"
-                height="8"
-                viewBox="0 0 10 10"
-                fill="currentColor"
-                className={`transition-transform duration-200 ${showQuickAdd ? 'rotate-45' : ''}`}
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M5 1a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 5 1z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              {showQuickAdd ? 'Close' : 'Add'}
-            </button>
           </div>
 
-          {/* Size Selection Area (Revealed when + Add is clicked) */}
-          {showQuickAdd && (
-            <div className="w-full pt-2 border-t border-white/50 flex flex-col gap-1.5 animate-in fade-in duration-200">
-              <span className="text-[9.5px] uppercase tracking-[0.16em] font-medium font-body text-[var(--color-deep-brown)]/80 text-left">
+          {/* Row 2: Size Selector Below — Unhovered label crossfading into interactive size buttons on hover */}
+          <div className="relative h-7 w-full overflow-hidden">
+            {/* Unhovered (Desktop): Discreet Sizing Label */}
+            <div
+              className={`hidden md:flex absolute inset-0 items-center justify-between text-left font-body transition-opacity duration-300 ease-out pointer-events-none select-none ${
+                isHovered ? 'opacity-0' : 'opacity-100 group-hover:opacity-0'
+              }`}
+            >
+              <span className="text-[9.5px] uppercase tracking-[0.18em] text-[var(--color-muted)] font-body">
                 Select Size
               </span>
-              <div className="flex flex-wrap gap-1">
-                {SIZES.map((size) => {
-                  const isAvailable = (product.stockBySize?.[size] ?? 1) > 0;
-                  return (
-                    <button
-                      key={size}
-                      disabled={!isAvailable}
-                      onClick={() => handleQuickAdd(size)}
-                      className={`flex-1 min-w-[28px] h-6 text-[10px] font-medium font-body uppercase border flex items-center justify-center transition-all rounded-none ${
-                        isAvailable
-                          ? 'border-white/60 text-[var(--color-deep-brown)] bg-white/50 hover:bg-white/80 hover:text-[var(--color-wine)] hover:border-[var(--color-wine)]/40 active:scale-95 cursor-pointer'
-                          : 'border-white/30 text-[var(--color-muted)]/40 cursor-not-allowed line-through'
-                      }`}
-                    >
-                      {size}
-                    </button>
-                  );
-                })}
-              </div>
+              <span className="text-[9px] uppercase tracking-[0.14em] text-[var(--color-deep-brown)]/60 font-body">
+                XS – XXL
+              </span>
             </div>
-          )}
+
+            {/* Hovered (Desktop) & Default (Mobile): Interactive Size Buttons */}
+            <div
+              className={`flex absolute inset-0 items-center justify-between gap-1 transition-opacity duration-300 ease-out select-none ${
+                isHovered
+                  ? 'opacity-100 pointer-events-auto'
+                  : 'opacity-100 md:opacity-0 md:pointer-events-none md:group-hover:opacity-100 md:group-hover:pointer-events-auto'
+              }`}
+            >
+              {SIZES.map((size) => {
+                const isAvailable = (product.stockBySize?.[size] ?? 1) > 0;
+                return (
+                  <button
+                    key={size}
+                    type="button"
+                    disabled={!isAvailable}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleQuickAdd(size);
+                    }}
+                    className={`flex-1 h-7 text-[10px] font-medium font-body uppercase border flex items-center justify-center transition-colors duration-200 ease-out select-none ${
+                      isAvailable
+                        ? 'border-[#DED8CF] text-[var(--color-deep-brown)] bg-white/95 hover:bg-[var(--color-deep-brown)] hover:text-[#FAF5EE] hover:border-[var(--color-deep-brown)] active:scale-95 cursor-pointer'
+                        : 'border-black/5 text-[#A8A29E]/40 cursor-not-allowed line-through bg-black/[0.02]'
+                    }`}
+                    aria-label={`Add size ${size}`}
+                    title={isAvailable ? `Add size ${size}` : `Size ${size} unavailable`}
+                  >
+                    <span className="pointer-events-none select-none tracking-wider font-semibold">
+                      {size}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
     </div>
