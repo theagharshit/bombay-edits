@@ -1,6 +1,14 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  type ReactNode,
+} from 'react';
 import { WishlistItem } from '@/types/cart';
 import { getDeviceFingerprint } from '@/frontend/utils/deviceFingerprint';
 
@@ -84,11 +92,20 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
     syncWishlistFromApi();
   }, [customer?.id, isAuthenticated]);
 
-  // Save to local storage and DB whenever items change
-  useEffect(() => {
-    localStorage.setItem('tbe-wishlist', JSON.stringify(items));
+  // Save to local storage and DB only when items actually change
+  const lastSyncedRef = useRef<string | null>(null);
 
-    // Only invoke guest-session if unauthenticated
+  useEffect(() => {
+    const currentJson = JSON.stringify(items);
+    localStorage.setItem('tbe-wishlist', currentJson);
+
+    // Skip redundant sync if items have not changed
+    if (lastSyncedRef.current === currentJson) {
+      return;
+    }
+    lastSyncedRef.current = currentJson;
+
+    // Only invoke guest-session if unauthenticated and has items or changes
     if (!isAuthenticated) {
       const fp = getDeviceFingerprint();
       fetch('/api/guest-session', {
