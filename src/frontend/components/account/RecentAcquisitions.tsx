@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { OrderService } from '@/frontend/services/orderService';
-import { OrderRecord } from '@/backend/models/orderModel';
+import type { OrderRecord } from '@/backend/models/orderModel';
 import { generatePlaceholderImage } from '@/frontend/utils/imageUtils';
 import { useAuth } from '@/frontend/context/AuthContext';
 

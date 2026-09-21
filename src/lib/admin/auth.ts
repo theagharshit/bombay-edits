@@ -26,7 +26,16 @@ export async function requireAdmin(): Promise<AdminSession> {
   if (!session?.user) {
     redirect('/admin/login');
   }
-  const role = (session.user as { role?: string }).role;
+  const user = session.user as {
+    id?: string;
+    name?: string | null;
+    email?: string | null;
+    role?: string;
+  };
+  if (!user.id) {
+    user.id = 'admin';
+  }
+  const role = user.role;
   if (!role || !['admin', 'OWNER', 'ADMIN', 'STAFF'].includes(role)) {
     redirect('/admin/login');
   }

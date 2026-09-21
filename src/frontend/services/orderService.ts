@@ -1,7 +1,7 @@
 import { ApiClient } from './apiClient';
 import { CreateOrderDTO } from '@/backend/types/api';
 
-import { OrderRecord } from '@/backend/models/orderModel';
+import type { OrderRecord } from '@/backend/models/orderModel';
 
 export interface OrderCreationResponse {
   orderId: string;

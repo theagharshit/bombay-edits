@@ -25,7 +25,7 @@ import { products } from '@/data/products';
 import { useCurrency } from '@/frontend/context/CurrencyContext';
 import { useAuth } from '@/frontend/context/AuthContext';
 import { OrderService } from '@/frontend/services/orderService';
-import { OrderRecord } from '@/backend/models/orderModel';
+import type { OrderRecord } from '@/backend/models/orderModel';
 
 export interface HeaderSearchProps {
   isOpen: boolean;

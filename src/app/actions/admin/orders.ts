@@ -66,7 +66,7 @@ export async function updateOrderStatus(
         fromStatus: currentStatus,
         toStatus: targetStatus,
         note,
-        actorId: session.user.id,
+        actorId: session.user?.id || 'admin',
       },
     });
 
@@ -98,7 +98,7 @@ export async function updateOrderStatus(
             referenceType: 'ORDER',
             referenceId: order.id,
             note: `Restock from cancelled order ${order.orderNumber}`,
-            actorId: session.user.id,
+            actorId: session.user?.id || 'admin',
           },
         });
       }
@@ -106,8 +106,8 @@ export async function updateOrderStatus(
 
     await writeAuditLog(
       {
-        actorId: session.user.id,
-        actorEmail: session.user.email as string,
+        actorId: session.user?.id || 'admin',
+        actorEmail: (session.user?.email as string) || 'admin@thebombayedit.com',
         action: 'UPDATE_ORDER_STATUS',
         entityType: 'Order',
         entityId: order.id,
@@ -139,8 +139,8 @@ export async function updateOrderNotes(orderId: string, internalNotes: string) {
   });
 
   await writeAuditLog({
-    actorId: session.user.id,
-    actorEmail: session.user.email as string,
+    actorId: session.user?.id || 'admin',
+    actorEmail: (session.user?.email as string) || 'admin@thebombayedit.com',
     action: 'UPDATE_ORDER_NOTES',
     entityType: 'Order',
     entityId: orderId,
@@ -163,8 +163,8 @@ export async function sendOrderEmail(type: string, orderId: string) {
   );
 
   await writeAuditLog({
-    actorId: session.user.id,
-    actorEmail: session.user.email as string,
+    actorId: session.user?.id || 'admin',
+    actorEmail: (session.user?.email as string) || 'admin@thebombayedit.com',
     action: 'SEND_ORDER_EMAIL',
     entityType: 'Order',
     entityId: orderId,

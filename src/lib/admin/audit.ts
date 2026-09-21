@@ -2,8 +2,8 @@ import { prisma } from '@/backend/db/prisma';
 import { Prisma } from '@prisma/client';
 
 type AuditLogInput = {
-  actorId: string;
-  actorEmail: string;
+  actorId?: string | null;
+  actorEmail?: string | null;
   action: string;
   entityType: string;
   entityId: string;
@@ -33,7 +33,7 @@ export async function writeAuditLog(
     const client = tx || prisma;
     await client.auditLog.create({
       data: {
-        userId: input.actorId,
+        userId: input.actorId || 'admin',
         action: input.action,
         entityType: input.entityType,
         entityId: input.entityId,

@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { useAuth } from '@/frontend/context/AuthContext';
 import { OrderService } from '@/frontend/services/orderService';
 import { ApiError } from '@/frontend/services/apiClient';
-import { OrderRecord } from '@/backend/models/orderModel';
+import type { OrderRecord } from '@/backend/models/orderModel';
 import { generatePlaceholderImage } from '@/frontend/utils/imageUtils';
 import {
   Package,

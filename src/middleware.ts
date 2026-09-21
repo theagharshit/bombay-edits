@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@/auth';
+import NextAuth from 'next-auth';
+import { authConfig } from '@/auth.config';
+
+const { auth } = NextAuth(authConfig);
 
 export const middleware = auth((request) => {
   const start = Date.now();
@@ -25,15 +28,17 @@ export const middleware = auth((request) => {
   const isAdminRoute = pathname.startsWith('/admin');
   const isLoginRoute = pathname === '/admin/login';
   const session = request.auth;
+  const role = (session?.user as { role?: string })?.role;
+  const isAuthorized = !!(session && role && ['admin', 'OWNER', 'ADMIN', 'STAFF'].includes(role));
 
   if (isAdminRoute && !isLoginRoute) {
-    if (!session || (session.user as { role?: string })?.role !== 'admin') {
+    if (!isAuthorized) {
       const loginUrl = new URL('/admin/login', request.url);
       return NextResponse.redirect(loginUrl);
     }
   }
 
-  if (isLoginRoute && session && (session.user as { role?: string })?.role === 'admin') {
+  if (isLoginRoute && isAuthorized) {
     const adminUrl = new URL('/admin', request.url);
     return NextResponse.redirect(adminUrl);
   }

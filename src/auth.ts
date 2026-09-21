@@ -1,7 +1,11 @@
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
+import { authConfig } from './auth.config';
+import { prisma } from '@/backend/db/prisma';
+import { verifyPassword } from '@/backend/utils/jwt';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  ...authConfig,
   providers: [
     Credentials({
       credentials: {
@@ -11,32 +15,46 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
 
-        const ADMIN_EMAIL = process.env.ADMIN_SEED_EMAIL || 'admin@thebombayedit.com';
+        const email = (credentials.email as string).trim().toLowerCase();
+        const password = credentials.password as string;
+
+        const ADMIN_EMAIL = (
+          process.env.ADMIN_SEED_EMAIL || 'admin@thebombayedit.com'
+        ).toLowerCase();
         const ADMIN_PASSWORD = process.env.ADMIN_SEED_PASSWORD || 'password123';
 
-        if (credentials.email === ADMIN_EMAIL && credentials.password === ADMIN_PASSWORD) {
-          return { id: '1', name: 'Admin', email: ADMIN_EMAIL, role: 'admin' };
+        // 1. Check seed admin credentials
+        if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+          return { id: 'admin-seed', name: 'Admin', email: ADMIN_EMAIL, role: 'OWNER' };
+        }
+
+        // 2. Check AdminUser in database
+        try {
+          const adminUser = await prisma.adminUser.findUnique({
+            where: { email },
+          });
+
+          if (adminUser && adminUser.isActive) {
+            const isValid = await verifyPassword(password, adminUser.passwordHash);
+            if (isValid) {
+              await prisma.adminUser.update({
+                where: { id: adminUser.id },
+                data: { lastLoginAt: new Date() },
+              });
+              return {
+                id: adminUser.id,
+                name: adminUser.name,
+                email: adminUser.email,
+                role: adminUser.role,
+              };
+            }
+          }
+        } catch {
+          // fallback if DB error
         }
 
         return null;
       },
     }),
   ],
-  callbacks: {
-    jwt({ token, user }) {
-      if (user) {
-        token.role = (user as { role?: string }).role;
-      }
-      return token;
-    },
-    session({ session, token }) {
-      if (session.user) {
-        (session.user as { role?: string }).role = token.role as string;
-      }
-      return session;
-    },
-  },
-  pages: {
-    signIn: '/admin/login',
-  },
 });

@@ -30,6 +30,21 @@ function getPrismaConstructor(): typeof PrismaClient {
 }
 
 function createPrismaClient(): PrismaClient {
+  if (typeof window !== 'undefined' || process.env.NEXT_RUNTIME === 'edge') {
+    return new Proxy({} as PrismaClient, {
+      get(_target, prop) {
+        if (prop === '$on' || prop === '$connect' || prop === '$disconnect') {
+          return () => {};
+        }
+        return () => {
+          throw new Error(
+            `PrismaClient cannot be executed in browser or Edge runtime (accessed property: ${String(prop)})`
+          );
+        };
+      },
+    });
+  }
+
   const Client = getPrismaConstructor();
   const client = new Client({
     log: [
@@ -57,6 +72,8 @@ function createPrismaClient(): PrismaClient {
 
 // If globalThis.prismaGlobal was cached before new models (like cartItem) were added, recreate it
 if (
+  typeof window === 'undefined' &&
+  process.env.NEXT_RUNTIME !== 'edge' &&
   globalThis.prismaGlobal &&
   (!('guestSession' in globalThis.prismaGlobal) || !('cartItem' in globalThis.prismaGlobal))
 ) {

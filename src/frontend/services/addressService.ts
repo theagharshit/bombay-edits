@@ -1,5 +1,9 @@
 import { ApiClient } from './apiClient';
-import { AddressRecord, CreateAddressDTO, UpdateAddressDTO } from '@/backend/models/addressModel';
+import type {
+  AddressRecord,
+  CreateAddressDTO,
+  UpdateAddressDTO,
+} from '@/backend/models/addressModel';
 
 export class AddressService {
   public static async getAddresses(email?: string): Promise<AddressRecord[]> {
