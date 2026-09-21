@@ -25,7 +25,7 @@ export function getDbPool(): Pool {
     ...config,
     max: 10,
     idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 3000,
+    connectionTimeoutMillis: 15000,
   });
 
   poolInstance.on('error', (err) => {

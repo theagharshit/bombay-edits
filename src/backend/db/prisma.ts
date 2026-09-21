@@ -124,10 +124,10 @@ export async function isPrismaConnected(): Promise<boolean> {
     } catch (err) {
       logger.warn('Prisma database ping failed', { error: err });
       isConnectedCache = false;
-      // Allow retry after 30 seconds if it failed
+      // Allow quick retry after 3 seconds if cold start caused temporary failure
       setTimeout(() => {
         isConnectedCache = null;
-      }, 30000);
+      }, 3000);
       return false;
     } finally {
       inFlightPingPromise = null;

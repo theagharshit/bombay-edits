@@ -258,20 +258,25 @@ export class GuestSessionModel {
 
     if ((await isPrismaConnected()) && prisma.guestSession) {
       try {
-        const updateData: Prisma.GuestSessionUpdateInput = {
-          cartData: cartItems as unknown as Prisma.InputJsonValue,
-          lastActiveAt: now,
-          expiresAt: newExpiresAt,
-        };
-
-        const existing = await prisma.guestSession.findUnique({
+        let sessionRecord = await prisma.guestSession.findUnique({
           where: { sessionToken },
         });
 
-        if (existing) {
+        if (!sessionRecord && deviceFingerprint) {
+          sessionRecord = await prisma.guestSession.findUnique({
+            where: { deviceFingerprint },
+          });
+        }
+
+        if (sessionRecord) {
           const updated = await prisma.guestSession.update({
-            where: { sessionToken },
-            data: updateData,
+            where: { id: sessionRecord.id },
+            data: {
+              sessionToken,
+              cartData: cartItems as unknown as Prisma.InputJsonValue,
+              lastActiveAt: now,
+              expiresAt: newExpiresAt,
+            },
           });
 
           return {
@@ -286,9 +291,16 @@ export class GuestSessionModel {
           };
         }
 
-        // If session didn't exist, create it
-        const created = await prisma.guestSession.create({
-          data: {
+        // Atomic upsert if record doesn't exist
+        const created = await prisma.guestSession.upsert({
+          where: deviceFingerprint ? { deviceFingerprint } : { sessionToken },
+          update: {
+            sessionToken,
+            cartData: cartItems as unknown as Prisma.InputJsonValue,
+            lastActiveAt: now,
+            expiresAt: newExpiresAt,
+          },
+          create: {
             sessionToken,
             deviceFingerprint: deviceFingerprint || null,
             cartData: cartItems as unknown as Prisma.InputJsonValue,
@@ -346,14 +358,21 @@ export class GuestSessionModel {
 
     if ((await isPrismaConnected()) && prisma.guestSession) {
       try {
-        const existing = await prisma.guestSession.findUnique({
+        let sessionRecord = await prisma.guestSession.findUnique({
           where: { sessionToken },
         });
 
-        if (existing) {
+        if (!sessionRecord && deviceFingerprint) {
+          sessionRecord = await prisma.guestSession.findUnique({
+            where: { deviceFingerprint },
+          });
+        }
+
+        if (sessionRecord) {
           const updated = await prisma.guestSession.update({
-            where: { sessionToken },
+            where: { id: sessionRecord.id },
             data: {
+              sessionToken,
               wishlistData: wishlistItems as unknown as Prisma.InputJsonValue,
               lastActiveAt: now,
               expiresAt: newExpiresAt,
@@ -372,8 +391,15 @@ export class GuestSessionModel {
           };
         }
 
-        const created = await prisma.guestSession.create({
-          data: {
+        const created = await prisma.guestSession.upsert({
+          where: deviceFingerprint ? { deviceFingerprint } : { sessionToken },
+          update: {
+            sessionToken,
+            wishlistData: wishlistItems as unknown as Prisma.InputJsonValue,
+            lastActiveAt: now,
+            expiresAt: newExpiresAt,
+          },
+          create: {
             sessionToken,
             deviceFingerprint: deviceFingerprint || null,
             cartData: [],
