@@ -1,47 +1,33 @@
 /**
- * Money helpers — all prices are integer minor units (paise / NPR paisa).
- * Never use Float. Never parseFloat on a price.
+ * Money helpers — all prices in the database are stored as whole currency units
+ * (e.g. 25600 = Rs. 25,600).
  */
-
-const CURRENCY_DECIMALS: Record<string, number> = {
-  NPR: 2,
-  INR: 2,
-  USD: 2,
-};
 
 /**
- * Format an integer minor-unit amount for display.
- * e.g. formatMoney(1850000, 'NPR') → 'Rs. 18,500.00'
+ * Format an integer currency amount for display.
+ * e.g. formatMoney(25600, 'NPR') → 'Rs. 25,600'
  */
-export function formatMoney(amountMinor: number, currencyCode = 'NPR'): string {
-  const decimals = CURRENCY_DECIMALS[currencyCode] ?? 2;
-  const major = amountMinor / Math.pow(10, decimals);
+export function formatMoney(amount: number, currencyCode = 'NPR'): string {
+  if (amount === undefined || amount === null || isNaN(amount)) {
+    return '0';
+  }
   const symbols: Record<string, string> = { NPR: 'Rs. ', INR: '₹', USD: '$' };
-  const symbol = symbols[currencyCode] ?? currencyCode + ' ';
-  return (
-    symbol +
-    major.toLocaleString('en-IN', {
-      minimumFractionDigits: decimals,
-      maximumFractionDigits: decimals,
-    })
-  );
+  const symbol = symbols[currencyCode] ?? (currencyCode ? `${currencyCode} ` : 'Rs. ');
+  return symbol + Math.round(amount).toLocaleString('en-IN');
 }
 
 /**
- * Convert a display value (e.g. "18500") to minor units (e.g. 1850000).
- * Accepts decimal strings like "185.50" → 18550
+ * Convert a display value string (e.g. "25,600") to integer number.
  */
-export function toMinorUnits(displayValue: string, currencyCode = 'NPR'): number {
-  const decimals = CURRENCY_DECIMALS[currencyCode] ?? 2;
+export function toMinorUnits(displayValue: string): number {
   const parsed = parseFloat(displayValue.replace(/[^0-9.]/g, ''));
   if (isNaN(parsed)) throw new Error(`Invalid money value: ${displayValue}`);
-  return Math.round(parsed * Math.pow(10, decimals));
+  return Math.round(parsed);
 }
 
 /**
- * Convert minor units to a display major number (for form inputs).
+ * Convert integer amount to a display major number (for form inputs).
  */
-export function fromMinorUnits(amountMinor: number, currencyCode = 'NPR'): number {
-  const decimals = CURRENCY_DECIMALS[currencyCode] ?? 2;
-  return amountMinor / Math.pow(10, decimals);
+export function fromMinorUnits(amount: number): number {
+  return amount;
 }
