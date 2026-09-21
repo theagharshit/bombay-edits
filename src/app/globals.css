@@ -431,3 +431,39 @@ input[type='reset']:disabled,
   font-family: var(--font-body);
   font-weight: 400;
 }
+
+/* ─── Sober & Refined Form Validation (Wrong Email / Error State) ────── */
+
+/* Invalid email inputs (when flagged or when blurred after invalid input) — completely static, NO shaking */
+input[type='email']:user-invalid:not(:focus),
+input[type='email'].is-invalid,
+input[type='email'].input-error,
+input[type='email'][aria-invalid='true'],
+.input-error {
+  border-color: rgba(100, 28, 46, 0.45) !important;
+  background-color: #faf5f3 !important;
+  color: var(--color-deep-brown) !important;
+}
+
+/* Sober focus state when wrong/invalid — calm hairline border, no glow */
+input[type='email']:user-invalid:focus,
+input[type='email'].is-invalid:focus,
+input[type='email'].input-error:focus,
+input[type='email'][aria-invalid='true']:focus,
+.input-error:focus {
+  outline: 1px solid var(--color-wine) !important;
+  outline-offset: 0 !important;
+  border-color: var(--color-wine) !important;
+}
+
+/* Subtle, sober error message text — stationary, clean */
+.field-error-sober,
+.error-text-sober {
+  display: block;
+  margin-top: 0.375rem;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--color-wine);
+  font-family: var(--font-body);
+  opacity: 0.92;
+}
