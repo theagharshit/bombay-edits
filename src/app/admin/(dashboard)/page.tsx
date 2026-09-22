@@ -1,5 +1,4 @@
 import { prisma } from '@/backend/db/prisma';
-import { isPrismaConnected } from '@/backend/db/prisma';
 import { requireAdmin } from '@/lib/admin/auth';
 import { formatMoney } from '@/lib/admin/money';
 import Link from 'next/link';
@@ -11,10 +10,71 @@ export const dynamic = 'force-dynamic';
 export default async function AdminDashboard() {
   await requireAdmin();
 
-  // Check database connectivity first
-  const dbConnected = await isPrismaConnected();
+  const today = startOfDay(new Date());
+  const yesterday = startOfDay(subDays(new Date(), 1));
+  const last30 = subDays(new Date(), 30);
 
-  if (!dbConnected) {
+  let todayOrders,
+    yesterdayOrders,
+    openOrders,
+    last30Revenue,
+    totalCustomers,
+    lowStockProducts,
+    pendingReviews,
+    recentOrders;
+
+  try {
+    [
+      todayOrders,
+      yesterdayOrders,
+      openOrders,
+      last30Revenue,
+      totalCustomers,
+      lowStockProducts,
+      pendingReviews,
+      recentOrders,
+    ] = await Promise.all([
+      prisma.order.aggregate({
+        where: { createdAt: { gte: today }, status: { not: 'cancelled' } },
+        _sum: { total: true },
+        _count: { id: true },
+      }),
+      prisma.order.aggregate({
+        where: { createdAt: { gte: yesterday, lt: today }, status: { not: 'cancelled' } },
+        _sum: { total: true },
+        _count: { id: true },
+      }),
+      prisma.order.count({ where: { status: { in: ['new', 'confirmed'] } } }),
+      prisma.order.aggregate({
+        where: { createdAt: { gte: last30 }, status: { not: 'cancelled' } },
+        _sum: { total: true },
+      }),
+      prisma.customer.count(),
+      prisma.productSizeStock.findMany({
+        where: { stockQuantity: { lte: 3 } },
+        include: {
+          product: { select: { id: true, name: true, lowStockThreshold: true } },
+          size: true,
+        },
+        take: 10,
+      }),
+      prisma.review.count({ where: { status: 'PENDING' } }),
+      prisma.order.findMany({
+        orderBy: { createdAt: 'desc' },
+        take: 8,
+        select: {
+          id: true,
+          orderNumber: true,
+          customerFirstName: true,
+          customerLastName: true,
+          total: true,
+          currency: true,
+          status: true,
+          createdAt: true,
+        },
+      }),
+    ]);
+  } catch {
     return (
       <div className="p-4 md:p-8 max-w-[1440px] mx-auto pb-16">
         <div className="mb-8">
@@ -25,78 +85,14 @@ export default async function AdminDashboard() {
           <DatabaseZap className="w-10 h-10 text-amber-500 mx-auto mb-4" />
           <h2 className="text-lg font-semibold text-amber-800 mb-2">Database Unavailable</h2>
           <p className="text-sm text-amber-700 max-w-md mx-auto mb-4">
-            Cannot connect to PostgreSQL at{' '}
-            <code className="bg-amber-100 px-1.5 py-0.5 rounded text-xs">localhost:5432</code>.
-            Please ensure the database server is running and the{' '}
+            Cannot connect to PostgreSQL. Please ensure the database server is running and the{' '}
             <code className="bg-amber-100 px-1.5 py-0.5 rounded text-xs">DATABASE_URL</code> in your{' '}
             <code className="bg-amber-100 px-1.5 py-0.5 rounded text-xs">.env</code> is correct.
           </p>
-          <div className="text-xs text-amber-600 bg-amber-100 rounded p-3 font-mono max-w-lg mx-auto text-left">
-            brew services start postgresql@17
-            <br />
-            createdb bombay_edits
-            <br />
-            npx prisma db push
-          </div>
         </div>
       </div>
     );
   }
-
-  const today = startOfDay(new Date());
-  const yesterday = startOfDay(subDays(new Date(), 1));
-  const last30 = subDays(new Date(), 30);
-
-  const [
-    todayOrders,
-    yesterdayOrders,
-    openOrders,
-    last30Revenue,
-    totalCustomers,
-    lowStockProducts,
-    pendingReviews,
-    recentOrders,
-  ] = await Promise.all([
-    prisma.order.aggregate({
-      where: { createdAt: { gte: today }, status: { not: 'cancelled' } },
-      _sum: { total: true },
-      _count: { id: true },
-    }),
-    prisma.order.aggregate({
-      where: { createdAt: { gte: yesterday, lt: today }, status: { not: 'cancelled' } },
-      _sum: { total: true },
-      _count: { id: true },
-    }),
-    prisma.order.count({ where: { status: { in: ['new', 'confirmed'] } } }),
-    prisma.order.aggregate({
-      where: { createdAt: { gte: last30 }, status: { not: 'cancelled' } },
-      _sum: { total: true },
-    }),
-    prisma.customer.count(),
-    prisma.productSizeStock.findMany({
-      where: { stockQuantity: { lte: 3 } },
-      include: {
-        product: { select: { id: true, name: true, lowStockThreshold: true } },
-        size: true,
-      },
-      take: 10,
-    }),
-    prisma.review.count({ where: { status: 'PENDING' } }),
-    prisma.order.findMany({
-      orderBy: { createdAt: 'desc' },
-      take: 8,
-      select: {
-        id: true,
-        orderNumber: true,
-        customerFirstName: true,
-        customerLastName: true,
-        total: true,
-        currency: true,
-        status: true,
-        createdAt: true,
-      },
-    }),
-  ]);
 
   const todaySales = todayOrders._sum.total || 0;
   const todayCount = todayOrders._count.id;

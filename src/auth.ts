@@ -6,6 +6,18 @@ import { verifyPassword } from '@/backend/utils/jwt';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,
+  logger: {
+    error(error) {
+      if (
+        error.name === 'CredentialsSignin' ||
+        (error as { type?: string }).type === 'CredentialsSignin'
+      ) {
+        console.warn('[auth] Sign-in failed: Invalid email or password');
+        return;
+      }
+      console.error('[auth][error]', error);
+    },
+  },
   providers: [
     Credentials({
       credentials: {

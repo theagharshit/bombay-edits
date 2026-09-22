@@ -17,7 +17,8 @@
     "prisma:push": "prisma db push",
     "prisma:seed": "tsx prisma/seed.ts",
     "db:setup": "prisma db push && tsx prisma/seed.ts",
-    "prepare": "husky"
+    "prepare": "husky",
+    "push": "npm run lint:fix && npm run format && npm run test"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
