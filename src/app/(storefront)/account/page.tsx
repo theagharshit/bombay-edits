@@ -26,7 +26,7 @@ export default function AccountPage() {
 
   if (!isAuthenticated) {
     return (
-      <div className="bg-[#FAF6F0] min-h-screen font-body py-12">
+      <div className="bg-[#FAF6F0] font-body py-4 sm:py-6">
         <Suspense fallback={null}>
           <AtelierAuthGate />
         </Suspense>

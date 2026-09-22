@@ -123,44 +123,47 @@ export function AtelierAuthGate() {
   };
 
   return (
-    <div className="w-full max-w-xl mx-auto py-8 sm:py-14 px-4 font-body">
+    <div className="w-full max-w-sm mx-auto py-8 sm:py-14 px-4 font-body">
       {/* Tabs */}
-      <div className="flex border-b border-[#E5DFD5] mb-8">
+      <div className="flex border-b border-[#EAE3DA] mb-6">
         <button
+          type="button"
           onClick={() => {
             setActiveTab('signin');
             setError(null);
           }}
-          className={`flex-1 py-3 text-[11px] uppercase tracking-[0.2em] font-medium transition-colors cursor-pointer text-center ${
+          className={`flex-1 pb-2.5 text-[10px] uppercase tracking-[0.2em] font-medium transition-colors cursor-pointer text-center -mb-px ${
             activeTab === 'signin'
-              ? 'border-b-2 border-[#4A3025] text-[#4A3025] font-semibold'
-              : 'text-[#8A817C] hover:text-[#4A3025]'
+              ? 'border-b border-[#4A3025] text-[#4A3025] font-semibold'
+              : 'border-b border-transparent text-[#8A817C] hover:text-[#4A3025]'
           }`}
         >
           Sign In
         </button>
         <button
+          type="button"
           onClick={() => {
             setActiveTab('register');
             setError(null);
           }}
-          className={`flex-1 py-3 text-[11px] uppercase tracking-[0.2em] font-medium transition-colors cursor-pointer text-center ${
+          className={`flex-1 pb-2.5 text-[10px] uppercase tracking-[0.2em] font-medium transition-colors cursor-pointer text-center -mb-px ${
             activeTab === 'register'
-              ? 'border-b-2 border-[#4A3025] text-[#4A3025] font-semibold'
-              : 'text-[#8A817C] hover:text-[#4A3025]'
+              ? 'border-b border-[#4A3025] text-[#4A3025] font-semibold'
+              : 'border-b border-transparent text-[#8A817C] hover:text-[#4A3025]'
           }`}
         >
           Create Account
         </button>
         <button
+          type="button"
           onClick={() => {
             setActiveTab('guest-lookup');
             setError(null);
           }}
-          className={`flex-1 py-3 text-[11px] uppercase tracking-[0.2em] font-medium transition-colors cursor-pointer text-center ${
+          className={`flex-1 pb-2.5 text-[10px] uppercase tracking-[0.2em] font-medium transition-colors cursor-pointer text-center -mb-px ${
             activeTab === 'guest-lookup'
-              ? 'border-b-2 border-[#4A3025] text-[#4A3025] font-semibold'
-              : 'text-[#8A817C] hover:text-[#4A3025]'
+              ? 'border-b border-[#4A3025] text-[#4A3025] font-semibold'
+              : 'border-b border-transparent text-[#8A817C] hover:text-[#4A3025]'
           }`}
         >
           Guest Lookup
@@ -169,46 +172,38 @@ export function AtelierAuthGate() {
 
       {/* Sign In Form */}
       {activeTab === 'signin' && (
-        <form
-          noValidate
-          onSubmit={handleLogin}
-          className="space-y-6 bg-white/70 border border-[#E5DFD5] p-6 sm:p-8"
-        >
+        <form noValidate onSubmit={handleLogin} className="space-y-4">
           <div>
-            <label className="block text-[10px] uppercase tracking-[0.2em] text-[#8A817C] mb-2 font-medium">
-              Email Address
-            </label>
             <input
               type="email"
+              aria-label="Email Address"
               value={loginForm.email}
               aria-invalid={error ? 'true' : undefined}
               onChange={(e) => {
                 setLoginForm({ ...loginForm, email: e.target.value });
                 if (error) setError(null);
               }}
-              className="w-full bg-[#FAF6F0] border border-[#E5DFD5] px-4 py-3 text-[13px] text-[#4A3025] focus:outline-none focus:border-[#4A3025] transition-colors rounded-none"
-              placeholder="e.g. client@bombayedits.com"
+              className="w-full bg-white/70 border border-[#DDD5CA] px-3.5 py-2.5 text-[12px] text-[#4A3025] placeholder-[#B5ADA4] focus:outline-none focus:border-[#4A3025] focus:bg-white transition-all rounded-none"
+              placeholder="Email Address"
             />
           </div>
 
           <div>
-            <label className="block text-[10px] uppercase tracking-[0.2em] text-[#8A817C] mb-2 font-medium">
-              Password
-            </label>
             <input
               type="password"
+              aria-label="Password"
               value={loginForm.password}
               onChange={(e) => {
                 setLoginForm({ ...loginForm, password: e.target.value });
                 if (error) setError(null);
               }}
-              className="w-full bg-[#FAF6F0] border border-[#E5DFD5] px-4 py-3 text-[13px] text-[#4A3025] focus:outline-none focus:border-[#4A3025] transition-colors rounded-none"
-              placeholder="••••••••"
+              className="w-full bg-white/70 border border-[#DDD5CA] px-3.5 py-2.5 text-[12px] text-[#4A3025] placeholder-[#B5ADA4] focus:outline-none focus:border-[#4A3025] focus:bg-white transition-all rounded-none"
+              placeholder="Password"
             />
           </div>
 
           {error && (
-            <p className="text-[11.5px] text-[var(--color-wine)] tracking-wide font-body text-center">
+            <p className="text-[11px] text-[var(--color-wine)] tracking-wide font-body text-center">
               {error}
             </p>
           )}
@@ -216,7 +211,7 @@ export function AtelierAuthGate() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full py-3.5 bg-[#4A3025] text-[#FAF6F0] text-[11px] uppercase tracking-[0.22em] font-medium hover:bg-[#34221A] disabled:opacity-50 transition-colors cursor-pointer rounded-none"
+            className="w-full py-2.5 sm:py-3 bg-[#4A3025] text-[#FAF6F0] text-[10px] uppercase tracking-[0.22em] font-medium hover:bg-[#34221A] disabled:opacity-50 transition-colors cursor-pointer rounded-none mt-2"
           >
             {submitting ? 'Entering Atelier...' : 'Sign In'}
           </button>
@@ -225,95 +220,81 @@ export function AtelierAuthGate() {
 
       {/* Register Form */}
       {activeTab === 'register' && (
-        <form
-          noValidate
-          onSubmit={handleRegister}
-          className="space-y-5 bg-white/70 border border-[#E5DFD5] p-6 sm:p-8"
-        >
-          <div className="grid grid-cols-2 gap-4">
+        <form noValidate onSubmit={handleRegister} className="space-y-4">
+          <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-[10px] uppercase tracking-[0.2em] text-[#8A817C] mb-2 font-medium">
-                First Name
-              </label>
               <input
                 type="text"
+                aria-label="First Name"
                 value={regForm.firstName}
                 onChange={(e) => {
                   setRegForm({ ...regForm, firstName: e.target.value });
                   if (error) setError(null);
                 }}
-                className="w-full bg-[#FAF6F0] border border-[#E5DFD5] px-4 py-3 text-[13px] text-[#4A3025] focus:outline-none focus:border-[#4A3025] transition-colors rounded-none"
-                placeholder="Anya"
+                className="w-full bg-white/70 border border-[#DDD5CA] px-3.5 py-2.5 text-[12px] text-[#4A3025] placeholder-[#B5ADA4] focus:outline-none focus:border-[#4A3025] focus:bg-white transition-all rounded-none"
+                placeholder="First Name"
               />
             </div>
             <div>
-              <label className="block text-[10px] uppercase tracking-[0.2em] text-[#8A817C] mb-2 font-medium">
-                Last Name
-              </label>
               <input
                 type="text"
+                aria-label="Last Name"
                 value={regForm.lastName}
                 onChange={(e) => {
                   setRegForm({ ...regForm, lastName: e.target.value });
                   if (error) setError(null);
                 }}
-                className="w-full bg-[#FAF6F0] border border-[#E5DFD5] px-4 py-3 text-[13px] text-[#4A3025] focus:outline-none focus:border-[#4A3025] transition-colors rounded-none"
-                placeholder="Sharma"
+                className="w-full bg-white/70 border border-[#DDD5CA] px-3.5 py-2.5 text-[12px] text-[#4A3025] placeholder-[#B5ADA4] focus:outline-none focus:border-[#4A3025] focus:bg-white transition-all rounded-none"
+                placeholder="Last Name"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-[10px] uppercase tracking-[0.2em] text-[#8A817C] mb-2 font-medium">
-              Email Address
-            </label>
             <input
               type="email"
+              aria-label="Email Address"
               value={regForm.email}
               aria-invalid={error ? 'true' : undefined}
               onChange={(e) => {
                 setRegForm({ ...regForm, email: e.target.value });
                 if (error) setError(null);
               }}
-              className="w-full bg-[#FAF6F0] border border-[#E5DFD5] px-4 py-3 text-[13px] text-[#4A3025] focus:outline-none focus:border-[#4A3025] transition-colors rounded-none"
-              placeholder="client@bombayedits.com"
+              className="w-full bg-white/70 border border-[#DDD5CA] px-3.5 py-2.5 text-[12px] text-[#4A3025] placeholder-[#B5ADA4] focus:outline-none focus:border-[#4A3025] focus:bg-white transition-all rounded-none"
+              placeholder="Email Address"
             />
           </div>
 
           <div>
-            <label className="block text-[10px] uppercase tracking-[0.2em] text-[#8A817C] mb-2 font-medium">
-              Phone Number (Optional)
-            </label>
             <input
               type="tel"
+              aria-label="Phone Number (Optional)"
               value={regForm.phone}
               onChange={(e) => {
                 setRegForm({ ...regForm, phone: e.target.value });
                 if (error) setError(null);
               }}
-              className="w-full bg-[#FAF6F0] border border-[#E5DFD5] px-4 py-3 text-[13px] text-[#4A3025] focus:outline-none focus:border-[#4A3025] transition-colors rounded-none"
-              placeholder="+91 98200 00000"
+              className="w-full bg-white/70 border border-[#DDD5CA] px-3.5 py-2.5 text-[12px] text-[#4A3025] placeholder-[#B5ADA4] focus:outline-none focus:border-[#4A3025] focus:bg-white transition-all rounded-none"
+              placeholder="Phone Number (Optional)"
             />
           </div>
 
           <div>
-            <label className="block text-[10px] uppercase tracking-[0.2em] text-[#8A817C] mb-2 font-medium">
-              Password (Min 6 Characters)
-            </label>
             <input
               type="password"
+              aria-label="Password (min 6 characters)"
               value={regForm.password}
               onChange={(e) => {
                 setRegForm({ ...regForm, password: e.target.value });
                 if (error) setError(null);
               }}
-              className="w-full bg-[#FAF6F0] border border-[#E5DFD5] px-4 py-3 text-[13px] text-[#4A3025] focus:outline-none focus:border-[#4A3025] transition-colors rounded-none"
-              placeholder="••••••••"
+              className="w-full bg-white/70 border border-[#DDD5CA] px-3.5 py-2.5 text-[12px] text-[#4A3025] placeholder-[#B5ADA4] focus:outline-none focus:border-[#4A3025] focus:bg-white transition-all rounded-none"
+              placeholder="Password (min 6 characters)"
             />
           </div>
 
           {error && (
-            <p className="text-[11.5px] text-[var(--color-wine)] tracking-wide font-body text-center">
+            <p className="text-[11px] text-[var(--color-wine)] tracking-wide font-body text-center">
               {error}
             </p>
           )}
@@ -321,7 +302,7 @@ export function AtelierAuthGate() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full py-3.5 bg-[#4A3025] text-[#FAF6F0] text-[11px] uppercase tracking-[0.22em] font-medium hover:bg-[#34221A] disabled:opacity-50 transition-colors cursor-pointer rounded-none mt-2"
+            className="w-full py-2.5 sm:py-3 bg-[#4A3025] text-[#FAF6F0] text-[10px] uppercase tracking-[0.22em] font-medium hover:bg-[#34221A] disabled:opacity-50 transition-colors cursor-pointer rounded-none mt-2"
           >
             {submitting ? 'Creating Membership...' : 'Create Atelier Account'}
           </button>
@@ -330,58 +311,50 @@ export function AtelierAuthGate() {
 
       {/* Guest Order Lookup */}
       {activeTab === 'guest-lookup' && (
-        <form
-          noValidate
-          onSubmit={handleLookup}
-          className="space-y-6 bg-white/70 border border-[#E5DFD5] p-6 sm:p-8"
-        >
-          <p className="text-[13px] text-[#8A817C] leading-relaxed">
+        <form noValidate onSubmit={handleLookup} className="space-y-4">
+          <p className="text-[12px] text-[#8A817C] leading-relaxed mb-3">
             Placed an order as a guest? Enter your consignment order number to review dispatch
-            status and details without creating an account.
+            status and details.
           </p>
 
           <div>
-            <label className="block text-[10px] uppercase tracking-[0.2em] text-[#8A817C] mb-2 font-medium">
-              Order Number
-            </label>
             <input
               type="text"
+              aria-label="Order Number"
               value={lookupForm.orderNumber}
               onChange={(e) => {
                 setLookupForm({ ...lookupForm, orderNumber: e.target.value });
                 if (error) setError(null);
               }}
-              className="w-full bg-[#FAF6F0] border border-[#E5DFD5] px-4 py-3 text-[13px] text-[#4A3025] font-mono focus:outline-none focus:border-[#4A3025] transition-colors rounded-none"
-              placeholder="e.g. TBE-2026-89329"
+              className="w-full bg-white/70 border border-[#DDD5CA] px-3.5 py-2.5 text-[12px] text-[#4A3025] font-mono placeholder-[#B5ADA4] focus:outline-none focus:border-[#4A3025] focus:bg-white transition-all rounded-none"
+              placeholder="Order Number (e.g. TBE-2026-89329)"
             />
           </div>
 
           <div>
-            <label className="block text-[10px] uppercase tracking-[0.2em] text-[#8A817C] mb-2 font-medium">
-              Billing / Contact Email
-            </label>
             <input
               type="email"
+              aria-label="Billing / Contact Email"
               value={lookupForm.email}
               aria-invalid={error ? 'true' : undefined}
               onChange={(e) => {
                 setLookupForm({ ...lookupForm, email: e.target.value });
                 if (error) setError(null);
               }}
-              className="w-full bg-[#FAF6F0] border border-[#E5DFD5] px-4 py-3 text-[13px] text-[#4A3025] focus:outline-none focus:border-[#4A3025] transition-colors rounded-none"
-              placeholder="email used at checkout"
+              className="w-full bg-white/70 border border-[#DDD5CA] px-3.5 py-2.5 text-[12px] text-[#4A3025] placeholder-[#B5ADA4] focus:outline-none focus:border-[#4A3025] focus:bg-white transition-all rounded-none"
+              placeholder="Billing / Contact Email"
             />
           </div>
 
           {error && (
-            <p className="text-[11.5px] text-[var(--color-wine)] tracking-wide font-body text-center">
+            <p className="text-[11px] text-[var(--color-wine)] tracking-wide font-body text-center">
               {error}
             </p>
           )}
 
           <button
             type="submit"
-            className="w-full py-3.5 bg-[#4A3025] text-[#FAF6F0] text-[11px] uppercase tracking-[0.22em] font-medium hover:bg-[#34221A] transition-colors cursor-pointer rounded-none"
+            className="w-full py-2.5 sm:py-3 bg-[#4A3025] text-[#FAF6F0] text-[10px] uppercase tracking-[0.22em] font-medium hover:bg-[#34221A] transition-colors cursor-pointer rounded-none mt-2"
           >
             Track Guest Order
           </button>
