@@ -76,7 +76,7 @@ export class CartModel {
         }
 
         if (dbItems.length > 0) {
-          return dbItems.map((item) => ({
+          const mapped = dbItems.map((item) => ({
             productId: item.productId || item.productSlug,
             slug: item.productSlug,
             name: item.name,
@@ -87,6 +87,7 @@ export class CartModel {
             quantity: item.quantity,
             maxQuantity: item.maxQuantity,
           }));
+          return mergeCarts(mapped, []);
         }
       } catch (err) {
         logger.warn('Failed to fetch cart from Prisma, checking memory store', { error: err });

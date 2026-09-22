@@ -70,9 +70,9 @@ export default function CartPage() {
           {/* Left — Items */}
           <div className="lg:w-2/3">
             <div className="space-y-12">
-              {items.map((item) => (
+              {items.map((item, idx) => (
                 <div
-                  key={`${item.productId}-${item.size}`}
+                  key={`${item.productId || item.slug}-${item.size}-${idx}`}
                   className="flex flex-col md:flex-row"
                   style={{
                     gap: '48px',

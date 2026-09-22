@@ -871,8 +871,11 @@ export default function CheckoutPage() {
             </h2>
 
             <div className="space-y-6 mb-8 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-              {items.map((item) => (
-                <div key={`${item.productId}-${item.size}`} className="flex gap-4">
+              {items.map((item, idx) => (
+                <div
+                  key={`${item.productId || item.slug}-${item.size}-${idx}`}
+                  className="flex gap-4"
+                >
                   <div className="w-20 aspect-[3/4] relative flex-shrink-0 border border-border">
                     <Image
                       src={item.image || generatePlaceholderImage(80, 107, item.productId)}

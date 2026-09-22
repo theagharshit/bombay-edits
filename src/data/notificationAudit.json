@@ -4,6 +4,14 @@
     "error": "You can only send testing emails to your own email address (ya828197@gmail.com). To send emails to other recipients, please verify a domain at resend.com/domains, and change the `from` address to an email using this domain.",
     "provider": "resend",
     "channel": "email",
+    "recipient": "yash@gmail.com",
+    "timestamp": "2026-09-22T12:05:58.132Z"
+  },
+  {
+    "success": false,
+    "error": "You can only send testing emails to your own email address (ya828197@gmail.com). To send emails to other recipients, please verify a domain at resend.com/domains, and change the `from` address to an email using this domain.",
+    "provider": "resend",
+    "channel": "email",
     "recipient": "iit2023232@iiita.ac.in",
     "timestamp": "2026-09-22T12:03:01.139Z"
   },

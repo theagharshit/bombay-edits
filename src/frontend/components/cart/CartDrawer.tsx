@@ -215,9 +215,9 @@ export function CartDrawer() {
             </div>
           ) : (
             <div className="py-2">
-              {items.map((item) => (
+              {items.map((item, idx) => (
                 <div
-                  key={`${item.productId}-${item.slug}-${item.size}`}
+                  key={`${item.productId || item.slug}-${item.size}-${idx}`}
                   className="py-6 flex gap-5 first:pt-4 last:pb-4 group"
                 >
                   {/* Item Image */}

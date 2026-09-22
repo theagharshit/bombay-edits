@@ -48,6 +48,26 @@ function isSameCartItem(
   return Boolean(matchId && sizeA === sizeB && matchColour);
 }
 
+function deduplicateCartItems(items: CartItem[]): CartItem[] {
+  if (!Array.isArray(items) || items.length === 0) return [];
+  const consolidated: CartItem[] = [];
+  for (const item of items) {
+    if (!item || (!item.productId && !item.slug)) continue;
+    const existingIndex = consolidated.findIndex((c) => isSameCartItem(c, item));
+    if (existingIndex >= 0) {
+      const existing = consolidated[existingIndex];
+      const max = item.maxQuantity || existing.maxQuantity || 10;
+      consolidated[existingIndex] = {
+        ...existing,
+        quantity: Math.min(existing.quantity + (item.quantity || 1), max),
+      };
+    } else {
+      consolidated.push({ ...item });
+    }
+  }
+  return consolidated;
+}
+
 function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
     case 'ADD_ITEM': {
@@ -105,7 +125,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
     case 'CLOSE_CART':
       return { ...state, isOpen: false };
     case 'HYDRATE':
-      return { ...state, items: action.payload };
+      return { ...state, items: deduplicateCartItems(action.payload) };
     default:
       return state;
   }
