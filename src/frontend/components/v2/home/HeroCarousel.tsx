@@ -88,8 +88,8 @@ export function HeroCarousel() {
 
   return (
     <section
-      className="relative w-full overflow-hidden"
-      style={{ height: 'calc(100svh - 64px)', minHeight: '560px', marginTop: '64px' }}
+      className="relative w-full overflow-hidden h-[calc(100svh-64px)] md:h-[calc(100svh-72px)] mt-[64px] md:mt-[72px]"
+      style={{ minHeight: '560px' }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       aria-roledescription="carousel"

@@ -6,7 +6,7 @@ export function IntroSplit() {
   return (
     <section className="bg-[var(--color-ivory)] py-[72px] lg:py-[120px]">
       <Container>
-        <div className="flex flex-col md:grid md:grid-cols-1 md:gap-[40px] lg:grid-cols-12 lg:gap-[28px] lg:items-start">
+        <div className="flex flex-col lg:grid lg:grid-cols-12 lg:gap-7 lg:items-start gap-10">
           {/* Mobile/Tablet: Image First | Desktop: Right Image (col-start-7) */}
           <div className="order-1 lg:order-2 lg:col-start-7 lg:col-span-6 w-full mb-[40px] lg:mb-0">
             <div className="bg-[var(--color-ivory)] border border-[var(--color-line)] p-[10px] w-full">
@@ -25,7 +25,7 @@ export function IntroSplit() {
           {/* Mobile/Tablet: Text Below | Desktop: Left Text (col-span-4) */}
           <div className="order-2 lg:order-1 lg:col-span-4 w-full">
             <h2
-              className="text-[var(--color-ink)] max-w-[300px]"
+              className="text-[var(--color-ink)] lg:max-w-[300px]"
               style={{
                 fontFamily: 'var(--font-display)',
                 fontWeight: 400,
@@ -38,19 +38,15 @@ export function IntroSplit() {
               </span>
             </h2>
 
-            <div style={{ height: '26px' }} />
-
-            <p className="font-body text-[var(--color-muted)] max-w-[320px]">
+            <p className="font-body text-[var(--color-muted)] max-w-[320px] mt-6">
               We believe in the slow, meticulous art of Indian craftsmanship. Every piece in our
               collection is hand-selected from the finest ateliers in Bombay, bringing a touch of
               old-world romance and modern luxury to the heart of Nepal.
             </p>
 
-            <div style={{ height: '28px' }} />
-
             <Link
               href="/our-story"
-              className="inline-block font-body text-[11px] tracking-[0.1em] uppercase text-[var(--color-ink)] border-b border-[var(--color-ink)] pb-1 hover:opacity-70 transition-opacity"
+              className="inline-block mt-7 font-body text-[11px] tracking-[0.1em] uppercase text-[var(--color-ink)] border-b border-[var(--color-ink)] pb-1 hover:opacity-70 transition-opacity"
               style={{ textUnderlineOffset: '6px' }}
             >
               DISCOVER OUR STORY →

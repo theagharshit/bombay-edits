@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { X, Minus, Plus, ShoppingBag, ArrowRight, Trash2 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { formatPrice as format } from '@/frontend/utils/formatters';
@@ -80,6 +81,23 @@ export function CartDrawer() {
       document.body.style.overflow = '';
     };
   }, [isOpen]);
+
+  // Phase 2.4 — Esc key closes the cart
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeCart();
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [isOpen, closeCart]);
+
+  // Phase 2.4 — route change closes the cart
+  const pathname = usePathname();
+  useEffect(() => {
+    closeCart();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   if (!mounted) return null;
 

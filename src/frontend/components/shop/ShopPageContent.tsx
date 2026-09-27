@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { ProductCard } from '@/frontend/components/v2/product/ProductCard';
 import { products } from '@/data/products';
 import Link from 'next/link';
+import { Container } from '@/frontend/components/layout/Container';
 
 interface ShopPageContentProps {
   title?: string;
@@ -43,12 +44,9 @@ export function ShopPageContent({
   ];
 
   return (
-    <div
-      className="bg-[var(--color-ivory)] min-h-screen text-[var(--color-deep-brown)] font-body"
-      style={{ paddingBottom: '80px' }}
-    >
+    <div className="bg-[var(--color-ivory)] min-h-screen text-[var(--color-deep-brown)] font-body pb-20">
       {/* Cinematic Hero Banner */}
-      <section className="relative w-full h-[65vh] min-h-[480px] flex items-center justify-center overflow-hidden bg-black">
+      <section className="relative w-full h-[65svh] min-h-[480px] flex items-center justify-center overflow-hidden bg-black">
         <Image
           src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=2400&h=1400&q=85"
           alt="The Shop – Contemporary Indian Ethnic Wear"
@@ -79,17 +77,12 @@ export function ShopPageContent({
         </div>
       </section>
 
-      <div
-        style={{ maxWidth: '1400px', margin: '0 auto', paddingLeft: '32px', paddingRight: '32px' }}
-      >
+      <Container>
         {/* Section: Trending Now */}
         {trendingProducts.length > 0 && (
           <>
-            <section style={{ marginTop: '80px' }}>
-              <div
-                className="flex flex-col items-center text-center"
-                style={{ marginBottom: '40px' }}
-              >
+            <section className="mt-20">
+              <div className="flex flex-col items-center text-center mb-10">
                 <span className="text-[10px] uppercase tracking-[0.22em] text-[var(--color-wine)] font-medium mb-2">
                   Our newest arrivals
                 </span>
@@ -104,10 +97,7 @@ export function ShopPageContent({
                 ))}
               </div>
             </section>
-            <hr
-              className="border-t border-[var(--color-line)]"
-              style={{ marginTop: '80px', marginBottom: '80px' }}
-            />
+            <hr className="border-t border-[var(--color-line)] my-20" />
           </>
         )}
 
@@ -115,10 +105,7 @@ export function ShopPageContent({
         {bestsellers.length > 0 && (
           <>
             <section>
-              <div
-                className="flex flex-col items-center text-center"
-                style={{ marginBottom: '40px' }}
-              >
+              <div className="flex flex-col items-center text-center mb-10">
                 <span className="text-[10px] uppercase tracking-[0.22em] text-[var(--color-muted-green)] font-medium mb-2">
                   Loved by our clients
                 </span>
@@ -133,10 +120,7 @@ export function ShopPageContent({
                 ))}
               </div>
             </section>
-            <hr
-              className="border-t border-[var(--color-line)]"
-              style={{ marginTop: '80px', marginBottom: '80px' }}
-            />
+            <hr className="border-t border-[var(--color-line)] my-20" />
           </>
         )}
 
@@ -151,10 +135,7 @@ export function ShopPageContent({
           return (
             <div key={cat.id}>
               <section>
-                <div
-                  className="flex flex-col items-center text-center"
-                  style={{ marginBottom: '40px' }}
-                >
+                <div className="flex flex-col items-center text-center mb-10">
                   <span className="text-[10px] uppercase tracking-[0.22em] text-[#8A6A2C] font-medium mb-2">
                     {cat.subtitle}
                   </span>
@@ -169,11 +150,10 @@ export function ShopPageContent({
                   ))}
                 </div>
 
-                <div className="text-center" style={{ marginTop: '48px' }}>
+                <div className="text-center mt-12">
                   <Link
                     href={`/category/${cat.id}`}
-                    className="inline-block border border-[var(--color-deep-brown)] text-[var(--color-deep-brown)] text-[10px] uppercase tracking-[0.2em] rounded-none hover:bg-[var(--color-deep-brown)] hover:text-[var(--color-champagne-light)] transition-colors"
-                    style={{ padding: '14px 36px' }}
+                    className="inline-block border border-[var(--color-deep-brown)] text-[var(--color-deep-brown)] text-[10px] uppercase tracking-[0.2em] rounded-none hover:bg-[var(--color-deep-brown)] hover:text-[var(--color-champagne-light)] transition-colors px-9 py-3.5"
                   >
                     Explore All {cat.title.replace('The ', '').replace(' Collection', '')}
                   </Link>
@@ -181,10 +161,7 @@ export function ShopPageContent({
               </section>
 
               {/* Only render horizontal rule if it's not the very last item in the page */}
-              <hr
-                className="border-t border-[var(--color-line)]"
-                style={{ marginTop: '80px', marginBottom: '80px' }}
-              />
+              <hr className="border-t border-[var(--color-line)] my-20" />
             </div>
           );
         })}
@@ -192,10 +169,7 @@ export function ShopPageContent({
         {/* Section: Special Offers / The Archive */}
         {specialOffers.length > 0 && (
           <section>
-            <div
-              className="flex flex-col items-center text-center"
-              style={{ marginBottom: '40px' }}
-            >
+            <div className="flex flex-col items-center text-center mb-10">
               <span className="text-[10px] uppercase tracking-[0.22em] text-[var(--color-terracotta)] font-medium mb-2">
                 Special client privileges
               </span>
@@ -211,7 +185,7 @@ export function ShopPageContent({
             </div>
           </section>
         )}
-      </div>
+      </Container>
     </div>
   );
 }

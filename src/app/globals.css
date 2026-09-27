@@ -264,16 +264,17 @@ input[type='reset']:disabled,
   width: 100%;
   max-width: var(--max-content);
   margin-inline: auto;
-  padding-inline: 1.5rem;
+  /* Phase 2.2 — spec gutters: 16px / 24px / 40px / 80px */
+  padding-inline: 1rem;
 }
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   .container-site {
-    padding-inline: 2.5rem;
+    padding-inline: 1.5rem;
   }
 }
 @media (min-width: 1024px) {
   .container-site {
-    padding-inline: 4rem;
+    padding-inline: 2.5rem;
   }
 }
 @media (min-width: 1600px) {
@@ -396,7 +397,8 @@ input[type='reset']:disabled,
   font-weight: 400;
 }
 @utility font-body-text {
-  font-size: 15px;
+  /* Phase 2.3 — minimum 16px to meet mobile spec and prevent iOS zoom */
+  font-size: 1rem;
   line-height: 1.75;
   font-family: var(--font-body);
   font-weight: 400;

@@ -99,12 +99,22 @@ export function Header() {
       document.fonts.ready.then(measure);
     }
 
-    window.addEventListener('resize', measure);
+    // Phase 2.6 — debounced resize + orientationchange so FLIP deltas stay accurate
+    let debounceTimer: ReturnType<typeof setTimeout>;
+    const debouncedMeasure = () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(measure, 150);
+    };
+
+    window.addEventListener('resize', debouncedMeasure);
+    window.addEventListener('orientationchange', debouncedMeasure);
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
       clearTimeout(t3);
-      window.removeEventListener('resize', measure);
+      clearTimeout(debounceTimer);
+      window.removeEventListener('resize', debouncedMeasure);
+      window.removeEventListener('orientationchange', debouncedMeasure);
     };
   }, [measure]);
 
@@ -257,14 +267,20 @@ export function Header() {
     return () => cancelAnimationFrame(rafId);
   }, [isHomePage, measure]);
 
+  // Phase 2.4 — pills get 44px min-height on <lg for ≥44px tap targets; 32px on lg+
   const pillClass =
-    'bg-[#FAF8F5]/95 text-[var(--color-deep-brown)] text-[11.5px] uppercase tracking-[0.08em] font-medium font-body rounded-full px-[20px] h-[32px] flex items-center justify-center border border-[var(--color-line)]/60 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-deep-brown)] origin-center whitespace-nowrap transition-all hover:bg-white hover:border-[var(--color-champagne)] hover:text-[var(--color-wine)] hover:scale-105 active:scale-95 cursor-pointer shadow-2xs';
+    'bg-[#FAF8F5]/95 text-[var(--color-deep-brown)] text-[11.5px] uppercase tracking-[0.08em] font-medium font-body rounded-full px-[20px] h-[44px] lg:h-[32px] flex items-center justify-center border border-[var(--color-line)]/60 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-deep-brown)] origin-center whitespace-nowrap transition-all hover:bg-white hover:border-[var(--color-champagne)] hover:text-[var(--color-wine)] hover:scale-105 active:scale-95 cursor-pointer shadow-2xs';
+  // Phase 2.4 — icon buttons 44×44px on <lg, 32×32px on lg+
   const iconButtonClass =
-    'bg-[#FAF8F5]/95 text-[var(--color-deep-brown)] w-[32px] h-[32px] rounded-full flex items-center justify-center border border-[var(--color-line)]/60 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-deep-brown)] shrink-0 transition-all hover:bg-white hover:border-[var(--color-champagne)] hover:text-[var(--color-wine)] hover:scale-105 active:scale-95 cursor-pointer shadow-2xs';
+    'bg-[#FAF8F5]/95 text-[var(--color-deep-brown)] w-[44px] h-[44px] lg:w-[32px] lg:h-[32px] rounded-full flex items-center justify-center border border-[var(--color-line)]/60 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-deep-brown)] shrink-0 transition-all hover:bg-white hover:border-[var(--color-champagne)] hover:text-[var(--color-wine)] hover:scale-105 active:scale-95 cursor-pointer shadow-2xs';
 
   return (
     <>
-      <header className="fixed top-0 w-full z-50 pointer-events-none">
+      {/* Phase 2.4 — safe-area-inset-top so content clears the iOS notch */}
+      <header
+        className="fixed top-0 w-full z-50 pointer-events-none"
+        style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
+      >
         {/* Header Background — matches logo background color */}
         <div
           ref={headerBgRef}
@@ -320,10 +336,11 @@ export function Header() {
             </div>
           </div>
 
-          {/* Centre Zone Grid Spacer (maintains grid 1fr auto 1fr balance) */}
+          {/* Phase 2.4 — center spacer hidden on mobile so left/right 1fr zones
+               have full space; absolute logo is always dead-centre regardless */}
           <div
-            className="col-start-2 h-full pointer-events-none"
-            style={{ width: '180px' }}
+            className="col-start-2 h-full pointer-events-none hidden sm:block"
+            style={{ width: 'clamp(80px, 15vw, 180px)' }}
             aria-hidden="true"
           />
 
@@ -355,7 +372,12 @@ export function Header() {
 
           {/* Right Zone */}
           <div className="flex items-center justify-end gap-[6px] h-full">
-            <Link href="/wishlist" className={iconButtonClass} aria-label="Wishlist">
+            {/*
+             * Phase 2.4 — Wishlist + Account hidden on <lg; they are reachable
+             * via the MobileDrawer pinned bottom bar. Hiding them prevents the
+             * right zone from overflowing on 320–767 px viewports.
+             */}
+            <Link href="/wishlist" className={`${iconButtonClass} hidden lg:flex`} aria-label="Wishlist">
               <Heart size={14} strokeWidth={1.2} />
             </Link>
             {/* In-place Compact Search */}
@@ -364,7 +386,7 @@ export function Header() {
               onOpen={() => setSearchOpen(true)}
               onClose={() => setSearchOpen(false)}
             />
-            <Link href="/account" className={iconButtonClass} aria-label="Account">
+            <Link href="/account" className={`${iconButtonClass} hidden lg:flex`} aria-label="Account">
               <User size={14} strokeWidth={1.2} />
             </Link>
 

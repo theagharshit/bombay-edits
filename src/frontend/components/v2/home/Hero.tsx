@@ -4,7 +4,7 @@ import { Wordmark } from '../layout/Wordmark';
 
 export function Hero() {
   return (
-    <section className="m-0 relative w-full min-h-[88vh] md:min-h-[640px] flex flex-col pt-[136px]">
+    <section className="m-0 relative w-full min-h-[88svh] md:min-h-[640px] flex flex-col pt-[136px]">
       {/* Background Image */}
       <div className="absolute inset-0 z-0 bg-ink">
         <Image

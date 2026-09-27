@@ -172,7 +172,7 @@ export function ExploreCarousel() {
 
   return (
     <section
-      className="relative w-full h-[78vh] min-h-[560px] max-h-[820px] overflow-hidden bg-black select-none"
+      className="relative w-full h-[78svh] min-h-[560px] max-h-[820px] overflow-hidden bg-black select-none"
       onKeyDown={handleKeyDown}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
@@ -223,7 +223,7 @@ export function ExploreCarousel() {
               />
 
               {/* Bottom-Left Typography & CTA Content Block */}
-              <div className="absolute bottom-10 sm:bottom-12 md:bottom-16 left-6 sm:left-12 md:left-20 z-20 max-w-[680px] pointer-events-auto text-left">
+              <div className="absolute bottom-10 sm:bottom-12 md:bottom-16 left-4 sm:left-12 md:left-20 right-4 sm:right-auto z-20 max-w-[680px] pointer-events-auto text-left">
                 {/* Navigation Section Tag / Label */}
                 <span className="text-[10.5px] uppercase tracking-[0.24em] font-medium text-white/70 block mb-2 font-body">
                   {slide.navLabel}

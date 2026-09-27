@@ -17,7 +17,7 @@ export function SignatureEditPage({ collection }: SignatureEditPageProps) {
   return (
     <div className="bg-[#FAF7F2] text-[#7A6E64] font-body w-full overflow-hidden">
       {/* 1. Cinematic Hero */}
-      <section className="relative w-full h-[90vh] min-h-[600px] flex items-center justify-center">
+      <section className="relative w-full h-[90svh] min-h-[600px] flex items-center justify-center">
         <div className="absolute inset-0 z-0">
           <Image
             src={collection.heroImage || generatePlaceholderImage(1920, 1080, 'signature-hero')}
@@ -50,8 +50,7 @@ export function SignatureEditPage({ collection }: SignatureEditPageProps) {
 
       {/* 2. Editorial Narrative Block */}
       <section
-        className="w-full"
-        style={{ padding: '160px 24px', maxWidth: '1440px', margin: '0 auto' }}
+        className="w-full py-16 md:py-24 lg:py-[160px] px-4 sm:px-6 lg:px-10 max-w-[1440px] mx-auto"
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           <div className="order-2 lg:order-1 flex flex-col justify-center">
@@ -90,9 +89,9 @@ export function SignatureEditPage({ collection }: SignatureEditPageProps) {
       </section>
 
       {/* 3. Asymmetrical Lookbook Grid */}
-      <section className="w-full bg-[#F1EBE0]" style={{ padding: '160px 0' }}>
-        <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '0 24px' }}>
-          <div className="text-center" style={{ marginBottom: '100px' }}>
+      <section className="w-full bg-[#F1EBE0] py-16 md:py-24 lg:py-[160px]">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
+          <div className="text-center mb-12 md:mb-[100px]">
             <h2 className="font-display text-[36px] md:text-[48px] text-[#2E241D]">The Lookbook</h2>
           </div>
 
@@ -145,12 +144,10 @@ export function SignatureEditPage({ collection }: SignatureEditPageProps) {
 
       {/* 4. Curated Product Showcase */}
       <section
-        className="w-full"
-        style={{ padding: '160px 24px', maxWidth: '1440px', margin: '0 auto' }}
+        className="w-full py-16 md:py-24 lg:py-[160px] px-4 sm:px-6 lg:px-10 max-w-[1440px] mx-auto"
       >
         <div
-          className="flex flex-col md:flex-row md:items-end justify-between"
-          style={{ marginBottom: '80px' }}
+          className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-[80px]"
         >
           <div className="max-w-[500px]">
             <h2 className="font-display text-[36px] md:text-[48px] text-[#2E241D] leading-none mb-4">

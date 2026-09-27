@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { X, ChevronDown, User, BookOpen, Package, Phone, Search } from 'lucide-react';
 import { useAuth } from '@/frontend/context/AuthContext';
 
@@ -73,6 +74,23 @@ const MENU_GROUPS = [
 export function MobileDrawer({ isOpen, onClose, onOpenSearch }: MobileDrawerProps) {
   const [openGroup, setOpenGroup] = useState<string | null>(null);
   const { isAuthenticated } = useAuth();
+  const pathname = usePathname();
+
+  // Phase 2.4 — close on route change
+  useEffect(() => {
+    onClose();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
+
+  // Phase 2.4 — close on Esc key
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [isOpen, onClose]);
 
   useEffect(() => {
     if (isOpen) {
@@ -101,17 +119,20 @@ export function MobileDrawer({ isOpen, onClose, onOpenSearch }: MobileDrawerProp
         aria-hidden="true"
       />
 
-      {/* Drawer */}
+      {/* Drawer — Phase 2.4: width = min(100vw, 420px) */}
       <div
-        className={`fixed inset-y-0 left-0 w-[85vw] max-w-[400px] bg-[var(--color-ivory)] z-[70] flex flex-col transform transition-transform duration-250 ease-out ${
+        className={`fixed inset-y-0 left-0 w-full max-w-[420px] bg-[var(--color-ivory)] z-[70] flex flex-col transform transition-transform duration-250 ease-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
         role="dialog"
         aria-modal="true"
         aria-label="Mobile Navigation Menu"
       >
-        {/* Header */}
-        <div className="flex items-center justify-between px-4 py-2.5 border-b border-[var(--color-line)] shrink-0 h-[50px]">
+        {/* Header — Phase 2.4: padding-top accounts for iOS notch */}
+        <div
+          className="flex items-center justify-between px-4 border-b border-[var(--color-line)] shrink-0 h-[50px]"
+          style={{ paddingTop: 'calc(10px + env(safe-area-inset-top, 0px))' }}
+        >
           <span className="font-display text-[20px] tracking-[0.02em] text-[var(--color-ink)]">
             House of Baneri
           </span>

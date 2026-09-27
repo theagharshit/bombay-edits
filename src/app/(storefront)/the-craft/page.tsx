@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function TheCraftPage() {
   return (
-    <div className="bg-[#FAF7F2] text-[#7A6E64] font-body w-full min-h-screen pt-[88px] md:pt-[104px] pb-16 md:pb-24">
+    <div className="bg-[#FAF7F2] text-[#7A6E64] font-body w-full min-h-screen pt-[calc(88px+env(safe-area-inset-top))] md:pt-[calc(104px+env(safe-area-inset-top))] pb-16 md:pb-24">
       {/* Editorial Header (Matches Reference Design) */}
       <header className="max-w-[720px] mx-auto text-center px-6 mb-14 md:mb-20">
         <h1

@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import { ProductCard } from '@/frontend/components/v2/product/ProductCard';
 import { products } from '@/data/products';
 import { Category } from '@/types/product';
+import { Container } from '@/frontend/components/layout/Container';
 
 interface CategoryPageContentProps {
   categorySlug: Category;
@@ -54,43 +55,21 @@ export function CategoryPageContent({
       style={{ paddingBottom: '80px' }}
     >
       {/* Header */}
-      <div
-        className="border-b border-[var(--color-line)]"
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          textAlign: 'center',
-          paddingTop: '100px',
-          paddingBottom: '40px',
-          maxWidth: '1200px',
-          margin: '0 auto',
-          paddingLeft: '24px',
-          paddingRight: '24px',
-        }}
-      >
+      <Container className="border-b border-[var(--color-line)] flex flex-col items-center text-center pt-[88px] md:pt-[120px] pb-10">
         <span className="text-[10px] uppercase tracking-[0.25em] text-[#8A6A2C] mb-4 block font-medium">
           House of Baneri / Category
         </span>
-        <h1
-          className="font-display text-[48px] text-[var(--color-deep-brown)] mb-4 leading-tight text-center"
-          style={{ textAlign: 'center', width: '100%' }}
-        >
+        <h1 className="font-display text-[48px] text-[var(--color-deep-brown)] mb-4 leading-tight text-center w-full">
           {title}
         </h1>
         {description && (
-          <p
-            className="text-sm uppercase tracking-widest text-[var(--color-muted)] text-center"
-            style={{ maxWidth: '36rem', margin: '0 auto', textAlign: 'center' }}
-          >
+          <p className="text-sm uppercase tracking-widest text-[var(--color-muted)] text-center max-w-[36rem] mx-auto">
             {description}
           </p>
         )}
-      </div>
+      </Container>
 
-      <div
-        style={{ maxWidth: '1400px', margin: '0 auto', paddingLeft: '32px', paddingRight: '32px' }}
-      >
+      <Container>
         {/* Curated Sections */}
 
         {/* Trending Now */}
@@ -310,7 +289,7 @@ export function CategoryPageContent({
             </div>
           </div>
         </section>
-      </div>
+      </Container>
     </div>
   );
 }

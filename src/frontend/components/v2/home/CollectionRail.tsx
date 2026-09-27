@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Product } from '@/types/product';
 import { ProductCard } from '../product/ProductCard';
+import { Container } from '@/frontend/components/layout/Container';
 
 interface CollectionRailProps {
   title: string;
@@ -48,7 +49,7 @@ export function CollectionRail({ title, subtitle, href, products }: CollectionRa
 
   return (
     <section className="w-full">
-      <div className="max-w-[1400px] mx-auto px-5 md:px-10 lg:px-16">
+      <Container>
         {/* Header Row — Nishorama Inspired Layout */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-10 gap-4">
           <div>
@@ -113,7 +114,7 @@ export function CollectionRail({ title, subtitle, href, products }: CollectionRa
           <div
             ref={scrollContainerRef}
             onScroll={checkScroll}
-            className="flex gap-5 md:gap-7 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-4 -mx-5 px-5 md:mx-0 md:px-0"
+            className="flex gap-5 md:gap-7 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-4 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0"
             style={{ scrollbarWidth: 'none' }}
           >
             {products.map((product) => (
@@ -136,7 +137,7 @@ export function CollectionRail({ title, subtitle, href, products }: CollectionRa
             Discover More
           </Link>
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

@@ -8,6 +8,7 @@ import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 import { SizeGuideModal } from './SizeGuideModal';
 import { ProductCard } from '@/frontend/components/product/ProductCard';
+import { Container } from '@/frontend/components/layout/Container';
 
 interface Props {
   product: Product;
@@ -98,8 +99,8 @@ export function ProductDetailContent({ product, relatedProducts }: Props) {
   const sizes = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
   return (
-    <div className="bg-[var(--color-ivory)] text-[var(--color-deep-brown)] font-body min-h-screen pt-28 pb-20 selection:bg-[var(--color-wine)]/10">
-      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-12">
+    <div className="bg-[var(--color-ivory)] text-[var(--color-deep-brown)] font-body min-h-[100svh] pt-28 pb-20 selection:bg-[var(--color-wine)]/10">
+      <Container>
         {/* ─── 1. Breadcrumbs (Subtle, uppercase, tracked) ─────────────────────────── */}
         <nav
           aria-label="Breadcrumb"
@@ -503,7 +504,7 @@ export function ProductDetailContent({ product, relatedProducts }: Props) {
             </div>
           </section>
         )}
-      </div>
+      </Container>
 
       {/* Size Guide Modal Popup */}
       <SizeGuideModal isOpen={isSizeGuideOpen} onClose={() => setIsSizeGuideOpen(false)} />

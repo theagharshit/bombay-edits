@@ -91,7 +91,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             wishlisted
               ? 'opacity-100 bg-[#FAF2F0] text-[var(--color-wine)] border-[var(--color-wine)]/40 hover:bg-[var(--color-wine)] hover:text-white hover:border-[var(--color-wine)] active:scale-95'
               : `${
-                  isHovered ? 'opacity-100' : 'opacity-100 md:opacity-0 md:group-hover:opacity-100'
+                  isHovered ? 'opacity-100' : 'opacity-100 [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100'
                 } bg-white/90 text-[var(--color-deep-brown)] border-[#DED8CF] hover:bg-[var(--color-deep-brown)] hover:text-[#FAF5EE] hover:border-[var(--color-deep-brown)] active:scale-95`
           }`}
           aria-label={wishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
@@ -166,11 +166,12 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
 
             {/* Hovered (Desktop) & Default (Mobile): Interactive Size Buttons */}
             <div
-              className={`flex absolute inset-0 items-center justify-between gap-1 transition-opacity duration-300 ease-out select-none ${
+              className={`flex absolute inset-0 items-center justify-start md:justify-between gap-1 overflow-x-auto scrollbar-none transition-opacity duration-300 ease-out select-none ${
                 isHovered
                   ? 'opacity-100 pointer-events-auto'
-                  : 'opacity-100 md:opacity-0 md:pointer-events-none md:group-hover:opacity-100 md:group-hover:pointer-events-auto'
+                  : 'opacity-100 [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:pointer-events-none [@media(hover:hover)]:group-hover:opacity-100 [@media(hover:hover)]:group-hover:pointer-events-auto'
               }`}
+              style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
             >
               {SIZES.map((size) => {
                 const isAvailable = (product.stockBySize?.[size] ?? 1) > 0;
@@ -184,7 +185,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                       e.stopPropagation();
                       handleQuickAdd(size);
                     }}
-                    className={`flex-1 h-7 text-[10px] font-medium font-body uppercase border flex items-center justify-center transition-colors duration-200 ease-out select-none ${
+                    className={`flex-none min-w-[38px] md:min-w-0 md:flex-1 h-7 text-[10px] font-medium font-body uppercase border flex items-center justify-center transition-colors duration-200 ease-out select-none ${
                       isAvailable
                         ? 'border-[#DED8CF] text-[var(--color-deep-brown)] bg-white/95 hover:bg-[var(--color-deep-brown)] hover:text-[#FAF5EE] hover:border-[var(--color-deep-brown)] active:scale-95 cursor-pointer'
                         : 'border-black/5 text-[#A8A29E]/40 cursor-not-allowed line-through bg-black/[0.02]'

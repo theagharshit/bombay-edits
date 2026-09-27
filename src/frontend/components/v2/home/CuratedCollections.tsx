@@ -6,28 +6,28 @@ const COLLECTIONS = [
   {
     name: 'The Ivory Edit',
     href: '/collections/ivory',
-    spanClass: 'col-span-12 md:col-span-5 row-span-1 md:row-span-2',
+    spanClass: 'col-span-12 md:col-span-5 row-span-1 md:row-span-2 aspect-[4/5] md:aspect-auto',
     image:
       'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=800&h=1200&q=80',
   },
   {
     name: 'Wedding Guest',
     href: '/collections/wedding-guest',
-    spanClass: 'col-span-12 md:col-span-7 row-span-1',
+    spanClass: 'col-span-12 md:col-span-7 row-span-1 aspect-[16/9] md:aspect-auto',
     image:
       'https://images.unsplash.com/photo-1616583936499-d4116e7e2e76?auto=format&fit=crop&w=1200&h=600&q=80',
   },
   {
     name: 'Evening Silhouettes',
     href: '/collections/evening',
-    spanClass: 'col-span-12 md:col-span-4 row-span-1',
+    spanClass: 'col-span-12 md:col-span-4 row-span-1 aspect-[1/1] md:aspect-auto',
     image:
       'https://images.unsplash.com/photo-1503160865267-af4660ce7bf2?auto=format&fit=crop&w=800&h=600&q=80',
   },
   {
     name: 'Heritage Handloom',
     href: '/collections/handloom',
-    spanClass: 'col-span-12 md:col-span-3 row-span-1',
+    spanClass: 'col-span-12 md:col-span-3 row-span-1 aspect-[1/1] md:aspect-auto',
     image:
       'https://images.unsplash.com/photo-1571908599407-cdb918ed83bf?auto=format&fit=crop&w=600&h=600&q=80',
   },
@@ -46,7 +46,7 @@ export function CuratedCollections() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-12 gap-[12px] auto-rows-[260px] md:grid-rows-[260px_260px]">
+        <div className="grid grid-cols-12 gap-[12px] md:grid-rows-[260px_260px]">
           {COLLECTIONS.map((collection) => (
             <Link
               key={collection.name}
