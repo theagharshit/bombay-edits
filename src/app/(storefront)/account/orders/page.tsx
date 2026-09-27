@@ -225,7 +225,7 @@ function OrdersContent() {
           <div className="text-center py-16 bg-cream border border-beige-line p-8">
             <p className="font-display text-xl text-dark-espresso mb-2">No Past Orders</p>
             <p className="text-[13px] text-chocolate-brown mb-6">
-              You haven't placed any orders with The Bombay Edit yet.
+              You haven't placed any orders with House of Baneri yet.
             </p>
             <Link href="/shop">
               <Button variant="primary" size="sm">

@@ -71,7 +71,7 @@ describe('Notification Service: Templates', () => {
   it('renders order confirmation HTML with luxury design elements and order details', () => {
     const email = renderOrderConfirmationEmail(mockOrder);
     expect(email.subject).toContain('TBE-TEST-123');
-    expect(email.html).toContain('The Bombay Edit');
+    expect(email.html).toContain('House of Baneri');
     expect(email.html).toContain('Devika Rani');
     expect(email.html).toContain('Benarasi Gold Zari Brocade Saree');
     expect(email.html).toContain('25,000');
@@ -96,7 +96,7 @@ describe('Notification Service: Templates', () => {
 
   it('renders newsletter welcome HTML', () => {
     const email = renderNewsletterWelcomeEmail('subscriber@heritage.com');
-    expect(email.subject).toContain('The Bombay Edit');
+    expect(email.subject).toContain('House of Baneri');
     expect(email.html).toContain('subscriber@heritage.com');
     expect(email.html).toContain('Private Salon Previews');
   });
@@ -138,7 +138,7 @@ describe('Notification Service: Console Providers & Audit Logging', () => {
     const provider = new ConsoleSmsProvider();
     const result = await provider.sendSms({
       to: '+919999988888',
-      message: 'The Bombay Edit: Test SMS payload',
+      message: 'House of Baneri: Test SMS payload',
     });
 
     expect(result.success).toBe(true);

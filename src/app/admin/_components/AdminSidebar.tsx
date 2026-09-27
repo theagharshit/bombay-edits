@@ -96,7 +96,7 @@ export function AdminSidebar() {
       {/* Brand */}
       <div className="h-14 flex items-center px-5 border-b border-[var(--admin-border)] flex-shrink-0">
         <span className="font-semibold text-base tracking-tight text-[var(--admin-text)]">
-          The Bombay Edit
+          House of Baneri
         </span>
       </div>
 

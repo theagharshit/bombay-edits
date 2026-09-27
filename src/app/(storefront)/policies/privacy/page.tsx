@@ -8,7 +8,7 @@ export default function PrivacyPolicyPage() {
       <h1 className="font-display text-3xl text-ink mb-8">Privacy policy</h1>
       <div className="space-y-6 text-sm text-deep-brown leading-relaxed">
         <p>
-          The Bombay Edit respects your privacy. This policy explains how we collect, use and
+          House of Baneri respects your privacy. This policy explains how we collect, use and
           protect your personal information.
         </p>
         <section>
@@ -38,7 +38,7 @@ export default function PrivacyPolicyPage() {
           <h2 className="font-display text-xl text-ink mb-3">Your rights</h2>
           <p>
             You may request access to, correction of, or deletion of your personal information at
-            any time by contacting us at hello@thebombayedit.com.
+            any time by contacting us at hello@houseofbaneri.com.
           </p>
         </section>
         <p className="text-xs text-text-muted">Last updated: August 2026</p>

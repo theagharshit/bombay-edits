@@ -57,9 +57,9 @@ Inspect rendered email templates and live dispatch logs in your browser:
 ```bash
 RESEND_API_KEY="re_..."
 # For instant testing without domain verification:
-EMAIL_FROM="The Bombay Edit <onboarding@resend.dev>"
+EMAIL_FROM="House of Baneri <onboarding@resend.dev>"
 # For production with verified domain:
-# EMAIL_FROM="The Bombay Edit <orders@thebombayedit.com>"
+# EMAIL_FROM="House of Baneri <orders@houseofbaneri.com>"
 ```
 
 > **Note on Resend Sandbox**: When using `onboarding@resend.dev`, you can only send test emails to your registered Resend account address. Verify your domain at [resend.com/domains](https://resend.com/domains) to send to all customers.

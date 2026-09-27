@@ -413,7 +413,7 @@ function OrderDetailContent() {
                   </Link>
 
                   <a
-                    href="https://wa.me/919876543210?text=Hello%20Bombay%20Edits%2C%20I%20have%20an%20inquiry%20regarding%20order%20"
+                    href="https://wa.me/919876543210?text=Hello%20House%20of%20Baneri%2C%20I%20have%20an%20inquiry%20regarding%20order%20"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-[#eadecd] border border-[var(--color-line)] text-[var(--color-ink)] hover:bg-[#dfd3c1] text-[10px] uppercase tracking-[0.14em] font-medium transition-colors"

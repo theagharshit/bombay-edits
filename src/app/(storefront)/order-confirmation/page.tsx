@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 
-export const metadata: Metadata = { title: 'Order Confirmed | The Bombay Edit' };
+export const metadata: Metadata = { title: 'Order Confirmed | House of Baneri' };
 
 export default async function OrderConfirmationPage({
   searchParams,

@@ -8,7 +8,7 @@ export default function TermsPage() {
       <h1 className="font-display text-3xl text-ink mb-8">Terms of service</h1>
       <div className="space-y-6 text-sm text-deep-brown leading-relaxed">
         <p>
-          By using thebombayedit.com, you agree to the following terms. Please read them carefully.
+          By using houseofbaneri.com, you agree to the following terms. Please read them carefully.
         </p>
         <section>
           <h2 className="font-display text-xl text-ink mb-3">Orders and pricing</h2>
@@ -29,13 +29,13 @@ export default function TermsPage() {
           <h2 className="font-display text-xl text-ink mb-3">Intellectual property</h2>
           <p>
             All content on this website — including photographs, designs, text and branding — is the
-            property of The Bombay Edit and may not be reproduced without permission.
+            property of House of Baneri and may not be reproduced without permission.
           </p>
         </section>
         <section>
           <h2 className="font-display text-xl text-ink mb-3">Limitation of liability</h2>
           <p>
-            The Bombay Edit is not liable for delays caused by shipping carriers, customs or
+            House of Baneri is not liable for delays caused by shipping carriers, customs or
             circumstances beyond our control. Our liability is limited to the purchase price of the
             product.
           </p>

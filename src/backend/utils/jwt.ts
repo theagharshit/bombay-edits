@@ -3,7 +3,7 @@
  * Compatible with Node.js and Edge runtimes.
  */
 
-const JWT_SECRET = process.env.JWT_SECRET || 'bombay-edits-luxury-atelier-jwt-secret-key-2026';
+const JWT_SECRET = process.env.JWT_SECRET || 'house-of-baneri-luxury-atelier-jwt-secret-key-2026';
 const DEFAULT_EXPIRATION_SECONDS = 7 * 24 * 60 * 60; // 7 days
 
 // Base64URL Encoding/Decoding

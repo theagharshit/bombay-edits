@@ -39,7 +39,7 @@ export default async function OrderPrintPage({ params }: { params: Promise<{ id:
       <div id="print-area" className="max-w-[800px] mx-auto p-8 font-sans">
         <div className="flex justify-between items-start border-b pb-8 mb-8">
           <div>
-            <h1 className="text-3xl font-[var(--font-jost)] font-semibold mb-1">THE BOMBAY EDIT</h1>
+            <h1 className="text-3xl font-[var(--font-jost)] font-semibold mb-1">HOUSE OF BANERI</h1>
             <p className="text-gray-500 text-sm">Packing Slip</p>
           </div>
           <div className="text-right">
@@ -141,7 +141,7 @@ export default async function OrderPrintPage({ params }: { params: Promise<{ id:
         </div>
 
         <div className="mt-16 text-center text-xs text-gray-400">
-          <p>Thank you for shopping with The Bombay Edit!</p>
+          <p>Thank you for shopping with House of Baneri!</p>
           <p>If you have any questions, please contact support.</p>
         </div>
       </div>

@@ -72,7 +72,7 @@ export default function NewsletterPage() {
                     className="text-xl md:text-2xl text-[var(--color-ink)] italic mb-1.5"
                     style={{ fontFamily: 'var(--font-display)' }}
                   >
-                    Welcome to The Bombay Edit
+                    Welcome to House of Baneri
                   </h3>
                   <p className="font-body text-[13px] text-[var(--color-muted)] max-w-md mx-auto">
                     {message ||
@@ -122,7 +122,7 @@ export default function NewsletterPage() {
                   disabled={isLoading || !email.trim()}
                   className="w-full border border-[var(--color-ink)] bg-[var(--color-ink)] text-[var(--color-ivory)] hover:bg-[#322018] py-3 text-[10px] uppercase tracking-[0.2em] font-medium transition-all disabled:opacity-50 cursor-pointer"
                 >
-                  {isLoading ? 'Joining The List...' : 'Join The Bombay Edit Dispatch'}
+                  {isLoading ? 'Joining The List...' : 'Join House of Baneri Dispatch'}
                 </button>
 
                 {error && (

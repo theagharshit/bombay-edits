@@ -10,7 +10,7 @@ export default function Loading() {
       </div>
 
       <p className="font-display text-lg text-dark-espresso tracking-[0.2em] uppercase animate-pulse">
-        The Bombay Edit
+        House of Baneri
       </p>
       <span className="text-[11px] text-muted-taupe uppercase tracking-[0.16em] mt-2 font-body">
         Loading the chronicle of style...

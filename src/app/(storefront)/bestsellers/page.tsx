@@ -4,7 +4,7 @@ import { ShopPageContent } from '@/components/shop/ShopPageContent';
 
 export const metadata: Metadata = {
   title: 'Bestsellers',
-  description: 'Our most loved pieces. The Bombay Edit bestsellers chosen by our customers.',
+  description: 'Our most loved pieces. House of Baneri bestsellers chosen by our customers.',
 };
 
 export default function BestsellersPage() {

@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Our Story | The Bombay Edit',
+  title: 'Our Story | House of Baneri',
   description:
     'A chronicle of style, woven into the historic fabric of Old Bombay. We resurrect the elegance of a bygone era for the modern connoisseur.',
 };
@@ -129,7 +129,7 @@ export default function TheCraftPage() {
                 Legacy
               </h2>
               <p className="text-[13px] md:text-[13.5px] leading-[1.8] text-[#7A6E64]">
-                Bombay Edits is not just fashion; it is an archive in motion. We are preserving the
+                House of Baneri is not just fashion; it is an archive in motion. We are preserving the
                 romance of the past for the future. Each design sketch is a promise to maintain the
                 slow, deliberate pace of true luxury in a transient world.
               </p>

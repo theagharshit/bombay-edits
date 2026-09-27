@@ -5,23 +5,23 @@ import Image from 'next/image';
 const EDITORIAL_IMAGES = [
   {
     src: 'https://placehold.co/1000x1200/16233A/FBFAF8/webp?text=Editorial+Main',
-    alt: 'Bombay Edits Editorial Look 1',
+    alt: 'House of Baneri Editorial Look 1',
   },
   {
     src: 'https://placehold.co/800x800/1F4D3A/FBFAF8/webp?text=Editorial+Detail+1',
-    alt: 'Bombay Edits Editorial Detail 1',
+    alt: 'House of Baneri Editorial Detail 1',
   },
   {
     src: 'https://placehold.co/800x800/B98B3C/FBFAF8/webp?text=Editorial+Detail+2',
-    alt: 'Bombay Edits Editorial Detail 2',
+    alt: 'House of Baneri Editorial Detail 2',
   },
   {
     src: 'https://placehold.co/800x800/C1272D/FBFAF8/webp?text=Editorial+Detail+3',
-    alt: 'Bombay Edits Editorial Detail 3',
+    alt: 'House of Baneri Editorial Detail 3',
   },
   {
     src: 'https://placehold.co/800x800/E8D3C3/16233A/webp?text=Editorial+Detail+4',
-    alt: 'Bombay Edits Editorial Detail 4',
+    alt: 'House of Baneri Editorial Detail 4',
   },
 ];
 

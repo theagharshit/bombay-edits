@@ -19,14 +19,14 @@ interface ExploreSlide {
 const BASE_SLIDES: ExploreSlide[] = [
   {
     id: 'the-craft',
-    navLabel: 'Inside Bombay Edits',
+    navLabel: 'Inside House of Baneri',
     title: 'INSIDE STORY',
     subtitle: 'Experiments, accidents, and ideas – the textile as sketchbook.',
     ctaText: 'EXPLORE',
     href: '/the-craft',
     image:
       'https://images.unsplash.com/photo-1524228529766-4d7fe5dc55ca?auto=format&fit=crop&w=2400&h=1400&q=85',
-    imageAlt: 'Inside Bombay Edits – Textile craft atelier and story',
+    imageAlt: 'Inside House of Baneri – Textile craft atelier and story',
   },
   {
     id: 'collections',
@@ -37,7 +37,7 @@ const BASE_SLIDES: ExploreSlide[] = [
     href: '/collections',
     image:
       'https://images.unsplash.com/photo-1616583936499-d4116e7e2e76?auto=format&fit=crop&w=2400&h=1600&q=80',
-    imageAlt: 'Bombay Edits Collections – Handcrafted Indian ethnic wear',
+    imageAlt: 'House of Baneri Collections – Handcrafted Indian ethnic wear',
   },
   {
     id: 'shop',
@@ -179,7 +179,7 @@ export function ExploreCarousel() {
       onTouchEnd={handleTouchEnd}
       tabIndex={0}
       aria-roledescription="carousel"
-      aria-label="Explore Bombay Edits"
+      aria-label="Explore House of Baneri"
     >
       {/* Horizontal Sliding Track with continuous translation */}
       <div

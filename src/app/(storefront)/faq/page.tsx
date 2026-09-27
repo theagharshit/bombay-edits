@@ -33,7 +33,7 @@ const faqs = [
   },
   {
     q: 'Can I visit your store?',
-    a: 'We are currently an online-first brand based in Mumbai. We do host trunk shows and pop-up events — follow us on Instagram @thebombayedit for upcoming dates.',
+    a: 'We are currently an online-first brand based in Mumbai. We do host trunk shows and pop-up events — follow us on Instagram @houseofbaneri for upcoming dates.',
   },
   {
     q: 'How long do made-to-order pieces take?',

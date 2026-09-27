@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: product.name,
     description: product.shortDescription,
     openGraph: {
-      title: `${product.name} | The Bombay Edit`,
+      title: `${product.name} | House of Baneri`,
       description: product.shortDescription,
       type: 'website',
     },
@@ -52,7 +52,7 @@ export default async function ProductPage({ params }: PageProps) {
             name: product.name,
             description: product.shortDescription,
             image: product.images[0]?.src,
-            brand: { '@type': 'Brand', name: 'The Bombay Edit' },
+            brand: { '@type': 'Brand', name: 'House of Baneri' },
             offers: {
               '@type': 'Offer',
               price: product.price,

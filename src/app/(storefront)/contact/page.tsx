@@ -158,7 +158,7 @@ function ContactContent() {
           <div className="md:col-span-4 flex flex-col gap-2.5 font-body text-[12px] h-full">
             {/* WhatsApp Quick Card */}
             <a
-              href="https://wa.me/919876543210?text=Hello%20Bombay%20Edits%2C%20I%20have%20an%20inquiry"
+              href="https://wa.me/919876543210?text=Hello%20House%20of%20Baneri%2C%20I%20have%20an%20inquiry"
               target="_blank"
               rel="noopener noreferrer"
               className="flex-1 p-3.5 bg-[#f0e9df] border border-[var(--color-line)] hover:border-[var(--color-ink)]/40 transition-colors group cursor-pointer flex flex-col justify-center"
@@ -186,7 +186,7 @@ function ContactContent() {
 
             {/* Email Channel with Top-Right Arrow */}
             <a
-              href="mailto:support@bombayedits.com"
+              href="mailto:support@houseofbaneri.com"
               className="flex-1 p-3.5 bg-[#f7f2ea] border border-[var(--color-line)] hover:border-[var(--color-ink)]/40 transition-colors group cursor-pointer flex flex-col justify-center"
             >
               <div className="flex items-center justify-between mb-1">
@@ -202,7 +202,7 @@ function ContactContent() {
                 />
               </div>
               <span className="text-[12px] font-medium text-[var(--color-ink)] block leading-tight">
-                support@bombayedits.com
+                support@houseofbaneri.com
               </span>
               <span className="text-[10.5px] text-[var(--color-muted)] block mt-0.5 leading-tight">
                 Replies within 24 business hours
@@ -237,7 +237,7 @@ function ContactContent() {
                 </span>
               </div>
               <span className="text-[11.5px] text-[var(--color-ink)] block leading-tight">
-                Bombay Edits Pvt Ltd, Mumbai 400001
+                House of Baneri Pvt Ltd, Mumbai 400001
               </span>
             </div>
           </div>

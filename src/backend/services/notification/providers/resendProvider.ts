@@ -6,7 +6,7 @@ export class ResendEmailProvider implements IEmailProvider {
   private apiKey: string;
   private defaultFrom: string;
 
-  constructor(apiKey: string, defaultFrom = 'The Bombay Edit <orders@thebombayedit.com>') {
+  constructor(apiKey: string, defaultFrom = 'House of Baneri <orders@houseofbaneri.com>') {
     this.apiKey = apiKey.trim().replace(/^["']|["']$/g, '');
     this.defaultFrom = defaultFrom.trim().replace(/^["']|["']$/g, '');
   }

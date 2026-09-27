@@ -31,7 +31,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const password = credentials.password as string;
 
         const ADMIN_EMAIL = (
-          process.env.ADMIN_SEED_EMAIL || 'admin@thebombayedit.com'
+          process.env.ADMIN_SEED_EMAIL || 'admin@houseofbaneri.com'
         ).toLowerCase();
         const ADMIN_PASSWORD = process.env.ADMIN_SEED_PASSWORD || 'password123';
 

@@ -2,8 +2,8 @@ import { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'The Bombay Edit — Luxury Indian Couture & Handcrafted Ready-to-Wear',
-    short_name: 'The Bombay Edit',
+    name: 'House of Baneri — Luxury Indian Couture & Handcrafted Ready-to-Wear',
+    short_name: 'House of Baneri',
     description:
       'Bespoke hand-embroidered kurta sets, lehengas, and contemporary silhouettes crafted by master artisans.',
     start_url: '/',

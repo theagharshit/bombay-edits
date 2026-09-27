@@ -5,7 +5,7 @@ import { generatePlaceholderImage } from '@/lib/utils';
 
 export const metadata: Metadata = {
   title: 'Editorial',
-  description: 'Lookbooks and campaign stories from The Bombay Edit.',
+  description: 'Lookbooks and campaign stories from House of Baneri.',
 };
 
 const editorials = [
@@ -34,7 +34,7 @@ export default function EditorialPage() {
     <div className="container-site section-padding">
       <h1 className="font-display text-3xl md:text-4xl text-ink mb-4">Editorial</h1>
       <p className="text-sm text-text-muted mb-12">
-        Campaign stories and lookbooks from The Bombay Edit.
+        Campaign stories and lookbooks from House of Baneri.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

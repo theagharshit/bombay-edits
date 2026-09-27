@@ -118,7 +118,7 @@ export async function GET(req: NextRequest) {
 
   // 4. Newsletter Welcome Email
   if (template === 'newsletter') {
-    const rendered = renderNewsletterWelcomeEmail('collector@bombayedits.com');
+    const rendered = renderNewsletterWelcomeEmail('collector@houseofbaneri.com');
     return new NextResponse(rendered.html, {
       headers: { 'Content-Type': 'text/html; charset=utf-8' },
     });
@@ -181,7 +181,7 @@ export async function GET(req: NextRequest) {
     <html lang="en">
     <head>
       <meta charset="utf-8"/>
-      <title>Notification Service Studio | The Bombay Edit</title>
+      <title>Notification Service Studio | House of Baneri</title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
       <style>
         body { margin: 0; background: #0c0b09; color: #f4ede4; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 40px 24px; }
@@ -211,7 +211,7 @@ export async function GET(req: NextRequest) {
       <div class="container">
         <header class="header">
           <div>
-            <h1>The Bombay Edit &bull; Notification Studio</h1>
+            <h1>House of Baneri &bull; Notification Studio</h1>
             <p class="subtitle">Central Communications Architecture &bull; Luxury Email & Carrier-Compliant SMS Engine</p>
           </div>
           <div class="badge-strip">

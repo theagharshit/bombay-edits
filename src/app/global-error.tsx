@@ -36,7 +36,7 @@ export default function GlobalError({
               color: '#2A1C15',
             }}
           >
-            The Bombay Edit
+            House of Baneri
           </h1>
           <p
             style={{

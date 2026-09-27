@@ -18,8 +18,8 @@ const jost = Jost({
 
 export const metadata: Metadata = {
   title: {
-    default: 'The Bombay Edit — Handcrafted Indian ethnic wear',
-    template: '%s | The Bombay Edit',
+    default: 'House of Baneri — Handcrafted Indian ethnic wear',
+    template: '%s | House of Baneri',
   },
   description:
     'Handcrafted Indian ethnic wear for the modern woman. Kurta sets, co-ord sets, shararas and occasionwear made with Indian craftsmanship, brought from Bombay to Nepal.',
@@ -33,12 +33,12 @@ export const metadata: Metadata = {
     'embroidered',
     'occasionwear',
   ],
-  authors: [{ name: 'The Bombay Edit' }],
+  authors: [{ name: 'House of Baneri' }],
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    siteName: 'The Bombay Edit',
-    title: 'The Bombay Edit — Handcrafted Indian ethnic wear',
+    siteName: 'House of Baneri',
+    title: 'House of Baneri — Handcrafted Indian ethnic wear',
     description:
       'Indian craft, reimagined for the woman you are. Handcrafted ethnic wear brought from Bombay to Nepal.',
   },
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
-  metadataBase: new URL('https://thebombayedit.com'),
+  metadataBase: new URL('https://houseofbaneri.com'),
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

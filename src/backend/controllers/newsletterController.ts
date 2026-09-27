@@ -35,7 +35,7 @@ export class NewsletterController {
         email: subscriber.email,
       },
       {
-        message: 'Thank you for subscribing to The Bombay Edit.',
+        message: 'Thank you for subscribing to House of Baneri.',
         status: 200,
       }
     );

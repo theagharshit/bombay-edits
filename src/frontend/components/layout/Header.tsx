@@ -17,7 +17,7 @@ interface NavPill {
 
 const NAV_PILLS: NavPill[] = [
   { label: 'Shop', href: '/shop' },
-  { label: 'Inside Bombay Edits', href: '/the-craft' },
+  { label: 'Inside House of Baneri', href: '/the-craft' },
   { label: 'Collections', href: '/collections' },
   { label: 'Contact Us', href: '/contact' },
 ];
@@ -237,7 +237,7 @@ export function Header() {
           }
         }
       } else {
-        // Non-home pages: Bombay Edits logo and Menu button always visible throughout the app
+        // Non-home pages: House of Baneri logo and Menu button always visible throughout the app
         if (headerLogoRef.current) {
           headerLogoRef.current.style.opacity = '1';
           headerLogoRef.current.style.pointerEvents = 'auto';

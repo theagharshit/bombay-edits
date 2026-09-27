@@ -113,7 +113,7 @@ export function MobileDrawer({ isOpen, onClose, onOpenSearch }: MobileDrawerProp
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-2.5 border-b border-[var(--color-line)] shrink-0 h-[50px]">
           <span className="font-display text-[20px] tracking-[0.02em] text-[var(--color-ink)]">
-            Bombay Edits
+            House of Baneri
           </span>
           <button
             onClick={onClose}
@@ -133,7 +133,7 @@ export function MobileDrawer({ isOpen, onClose, onOpenSearch }: MobileDrawerProp
               onOpenSearch();
             }}
             className="flex items-center gap-3 px-5 py-3 bg-white border-b border-[var(--color-line)] text-[var(--color-muted)] hover:text-[var(--color-ink)] hover:bg-[var(--color-sand)]/50 transition-colors text-xs font-body tracking-wider uppercase text-left cursor-pointer rounded-none"
-            aria-label="Search Bombay Edits"
+            aria-label="Search House of Baneri"
           >
             <Search size={15} className="text-[var(--color-wine)] shrink-0" />
             <span className="truncate">Search garments, bespoke services, orders...</span>

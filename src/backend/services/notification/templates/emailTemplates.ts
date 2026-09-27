@@ -1,7 +1,7 @@
 import { OrderRecord } from '@/backend/models/orderModel';
 import { ContactSubmission } from '@/backend/models/contactModel';
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://thebombayedit.com';
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://houseofbaneri.com';
 
 function baseEmailLayout(content: string, preheaderText = ''): string {
   return `<!DOCTYPE html>
@@ -9,7 +9,7 @@ function baseEmailLayout(content: string, preheaderText = ''): string {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Bombay Edit</title>
+  <title>House of Baneri</title>
   <style>
     body {
       margin: 0;
@@ -66,7 +66,7 @@ function baseEmailLayout(content: string, preheaderText = ''): string {
               <td align="center" style="padding: 36px 24px 24px 24px; border-bottom: 1px solid #E7E2DA;">
                 <a href="${BASE_URL}" target="_blank" style="text-decoration: none;">
                   <h1 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 28px; font-weight: 500; letter-spacing: 0.05em; color: #1C1917; text-transform: uppercase;">
-                    The Bombay Edit
+                    House of Baneri
                   </h1>
                 </a>
                 <p style="margin: 6px 0 0 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #8C827A;">
@@ -90,7 +90,7 @@ function baseEmailLayout(content: string, preheaderText = ''): string {
                 </p>
                 <p style="margin: 0 0 16px 0; font-size: 13px; line-height: 1.6; color: #78716C;">
                   Need bespoke alterations, styling advice, or order assistance?<br>
-                  Reach our client care at <a href="mailto:support@thebombayedit.com" style="color: #722F37; font-weight: 500;">support@thebombayedit.com</a>
+                  Reach our client care at <a href="mailto:support@houseofbaneri.com" style="color: #722F37; font-weight: 500;">support@houseofbaneri.com</a>
                   or via WhatsApp concierge.
                 </p>
                 <div style="margin: 0 0 16px 0;">
@@ -103,7 +103,7 @@ function baseEmailLayout(content: string, preheaderText = ''): string {
                   <a href="${BASE_URL}/account" style="display: inline-block; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #1C1917; margin: 0 8px;">Atelier Portal</a>
                 </div>
                 <p style="margin: 0; font-size: 11px; color: #A8A29E;">
-                  © ${new Date().getFullYear()} The Bombay Edit. All rights reserved.
+                  © ${new Date().getFullYear()} House of Baneri. All rights reserved.
                 </p>
               </td>
             </tr>
@@ -240,8 +240,8 @@ export function renderOrderConfirmationEmail(order: OrderRecord): {
     </div>
   `;
 
-  const subject = `Order Confirmed: #${order.orderNumber} — The Bombay Edit`;
-  const text = `Thank you for your order #${order.orderNumber} with The Bombay Edit. Total: ${formattedTotal}. View order details: ${trackingUrl}`;
+  const subject = `Order Confirmed: #${order.orderNumber} — House of Baneri`;
+  const text = `Thank you for your order #${order.orderNumber} with House of Baneri. Total: ${formattedTotal}. View order details: ${trackingUrl}`;
 
   return {
     subject,
@@ -298,7 +298,7 @@ export function renderOrderStatusEmail(
     </div>
   `;
 
-  const subject = `Order #${order.orderNumber} Status: ${statusLabel} — The Bombay Edit`;
+  const subject = `Order #${order.orderNumber} Status: ${statusLabel} — House of Baneri`;
   const text = `Your order #${order.orderNumber} has been updated to ${statusLabel}. Track your order here: ${trackingUrl}`;
 
   return {
@@ -323,7 +323,7 @@ export function renderContactInquiryEmail(submission: ContactSubmission): {
       Inquiry Received
     </h2>
     <p style="margin: 0 0 24px 0; font-size: 14px; line-height: 1.6; color: #57534E; text-align: center;">
-      Hello <strong>${submission.name}</strong>, thank you for contacting The Bombay Edit Atelier. Our client concierge has received your note regarding <strong>${submission.subject || 'General Inquiry'}</strong>.
+      Hello <strong>${submission.name}</strong>, thank you for contacting House of Baneri Atelier. Our client concierge has received your note regarding <strong>${submission.subject || 'General Inquiry'}</strong>.
     </p>
 
     <div style="background-color: #FFFFFF; border: 1px solid #E7E2DA; padding: 18px; margin-bottom: 24px;">
@@ -347,7 +347,7 @@ export function renderContactInquiryEmail(submission: ContactSubmission): {
     </div>
   `;
 
-  const subject = `Inquiry Acknowledged: #${ticketRef} — The Bombay Edit Concierge`;
+  const subject = `Inquiry Acknowledged: #${ticketRef} — House of Baneri Concierge`;
   const text = `Hello ${submission.name}, we have received your inquiry #${ticketRef} regarding "${submission.subject}". Our concierge will contact you within 24 hours.`;
 
   return {
@@ -370,7 +370,7 @@ export function renderNewsletterWelcomeEmail(email: string): {
 } {
   const content = `
     <h2 style="margin: 0 0 12px 0; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; font-weight: 500; color: #1C1917; text-align: center;">
-      Welcome to The Bombay Edit Gazette
+      Welcome to House of Baneri Gazette
     </h2>
     <p style="margin: 0 0 20px 0; font-size: 14px; line-height: 1.6; color: #57534E; text-align: center;">
       We are delighted to welcome <strong>${email}</strong> into our private circle of collectors and patrons. As a subscriber, you will receive first access to Private Salon Previews, seasonal capsules, textile stories, and invitation-only pre-orders.
@@ -392,14 +392,14 @@ export function renderNewsletterWelcomeEmail(email: string): {
     </div>
   `;
 
-  const subject = `Welcome to The Gazette — The Bombay Edit`;
-  const text = `Welcome to The Bombay Edit Gazette. You are now part of our private collector circle. Explore our collections at ${BASE_URL}/shop`;
+  const subject = `Welcome to The Gazette — House of Baneri`;
+  const text = `Welcome to House of Baneri Gazette. You are now part of our private collector circle. Explore our collections at ${BASE_URL}/shop`;
 
   return {
     subject,
     html: baseEmailLayout(
       content,
-      'Welcome to The Bombay Edit Gazette. Private previews and seasonal edits await.'
+      'Welcome to House of Baneri Gazette. Private previews and seasonal edits await.'
     ),
     text,
   };

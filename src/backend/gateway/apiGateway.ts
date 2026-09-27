@@ -125,7 +125,7 @@ export class ApiGateway {
         const res = rawRes instanceof NextResponse ? rawRes : new NextResponse(rawRes.body, rawRes);
 
         // Attach Gateway headers
-        res.headers.set('x-gateway', 'TheBombayEdit-Gateway/v1');
+        res.headers.set('x-gateway', 'HouseOfBaneri-Gateway/v1');
         res.headers.set('x-request-id', requestId);
         res.headers.set('x-response-time', `${durationMs}ms`);
         res.headers.set('X-RateLimit-Limit', rateCheck.total.toString());
@@ -144,7 +144,7 @@ export class ApiGateway {
           code: 'INTERNAL_SERVER_ERROR',
           details: process.env.NODE_ENV === 'development' ? errorMsg : undefined,
           headers: {
-            'x-gateway': 'TheBombayEdit-Gateway/v1',
+            'x-gateway': 'HouseOfBaneri-Gateway/v1',
             'x-request-id': requestId,
           },
         });

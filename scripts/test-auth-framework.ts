@@ -64,7 +64,7 @@ async function runTests() {
 
   // TEST SUITE 3: Friction-Free Guest Checkout (No Account Needed)
   console.log('\n--- Suite 3: Friction-Free Guest Checkout ---');
-  const guestEmail = `guest_${Date.now()}@bombayedits.test`;
+  const guestEmail = `guest_${Date.now()}@houseofbaneri.test`;
   const guestOrder = await OrderModel.createOrder({
     items: [
       {

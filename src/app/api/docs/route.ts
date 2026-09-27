@@ -10,7 +10,7 @@ export const GET = withMiddlewares(async () => {
   const metrics = GatewayMetrics.getSnapshot();
 
   return ApiResponse.success({
-    title: 'The Bombay Edit - API Gateway Specification',
+    title: 'House of Baneri - API Gateway Specification',
     version: '1.0.0',
     description:
       'Unified RESTful & Normalised Relational E-Commerce API Gateway with Rate Limiting and PostgreSQL/Prisma Integration.',

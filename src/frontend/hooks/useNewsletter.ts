@@ -34,7 +34,7 @@ export function useNewsletter(): UseNewsletterReturn {
       try {
         await NewsletterService.subscribe(data);
         setIsSuccess(true);
-        setMessage('Thank you for subscribing to The Bombay Edit.');
+        setMessage('Thank you for subscribing to House of Baneri.');
         return true;
       } catch (err: unknown) {
         const msg = err instanceof Error ? err.message : 'Failed to subscribe. Please try again.';

@@ -66,7 +66,7 @@ export function ShopPageContent({
         />
         <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-[800px] mt-12">
           <span className="text-[11px] uppercase tracking-[0.24em] font-medium text-[var(--color-champagne)] mb-3 font-body">
-            Bombay Edits / Ready-to-Wear
+            House of Baneri / Ready-to-Wear
           </span>
           <h1 className="font-display text-[44px] md:text-[68px] text-white leading-none whitespace-nowrap mb-6 drop-shadow-sm">
             {title}

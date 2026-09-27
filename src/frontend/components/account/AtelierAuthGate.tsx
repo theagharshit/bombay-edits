@@ -184,7 +184,7 @@ export function AtelierAuthGate() {
                 if (error) setError(null);
               }}
               className="w-full bg-white/70 border border-[#DDD5CA] px-3.5 py-2.5 text-[12px] text-[#4A3025] placeholder-[#B5ADA4] focus:outline-none focus:border-[#4A3025] focus:bg-white transition-all rounded-none"
-              placeholder="Email Address"
+              placeholder="e.g. client@houseofbaneri.com"
             />
           </div>
 
@@ -261,7 +261,7 @@ export function AtelierAuthGate() {
                 if (error) setError(null);
               }}
               className="w-full bg-white/70 border border-[#DDD5CA] px-3.5 py-2.5 text-[12px] text-[#4A3025] placeholder-[#B5ADA4] focus:outline-none focus:border-[#4A3025] focus:bg-white transition-all rounded-none"
-              placeholder="Email Address"
+              placeholder="client@houseofbaneri.com"
             />
           </div>
 

@@ -3,7 +3,7 @@ import AdminSessionProvider from './AdminSessionProvider';
 import { AdminShell } from './_components/AdminShell';
 
 export const metadata = {
-  title: 'Operator Admin | The Bombay Edit',
+  title: 'Operator Admin | House of Baneri',
 };
 
 export default function RootAdminLayout({ children }: { children: React.ReactNode }) {

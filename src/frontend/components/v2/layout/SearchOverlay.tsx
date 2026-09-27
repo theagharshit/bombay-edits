@@ -117,7 +117,7 @@ const ATELIER_DESTINATIONS: DestinationItem[] = [
   },
   {
     id: 'the-craft',
-    title: 'Inside Bombay Edits: Artisanal Looms & Heritage',
+    title: 'Inside House of Baneri: Artisanal Looms & Heritage',
     category: 'Craft',
     href: '/the-craft',
     icon: 'craft',
@@ -344,7 +344,7 @@ const ATELIER_DESTINATIONS: DestinationItem[] = [
   },
   {
     id: 'newsletter',
-    title: 'The Bombay Edit Gazette & Lookbooks',
+    title: 'House of Baneri Gazette & Lookbooks',
     category: 'Gazette',
     href: '/newsletter',
     icon: 'gazette',
@@ -537,7 +537,7 @@ export function HeaderSearch({ isOpen, onOpen, onClose }: HeaderSearchProps) {
       <button
         onClick={onOpen}
         className="bg-[#FAF8F5]/95 text-[var(--color-deep-brown)] w-[32px] h-[32px] rounded-full flex items-center justify-center border border-[var(--color-line)]/60 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-deep-brown)] shrink-0 transition-all hover:bg-white hover:border-[var(--color-champagne)] hover:text-[var(--color-wine)] hover:scale-105 active:scale-95 cursor-pointer shadow-2xs"
-        aria-label="Search Bombay Edits"
+        aria-label="Search House of Baneri"
       >
         <Search size={14} strokeWidth={1.2} />
       </button>

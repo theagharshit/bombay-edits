@@ -18,7 +18,7 @@ export function getDbPool(): Pool {
         port: Number(process.env.PGPORT) || 5432,
         user: process.env.PGUSER || 'postgres',
         password: process.env.PGPASSWORD || 'postgres',
-        database: process.env.PGDATABASE || 'bombay_edits',
+        database: process.env.PGDATABASE || 'house_of_baneris',
       };
 
   poolInstance = new Pool({

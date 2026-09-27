@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Shipping and delivery',
-  description: 'Shipping zones, rates and delivery estimates for The Bombay Edit.',
+  description: 'Shipping zones, rates and delivery estimates for House of Baneri.',
 };
 
 export default function ShippingPolicyPage() {

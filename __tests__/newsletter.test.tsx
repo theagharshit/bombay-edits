@@ -44,7 +44,7 @@ describe('Newsletter Model & Controller', () => {
     expect(response.status).toBe(200);
     expect(body.success).toBe(true);
     expect(body.data.email).toBe(testEmail);
-    expect(body.message).toBe('Thank you for subscribing to The Bombay Edit.');
+    expect(body.message).toBe('Thank you for subscribing to House of Baneri.');
   });
 });
 

@@ -70,7 +70,7 @@ export function CategoryPageContent({
         }}
       >
         <span className="text-[10px] uppercase tracking-[0.25em] text-[#8A6A2C] mb-4 block font-medium">
-          Bombay Edits / Category
+          House of Baneri / Category
         </span>
         <h1
           className="font-display text-[48px] text-[var(--color-deep-brown)] mb-4 leading-tight text-center"

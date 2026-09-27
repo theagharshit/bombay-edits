@@ -19,7 +19,7 @@ export function Newsletter() {
             className="text-[var(--color-deep-brown)]"
             style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: '30px' }}
           >
-            Become Part of Bombay Edits
+            Become Part of House of Baneri
           </h2>
 
           <div style={{ height: '12px' }} />

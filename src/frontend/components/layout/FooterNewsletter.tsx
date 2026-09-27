@@ -52,7 +52,7 @@ export function FooterNewsletter() {
             <span>{message || 'Thank you for subscribing.'}</span>
           </div>
           <div className="flex items-center gap-2 text-[11px] text-[var(--color-muted)]">
-            <span>Welcome to The Bombay Edit.</span>
+            <span>Welcome to House of Baneri.</span>
             <span>·</span>
             <button
               type="button"

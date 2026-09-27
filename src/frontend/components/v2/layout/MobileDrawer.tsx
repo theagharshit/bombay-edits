@@ -112,7 +112,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-2.5 border-b border-[var(--color-line)] shrink-0 h-[50px]">
           <span className="font-display text-[20px] tracking-[0.02em] text-[var(--color-ink)]">
-            Bombay Edits
+            House of Baneri
           </span>
           <button
             onClick={onClose}

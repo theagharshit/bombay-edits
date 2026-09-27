@@ -3,7 +3,7 @@ import { products } from '@/data/products';
 import { categories, collections } from '@/data/collections';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://thebombayedit.com';
+  const baseUrl = 'https://houseofbaneri.com';
 
   const staticPages = [
     '',

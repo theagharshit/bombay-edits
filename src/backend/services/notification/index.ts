@@ -36,7 +36,7 @@ class CentralNotificationService {
     if (process.env.RESEND_API_KEY) {
       this.emailProvider = new ResendEmailProvider(
         process.env.RESEND_API_KEY,
-        process.env.EMAIL_FROM || 'The Bombay Edit <orders@thebombayedit.com>'
+        process.env.EMAIL_FROM || 'House of Baneri <orders@houseofbaneri.com>'
       );
       logger.info('NotificationService: initialized Resend email provider');
     } else {

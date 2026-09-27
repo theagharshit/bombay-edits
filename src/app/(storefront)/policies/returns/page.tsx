@@ -8,7 +8,7 @@ export default function ReturnsPolicyPage() {
       <h1 className="font-display text-3xl text-ink mb-8">Returns and exchanges</h1>
       <div className="space-y-6 text-sm text-deep-brown leading-relaxed">
         <p>
-          We want you to love every piece from The Bombay Edit. If something does not work, we are
+          We want you to love every piece from House of Baneri. If something does not work, we are
           here to help.
         </p>
         <section>
@@ -35,7 +35,7 @@ export default function ReturnsPolicyPage() {
         <section>
           <h2 className="font-display text-xl text-ink mb-3">How to return</h2>
           <p>
-            Email us at hello@thebombayedit.com with your order number and reason for return. We
+            Email us at hello@houseofbaneri.com with your order number and reason for return. We
             will arrange a pickup within Mumbai or provide return shipping instructions for other
             locations. Refunds are processed within 5–7 business days of receiving the returned
             item.

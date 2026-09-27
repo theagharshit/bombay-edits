@@ -89,7 +89,7 @@ function LoginForm() {
                 background: '#ffffff',
                 color: '#1c1917',
               }}
-              placeholder="admin@thebombayedit.com"
+              placeholder="admin@houseofbaneri.com"
             />
           </div>
 

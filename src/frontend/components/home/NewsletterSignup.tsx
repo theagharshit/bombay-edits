@@ -29,7 +29,7 @@ export function NewsletterSignup() {
 
         {isSuccess ? (
           <p className="text-sm text-dark-espresso font-body border border-beige-line bg-cream p-4">
-            {message || 'Thank you. You are now part of The Bombay Edit.'}
+            {message || 'Thank you. You are now part of House of Baneri.'}
           </p>
         ) : (
           <form onSubmit={handleSubmit} className="flex gap-3 max-w-md mx-auto">
