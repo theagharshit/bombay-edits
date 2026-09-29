@@ -377,7 +377,11 @@ export function Header() {
              * via the MobileDrawer pinned bottom bar. Hiding them prevents the
              * right zone from overflowing on 320–767 px viewports.
              */}
-            <Link href="/wishlist" className={`${iconButtonClass} hidden lg:flex`} aria-label="Wishlist">
+            <Link
+              href="/wishlist"
+              className={`${iconButtonClass} hidden lg:flex`}
+              aria-label="Wishlist"
+            >
               <Heart size={14} strokeWidth={1.2} />
             </Link>
             {/* In-place Compact Search */}
@@ -386,7 +390,11 @@ export function Header() {
               onOpen={() => setSearchOpen(true)}
               onClose={() => setSearchOpen(false)}
             />
-            <Link href="/account" className={`${iconButtonClass} hidden lg:flex`} aria-label="Account">
+            <Link
+              href="/account"
+              className={`${iconButtonClass} hidden lg:flex`}
+              aria-label="Account"
+            >
               <User size={14} strokeWidth={1.2} />
             </Link>
 

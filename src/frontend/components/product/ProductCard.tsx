@@ -91,7 +91,9 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             wishlisted
               ? 'opacity-100 bg-[#FAF2F0] text-[var(--color-wine)] border-[var(--color-wine)]/40 hover:bg-[var(--color-wine)] hover:text-white hover:border-[var(--color-wine)] active:scale-95'
               : `${
-                  isHovered ? 'opacity-100' : 'opacity-100 [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100'
+                  isHovered
+                    ? 'opacity-100'
+                    : 'opacity-100 [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100'
                 } bg-white/90 text-[var(--color-deep-brown)] border-[#DED8CF] hover:bg-[var(--color-deep-brown)] hover:text-[#FAF5EE] hover:border-[var(--color-deep-brown)] active:scale-95`
           }`}
           aria-label={wishlisted ? 'Remove from wishlist' : 'Add to wishlist'}

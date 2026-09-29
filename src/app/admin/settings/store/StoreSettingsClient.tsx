@@ -5,7 +5,12 @@ import { toast } from 'sonner';
 
 const FIELDS = [
   { key: 'store_name', label: 'Store Name', type: 'text', placeholder: 'House of Baneri' },
-  { key: 'store_email', label: 'Contact Email', type: 'email', placeholder: 'hello@houseofbaneri.com' },
+  {
+    key: 'store_email',
+    label: 'Contact Email',
+    type: 'email',
+    placeholder: 'hello@houseofbaneri.com',
+  },
   { key: 'store_phone', label: 'Phone Number', type: 'text', placeholder: '+977 ...' },
   {
     key: 'store_address',
@@ -15,10 +20,25 @@ const FIELDS = [
   },
   { key: 'store_city', label: 'City', type: 'text', placeholder: 'Kathmandu' },
   { key: 'store_country', label: 'Country', type: 'text', placeholder: 'Nepal' },
-  { key: 'store_instagram', label: 'Instagram Handle', type: 'text', placeholder: '@houseofbaneri' },
+  {
+    key: 'store_instagram',
+    label: 'Instagram Handle',
+    type: 'text',
+    placeholder: '@houseofbaneri',
+  },
   { key: 'store_whatsapp', label: 'WhatsApp Number', type: 'text', placeholder: '+977 ...' },
-  { key: 'seo_default_title', label: 'Default SEO Title', type: 'text', placeholder: 'House of Baneri | Luxury Indian Wear' },
-  { key: 'seo_default_description', label: 'Default Meta Description', type: 'textarea', placeholder: 'Discover...' },
+  {
+    key: 'seo_default_title',
+    label: 'Default SEO Title',
+    type: 'text',
+    placeholder: 'House of Baneri | Luxury Indian Wear',
+  },
+  {
+    key: 'seo_default_description',
+    label: 'Default Meta Description',
+    type: 'textarea',
+    placeholder: 'Discover...',
+  },
 ];
 
 export function StoreSettingsClient({ settings }: { settings: Record<string, unknown> }) {

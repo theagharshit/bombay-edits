@@ -90,8 +90,10 @@ export default async function AdminDashboard() {
             <code className="bg-amber-100 px-1.5 py-0.5 rounded text-xs">.env</code> is correct.
           </p>
           <div className="text-xs text-amber-600 bg-amber-100 rounded p-3 font-mono max-w-lg mx-auto text-left">
-            brew services start postgresql@17<br />
-            createdb house_of_baneris<br />
+            brew services start postgresql@17
+            <br />
+            createdb house_of_baneris
+            <br />
             npx prisma db push
           </div>
         </div>

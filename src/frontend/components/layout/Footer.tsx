@@ -40,12 +40,13 @@ export function Footer() {
   // Accordion state — used on mobile only; on lg+ CSS forces all items open.
   const [openGroup, setOpenGroup] = useState<string | null>(null);
 
-  const toggle = (title: string) =>
-    setOpenGroup((prev) => (prev === title ? null : title));
+  const toggle = (title: string) => setOpenGroup((prev) => (prev === title ? null : title));
 
   return (
-    <footer className="mt-auto w-full relative overflow-hidden bg-[#EAE2D7]" style={{ minHeight: '400px' }}>
-      
+    <footer
+      className="mt-auto w-full relative overflow-hidden bg-[#EAE2D7]"
+      style={{ minHeight: '400px' }}
+    >
       {/* ── Background Image Container (72% on lg+) ── */}
       <div className="absolute inset-0 z-0 flex justify-end pointer-events-none">
         <div className="w-full h-full lg:w-[72%] relative">
@@ -66,7 +67,10 @@ export function Footer() {
           {/* Mobile readabilty overlay */}
           <div
             className="absolute inset-0 lg:hidden"
-            style={{ background: 'linear-gradient(to right, #EAE2D7 0%, rgba(234,226,215,0.85) 60%, rgba(234,226,215,0.3) 100%)' }}
+            style={{
+              background:
+                'linear-gradient(to right, #EAE2D7 0%, rgba(234,226,215,0.85) 60%, rgba(234,226,215,0.3) 100%)',
+            }}
           />
         </div>
       </div>
@@ -83,12 +87,17 @@ export function Footer() {
            *   lg+  : maxWidth 28% recreates the editorial left-column look
            */}
           <div className="py-10 md:py-14 lg:py-16 lg:w-[28%] lg:min-w-[320px] flex flex-col min-h-[400px]">
-
             {/* ── Brand Wordmark ── */}
             <div className="mb-12 lg:mb-16">
               <h2
                 className="text-[var(--color-deep-brown)] leading-none"
-                style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: '36px', fontStyle: 'italic', letterSpacing: '-0.02em' }}
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontWeight: 400,
+                  fontSize: '36px',
+                  fontStyle: 'italic',
+                  letterSpacing: '-0.02em',
+                }}
               >
                 House of Baneri
               </h2>
@@ -128,7 +137,12 @@ export function Footer() {
                     >
                       <h3
                         className="text-[var(--color-deep-brown)] italic"
-                        style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: '13px', letterSpacing: '0.02em' }}
+                        style={{
+                          fontFamily: 'var(--font-display)',
+                          fontWeight: 400,
+                          fontSize: '13px',
+                          letterSpacing: '0.02em',
+                        }}
                       >
                         {col.title}
                       </h3>
@@ -174,25 +188,35 @@ export function Footer() {
             <div className="pt-4 lg:pt-0 mt-auto">
               <p
                 className="text-[var(--color-deep-brown)] mb-4 italic"
-                style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: '13px', letterSpacing: '0.02em' }}
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontWeight: 400,
+                  fontSize: '13px',
+                  letterSpacing: '0.02em',
+                }}
               >
                 House of Baneri Pvt. Ltd.
               </p>
               <div className="font-body text-[11.5px] text-[var(--color-muted)] leading-[2] space-y-1">
                 <p>123 Fashion Street, Mumbai, Maharashtra 400001, India</p>
                 <p>
-                  <a href="mailto:support@houseofbaneri.com" className="hover:text-[var(--color-wine)] transition-colors">
+                  <a
+                    href="mailto:support@houseofbaneri.com"
+                    className="hover:text-[var(--color-wine)] transition-colors"
+                  >
                     support@houseofbaneri.com
                   </a>
                 </p>
                 <p>
-                  <a href="tel:+919876543210" className="hover:text-[var(--color-wine)] transition-colors">
+                  <a
+                    href="tel:+919876543210"
+                    className="hover:text-[var(--color-wine)] transition-colors"
+                  >
                     +91 98765 43210
                   </a>
                 </p>
               </div>
             </div>
-
           </div>
         </Container>
 

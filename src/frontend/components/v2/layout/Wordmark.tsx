@@ -60,4 +60,3 @@ export function Wordmark({ id }: { id?: string }) {
 }
 
 Wordmark.displayName = 'Wordmark';
-

@@ -49,9 +49,7 @@ export function SignatureEditPage({ collection }: SignatureEditPageProps) {
       </section>
 
       {/* 2. Editorial Narrative Block */}
-      <section
-        className="w-full py-16 md:py-24 lg:py-[160px] px-4 sm:px-6 lg:px-10 max-w-[1440px] mx-auto"
-      >
+      <section className="w-full py-16 md:py-24 lg:py-[160px] px-4 sm:px-6 lg:px-10 max-w-[1440px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           <div className="order-2 lg:order-1 flex flex-col justify-center">
             <span className="text-[11px] tracking-[0.2em] uppercase text-[#8B7B6D] mb-4">
@@ -143,12 +141,8 @@ export function SignatureEditPage({ collection }: SignatureEditPageProps) {
       </section>
 
       {/* 4. Curated Product Showcase */}
-      <section
-        className="w-full py-16 md:py-24 lg:py-[160px] px-4 sm:px-6 lg:px-10 max-w-[1440px] mx-auto"
-      >
-        <div
-          className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-[80px]"
-        >
+      <section className="w-full py-16 md:py-24 lg:py-[160px] px-4 sm:px-6 lg:px-10 max-w-[1440px] mx-auto">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-[80px]">
           <div className="max-w-[500px]">
             <h2 className="font-display text-[36px] md:text-[48px] text-[#2E241D] leading-none mb-4">
               Shop The Edit

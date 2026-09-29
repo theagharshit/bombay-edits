@@ -129,9 +129,9 @@ export default function TheCraftPage() {
                 Legacy
               </h2>
               <p className="text-[13px] md:text-[13.5px] leading-[1.8] text-[#7A6E64]">
-                House of Baneri is not just fashion; it is an archive in motion. We are preserving the
-                romance of the past for the future. Each design sketch is a promise to maintain the
-                slow, deliberate pace of true luxury in a transient world.
+                House of Baneri is not just fashion; it is an archive in motion. We are preserving
+                the romance of the past for the future. Each design sketch is a promise to maintain
+                the slow, deliberate pace of true luxury in a transient world.
               </p>
             </div>
           </div>
