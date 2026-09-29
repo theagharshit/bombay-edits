@@ -44,6 +44,18 @@ export type AuditLogItem = {
   error?: string;
 };
 
+type RawAuditLogItem = {
+  id?: string;
+  messageId?: string;
+  channel: 'email' | 'sms';
+  provider: string;
+  recipient: string;
+  status?: 'dispatched' | 'failed';
+  success?: boolean;
+  timestamp: string;
+  error?: string;
+};
+
 interface CommunicationsClientProps {
   initialTemplates: Record<string, TemplateData>;
   initialProviders: { email: string; sms: string };
@@ -90,7 +102,7 @@ export function CommunicationsClient({
         if (Array.isArray(data.auditLogs)) {
           setAuditLogs(
             data.auditLogs
-              .map((item: any, idx: number) => ({
+              .map((item: RawAuditLogItem, idx: number) => ({
                 id: item.id || `${item.messageId || 'log'}-${item.timestamp || Date.now()}-${idx}`,
                 channel: item.channel,
                 provider: item.provider,
