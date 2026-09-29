@@ -81,13 +81,99 @@ export async function GET(req: NextRequest) {
   const template = searchParams.get('template')?.toLowerCase();
   const format = searchParams.get('format')?.toLowerCase();
 
+  // Structured data for Admin Communications Studio
+  if (format === 'data') {
+    const orderConfEmail = renderOrderConfirmationEmail(sampleOrder);
+    const orderStatusEmail = renderOrderStatusEmail(sampleOrder, 'dispatched');
+    const contactEmail = renderContactInquiryEmail(sampleSubmission);
+    const newsletterEmail = renderNewsletterWelcomeEmail('patron@bombayedits.com');
+
+    const orderConfSms = renderOrderConfirmationSms(sampleOrder);
+    const orderStatusSms = renderOrderStatusSms(sampleOrder, 'dispatched');
+    const contactSms = renderContactInquirySms(sampleSubmission);
+
+    return NextResponse.json({
+      providers: {
+        email: NotificationService.getEmailProviderName(),
+        sms: NotificationService.getSmsProviderName(),
+      },
+      auditLogs: [...notificationDevAuditLog]
+        .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+        .map((item, idx) => ({
+          id: item.messageId ? `${item.messageId}-${idx}` : `log-${item.timestamp}-${idx}`,
+          channel: item.channel,
+          provider: item.provider,
+          recipient: item.recipient,
+          status: item.success ? 'dispatched' : 'failed',
+          timestamp: item.timestamp,
+          error: item.error,
+        })),
+      templates: {
+        'order-confirmation': {
+          id: 'order-confirmation',
+          title: 'Acquisition Order Confirmation',
+          category: 'Orders & Acquisitions',
+          description:
+            'Sent immediately upon confirmed payment with itemization table, address, and royal gold accents.',
+          subject: orderConfEmail.subject,
+          emailHtml: orderConfEmail.html,
+          emailText: orderConfEmail.text,
+          smsText: orderConfSms,
+          recipientEmail: sampleOrder.customer.email,
+          recipientPhone: sampleOrder.customer.phone,
+        },
+        'order-status': {
+          id: 'order-status',
+          title: 'Consignment Dispatched / In Transit',
+          category: 'Fulfillment & Logistics',
+          description:
+            'Dispatched when logistics package transitions status. Includes courier partner, live tracking, and dispatch note.',
+          subject: orderStatusEmail.subject,
+          emailHtml: orderStatusEmail.html,
+          emailText: orderStatusEmail.text,
+          smsText: orderStatusSms,
+          recipientEmail: sampleOrder.customer.email,
+          recipientPhone: sampleOrder.customer.phone,
+        },
+        'contact-acknowledgment': {
+          id: 'contact-acknowledgment',
+          title: 'Bespoke Consultation Acknowledgment',
+          category: 'Atelier Concierge',
+          description:
+            'Instant receipt confirming ticket creation. Informs client that full bespoke consultation proceeds via email.',
+          subject: contactEmail.subject,
+          emailHtml: contactEmail.html,
+          emailText: contactEmail.text,
+          smsText: contactSms,
+          recipientEmail: sampleSubmission.email,
+          recipientPhone: sampleSubmission.phone,
+        },
+        'newsletter-welcome': {
+          id: 'newsletter-welcome',
+          title: 'Gazette Patron Welcome Editorial',
+          category: 'Editorial & Circle',
+          description:
+            'Welcomes new subscribers to private salon previews, archival drops, and heritage artisan stories.',
+          subject: newsletterEmail.subject,
+          emailHtml: newsletterEmail.html,
+          emailText: newsletterEmail.text,
+          smsText: null,
+          recipientEmail: 'collector@bombayedits.com',
+          recipientPhone: null,
+        },
+      },
+    });
+  }
+
   // JSON summary: audit log and provider health
   if (format === 'json') {
     return NextResponse.json({
       activeEmailProvider: NotificationService.getEmailProviderName(),
       activeSmsProvider: NotificationService.getSmsProviderName(),
       auditLogCount: notificationDevAuditLog.length,
-      recentDispatches: notificationDevAuditLog.slice(0, 20),
+      recentDispatches: [...notificationDevAuditLog]
+        .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+        .slice(0, 50),
     });
   }
 
@@ -282,4 +368,86 @@ export async function GET(req: NextRequest) {
   return new NextResponse(hubHtml, {
     headers: { 'Content-Type': 'text/html; charset=utf-8' },
   });
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const { channel, recipient, template = 'order-confirmation', status = 'dispatched' } = body;
+
+    if (!recipient || typeof recipient !== 'string' || !recipient.trim()) {
+      return NextResponse.json(
+        { success: false, error: 'Recipient address or phone is required' },
+        { status: 400 }
+      );
+    }
+
+    const cleanRecipient = recipient.trim();
+
+    if (channel === 'email') {
+      let emailPayload = { subject: 'Test Notification', html: '<p>Test</p>', text: 'Test' };
+      if (template === 'order-confirmation') {
+        emailPayload = renderOrderConfirmationEmail({
+          ...sampleOrder,
+          customer: { ...sampleOrder.customer, email: cleanRecipient },
+        });
+      } else if (template === 'order-status') {
+        emailPayload = renderOrderStatusEmail(
+          { ...sampleOrder, customer: { ...sampleOrder.customer, email: cleanRecipient } },
+          status
+        );
+      } else if (template === 'contact-acknowledgment' || template === 'contact') {
+        emailPayload = renderContactInquiryEmail({ ...sampleSubmission, email: cleanRecipient });
+      } else if (template === 'newsletter-welcome' || template === 'newsletter') {
+        emailPayload = renderNewsletterWelcomeEmail(cleanRecipient);
+      }
+
+      const result = await NotificationService.sendEmail({
+        to: cleanRecipient,
+        subject: emailPayload.subject,
+        html: emailPayload.html,
+        text: emailPayload.text,
+      });
+
+      return NextResponse.json({
+        success: result.success,
+        result,
+        message: result.success
+          ? `Dispatched email to ${cleanRecipient} via ${result.provider}`
+          : `Dispatch failed: ${result.error}`,
+      });
+    } else if (channel === 'sms') {
+      let smsText = 'The Bombay Edit: Test SMS';
+      if (template === 'order-confirmation') {
+        smsText = renderOrderConfirmationSms(sampleOrder);
+      } else if (template === 'order-status') {
+        smsText = renderOrderStatusSms(sampleOrder, status);
+      } else if (template === 'contact-acknowledgment' || template === 'contact') {
+        smsText = renderContactInquirySms(sampleSubmission);
+      }
+
+      const result = await NotificationService.sendSms({
+        to: cleanRecipient,
+        message: smsText,
+      });
+
+      return NextResponse.json({
+        success: result.success,
+        result,
+        message: result.success
+          ? `Dispatched SMS to ${cleanRecipient} via ${result.provider}`
+          : `Dispatch failed: ${result.error}`,
+      });
+    }
+
+    return NextResponse.json(
+      { success: false, error: 'Invalid notification channel' },
+      { status: 400 }
+    );
+  } catch (err: unknown) {
+    return NextResponse.json(
+      { success: false, error: err instanceof Error ? err.message : 'Test dispatch failed' },
+      { status: 500 }
+    );
+  }
 }

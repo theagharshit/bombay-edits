@@ -32,7 +32,10 @@ function ConsultationsContent() {
           setLoading(true);
           setError(null);
           const data = await ContactService.getTickets();
-          setTickets(data || []);
+          const sorted = (data || []).sort(
+            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+          setTickets(sorted);
         } catch (err) {
           console.error('Failed to load consultation tickets:', err);
           setError('Unable to retrieve consultation tickets at this time.');
@@ -48,7 +51,10 @@ function ConsultationsContent() {
         setGuestError(null);
         try {
           const data = await ContactService.getTickets({ email: urlEmail });
-          setTickets(data || []);
+          const sorted = (data || []).sort(
+            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+          setTickets(sorted);
           setGuestQueried(true);
         } catch {
           setGuestError('Failed to lookup tickets for this email.');
@@ -76,7 +82,10 @@ function ConsultationsContent() {
     setGuestError(null);
     try {
       const data = await ContactService.getTickets({ email: guestEmail.trim().toLowerCase() });
-      setTickets(data || []);
+      const sorted = (data || []).sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+      setTickets(sorted);
       setGuestQueried(true);
     } catch {
       setGuestError('Failed to retrieve consultation tickets.');
@@ -97,35 +106,23 @@ function ConsultationsContent() {
     }
   };
 
-  // Display status badge only for meaningful advisor updates (no 'new' or 'received' shown to user)
+  // Display clean status for consumer: only 'Closed Ticket' for past concluded tickets, or active email dialogue
   const getTicketStatusBadge = (status: string) => {
-    switch (status.toLowerCase()) {
-      case 'in_progress':
-        return (
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-amber-50 text-amber-900 border border-amber-200 text-[10px] uppercase tracking-wider font-semibold rounded-none">
-            <span className="w-1.5 h-1.5 rounded-none bg-amber-500 animate-pulse" />
-            In Review
-          </span>
-        );
-      case 'replied':
-        return (
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-sky-50 text-sky-900 border border-sky-200 text-[10px] uppercase tracking-wider font-semibold rounded-none">
-            <span className="w-1.5 h-1.5 rounded-none bg-sky-600" />
-            Replied
-          </span>
-        );
-      case 'resolved':
-        return (
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-emerald-50 text-emerald-900 border border-emerald-200 text-[10px] uppercase tracking-wider font-semibold">
-            <CheckCircle2 size={11} className="text-emerald-700" />
-            Resolved
-          </span>
-        );
-      case 'new':
-      default:
-        // No status tag shown for new/initial state
-        return null;
+    const s = (status || '').toLowerCase();
+    if (s === 'resolved' || s === 'closed') {
+      return (
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#EAE3DA] text-[#4A3025] border border-[#DDD5CA] text-[9.5px] uppercase tracking-[0.16em] font-semibold rounded-none">
+          <CheckCircle2 size={11} className="text-[#4A3025]" />
+          Closed Ticket
+        </span>
+      );
     }
+    return (
+      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#F4EFEA] text-[#5C3D2E] border border-[#E0D7CD] text-[9.5px] uppercase tracking-[0.16em] font-medium rounded-none">
+        <span className="w-1.5 h-1.5 rounded-full bg-[#5C3D2E] animate-pulse" />
+        Active &bull; Dialogue in Email
+      </span>
+    );
   };
 
   return (
@@ -157,7 +154,8 @@ function ConsultationsContent() {
               Consultations & Inquiries
             </h1>
             <p className="font-body text-[13px] text-[var(--color-muted)] mt-1">
-              Track styling appointments, custom fit discussions, and customer support tickets.
+              Atelier styling consultations and bespoke dialogues are conducted directly via email
+              with our concierge. Review past closed tickets and records below.
             </p>
           </div>
 
@@ -168,6 +166,24 @@ function ConsultationsContent() {
             <MessageSquare size={13} strokeWidth={1.5} />
             <span>New Consultation</span>
           </Link>
+        </div>
+
+        {/* Concierge Email Guidance Banner */}
+        <div className="bg-[#f7f2ea] border border-[var(--color-line)] p-4 sm:p-5 mb-8 font-body text-[12px] text-[#4A3025] leading-relaxed">
+          <div className="flex items-start gap-3">
+            <Mail size={16} className="text-[#4A3025] shrink-0 mt-0.5" />
+            <div>
+              <p className="font-medium text-[12.5px] text-[var(--color-ink)] mb-0.5">
+                Full Conversations Conducted via Personal Email
+              </p>
+              <p className="text-[var(--color-muted)] leading-relaxed">
+                As soon as a consultation ticket is submitted, an instant acknowledgment is
+                dispatched to your email and mobile phone. All ongoing styling discussions, fabric
+                recommendations, and appointment coordination occur directly via email. Past
+                concluded inquiries are archived as Closed Tickets below.
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Loading Spinner */}
@@ -383,13 +399,23 @@ function ConsultationsContent() {
                       )}
                     </div>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <span className="inline-flex items-center gap-1.5 text-[11px] text-[var(--color-muted)]">
+                        <Mail size={12} className="text-[#4A3025]" />
+                        <span>
+                          Ongoing dialogue via{' '}
+                          <strong className="text-[var(--color-ink)] font-normal">
+                            {ticket.email}
+                          </strong>
+                        </span>
+                      </span>
+                      <span className="text-[var(--color-line)] hidden sm:inline">&bull;</span>
                       <Link
-                        href={`/contact?orderNumber=${encodeURIComponent(ticket.orderNumber || '')}&email=${encodeURIComponent(ticket.email)}&name=${encodeURIComponent(ticket.name)}&subject=${encodeURIComponent(`Follow-up: ${ticket.subject || 'Consultation'}`)}`}
-                        className="inline-flex items-center gap-1 text-[11px] uppercase tracking-wider text-[var(--color-ink)] hover:underline font-medium"
+                        href={`/contact?orderNumber=${encodeURIComponent(ticket.orderNumber || '')}&email=${encodeURIComponent(ticket.email)}&name=${encodeURIComponent(ticket.name)}&subject=${encodeURIComponent(`Follow-up: #${ticket.id} - ${ticket.subject || 'Consultation'}`)}`}
+                        className="inline-flex items-center gap-1 text-[10.5px] uppercase tracking-wider text-[var(--color-ink)] hover:underline font-medium"
                       >
-                        Follow up with Concierge
-                        <ArrowRight size={11} />
+                        New Inquiry / Message
+                        <ArrowRight size={10} />
                       </Link>
                     </div>
                   </div>

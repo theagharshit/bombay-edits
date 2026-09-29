@@ -50,7 +50,8 @@ export class ContactController {
         createdAt: submission.createdAt,
       },
       {
-        message: 'Your message has been received. Our team will get back to you shortly.',
+        message:
+          'Your message has been received. An acknowledgment has been sent to your email and phone, and our concierge will converse with you directly via email.',
         status: 200,
       }
     );

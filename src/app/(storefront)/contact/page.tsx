@@ -261,8 +261,9 @@ function ContactContent() {
                 </h3>
 
                 <p className="text-[11.5px] text-[var(--color-muted)] max-w-sm mb-3.5 leading-relaxed">
-                  Thank you. Your request has been catalogued in our atelier database and an advisor
-                  will reply within 24 hours.
+                  Thank you. Your consultation ticket has been created and an instant acknowledgment
+                  has been dispatched to your email and phone. Our concierge will converse with you
+                  directly via email.
                 </p>
 
                 {/* Squeezed Reference Ticket */}

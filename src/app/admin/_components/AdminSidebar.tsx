@@ -19,6 +19,7 @@ import {
   Star,
   Mail,
   Send,
+  Smartphone,
   Store,
   Truck,
   DollarSign,
@@ -68,6 +69,7 @@ const navGroups: NavGroup[] = [
       { name: 'Reviews', href: '/admin/reviews', icon: Star },
       { name: 'Contact Inbox', href: '/admin/contact', icon: Mail },
       { name: 'Newsletter', href: '/admin/newsletter', icon: Send },
+      { name: 'Communications', href: '/admin/communications', icon: Smartphone },
     ],
   },
   {

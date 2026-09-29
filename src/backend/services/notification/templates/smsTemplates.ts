@@ -17,5 +17,5 @@ export function renderOrderStatusSms(order: OrderRecord, newStatus: string): str
 
 export function renderContactInquirySms(submission: ContactSubmission): string {
   const ticketRef = submission.id || 'INQ';
-  return `House of Baneri: Hello ${submission.name}, inquiry #${ticketRef} received. Our concierge will be in touch shortly.`;
+  return `House of Baneri: Hello ${submission.name}, consultation #${ticketRef} received. Our concierge will converse with you directly via email.`;
 }

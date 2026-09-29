@@ -337,12 +337,12 @@ export function renderContactInquiryEmail(submission: ContactSubmission): {
     </div>
 
     <p style="font-size: 13px; line-height: 1.6; color: #78716C; text-align: center; margin-bottom: 24px;">
-      Our master styling and concierge team will review your details and respond within 24 business hours.
+      Our master styling and concierge team will review your consultation request. All subsequent conversation and styling dialogue will be conducted directly with you via email.
     </p>
 
     <div style="text-align: center;">
-      <a href="${BASE_URL}/contact" style="display: inline-block; background-color: #1C1917; color: #FAF8F5; padding: 12px 28px; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; font-weight: 500;">
-        Visit Concierge Portal
+      <a href="${BASE_URL}/consultations" style="display: inline-block; background-color: #1C1917; color: #FAF8F5; padding: 12px 28px; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; font-weight: 500;">
+        View Consultation Record
       </a>
     </div>
   `;

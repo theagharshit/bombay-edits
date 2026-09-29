@@ -173,6 +173,16 @@ describe('Notification Service: Central Facade High-Level API', () => {
     expect(res.recipient).toBe('collector@ateliertest.com');
   });
 
+  it('verifies consultation acknowledgment instructs customer that dialogue continues via email', () => {
+    const email = renderContactInquiryEmail(mockContact);
+    expect(email.subject).toContain('Inquiry Acknowledged');
+    expect(email.html).toContain('conducted directly with you via email');
+
+    const sms = renderContactInquirySms(mockContact);
+    expect(sms).toContain('sub-test-456');
+    expect(sms).toContain('converse with you directly via email');
+  });
+
   it('allows swapping custom providers at runtime', async () => {
     let customCalled = false;
     NotificationService.setEmailProvider({

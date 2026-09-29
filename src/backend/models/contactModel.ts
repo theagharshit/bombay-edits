@@ -177,6 +177,8 @@ export class ContactModel {
       }
     }
 
-    return contactStore.filter((msg) => msg.email === normalized);
+    return contactStore
+      .filter((msg) => msg.email === normalized)
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 }
